@@ -4,9 +4,8 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent, IpcRenderer } from 'electron';
 
 export type MainEvents =
-  // terminal
-  'new'
-  | 'data'
+  // sample
+  'sample'
   | 'maximize'
   | 'minimize'
   | 'resize'
@@ -23,9 +22,9 @@ export type MainEvents =
 ;
 
 export type RenderEvents =
-  'terminal add'
-  | 'terminal data'
-  | 'terminal exit'
+  'sample add'
+  | 'sample data'
+  | 'sample exit'
 ;
 
 export type Channels = MainEvents | RenderEvents;

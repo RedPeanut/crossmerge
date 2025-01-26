@@ -14,8 +14,6 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { TerminalItem } from '../common/Types';
-import TerminalLocal from './terminal/TerminalLocal';
 
 class AppUpdater {
   constructor() {
@@ -79,25 +77,8 @@ const getWindowSize = () => {
 }
 
 const installIpc = () => {
-  const terminals = new Map<string, TerminalLocal>();
-
-  ipcMain.on('new', (event, args: any[]) => {
-    console.log('[index.ts/new] args =', args);
-    const arg: TerminalItem = args[0] as TerminalItem;
-    if(arg.type === 'local') {
-      const terminal = new TerminalLocal(arg);
-      terminal.on('data', (data: string) => {
-        // console.log('data event is called..., data =', data);
-        mainWindow?.webContents.send('terminal data', data);
-      });
-      terminal.start();
-      terminals.set(arg.uid, terminal);
-    } else if(arg.type === 'remote') {
-    }
-  });
-
-  ipcMain.on('data', (event, args: any[]) => {
-    console.log('[index.ts/data] args =', args);
+  ipcMain.on('sample', (event, args: any[]) => {
+    console.log('[index.ts/sample] args =', args);
   });
 }
 

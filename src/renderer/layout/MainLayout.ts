@@ -1,32 +1,22 @@
 import { coalesce } from '../util/arrays';
 import { isLinux, isWindows } from '../util/platform';
 import { Layout } from '../Layout';
-import { PartOptions, Part } from '../Part';
 import { TitlebarPart } from '../part/TitlebarPart';
-import { ActivitybarPart } from '../part/ActivitybarPart';
 // import { BodyPart } from '../part/BodyPart';
 import { StatusbarPart } from '../part/StatusbarPart';
 import { BodyLayout, BodyLayoutService } from './BodyLayout';
-import { SplitView, SplitViewItem } from '../component/SplitView';
+import { SplitView } from '../component/SplitView';
 import { getClientArea, position, size } from '../util/dom';
 import { Orientation } from '../component/Sash';
-import { bodyLayoutServiceId, getService, Service, sessionPartServiceId, setService, mainLayoutServiceId } from '../Service';
-import { SessionPartService } from '../part/SessionPart';
-import { terminals } from '../../globals';
+import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId } from '../Service';
 // import Runtime from './Runtime';
 
 export const TITLEBAR_HEIGHT = 42;
-export const ACTIVITYBAR_WIDTH = 48;
-export const SIDEBAR_WIDTH = 220;
-// export const SESSION_WIDTH = 'fill_parent';
 export const STATUSBAR_HEIGHT = 22;
 
 export const enum Parts {
   TITLEBAR_PART = 'part.titlebar',
-  ACTIVITYBAR_PART = 'part.activitybar',
   BODY_LAYOUT = 'layout.body',
-  SIDEBAR_PART = 'part.sidebar',
-  SESSION_PART = 'part.session',
   STATUSBAR_PART = 'part.statusbar'
 }
 
@@ -55,8 +45,8 @@ export class MainLayout extends Layout implements MainLayoutService {
 
     //
     const platformClass = isWindows ? 'windows' : isLinux ? 'linux' : 'mac'; //Runtime.isWindows ? 'windows' : Runtime.isLinux ? 'linux' : 'mac';
-    const workbenchClasses = coalesce(['workbench', 'layout', platformClass]);
-    this.mainContainer.classList.add(...workbenchClasses);
+    const mainLayoutClasses = coalesce(['main', 'layout', platformClass]);
+    this.mainContainer.classList.add(...mainLayoutClasses);
 
     const titlebarPart = this.titlebarPart = new TitlebarPart(null, Parts.TITLEBAR_PART, 'none', ['titlebar'], null);
     titlebarPart.create();
@@ -108,26 +98,14 @@ export class MainLayout extends Layout implements MainLayoutService {
   }
 
   bodyLayoutService: BodyLayoutService;
-  sessionPartService: SessionPartService;
 
   getServices(): void {
     this.bodyLayoutService = getService(bodyLayoutServiceId);
     this.bodyLayoutService.getServices();
-    this.sessionPartService = getService(sessionPartServiceId);
-    this.sessionPartService.getServices();
   }
 
   installIpc(): void {
-    window.ipc.on('terminal data', (...args: any[]) => {
-      // console.log('terminal data event is called..');
-      // console.log('args =', args);
-      const raw: string = args[1];
-      const uid = raw.slice(0, 36);
-      const data = raw.slice(36);
-      const term = terminals[uid];
-      if(term) {
-        term.xterm.write(data);
-      }
+    window.ipc.on('sample data', (...args: any[]) => {
     });
   }
 
@@ -137,9 +115,6 @@ export class MainLayout extends Layout implements MainLayoutService {
     this.bodyLayoutService.inflate();
     this.layout();
     this.installIpc();
-
-    // create terminal after layout n ipc install
-    this.sessionPartService.createTerminal();
   }
 
   toggleSidebar(): void {
