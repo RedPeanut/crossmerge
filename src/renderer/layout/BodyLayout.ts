@@ -17,7 +17,7 @@ export interface BodyLayoutService extends Service {
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
 
-  get element(): HTMLElement { return this.mainContainer; }
+  get element(): HTMLElement { return this.container; }
 
   _size: number = 0;
   get size(): number { return this._size; }
@@ -39,7 +39,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.splitView.layout(dimension.width); // Orientation.HORIZONTAL
   } */
   layout(offset: number, size: number): void {
-    let dimension = getClientArea(this.mainContainer);
+    let dimension = getClientArea(this.container);
     this.splitView.layout(dimension.width);
   }
 
@@ -55,10 +55,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   }
 
   create(): void {
-    this.mainContainer.classList.add(...['body', 'layout']);
-    const splitView = this.splitView = new SplitView(this.mainContainer, { orientation: Orientation.HORIZONTAL });
+    this.container.classList.add(...['body', 'layout']);
+    const splitView = this.splitView = new SplitView(this.container, { orientation: Orientation.HORIZONTAL });
 
-    this.parent && this.parent.appendChild(this.mainContainer);
+    this.parent && this.parent.appendChild(this.container);
   }
 
   inflate(): void {}

@@ -3,7 +3,7 @@ import { Part } from './Part';
 export abstract class Layout {
 
   parent: HTMLElement;
-  mainContainer = document.createElement('div');
+  container = document.createElement('div');
   parts = new Map<string, Part>();
 
   constructor(parent: HTMLElement) {
