@@ -171,12 +171,13 @@ body { height: 100%; }
   /* border-radius: 8px; */
 }
 
-.titlebar .right .codicon.codicon-settings-gear {
-  font-size: 16px;
+.titlebar .right .codicon:hover {
+  background-color: rgba(0, 0, 0, 0.16);
+  cursor: pointer;
 }
 
-.titlebar .right .codicon:hover {
-  background-color: rgba(255, 255, 255, 0.16);
+.titlebar .right .codicon.codicon-settings-gear {
+  font-size: 16px;
 }
 
 /* Body */

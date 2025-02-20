@@ -1,7 +1,7 @@
 import { SplitView, SplitViewItemSizeType, SplitViewItemView } from "../component/SplitView";
 import { Layout } from "../Layout";
 import { Orientation } from "../component/Sash";
-import { getClientArea } from "../util/dom";
+import * as dom from "../util/dom";
 import { bodyLayoutServiceId, Service, setService } from "../Service";
 import { SamplePart } from "../part/SamplePart";
 
@@ -31,6 +31,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   get border(): boolean { return this._border; }
   set border(border: boolean) { this._border = border; }
 
+  _sashEnablement: boolean = true;
+  get sashEnablement(): boolean { return this._sashEnablement; }
+  set sashEnablement(b: boolean) { this._sashEnablement = b; }
+
   /* layoutContainer(offset: number): void {
     this._splitViewContainer.style.top = `${offset}px`;
     this._splitViewContainer.style.height = `${this._size}px`;
@@ -39,7 +43,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.splitView.layout(dimension.width); // Orientation.HORIZONTAL
   } */
   layout(offset: number, size: number): void {
-    let dimension = getClientArea(this.container);
+    let dimension = dom.getClientArea(this.container);
     this.splitView.layout(dimension.width);
   }
 
