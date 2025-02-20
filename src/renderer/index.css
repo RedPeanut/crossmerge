@@ -167,8 +167,6 @@ body { height: 100%; }
   width: 42px;
   height: 42px;
   font-size: 24px;
-  /* background-color: rgba(255, 255, 255, 0.08); */
-  /* border-radius: 8px; */
 }
 
 .titlebar .right .codicon:hover {
