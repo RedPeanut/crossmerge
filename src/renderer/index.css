@@ -171,7 +171,6 @@ body { height: 100%; }
 
 .titlebar .right .codicon:hover {
   background-color: rgba(0, 0, 0, 0.16);
-  cursor: pointer;
 }
 
 .titlebar .right .codicon.codicon-settings-gear {
