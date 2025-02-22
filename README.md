@@ -1,5 +1,5 @@
 ## Desc
-- blar blar blar
+- Crossplatform merge app
 
 ## Run
 ```bash

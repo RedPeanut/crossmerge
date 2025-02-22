@@ -1,6 +1,6 @@
 {
-  "name": "erb-starter",
-  "productName": "erb-starter",
+  "name": "crossmerge",
+  "productName": "crossmerge",
   "version": "0.0.1",
   "description": "My Electron application description",
   "main": "./.erb/dll/main.bundle.dev.js",
