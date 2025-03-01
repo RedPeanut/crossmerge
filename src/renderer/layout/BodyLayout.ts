@@ -5,6 +5,9 @@ import * as dom from "../util/dom";
 import { bodyLayoutServiceId, Service, setService } from "../Service";
 import { SamplePart } from "../part/SamplePart";
 
+import Mergely from '../../lib/mergely/Mergely';
+import '../../lib/mergely/mergely.css';
+
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
 }
@@ -79,11 +82,11 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     div.style.height = '400px';
     this.container.appendChild(div);
 
-    /* const mergely = new Mergely('#mergely', { ...{},
+    const mergely = new Mergely('#mergely', { ...{},
       lhs: 'the quick red fox\njumped over the hairy dog',
       rhs: 'the quick brown fox\njumped over the lazy dog',
       _debug: true,
-    }); */
+    });
   }
 
 }
