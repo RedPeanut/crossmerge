@@ -144,23 +144,7 @@ body { height: 100%; }
   /* background-color: grey; */
 }
 
-.titlebar .left { display: flex; padding-left: 80px; }
-
-.titlebar .center {
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-.titlebar .right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.titlebar .right .codicon {
+.titlebar .codicon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,8 +153,25 @@ body { height: 100%; }
   font-size: 24px;
 }
 
-.titlebar .right .codicon:hover {
+.titlebar .codicon:hover {
   background-color: rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.titlebar .left { display: flex; padding-left: 80px; }
+
+.titlebar .center {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  /* justify-content: center; */
+  display: flex;
+}
+
+.titlebar .right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .titlebar .right .codicon.codicon-settings-gear {

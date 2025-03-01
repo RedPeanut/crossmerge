@@ -13,6 +13,7 @@ export interface BodyLayoutService extends Service {
   getServices(): void;
   inflate(): void;
   layout(offset: number, size: number): void;
+  launchFileCompareView(): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -44,7 +45,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   } */
   layout(offset: number, size: number): void {
     let dimension = dom.getClientArea(this.container);
-    this.splitView.layout(dimension.width);
+    // this.splitView.layout(dimension.width);
   }
 
   splitView: SplitView<SamplePart>;
@@ -61,7 +62,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   create(): void {
     this.container.classList.add(...['body', 'layout']);
-    const splitView = this.splitView = new SplitView(this.container, { orientation: Orientation.HORIZONTAL });
+    // const splitView = this.splitView = new SplitView(this.container, { orientation: Orientation.HORIZONTAL });
 
     this.parent && this.parent.appendChild(this.container);
   }
@@ -69,5 +70,20 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   inflate(): void {}
 
   getServices(): void {}
+
+  launchFileCompareView(): void {
+    console.log('launchFileCompareView ..');
+
+    const div = document.createElement('div');
+    div.id = 'mergely';
+    div.style.height = '400px';
+    this.container.appendChild(div);
+
+    /* const mergely = new Mergely('#mergely', { ...{},
+      lhs: 'the quick red fox\njumped over the hairy dog',
+      rhs: 'the quick brown fox\njumped over the lazy dog',
+      _debug: true,
+    }); */
+  }
 
 }

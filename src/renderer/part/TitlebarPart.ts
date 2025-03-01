@@ -1,6 +1,8 @@
 import { VerticalViewItem } from '../component/SplitView';
+import { BodyLayoutService } from '../layout/BodyLayout';
 import { TITLEBAR_HEIGHT } from '../layout/MainLayout';
 import { Part } from '../Part';
+import { bodyLayoutServiceId, getService } from '../Service';
 import { $ } from '../util/dom';
 
 export class TitlebarPart extends Part {
@@ -14,19 +16,27 @@ export class TitlebarPart extends Part {
     const container: HTMLElement = super.createContentArea();
     const left = $('.left');
     const center = $('.center');
-    const title = $('.title');
-    title.innerHTML = 'crossapp-starter';
-    center.appendChild(title);
-    const right = $('.right');
-    const settingBtn = $('a.codicon.codicon-settings-gear');
-    // const settingBtn = $('a.codicon.codicon-settings');
-    // const closeBtn = $('a.codicon.codicon-close');
-    right.appendChild(settingBtn);
-    // right.appendChild(closeBtn);
+
+    // const fileCompareBtn = $('a.material-symbols-outlined', null, 'article');
+    const fileCompareBtn = $('a.codicon.codicon-file');
+    fileCompareBtn.addEventListener('click', (e: MouseEvent) => {
+      console.log('fileCompareBtn is clicked ..');
+
+      // launch file compare view in body
+      const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+      bodyLayoutService.launchFileCompareView();
+    });
+    center.appendChild(fileCompareBtn);
+    // const folderCompareBtn = $('a.material-symbols-outlined', null, 'folder');
+    const folderCompareBtn = $('a.codicon.codicon-folder');
+    folderCompareBtn.addEventListener('click', (e: MouseEvent) => {
+      console.log('folderCompareBtn is clicked ..');
+
+    });
+    center.appendChild(folderCompareBtn);
 
     container.appendChild(left);
     container.appendChild(center);
-    container.appendChild(right);
     return container;
   }
 
