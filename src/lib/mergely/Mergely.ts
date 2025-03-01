@@ -117,19 +117,20 @@ export default class Mergely {
       }
       this._stopWorker();
 
-      /* // create worker
+      // create worker
       const worker = new DiffWorker();
       this._diffWorker = worker;
       worker.onerror = (ev) => {
         console.error('Unexpected error with web worker', ev);
       }
-      worker.onmessage = (ev) => {
+      // worker.onmessage = (ev) => {
+      worker.on('changes', (changes) => {
         if(options._debug) {
           trace('event#changed worker finished');
         }
-        this._changes = ev.data;
+        this._changes = changes;
         view.setChanges(this._changes);
-      }
+      });
       worker.postMessage({
         lhs: this.get('lhs'),
         rhs: this.get('rhs'),
@@ -138,7 +139,7 @@ export default class Mergely {
           ignorews: options.ignorews,
           ignorecase: options.ignorecase,
         }
-      }); */
+      });
     });
 
     view.bind(this.el);
