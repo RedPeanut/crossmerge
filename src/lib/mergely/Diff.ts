@@ -1,11 +1,18 @@
 const SMS_TIMEOUT_SECONDS = 1.0;
 
+interface DiffOptions {
+  ignorews?: boolean;
+  ignoreaccents?: boolean;
+  ignorecase?: boolean;
+  split?: string;
+}
+
 export default class Diff {
 
   codeify;
   items;
 
-  constructor(lhs, rhs, options = {}) {
+  constructor(lhs, rhs, options: DiffOptions) {
     const {
       ignorews = false,
       ignoreaccents = false,

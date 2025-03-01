@@ -51,8 +51,9 @@ export default class CodeMirrorDiffView {
   merge_lhs_button;
   merge_rhs_button;
   _handleResize;
-  draw_mid_width;
   midway;
+  draw_top_offset
+  draw_mid_width;
   draw_lhs_min;
   draw_rhs_max;
   draw_lhs_width;
@@ -207,7 +208,9 @@ export default class CodeMirrorDiffView {
       if(opts.hasOwnProperty('sidebar')) {
         const divs = document.querySelectorAll(`#${this.id} .mergely-margin`);
         const visible = !!opts.sidebar;
-        for(const div of divs) {
+        // for(const div of divs) {
+        for(let i = 0; i < divs.length; i++) {
+          const div = divs[i] as HTMLElement;
           div.style.visibility = visible ? 'visible' : 'hidden';
         }
       }
@@ -376,8 +379,8 @@ export default class CodeMirrorDiffView {
     }
 
     // check initialization
-    const lhstx = document.getElementById(`${this.id}-lhs`);
-    const rhstx = document.getElementById(`${this.id}-rhs`);
+    const lhstx = document.getElementById(`${this.id}-lhs`) as HTMLTextAreaElement;
+    const rhstx = document.getElementById(`${this.id}-rhs`) as HTMLTextAreaElement;
     if(!lhstx) {
       console.error('lhs textarea not defined - Mergely not initialized properly');
     }
@@ -1041,16 +1044,27 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _draw_info() {
+  _draw_info(): {
+    visible_page_height,
+    lhs_scroller,
+    rhs_scroller,
+    lhs_lines,
+    rhs_lines,
+    dcanvas: HTMLCanvasElement,
+    lhs_margin: HTMLCanvasElement,
+    rhs_margin: HTMLCanvasElement,
+    lhs_xyoffset,
+    rhs_xyoffset
+  } {
     const lhsScroll = this.editor.lhs.getScrollerElement();
     const rhsScroll = this.editor.rhs.getScrollerElement();
     const visible_page_height = lhsScroll.offsetHeight; // fudged
-    const dcanvas = document.getElementById(`${this.id}-lhs-rhs-canvas`);
+    const dcanvas = document.getElementById(`${this.id}-lhs-rhs-canvas`) as HTMLCanvasElement;
     if(dcanvas == undefined) {
       throw new Error(`Failed to find: ${this.id}-lhs-rhs-canvas`);
     }
-    const lhs_margin = document.getElementById(`${this.id}-lhs-margin`);
-    const rhs_margin = document.getElementById(`${this.id}-rhs-margin`);
+    const lhs_margin = document.getElementById(`${this.id}-lhs-margin`) as HTMLCanvasElement;
+    const rhs_margin = document.getElementById(`${this.id}-rhs-margin`) as HTMLCanvasElement;
 
     return {
       visible_page_height: visible_page_height,
@@ -1062,12 +1076,12 @@ export default class CodeMirrorDiffView {
       lhs_margin,
       rhs_margin,
       lhs_xyoffset: {
-        top: lhs_margin.offsetParent.offsetTop,
-        left: lhs_margin.offsetParent.offsetLeft
+        top: (lhs_margin.offsetParent as HTMLElement).offsetTop,
+        left: (lhs_margin.offsetParent as HTMLElement).offsetLeft
       },
       rhs_xyoffset: {
-        top: rhs_margin.offsetParent.offsetTop,
-        left: rhs_margin.offsetParent.offsetLeft
+        top: (rhs_margin.offsetParent as HTMLElement).offsetTop,
+        left: (rhs_margin.offsetParent as HTMLElement).offsetLeft
       }
     };
   }
