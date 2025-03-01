@@ -351,7 +351,7 @@ export default class CodeMirrorDiffView {
     }
     container.append(el);
 
-    if(NOTICES.indexOf(this.settings.license) < 0) {
+    /* if(NOTICES.indexOf(this.settings.license) < 0) {
       container.addEventListener('updated', () => {
         const noticeTypes = {
           'lgpl': 'GNU LGPL v3.0',
@@ -376,7 +376,7 @@ export default class CodeMirrorDiffView {
         }, { once: true });
         el.append(splash);
       }, { once: true });
-    }
+    } */
 
     // check initialization
     const lhstx = document.getElementById(`${this.id}-lhs`) as HTMLTextAreaElement;
