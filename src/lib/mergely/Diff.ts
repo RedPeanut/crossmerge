@@ -12,7 +12,7 @@ export default class Diff {
   codeify;
   items;
 
-  constructor(lhs, rhs, options: DiffOptions) {
+  constructor(lhs, rhs, options: DiffOptions = {}) {
     const {
       ignorews = false,
       ignoreaccents = false,

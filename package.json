@@ -4,7 +4,11 @@
   "version": "0.0.1",
   "description": "My Electron application description",
   "main": "./.erb/dll/main.bundle.dev.js",
-  "keywords": ["electron", "crossplatfrom", "typescript"],
+  "keywords": [
+    "electron",
+    "crossplatfrom",
+    "typescript"
+  ],
   "author": {
     "name": "김진규",
     "email": "zamong99@gmail.com"
