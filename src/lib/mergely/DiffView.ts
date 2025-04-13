@@ -7,9 +7,9 @@
 // const VDoc = require('./vdoc');
 
 import CodeMirror from "codemirror";
-require('codemirror/addon/search/searchcursor.js');
-require('codemirror/addon/selection/mark-selection.js');
-require('codemirror/lib/codemirror.css');
+// import { DocOrEditor, SearchCursor } from 'codemirror/addon/search/searchcursor';
+// import { EditorConfiguration } from 'codemirror/addon/selection/mark-selection';
+import 'codemirror/lib/codemirror.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
