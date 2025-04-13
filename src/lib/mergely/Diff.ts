@@ -87,14 +87,18 @@ export default class Diff {
   }
 
   _lcs(lhs_ctx, lhs_lower, lhs_upper, rhs_ctx, rhs_lower, rhs_upper, vector_u, vector_d) {
+    // trim off the matching items at the beginning
     while( (lhs_lower < lhs_upper) && (rhs_lower < rhs_upper) && (lhs_ctx.codes[lhs_lower] === rhs_ctx.codes[rhs_lower]) ) {
       ++lhs_lower;
       ++rhs_lower;
     }
+
+    // trim off the matching items at the end
     while( (lhs_lower < lhs_upper) && (rhs_lower < rhs_upper) && (lhs_ctx.codes[lhs_upper - 1] === rhs_ctx.codes[rhs_upper - 1]) ) {
       --lhs_upper;
       --rhs_upper;
     }
+
     if(lhs_lower === lhs_upper) {
       while(rhs_lower < rhs_upper) {
         rhs_ctx.modified[ rhs_lower++ ] = true;
