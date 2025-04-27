@@ -75,8 +75,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   getServices(): void {}
 
   launchFileCompareView(): void {
-    console.log('launchFileCompareView ..');
-
+    // console.log('launchFileCompareView ..');
     const div = document.createElement('div');
     div.id = 'mergely';
     div.style.height = '400px';
@@ -85,7 +84,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     const mergely = new Mergely('#mergely', { ...{},
       lhs: 'the quick red fox\njumped over the hairy dog',
       rhs: 'the quick brown fox\njumped over the lazy dog',
-      _debug: true,
+      // _debug: true,
     });
   }
 

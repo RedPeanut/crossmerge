@@ -20,9 +20,7 @@ export class TitlebarPart extends Part {
     // const fileCompareBtn = $('a.material-symbols-outlined', null, 'article');
     const fileCompareBtn = $('a.codicon.codicon-file');
     fileCompareBtn.addEventListener('click', (e: MouseEvent) => {
-      console.log('fileCompareBtn is clicked ..');
-
-      // launch file compare view in body
+      // console.log('fileCompareBtn is clicked ..');
       const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
       bodyLayoutService.launchFileCompareView();
     });
