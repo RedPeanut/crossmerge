@@ -1,5 +1,6 @@
+import { CompareItem } from "../common/Types";
 export type Mode = 'horizontal' | 'vertical';
-export type Group = [];
+export type Group = CompareItem[];
 
 export interface SplitItem {
   // id: string;
