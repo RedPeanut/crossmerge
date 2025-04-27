@@ -7,6 +7,10 @@ import { SamplePart } from "../part/SamplePart";
 
 import Mergely from '../../lib/mergely/Mergely';
 import '../../lib/mergely/mergely.css';
+import { GroupView } from "../part/view/GroupView";
+import { CompareItem, CompareType } from "../../common/Types";
+
+import { v4 as uuidv4 } from 'uuid';
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -17,6 +21,7 @@ export interface BodyLayoutService extends Service {
   inflate(): void;
   layout(offset: number, size: number): void;
   launchFileCompareView(): void;
+  launchFolderCompareView(): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -88,4 +93,11 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     });
   }
 
+  launchFolderCompareView(): void {
+    const group: CompareItem[] = [
+      { type: CompareType.Folder, uid: uuidv4() }, // blank folder compare
+    ];
+    const groupView = new GroupView(this.container, group, {});
+    this.container.appendChild(groupView.create());
+  }
 }

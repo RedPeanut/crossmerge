@@ -28,8 +28,9 @@ export class TitlebarPart extends Part {
     // const folderCompareBtn = $('a.material-symbols-outlined', null, 'folder');
     const folderCompareBtn = $('a.codicon.codicon-folder');
     folderCompareBtn.addEventListener('click', (e: MouseEvent) => {
-      console.log('folderCompareBtn is clicked ..');
-
+      // console.log('folderCompareBtn is clicked ..');
+      const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+      bodyLayoutService.launchFolderCompareView();
     });
     center.appendChild(folderCompareBtn);
 
