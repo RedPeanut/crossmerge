@@ -95,7 +95,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   launchFolderCompareView(): void {
     const group: CompareItem[] = [
-      { type: CompareType.Folder, uid: uuidv4() }, // blank folder compare
+      { type: 'folder', uid: uuidv4() }, // blank folder compare
     ];
     const groupView = new GroupView(this.container, group, {});
     this.container.appendChild(groupView.create());

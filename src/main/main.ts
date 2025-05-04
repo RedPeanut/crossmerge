@@ -15,6 +15,9 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+import { CompareItem } from '../common/Types';
+import { CompareFolder } from './compare/CompareFolder';
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -77,8 +80,14 @@ const getWindowSize = () => {
 }
 
 const installIpc = () => {
-  ipcMain.on('sample', (event, args: any[]) => {
-    console.log('[index.ts/sample] args =', args);
+  ipcMain.on('new', (event, args: any[]) => {
+    console.log('[index.ts/new] args =', args);
+    const arg = args[0] as CompareItem;
+    if(arg.type == 'file') {
+
+    } else if(arg.type == 'folder') {
+      new CompareFolder().run(arg);
+    }
   });
 }
 

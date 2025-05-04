@@ -1,14 +1,18 @@
+import { CompareItem } from "../../../common/Types";
+import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 
 export interface FileViewOptions {}
 
-export class FileView {
+export class FileView implements CompareView {
 
   parent: HTMLElement;
   element: HTMLElement;
+  item: CompareItem;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
+    this.item = item;
   }
 
   create(): HTMLElement {
@@ -16,4 +20,7 @@ export class FileView {
     return el;
   }
 
+  doCompare(): void {
+    throw new Error("Method not implemented.");
+  }
 }

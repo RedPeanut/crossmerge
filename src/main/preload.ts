@@ -4,8 +4,10 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent, IpcRenderer } from 'electron';
 
 export type MainEvents =
-  // sample
-  'sample'
+  // compare
+  'new'
+
+  // window
   | 'maximize'
   | 'minimize'
   | 'resize'
@@ -18,13 +20,11 @@ export type MainEvents =
   | 'config get'
   | 'config set'
   | 'config update'
-
 ;
 
 export type RenderEvents =
-  'sample add'
-  | 'sample data'
-  | 'sample exit'
+  'compare file data'
+  | 'compare folder data'
 ;
 
 export type Channels = MainEvents | RenderEvents;

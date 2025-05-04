@@ -22,10 +22,10 @@ export class Compares {
 
     for(let i = 0; i < this.group.length; i++) {
       const item: CompareItem = this.group[i];
-      if(item.type === CompareType.Folder) {
-        el.appendChild(new FolderView(el).create());
+      if(item.type == 'folder') {
+        el.appendChild(new FolderView(el, item).create());
       } else {
-        el.appendChild(new FileView(el).create());
+        el.appendChild(new FileView(el, item).create());
       }
     }
 
