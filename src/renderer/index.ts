@@ -17,7 +17,7 @@ export type CodeWindow = Window & typeof globalThis;
 export const mainWindow = window as CodeWindow;
 
 export class Renderer {
-  constructor() { let a = 1; }
+  constructor() {}
 
   async open() {
     await Promise.all([domContentLoaded(mainWindow)]);
