@@ -83,7 +83,16 @@ export class MainLayout extends Layout implements MainLayoutService {
   }
 
   installIpc(): void {
-    window.ipc.on('sample data', (...args: any[]) => {
+    window.ipc.on('compare folder start', (...args: any[]) => {
+      // console.log('compare folder start event is called ..');
+    });
+    window.ipc.on('compare folder data', (...args: any[]) => {
+      // console.log('compare folder data event is called ..');
+      // console.log('args[1] =', args[1]);
+      // add row in target
+    });
+    window.ipc.on('compare folder end', (...args: any[]) => {
+      // console.log('compare folder end event is called ..');
     });
   }
 

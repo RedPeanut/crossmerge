@@ -17,6 +17,7 @@ import { resolveHtmlPath } from './utils';
 
 import { CompareItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
+import { Channels } from './preload';
 
 class AppUpdater {
   constructor() {
@@ -89,7 +90,7 @@ class MainWindow {
       if(arg.type == 'file') {
 
       } else if(arg.type == 'folder') {
-        new CompareFolder().run(arg);
+        new CompareFolder(arg.uid).run(arg);
       }
     });
   }
@@ -154,13 +155,29 @@ class MainWindow {
     // eslint-disable-next-line
     new AppUpdater();
   }
+
+  send(channel: Channels, ...args: any[]): void {
+    if(this.browserWindow) {
+      if(this.browserWindow.isDestroyed() || this.browserWindow.webContents.isDestroyed()) {
+        console.log(`Sending IPC message to channel '${channel}' for window that is destroyed`);
+        return;
+      }
+
+      try {
+        this.browserWindow.webContents.send(channel, ...args);
+      } catch(error) {
+        // console.log(`Error sending IPC message to channel '${channel}' of window ${this._id}: ${toErrorMessage(error)}`);
+      }
+    }
+  }
+
 }
 
 /**
  * Add event listeners...
  */
 
-app.on('window-all-closed', () => {
+app?.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if(process.platform !== 'darwin') {
@@ -171,7 +188,7 @@ app.on('window-all-closed', () => {
 export const mainWindow = new MainWindow();
 
 app
-  .whenReady()
+  ?.whenReady()
   .then(() => {
     mainWindow.createWindow();
     app.on('activate', () => {

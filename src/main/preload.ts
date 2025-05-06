@@ -24,7 +24,9 @@ export type MainEvents =
 
 export type RenderEvents =
   'compare file data'
+  | 'compare folder start'
   | 'compare folder data'
+  | 'compare folder end'
 ;
 
 export type Channels = MainEvents | RenderEvents;

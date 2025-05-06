@@ -1,124 +1,196 @@
 import { CompareItem } from "../../common/Types";
 import fs, { Dirent } from 'fs';
+import { _readdirSyncWithStat } from "../utils";
+import { DirentExt } from "../Types";
+import { mainWindow } from "../main";
+import { Myers } from "../../lib/robertelder/Myers";
 
-export enum FileType {
-  Unknown = 0, // The file type is unknown.
-  File = 1, // A regular file.
-  Directory = 2, // A directory.
-  SymbolicLink = 64 // A symbolic link to a file.
-}
+export interface Elem {
+  side: string;
+  name: string;
 
-export interface FileStat {
-  type: FileType; // The type of the file, e.g. is a regular file, a directory, or symbolic link to a file.
-  ctime: number; // The creation timestamp in milliseconds elapsed since January 1, 1970 00:00:00 UTC.
-  mtime: number; // The modification timestamp in milliseconds elapsed since January 1, 1970 00:00:00 UTC.
-  size: number; // The size in bytes.
+  isFile: boolean;
+  isDirectory: boolean;
+
+  lhs: {
+    path?: string,
+    mtime?: Date,
+    size?: number,
+  }
+  rhs: {
+    path?: string,
+    mtime?: Date,
+    size?: number,
+  }
+
+  depth?: number;
+  index?: number;
 }
 
 export class CompareFolder {
-  constructor() {}
 
-  run(arg: CompareItem) {
-    // TODO: load folder n compare
-    // const reads: string[] | Buffer[] = fs.readdirSync(input_lhs_value, { recursive: true });
-    const files_lhs: Dirent[] = fs.readdirSync(arg.path_lhs, { withFileTypes: true });
-    // console.log('typeof files[0] =', typeof files_lhs[0]);
-    // console.log('files[0] =', files_lhs[0]);
-    const files_rhs: Dirent[] = fs.readdirSync(arg.path_rhs, { withFileTypes: true });
+  uid: string
+  folderCount: number = 0;
+  fileCount: number = 0;
+  totalCount: number = 0;
+  fileDiffCount: number = 0;
+
+  unchanged: number = 0;
+  changed: number = 0;
+  removed: number = 0;
+  inserted: number = 0;
+
+  // type: include|exclude, match: File|Folder|File&Folder, pattern: comma separated regex
+  ignoreFileFolder: string = '.git,.DS_Store,node_modules,package-lock.json';
+
+  constructor(uid: string) {
+    this.uid = uid;
+  }
+
+  async countCompare(path_lhs: string, path_rhs: string): Promise<number> {
+    const cont_lhs: Buffer = await fs.readFileSync(path_lhs);
+    const cont_rhs: Buffer = await fs.readFileSync(path_rhs);
+    // console.log('typeof(cont_lhs) =', typeof(cont_lhs));
+    // console.log('cont_lhs =', cont_lhs);
+    const ret = new Myers().getShortestEditScript(cont_lhs.toString(), cont_rhs.toString());
+    return ret.length;
+  }
+
+  async _readdir(path_lhs: string, path_rhs: string, depth: number): Promise<void> {
+
+    const files_lhs: DirentExt[] = await _readdirSyncWithStat(path_lhs);
+    // console.log('typeof(_files_lhs[0]) =', typeof(files_lhs[0]));
+    // console.log('_files_lhs[0] =', files_lhs[0]);
+    const files_rhs: DirentExt[] = await _readdirSyncWithStat(path_rhs);
 
     // default sort: name asc + folder n file
-    let folders: Dirent[] = [], files: Dirent[] = [];
+    let folders: Elem[] = [], files: Elem[] = [];
+    const filters: string[] = this.ignoreFileFolder.split(',');
 
     for(let i = 0; i < files_lhs.length; i++) {
-      const e: Dirent = files_lhs[i];
-      if(e.isDirectory()) folders.push(e);
-      else files.push(e);
+      const item: DirentExt = files_lhs[i];
+      const elem: Elem = {
+        side: 'left',
+        name: item.name,
+        isFile: item.isFile,
+        isDirectory: item.isDirectory,
+
+        lhs: {
+          path: item.path,
+          mtime: item.mtime,
+          size: item.size,
+        },
+        rhs: {},
+
+        // depth: depth,
+      };
+
+      let filtered = false;
+      for(let j = 0; j < filters.length; j++) {
+        if(item.name == filters[j]) filtered = true;
+      }
+
+      if(!filtered) {
+        if(item.isDirectory) folders.push(elem);
+        else files.push(elem);
+      }
     }
 
     for(let i = 0; i < files_rhs.length; i++) {
-      const e: Dirent = files_rhs[i];
-      if(e.isDirectory()) folders.push(e);
-      else files.push(e);
+      const item: DirentExt = files_rhs[i];
+      const elem: Elem = {
+        side: 'right',
+        name: item.name,
+        isFile: item.isFile,
+        isDirectory: item.isDirectory,
+
+        lhs: {},
+        rhs: {
+          path: item.path,
+          mtime: item.mtime,
+          size: item.size,
+        },
+
+        // depth: depth,
+      };
+
+      let filtered = false;
+      for(let j = 0; j < filters.length; j++) {
+        if(item.name == filters[j]) filtered = true;
+      }
+
+      if(!filtered) {
+        if(item.isDirectory) folders.push(elem);
+        else files.push(elem);
+      }
     }
 
-    // sort with name asc
-
-
-    //
-
-    /* pseudo code
-    if folder {
-      if exist in right {
-        dive to the folder
+    // 중복제거 + right 체크
+    const folders_filtered: Elem[] = [];
+    for(let i = 0; i < folders.length; i++) {
+      const folder = folders[i];
+      const findIndex = folders_filtered.findIndex((e) => e.name === folder.name);
+      if(findIndex === -1) {
+        folders_filtered.push(folder)
       } else {
-        removed++ in left
-        // inserted in right
+        folders_filtered[findIndex].side += '|right';
+        folders_filtered[findIndex].rhs = folder.rhs; //{ path: folder.rhs.path, mtime: folder.rhs.mtime, size: folder.rhs.size };
       }
-    } else { // if file {
-      if exist in right {
-        do compare when size n timestamp is different
+    }
+
+    const files_filtered: Elem[] = [];
+    for(let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const findIndex = files_filtered.findIndex((e) => e.name === file.name)
+      if(findIndex === -1) {
+        files_filtered.push(file)
       } else {
-        removed++ in left
-        // inserted in right
+        files_filtered[findIndex].side += '|right';
+        files_filtered[findIndex].rhs = file.rhs; //{ path: file.rhs.path, mtime: file.rhs.mtime, size: file.rhs.size };
       }
-    } */
+    }
 
-    // for(let i = 0; i < files_lhs.length; i++) {
-    //   const e: Dirent = files_lhs[i];
-    //   // const foldername = e.path.split('/')[e.path.split('/').length-1];
+    // console.log('folders_filtered =', folders_filtered);
+    // console.log('files_filtered =', files_filtered);
 
-    //   if(e.isDirectory()) {
+    // sort by name asc
+    folders_filtered.sort((a: Elem, b: Elem) => {
+      return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
+    });
+    files_filtered.sort((a: Elem, b: Elem) => {
+      return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
+    });
 
-    //     if(fs.existsSync(arg.path_rhs + '/' + e.name)) {} else {
+    // console.log('folders_filtered =', folders_filtered);
+    // console.log('files_filtered =', files_filtered);
 
-    //     }
+    /* PSEUDO CODE
+    folder:
+    if both {
+      dive to the folder
+    } if left only {
+      removed++ in left
+    } if right only {
+      inserted++ in right
+    }
 
-    //     // const read: Buffer = fs.readFileSync(arg.path_rhs + '/' + e.name, {});
-    //     // console.log('read =', read);
-    //   } else { //if(e.isFile()) {
+    file:
+    if both {
+      if size n timestamp are different {
+        do count compare
+        changed++
+      } else {
+        unchanged++
+      }
+    } else if left only {
+      removed++ in left
+    } else if right only {
+      inserted++ in right
+    }
+    */
 
-    //     if(fs.existsSync(arg.path_rhs + '/' + e.name)) {} else {}
-
-    //     try {
-    //       const stat: fs.Stats = fs.statSync(arg.path_rhs + '/' + e.name, {});
-    //       console.log('stat =', stat);
-    //     } catch(ex) {
-
-    //     }
-    //   }
-    // }
-
-
-    // fs.readdir(arg.path_lhs, {
-    //     withFileTypes: true,
-    //     // recursive: false,
-    //   },
-    //   (err, files: Dirent[]): void => {
-    //     // console.log('files =', files);
-    //     console.log('files.length =', files.length);
-    //     if(files.length > 0) {
-    //       // console.log('typeof files[0] =', typeof files[0]);
-    //       // console.log('files[0] =', files[0]);
-    //       for(let i = 0; i < files.length; i++) {
-    //         const e: Dirent = files[i];
-    //         const filename = e.path.split('/')[e.path.split('/').length-1];
-
-    //         if(e.isDirectory()) {
-    //           fs.readFile(arg.path_rhs + '/' + filename, {}, (err, data: Buffer): void => {
-    //             console.log('data =', data);
-    //           });
-    //         } else { //if(e.isFile()) {
-    //           fs.stat(arg.path_rhs + '/' + filename, (err, stats: fs.Stats): void => {
-    //             console.log('stats =', stats);
-    //           });
-    //         }
-    //       }
-    //     }
-    //   }
-    // );
-
-    //
-    /* File
+    /* State
+    File
     Folder
     Newer File
     Unchanged
@@ -127,5 +199,70 @@ export class CompareFolder {
     Removed Folder
     Inserted File
     Inserted Folder */
+
+    for(let i = 0; i < folders_filtered.length; i++) {
+      const elem: Elem = folders_filtered[i];
+
+      mainWindow.send('compare folder data', {
+        uid: this.uid,
+        type: 'folder', depth, index: i,
+        data: elem
+      });
+
+      if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
+        const _path_lhs = path_lhs + '/' + elem.name;
+        const _path_rhs = path_rhs + '/' + elem.name;
+        await this._readdir(_path_lhs, _path_rhs, depth+1);
+      } else if(elem.side.indexOf('left') > -1) {
+      } else if(elem.side.indexOf('right') > -1) {
+      }
+      // break;
+    }
+
+    for(let i = 0; i < files_filtered.length; i++) {
+      // console.log(`files_filtered[${i}] = ${files_filtered[i].name}`);
+      const elem: Elem = files_filtered[i];
+
+      mainWindow.send('compare folder data', {
+        uid: this.uid,
+        type: 'file', depth, index: i,
+        data: elem
+      });
+
+      if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
+        if(elem.lhs.mtime != elem.rhs.mtime && elem.lhs.size != elem.rhs.size) {
+          const _path_lhs = path_lhs + '/' + elem.name;
+          const _path_rhs = path_rhs + '/' + elem.name;
+          // TODO: const ret = await this.countCompare(_path_lhs, _path_rhs);
+          // console.log('ret =', ret);
+          // break;
+          this.changed++;
+        } else {
+          this.unchanged++;
+        }
+      } else if(elem.side.indexOf('left') > -1) {
+        this.removed++;
+      } else if(elem.side.indexOf('right') > -1) {
+        this.inserted++;
+      }
+      // break;
+    }
+  }
+
+  async run(arg: CompareItem): Promise<{}> {
+    // load folder n compare
+    mainWindow.send('compare folder start', {});
+    await this._readdir(arg.path_lhs, arg.path_rhs, 0);
+    mainWindow.send('compare folder end', {});
+    return {
+      // folderCount: this.folderCount,
+      // fileCount: this.fileCount,
+      // totalCount: this.totalCount,
+      // fileDiffCount: this.fileDiffCount,
+      removed: this.removed,
+      inserted: this.inserted,
+      changed: this.changed,
+      unchanged: this.unchanged,
+    };
   }
 }

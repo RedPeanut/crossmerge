@@ -1,12 +1,14 @@
-export interface TerminalOptions {
-  uid: string;
-  cwd?: string;
-  splitDirection?: 'HORIZONTAL' | 'VERTICAL';
-  // activeUid?: string | null;
-  // isNewGroup?: boolean;
-  rows?: number;
-  cols?: number;
-  shell?: string;
-  shellArgs?: string[];
-  // profile?: string;
-};
+export interface DirentExt {
+  // side: string; // type Side = 'left' | 'right' | 'both' or 'left|right' (| separated string)
+
+  name: string;
+  path: string;
+
+  isFile: boolean;
+  isDirectory: boolean;
+  isSymbolicLink: boolean;
+
+  // stat
+  mtime: Date,
+  size: number,
+}
