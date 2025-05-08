@@ -8,7 +8,7 @@ import { SamplePart } from "../part/SamplePart";
 import Mergely from '../../lib/mergely/Mergely';
 import '../../lib/mergely/mergely.css';
 import { GroupView } from "../part/view/GroupView";
-import { CompareItem, CompareType } from "../../common/Types";
+import { CompareItem, CompareItemType } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
 

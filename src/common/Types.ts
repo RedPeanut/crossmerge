@@ -1,17 +1,16 @@
-export type CompareType = 'file' | 'folder';
+export type CompareItemType = 'file' | 'folder';
 
 // description of compare state
 export interface CompareItem {
-  type: CompareType,
-  uid: string,
+  type: CompareItemType;
+  uid: string;
 
   // in renderer
-  selected?: boolean; // default: false
-  active?: boolean; // default: false
-
-  //
   path_lhs?: string;
   path_rhs?: string;
+
+  // selected?: boolean; // default: false
+  // active?: boolean; // default: false
 }
 
 /* export interface FolderElem {

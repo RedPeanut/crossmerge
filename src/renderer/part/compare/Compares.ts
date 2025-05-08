@@ -1,4 +1,4 @@
-import { CompareItem, CompareType } from "../../../common/Types";
+import { CompareItem, CompareItemType } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
 import { FileView } from "../view/FileView";
