@@ -23,8 +23,8 @@ export class GroupView {
     const el = this.element = $('.group-view');
     const tabs = this.tabs = new Tabs(el, this.group);
     el.appendChild(tabs.create());
-    const views = this.compares = new Compares(el, this.group);
-    el.appendChild(views.create());
+    const compares = this.compares = new Compares(el, this.group);
+    el.appendChild(compares.create());
     return el;
   }
 
