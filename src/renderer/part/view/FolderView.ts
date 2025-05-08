@@ -247,7 +247,8 @@ export class FolderView implements CompareView {
     const input_lhs_value = this.input_lhs.value;
     const input_rhs_value = this.input_rhs.value;
 
-    window.ipc.send('new', { ...this.item,
+    window.ipc.send('new', {
+      ...this.item,
       path_lhs: input_lhs_value,
       path_rhs: input_rhs_value
     });
