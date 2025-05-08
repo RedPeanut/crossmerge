@@ -22,7 +22,7 @@ export class TitlebarPart extends Part {
     fileCompareBtn.addEventListener('click', (e: MouseEvent) => {
       // console.log('fileCompareBtn is clicked ..');
       const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-      bodyLayoutService.launchFileCompareView();
+      bodyLayoutService.addFileCompareView();
     });
     center.appendChild(fileCompareBtn);
     // const folderCompareBtn = $('a.material-symbols-outlined', null, 'folder');
@@ -30,7 +30,7 @@ export class TitlebarPart extends Part {
     folderCompareBtn.addEventListener('click', (e: MouseEvent) => {
       // console.log('folderCompareBtn is clicked ..');
       const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-      bodyLayoutService.launchFolderCompareView();
+      bodyLayoutService.addFolderCompareView();
     });
     center.appendChild(folderCompareBtn);
 

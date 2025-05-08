@@ -20,8 +20,8 @@ export interface BodyLayoutService extends Service {
   getServices(): void;
   inflate(): void;
   layout(offset: number, size: number): void;
-  launchFileCompareView(): void;
-  launchFolderCompareView(): void;
+  addFileCompareView(): void;
+  addFolderCompareView(): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -79,7 +79,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   getServices(): void {}
 
-  launchFileCompareView(): void {
+  addFileCompareView(): void {
     // console.log('launchFileCompareView ..');
     const div = document.createElement('div');
     div.id = 'mergely';
@@ -93,7 +93,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     });
   }
 
-  launchFolderCompareView(): void {
+  addFolderCompareView(): void {
     const group: CompareItem[] = [
       { type: 'folder', uid: uuidv4() }, // blank folder compare
     ];
