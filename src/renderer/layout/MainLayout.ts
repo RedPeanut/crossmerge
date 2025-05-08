@@ -9,6 +9,7 @@ import { SplitView } from '../component/SplitView';
 import { getClientArea, position, size } from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId } from '../Service';
+import { CompareFolderData } from '../../common/Types';
 // import Runtime from './Runtime';
 
 export const TITLEBAR_HEIGHT = 42;
@@ -89,7 +90,8 @@ export class MainLayout extends Layout implements MainLayoutService {
     window.ipc.on('compare folder data', (...args: any[]) => {
       // console.log('compare folder data event is called ..');
       // console.log('args[1] =', args[1]);
-      // add row in target
+      // send row data in target
+      this.bodyLayoutService.sendFolderCompareViewRowData(args[1] as CompareFolderData);
     });
     window.ipc.on('compare folder end', (...args: any[]) => {
       // console.log('compare folder end event is called ..');

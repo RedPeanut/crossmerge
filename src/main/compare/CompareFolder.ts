@@ -1,4 +1,4 @@
-import { CompareItem } from "../../common/Types";
+import { CompareItem, State } from "../../common/Types";
 import fs, { Dirent } from 'fs';
 import { _readdirSyncWithStat } from "../utils";
 import { DirentExt } from "../Types";
@@ -56,7 +56,7 @@ export class CompareFolder {
     return ret.length;
   }
 
-  async _readdir(path_lhs: string, path_rhs: string, depth: number): Promise<void> {
+  async _readdir(path_lhs: string, path_rhs: string, depth: number, parent: CompareFolderElem): Promise<void> {
 
     const files_lhs: DirentExt[] = await _readdirSyncWithStat(path_lhs);
     // console.log('typeof(_files_lhs[0]) =', typeof(files_lhs[0]));
@@ -203,18 +203,28 @@ export class CompareFolder {
     for(let i = 0; i < folders_filtered.length; i++) {
       const elem: CompareFolderElem = folders_filtered[i];
 
-      mainWindow.send('compare folder data', {
-        uid: this.uid,
-        type: 'folder', depth, index: i,
-        data: elem
-      });
-
       if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
+        mainWindow.send('compare folder data', {
+          uid: this.uid,
+          type: 'folder', depth, index: i,
+          parent, data: elem, state: undefined
+        });
+
         const _path_lhs = path_lhs + '/' + elem.name;
         const _path_rhs = path_rhs + '/' + elem.name;
-        await this._readdir(_path_lhs, _path_rhs, depth+1);
+        await this._readdir(_path_lhs, _path_rhs, depth+1, elem);
       } else if(elem.side.indexOf('left') > -1) {
+        mainWindow.send('compare folder data', {
+          uid: this.uid,
+          type: 'folder', depth, index: i,
+          parent, data: elem, state: 'removed'
+        });
       } else if(elem.side.indexOf('right') > -1) {
+        mainWindow.send('compare folder data', {
+          uid: this.uid,
+          type: 'folder', depth, index: i,
+          parent, data: elem, state: 'inserted'
+        });
       }
       // break;
     }
@@ -222,12 +232,7 @@ export class CompareFolder {
     for(let i = 0; i < files_filtered.length; i++) {
       // console.log(`files_filtered[${i}] = ${files_filtered[i].name}`);
       const elem: CompareFolderElem = files_filtered[i];
-
-      mainWindow.send('compare folder data', {
-        uid: this.uid,
-        type: 'file', depth, index: i,
-        data: elem
-      });
+      let state: State = undefined;
 
       if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
         if(elem.lhs.mtime != elem.rhs.mtime && elem.lhs.size != elem.rhs.size) {
@@ -236,15 +241,22 @@ export class CompareFolder {
           // TODO: const ret = await this.countCompare(_path_lhs, _path_rhs);
           // console.log('ret =', ret);
           // break;
-          this.changed++;
+          state = 'changed'; this.changed++;
         } else {
-          this.unchanged++;
+          state = 'unchanged'; this.unchanged++;
         }
       } else if(elem.side.indexOf('left') > -1) {
-        this.removed++;
+        state = 'removed'; this.removed++;
       } else if(elem.side.indexOf('right') > -1) {
-        this.inserted++;
+        state = 'inserted'; this.inserted++;
       }
+
+      mainWindow.send('compare folder data', {
+        uid: this.uid,
+        type: 'file', depth, index: i,
+        parent, data: elem, state
+      });
+
       // break;
     }
   }
@@ -252,7 +264,7 @@ export class CompareFolder {
   async run(arg: CompareItem): Promise<{}> {
     // load folder n compare
     mainWindow.send('compare folder start', {});
-    await this._readdir(arg.path_lhs, arg.path_rhs, 0);
+    await this._readdir(arg.path_lhs, arg.path_rhs, 0, null);
     mainWindow.send('compare folder end', {});
     return {
       // folderCount: this.folderCount,

@@ -1,3 +1,6 @@
+import { CompareFolderElem } from "../main/compare/CompareFolder";
+
+export type State = undefined | 'unchanged' | 'changed' | 'removed' | 'inserted';
 export type CompareItemType = 'file' | 'folder';
 
 // description of compare state
@@ -12,6 +15,25 @@ export interface CompareItem {
   // selected?: boolean; // default: false
   // active?: boolean; // default: false
 }
+
+export interface CompareFileData {
+  // not implemented yet
+}
+
+export type CompareFolderDataType = 'file' | 'folder';
+
+export interface CompareFolderData {
+  uid: string;
+  type: CompareFolderDataType;
+  depth: number;
+  index: number;
+
+  parent: null | CompareFolderElem;
+  data: CompareFolderElem;
+  state: State;
+}
+
+export type CompareData = CompareFileData | CompareFolderData;
 
 /* export interface FolderElem {
   type: string, // 'file' | 'folder'

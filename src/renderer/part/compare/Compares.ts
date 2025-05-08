@@ -1,4 +1,4 @@
-import { CompareItem, CompareItemType } from "../../../common/Types";
+import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
 import { FileView } from "../view/FileView";
@@ -32,6 +32,26 @@ export class Compares {
     return el;
   }
 
+  sendRowData(type: CompareItemType, arg: CompareData) {
+    if(type == 'file') {
 
+    } else if(type == 'folder') {
+      const data = arg as CompareFolderData;
+      const findIndex = this.group.findIndex((e) => e.uid === data.uid);
+      // console.log('findIndex =', findIndex);
+      // console.log('_arg =', _arg);
 
+      let indent = '';
+      for(let i = 0; i < data.depth; i++) indent += '  ';
+      let icon;
+      if(data.data.isDirectory) icon = '■'
+      else {
+        if(data.state == 'unchanged') icon = '-';
+        else if(data.state == 'changed') icon = 'c';
+        else if(data.state == 'removed') icon = 'r';
+        else if(data.state == 'inserted') icon = 'i';
+      }
+      console.log(icon + ' ' + indent + data.data.name);
+    }
+  }
 }
