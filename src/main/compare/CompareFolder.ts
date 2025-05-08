@@ -5,7 +5,7 @@ import { DirentExt } from "../Types";
 import { mainWindow } from "../main";
 import { Myers } from "../../lib/robertelder/Myers";
 
-export interface Elem {
+export interface CompareFolderElem {
   side: string;
   name: string;
 
@@ -64,12 +64,12 @@ export class CompareFolder {
     const files_rhs: DirentExt[] = await _readdirSyncWithStat(path_rhs);
 
     // default sort: name asc + folder n file
-    let folders: Elem[] = [], files: Elem[] = [];
+    let folders: CompareFolderElem[] = [], files: CompareFolderElem[] = [];
     const filters: string[] = this.ignoreFileFolder.split(',');
 
     for(let i = 0; i < files_lhs.length; i++) {
       const item: DirentExt = files_lhs[i];
-      const elem: Elem = {
+      const elem: CompareFolderElem = {
         side: 'left',
         name: item.name,
         isFile: item.isFile,
@@ -98,7 +98,7 @@ export class CompareFolder {
 
     for(let i = 0; i < files_rhs.length; i++) {
       const item: DirentExt = files_rhs[i];
-      const elem: Elem = {
+      const elem: CompareFolderElem = {
         side: 'right',
         name: item.name,
         isFile: item.isFile,
@@ -126,7 +126,7 @@ export class CompareFolder {
     }
 
     // 중복제거 + right 체크
-    const folders_filtered: Elem[] = [];
+    const folders_filtered: CompareFolderElem[] = [];
     for(let i = 0; i < folders.length; i++) {
       const folder = folders[i];
       const findIndex = folders_filtered.findIndex((e) => e.name === folder.name);
@@ -138,7 +138,7 @@ export class CompareFolder {
       }
     }
 
-    const files_filtered: Elem[] = [];
+    const files_filtered: CompareFolderElem[] = [];
     for(let i = 0; i < files.length; i++) {
       const file = files[i];
       const findIndex = files_filtered.findIndex((e) => e.name === file.name)
@@ -154,10 +154,10 @@ export class CompareFolder {
     // console.log('files_filtered =', files_filtered);
 
     // sort by name asc
-    folders_filtered.sort((a: Elem, b: Elem) => {
+    folders_filtered.sort((a: CompareFolderElem, b: CompareFolderElem) => {
       return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
     });
-    files_filtered.sort((a: Elem, b: Elem) => {
+    files_filtered.sort((a: CompareFolderElem, b: CompareFolderElem) => {
       return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
     });
 
@@ -201,7 +201,7 @@ export class CompareFolder {
     Inserted Folder */
 
     for(let i = 0; i < folders_filtered.length; i++) {
-      const elem: Elem = folders_filtered[i];
+      const elem: CompareFolderElem = folders_filtered[i];
 
       mainWindow.send('compare folder data', {
         uid: this.uid,
@@ -221,7 +221,7 @@ export class CompareFolder {
 
     for(let i = 0; i < files_filtered.length; i++) {
       // console.log(`files_filtered[${i}] = ${files_filtered[i].name}`);
-      const elem: Elem = files_filtered[i];
+      const elem: CompareFolderElem = files_filtered[i];
 
       mainWindow.send('compare folder data', {
         uid: this.uid,

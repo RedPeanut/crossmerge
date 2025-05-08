@@ -14,7 +14,7 @@ export interface CompareItem {
   path_rhs: string;
 }
 
-export interface FolderElem {
+/* export interface FolderElem {
   type: string, // 'file' | 'folder'
   depth: number,
   name: string,
@@ -33,4 +33,4 @@ export interface FolderElem {
 
   // in renderer
   collapsed: boolean,
-}
+} */
