@@ -70,7 +70,7 @@ export class FolderView implements CompareView {
     const inputs = $(".inputs");
     const input_column_lhs = $(".input-column.lhs");
     const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
-    input_lhs.placeholder = 'First folder';
+    input_lhs.placeholder = 'Left folder';
     /* input_lhs.addEventListener('keydown', (e: KeyboardEvent) => {
       console.log('keydown event is called ..');
     }); */
@@ -104,7 +104,7 @@ export class FolderView implements CompareView {
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
-    input_rhs.placeholder = 'Second folder';
+    input_rhs.placeholder = 'Right folder';
 
     input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
     input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
@@ -119,11 +119,11 @@ export class FolderView implements CompareView {
     const header = $(".header");
     const header_list_scrollbar_lhs = $(".list-scrollbar.lhs");
     const header_list_column_lhs = $(".list-column.lhs");
-    header_list_column_lhs.innerHTML = 'First';
+    header_list_column_lhs.innerHTML = 'Left';
     const header_list_changes = $(".list-changes");
     header_list_changes.innerHTML = 'Changes';
     const header_list_column_rhs = $(".list-column.rhs");
-    header_list_column_rhs.innerHTML = 'Second';
+    header_list_column_rhs.innerHTML = 'Right';
     const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
     const body = $(".body");
     const body_list_scrollbar_lhs = this.scrollbar_lhs = $("canvas.list-scrollbar.lhs");
