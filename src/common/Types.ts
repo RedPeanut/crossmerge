@@ -10,8 +10,8 @@ export interface CompareItem {
   active?: boolean; // default: false
 
   //
-  path_lhs: string;
-  path_rhs: string;
+  path_lhs?: string;
+  path_rhs?: string;
 }
 
 /* export interface FolderElem {
