@@ -84,13 +84,14 @@ class MainWindow {
   }
 
   installIpc = () => {
-    ipcMain.on('new', (event, args: any[]) => {
+    ipcMain.on('new', async (event, args: any[]) => {
       console.log('[index.ts/new] args =', args);
       const arg = args[0] as CompareItem;
       if(arg.type == 'file') {
 
       } else if(arg.type == 'folder') {
-        new CompareFolder(arg.uid).run(arg);
+        const ret = await new CompareFolder(arg.uid).run(arg);
+        console.log('ret =', ret);
       }
     });
   }
