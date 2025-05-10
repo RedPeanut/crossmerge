@@ -312,7 +312,8 @@ export class CodeifyText {
   }
 
   _diff_ctx(lines) {
-    var ctx = {i: 0, codes: {}, lines: lines};
+    // fix Property 'length' does not exist on type - 250511
+    var ctx = {i: 0, codes: { length: 0, }, lines: lines};
     this._codeify(lines, ctx);
     return ctx;
   }
