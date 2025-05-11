@@ -13,7 +13,9 @@ type Change = {
 }
 
 export default class DiffParser {
-  constructor(diff) {
+  constructor() {};
+
+  parse(diff: string): Change[] {
     const changes: Change[] = [];
     let change_id = 0;
     // parse diff
@@ -36,5 +38,5 @@ export default class DiffParser {
       changes[change_id++] = change;
     }
     return changes;
-  };
+  }
 }
