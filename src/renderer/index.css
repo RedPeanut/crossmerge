@@ -195,14 +195,14 @@ body { height: 100%; }
 .folder-compare-view .inputs .lhs, .folder-compare-view .inputs .rhs { flex: 1; display: flex; }
 .folder-compare-view .inputs .input-margin { width: 28px; }
 
-.folder-compare-view .lists { /* height: 100%; */ position: relative; flex: 1; }
+.folder-compare-view .lists { /* height: 100%; */ position: relative; flex: 1; display: flex; flex-direction: column; }
 
 .folder-compare-view .lists .list-column { flex: 1; display: flex; }
 .folder-compare-view .lists .list-changes { width: 28px; }
 .folder-compare-view .lists .list-scrollbar { width: 16px; }
 
-.folder-compare-view .lists .header { width: 100%; display: flex; }
-.folder-compare-view .lists .body { height: 100%; width: 100%; display: flex; }
+.folder-compare-view .lists .header { width: 100%; display: flex; flex: 0; }
+.folder-compare-view .lists .body { height: 100%; width: 100%; display: flex; flex: 1; }
 .folder-compare-view .lists .body canvas {}
 
 .folder-compare-view .suggests { position: absolute; width: 100%; height: 100%; display: flex; }
