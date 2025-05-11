@@ -11,6 +11,7 @@ export class Compares {
   parent: HTMLElement;
   element: HTMLElement;
   group: Group;
+  map: Map<string, FileView|FolderView> = new Map<string, FileView|FolderView>();
 
   constructor(parent: HTMLElement, group: Group) {
     this.parent = parent;
@@ -22,11 +23,11 @@ export class Compares {
 
     for(let i = 0; i < this.group.length; i++) {
       const item: CompareItem = this.group[i];
-      if(item.type == 'folder') {
-        el.appendChild(new FolderView(el, item).create());
-      } else {
-        el.appendChild(new FileView(el, item).create());
-      }
+      let v;
+      if(item.type == 'folder') v = new FolderView(el, item);
+      else v = new FileView(el, item);
+      this.map.set(item.uid, v);
+      el.appendChild(v.create());
     }
 
     return el;
@@ -37,21 +38,12 @@ export class Compares {
 
     } else if(type == 'folder') {
       const data = arg as CompareFolderData;
-      const findIndex = this.group.findIndex((e) => e.uid === data.uid);
+      // const findIndex = this.group.findIndex((e) => e.uid === data.uid);
       // console.log('findIndex =', findIndex);
       // console.log('_arg =', _arg);
 
-      let indent = '';
-      for(let i = 0; i < data.depth; i++) indent += '  ';
-      let icon;
-      if(data.data.isDirectory) icon = '■'
-      else {
-        if(data.state == 'unchanged') icon = '-';
-        else if(data.state == 'changed') icon = 'c';
-        else if(data.state == 'removed') icon = 'r';
-        else if(data.state == 'inserted') icon = 'i';
-      }
-      console.log(icon + ' ' + indent + data.data.name);
+      const v = this.map.get(data.uid);
+      v.sendRowData(data);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { CompareItem } from "../../../common/Types";
+import { CompareFolderData, CompareItem } from "../../../common/Types";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 
@@ -254,4 +254,17 @@ export class FolderView implements CompareView {
     });
   }
 
+  sendRowData(data: CompareFolderData): void {
+    let indent = '';
+    for(let i = 0; i < data.depth; i++) indent += '  ';
+    let icon;
+    if(data.data.isDirectory) icon = '■'
+    else {
+      if(data.state == 'unchanged') icon = '-';
+      else if(data.state == 'changed') icon = 'c';
+      else if(data.state == 'removed') icon = 'r';
+      else if(data.state == 'inserted') icon = 'i';
+    }
+    console.log(icon + ' ' + indent + data.data.name);
+  }
 }

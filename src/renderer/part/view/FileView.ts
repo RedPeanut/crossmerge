@@ -1,4 +1,4 @@
-import { CompareItem } from "../../../common/Types";
+import { CompareFileData, CompareItem } from "../../../common/Types";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 
@@ -21,6 +21,10 @@ export class FileView implements CompareView {
   }
 
   doCompare(): void {
+    throw new Error("Method not implemented.");
+  }
+
+  sendRowData(data: CompareFileData): void {
     throw new Error("Method not implemented.");
   }
 }

@@ -1,4 +1,4 @@
-import { CompareItem } from "../common/Types";
+import { CompareFileData, CompareFolderData, CompareItem } from "../common/Types";
 
 export type Group = CompareItem[];
 export type Mode = 'horizontal' | 'vertical';
@@ -15,4 +15,5 @@ export function isSplitItem(o: any) {
 
 export interface CompareView {
   doCompare(): void;
+  sendRowData(data: CompareFileData|CompareFolderData): void;
 }
