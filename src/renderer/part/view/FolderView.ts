@@ -36,6 +36,14 @@ export class FolderView implements CompareView {
       </div>
     </div>
 
+    <div class="suggests">
+      <div class="suggest-column lhs">
+      </div>
+      <div class="suggest-margin"></div>
+      <div class="suggest-column rhs">
+      </div>
+    </div>
+
     <div class="lists">
       <div class="header">
         <div class="list-column lhs">
@@ -54,17 +62,6 @@ export class FolderView implements CompareView {
         </div>
       </div>
     </div>
-
-    <div class="suggests">
-      <div class="input-column lhs">
-        <input type="text" placeholder="First folder">
-      </div>
-      <div class="input-margin"></div>
-      <div class="input-column rhs">
-        <input type="text" placeholder="Second folder">
-      </div>
-    </div>
-
     */
 
     const inputs = $(".inputs");
@@ -115,6 +112,14 @@ export class FolderView implements CompareView {
     input_column_rhs.appendChild(input_rhs);
     inputs.appendChild(input_column_rhs);
 
+    const suggests = $(".suggests");
+    const suggest_column_lhs = $(".suggest-column.lhs");
+    const suggest_margin = $(".suggest-margin");
+    const suggest_column_rhs = $(".suggest-column.rhs");
+    suggests.appendChild(suggest_column_lhs);
+    suggests.appendChild(suggest_margin);
+    suggests.appendChild(suggest_column_rhs);
+
     const lists = $(".lists");
     const header = $(".header");
     const header_list_scrollbar_lhs = $(".list-scrollbar.lhs");
@@ -139,13 +144,6 @@ export class FolderView implements CompareView {
     header.appendChild(header_list_scrollbar_rhs);
     lists.appendChild(header);
 
-    // TODO: customized scrollbar in list
-    lists.addEventListener('scroll', (e: Event) => {
-      setTimeout(() => {
-        this._scrolling();
-      }, 1);
-    });
-
     body.appendChild(body_list_scrollbar_lhs);
     body.appendChild(body_list_column_lhs);
     body.appendChild(body_list_changes);
@@ -153,7 +151,15 @@ export class FolderView implements CompareView {
     body.appendChild(body_list_scrollbar_rhs);
     lists.appendChild(body);
 
+    // TODO: customized scrollbar in list
+    lists.addEventListener('scroll', (e: Event) => {
+      setTimeout(() => {
+        this._scrolling();
+      }, 1);
+    });
+
     el.appendChild(inputs);
+    el.appendChild(suggests);
     el.appendChild(lists);
 
     return el;
