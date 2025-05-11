@@ -140,92 +140,9 @@ export class FolderView implements CompareView {
     lists.appendChild(header);
 
     // TODO: customized scrollbar in list
-
-    function _renderDiff(changes) {
-      // const mcanvas_lhs = this.lhs_margin;
-      // const ctx_lhs = mcanvas_lhs.getContext('2d');
-      // mcanvas_lhs.removeEventListener('click', this._handleLhsMarginClick);
-
-      const rhs_margin = this.rhs_margin;
-      const ctx_rhs = rhs_margin.getContext('2d');
-      rhs_margin.removeEventListener('click', this._handleRhsMarginClick);
-
-      const radius = 3;
-      /* // const lhsScrollTop = ex.lhs_scroller.scrollTop;
-      const rhsScrollTop = rhs_scroller.scrollTop;
-
-      // const lratio = lhs_margin.offsetHeight / lhs_scroller.scrollHeight;
-      const rratio = rhs_margin.offsetHeight / rhs_scroller.scrollHeight;
-
-      // draw margin indicators
-      for(let i = 0; i < changes.length; ++i) {
-        const change = changes[i];
-
-        // const lhs_y_start = change['lhs-y-start'] - lhsScrollTop;
-        // const lhs_y_end = change['lhs-y-end'] - lhsScrollTop;
-        const rhs_y_start = change['rhs-y-start'] - rhsScrollTop;
-        const rhs_y_end = change['rhs-y-end'] - rhsScrollTop;
-
-        const mkr_rhs_y_start = change['rhs-y-start'] * rratio;
-        const mkr_rhs_y_end = Math.max(change['rhs-y-end'] * rratio, 5);
-        ctx_rhs.beginPath();
-        ctx_rhs.fillStyle = '#a3a3a3';
-        ctx_rhs.strokeStyle = '#000';
-        ctx_rhs.lineWidth = 0.5;
-        ctx_rhs.fillRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
-        ctx_rhs.strokeRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
-        ctx_rhs.stroke();
-
-        // draw connect boxes
-      }
-
-      // const lfrom = lhsScrollTop * lratio;
-      // const lto = Math.max(ex.lhs_scroller.clientHeight * lratio, 5);
-      const rfrom = rhsScrollTop * rratio;
-      const rto = Math.max(rhs_scroller.clientHeight * rratio, 5);
-
-      // ctx_lhs.fillRect(1.5, lfrom, 4.5, lto);
-      ctx_rhs.fillRect(1.5, rfrom, 4.5, rto);
-
-      this._handleRhsMarginClick = function(ev) {
-        const y = ev.pageY - rhs_xyoffset.top - (rto / 2);
-        const sto = Math.max(0, (y / rhs_margin.height) * rhs_scroller.scrollHeight);
-        rhs_scroller.scrollTo({ top: sto });
-      };
-
-      // lhs_margin.addEventListener('click', this._handleLhsMarginClick);
-      rhs_margin.addEventListener('click', this._handleRhsMarginClick);
-      //*/
-    }
-
-    function _renderChanges() {
-      _renderDiff(null); //this.changes);
-      // this.element.dispatchEvent(new Event('updated'));
-    }
-
-    function _scrolling() {
-      // what to do in here: find can scroll
-
-      /*
-      let height;
-      let midway;
-      height = scroller.clientHeight - (scroller.offsetHeight - scroller.offsetParent.offsetHeight);
-
-      midway = (height / 2.0 + top).toFixed(2);
-
-      const top_to = scroller.scrollTop;
-      const left_to = scroller.scrollLeft;
-      */
-
-      let scroll = true;
-      if(scroll) {
-      }
-      _renderChanges();
-    }
-
     lists.addEventListener('scroll', (e: Event) => {
       setTimeout(() => {
-        _scrolling();
+        this._scrolling();
       }, 1);
     });
 
@@ -240,6 +157,88 @@ export class FolderView implements CompareView {
     el.appendChild(lists);
 
     return el;
+  }
+
+  _renderDiff(changes) {
+    // const mcanvas_lhs = this.lhs_margin;
+    // const ctx_lhs = mcanvas_lhs.getContext('2d');
+    // mcanvas_lhs.removeEventListener('click', this._handleLhsMarginClick);
+
+    const rhs_margin = this.scrollbar_rhs;
+    const ctx_rhs = rhs_margin.getContext('2d');
+    // rhs_margin.removeEventListener('click', this._handleRhsMarginClick);
+
+    const radius = 3;
+    /* // const lhsScrollTop = ex.lhs_scroller.scrollTop;
+    const rhsScrollTop = rhs_scroller.scrollTop;
+
+    // const lratio = lhs_margin.offsetHeight / lhs_scroller.scrollHeight;
+    const rratio = rhs_margin.offsetHeight / rhs_scroller.scrollHeight;
+
+    // draw margin indicators
+    for(let i = 0; i < changes.length; ++i) {
+      const change = changes[i];
+
+      // const lhs_y_start = change['lhs-y-start'] - lhsScrollTop;
+      // const lhs_y_end = change['lhs-y-end'] - lhsScrollTop;
+      const rhs_y_start = change['rhs-y-start'] - rhsScrollTop;
+      const rhs_y_end = change['rhs-y-end'] - rhsScrollTop;
+
+      const mkr_rhs_y_start = change['rhs-y-start'] * rratio;
+      const mkr_rhs_y_end = Math.max(change['rhs-y-end'] * rratio, 5);
+      ctx_rhs.beginPath();
+      ctx_rhs.fillStyle = '#a3a3a3';
+      ctx_rhs.strokeStyle = '#000';
+      ctx_rhs.lineWidth = 0.5;
+      ctx_rhs.fillRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
+      ctx_rhs.strokeRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
+      ctx_rhs.stroke();
+
+      // draw connect boxes
+    }
+
+    // const lfrom = lhsScrollTop * lratio;
+    // const lto = Math.max(ex.lhs_scroller.clientHeight * lratio, 5);
+    const rfrom = rhsScrollTop * rratio;
+    const rto = Math.max(rhs_scroller.clientHeight * rratio, 5);
+
+    // ctx_lhs.fillRect(1.5, lfrom, 4.5, lto);
+    ctx_rhs.fillRect(1.5, rfrom, 4.5, rto);
+
+    this._handleRhsMarginClick = function(ev) {
+      const y = ev.pageY - rhs_xyoffset.top - (rto / 2);
+      const sto = Math.max(0, (y / rhs_margin.height) * rhs_scroller.scrollHeight);
+      rhs_scroller.scrollTo({ top: sto });
+    };
+
+    // lhs_margin.addEventListener('click', this._handleLhsMarginClick);
+    rhs_margin.addEventListener('click', this._handleRhsMarginClick);
+    //*/
+  }
+
+  _renderChanges() {
+    this._renderDiff(null); //this.changes);
+    // this.element.dispatchEvent(new Event('updated'));
+  }
+
+  _scrolling() {
+    // what to do in here: find can scroll
+
+    /*
+    let height;
+    let midway;
+    height = scroller.clientHeight - (scroller.offsetHeight - scroller.offsetParent.offsetHeight);
+
+    midway = (height / 2.0 + top).toFixed(2);
+
+    const top_to = scroller.scrollTop;
+    const left_to = scroller.scrollLeft;
+    */
+
+    let scroll = true;
+    if(scroll) {
+    }
+    this._renderChanges();
   }
 
   doCompare(): void {
