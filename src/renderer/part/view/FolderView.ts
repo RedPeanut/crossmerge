@@ -261,7 +261,7 @@ export class FolderView implements CompareView {
     if(data.data.isDirectory) icon = '■'
     else {
       if(data.state == 'unchanged') icon = '-';
-      else if(data.state == 'changed') icon = 'c';
+      else if(data.state == 'changed') { icon = 'c'; icon += data.changes; }
       else if(data.state == 'removed') icon = 'r';
       else if(data.state == 'inserted') icon = 'i';
     }

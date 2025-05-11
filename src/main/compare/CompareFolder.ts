@@ -4,6 +4,8 @@ import { _readdirSyncWithStat } from "../utils";
 import { DirentExt } from "../Types";
 import { mainWindow } from "../main";
 import { Myers } from "../../lib/robertelder/Myers";
+import Diff from "../../lib/mergely/Diff";
+import DiffParser from "../../lib/mergely/DiffParser";
 
 export interface CompareFolderElem {
   side: string;
@@ -52,8 +54,11 @@ export class CompareFolder {
     const cont_rhs: Buffer = await fs.readFileSync(path_rhs);
     // console.log('typeof(cont_lhs) =', typeof(cont_lhs));
     // console.log('cont_lhs =', cont_lhs);
-    const ret = new Myers().getShortestEditScript(cont_lhs.toString(), cont_rhs.toString());
-    return ret.length;
+    // const ret = new Myers().getShortestEditScript(cont_lhs.toString(), cont_rhs.toString());
+    // return ret.length;
+    const diff = new Diff(cont_lhs.toString(), cont_rhs.toString(), { split: 'lines' });
+    const changes = new DiffParser().parse(diff.normal_form());
+    return changes.length;
   }
 
   async _readdir(path_lhs: string, path_rhs: string, depth: number, parent: CompareFolderElem): Promise<void> {
@@ -232,15 +237,13 @@ export class CompareFolder {
     for(let i = 0; i < files_filtered.length; i++) {
       // console.log(`files_filtered[${i}] = ${files_filtered[i].name}`);
       const elem: CompareFolderElem = files_filtered[i];
-      let state: State = undefined;
+      let state: State = undefined, changes: number;
 
       if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
         if(elem.lhs.mtime != elem.rhs.mtime && elem.lhs.size != elem.rhs.size) {
           const _path_lhs = path_lhs + '/' + elem.name;
           const _path_rhs = path_rhs + '/' + elem.name;
-          // TODO: const ret = await this.countCompare(_path_lhs, _path_rhs);
-          // console.log('ret =', ret);
-          // break;
+          changes = await this.countCompare(_path_lhs, _path_rhs);
           state = 'changed'; this.changed++;
         } else {
           state = 'unchanged'; this.unchanged++;
@@ -254,7 +257,7 @@ export class CompareFolder {
       mainWindow.send('compare folder data', {
         uid: this.uid,
         type: 'file', depth, index: i,
-        parent, data: elem, state
+        parent, data: elem, state, changes
       });
 
       // break;
