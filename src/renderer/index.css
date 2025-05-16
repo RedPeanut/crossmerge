@@ -195,6 +195,9 @@ body { height: 100%; }
 .folder-compare-view .inputs .lhs, .folder-compare-view .inputs .rhs { flex: 1; display: flex; }
 .folder-compare-view .inputs .input-margin { width: 28px; }
 
+.folder-compare-view .suggests { position: absolute; width: 100%; height: calc(100% - 21.5px); display: flex; top: 21.5px; }
+.folder-compare-view .suggests .suggest-column { flex: 1; }
+
 .folder-compare-view .lists { /* height: 100%; */ position: relative; flex: 1; display: flex; flex-direction: column; }
 
 .folder-compare-view .lists .list-column { flex: 1; display: flex; }
@@ -204,9 +207,6 @@ body { height: 100%; }
 .folder-compare-view .lists .header { width: 100%; display: flex; flex: 0; }
 .folder-compare-view .lists .body { height: 100%; width: 100%; display: flex; flex: 1; }
 .folder-compare-view .lists .body canvas {}
-
-.folder-compare-view .suggests { position: absolute; width: 100%; height: 100%; display: flex; }
-.folder-compare-view .suggests .suggest-column { flex: 1; }
 
 /* StatusBar */
 .part.statusbar {

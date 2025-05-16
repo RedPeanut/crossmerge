@@ -113,6 +113,7 @@ export class FolderView implements CompareView {
     inputs.appendChild(input_column_rhs);
 
     const suggests = $(".suggests");
+    suggests.style.display = 'none';
     const suggest_column_lhs = $(".suggest-column.lhs");
     const suggest_margin = $(".suggest-margin");
     const suggest_column_rhs = $(".suggest-column.rhs");
