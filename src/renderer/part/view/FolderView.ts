@@ -52,7 +52,7 @@ export class FolderView implements CompareView {
 
   treeList: Node[];
   nextNode;
-  lastRecvData: CompareFolderData;
+  lastRecvData: CompareFolderData; // for find depth change
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
