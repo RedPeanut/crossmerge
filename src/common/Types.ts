@@ -31,7 +31,8 @@ export interface CompareFolderData {
   parent: null | CompareFolderElem;
   data: CompareFolderElem;
   state: State;
-  changes: number; // if changed
+  changes?: number; // if changed
+  length?: number; // has children, if directory
 }
 
 export type CompareData = CompareFileData | CompareFolderData;
