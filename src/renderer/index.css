@@ -198,19 +198,33 @@ body { height: 100%; }
 .folder-compare-view .suggests { position: absolute; width: 100%; height: calc(100% - 21.5px); display: flex; top: 21.5px; }
 .folder-compare-view .suggests .suggest-column { flex: 1; }
 
-.folder-compare-view .lists { /* height: 100%; */ position: relative; flex: 1; display: flex; flex-direction: column; }
+.folder-compare-view .lists { overflow: hidden; height: 100%; position: relative; flex: 1; display: flex; flex-direction: column; }
 
 .folder-compare-view .lists .list-column { flex: 1; display: flex; }
 .folder-compare-view .lists .list-changes { width: 59px; }
 .folder-compare-view .lists .list-scrollbar { width: 16px; }
 
+::-webkit-scrollbar { width: 0; }
+
 .folder-compare-view .lists .header { width: 100%; display: flex; flex: 0; }
-.folder-compare-view .lists .body { height: 100%; width: 100%; display: flex; flex: 1; position: relative; }
+.folder-compare-view .lists .body { overflow-y: auto; height: 100%; width: 100%; display: flex; flex: 1; position: relative; }
 .folder-compare-view .lists .body > * { z-index:10; border: 1px solid black; }
 .folder-compare-view .lists .body canvas {}
 .folder-compare-view .lists .body .list-selectbar { z-index:5; position: absolute; height: 100%; width: 100%; }
 
 .folder-compare-view .lists .tree { width: 100%; height: 100%; }
+.folder-compare-view .lists .tree .codicon { display: flex; }
+
+.folder-compare-view .lists .node { width: 100%; line-height: 28px; font-size: 16px; padding-left: 4px; }
+.folder-compare-view .lists .node.selected { background-color: rgb(71 85 102); border-radius: 4px; }
+.folder-compare-view .lists .node .content { margin: 2px 0; display: flex; align-items: center; }
+.folder-compare-view .lists .node .ln-header { width: 20px; }
+.folder-compare-view .lists .node .ln-header .arrow { cursor: pointer; transform: rotate(90deg); }
+.folder-compare-view .lists .node.collapsed .ln-header .arrow { transform: rotate(0); }
+.folder-compare-view .lists .node.collapsed > .node { display: none; }
+
+
+.folder-compare-view .lists .node .ln-body { width: 100%; }
 
 /* StatusBar */
 .part.statusbar {

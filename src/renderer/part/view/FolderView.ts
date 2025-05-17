@@ -2,6 +2,14 @@ import { CompareFolderData, CompareItem } from "../../../common/Types";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 
+interface Node {
+  parent: Node | null;
+  elem: HTMLElement;
+  type: 'file' | 'folder';
+  children?: Node[];
+  depth: number;
+}
+
 export interface FolderViewOptions {}
 
 export class FolderView implements CompareView {
@@ -19,6 +27,32 @@ export class FolderView implements CompareView {
   list_lhs: HTMLElement;
   list_changes: HTMLElement;
   list_rhs: HTMLElement;
+
+  /*
+  tree = [
+    // only directory have children
+    // directory can have no children
+    {
+      parent: null, elem, type: 'directory',
+      children: [
+        {
+          parent, elem, type: 'directory',
+          children = [
+            { parent, elem, type: 'directory', },
+            { parent, elem, type: 'file', },
+          ]
+        },
+        { parent, elem, type: 'directory', },
+      ]
+    },
+    { parent: null, elem, type: 'directory', },
+    { parent: null, elem, type: 'file', },
+  ]
+  */
+
+  treeList: Node[];
+  nextNode;
+  lastRecvData: CompareFolderData;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -287,7 +321,13 @@ export class FolderView implements CompareView {
   }
 
   doCompare(): void {
-    // throw new Error("Method not implemented.");
+
+    this.treeList = null;
+    this.nextNode = null;
+    this.lastRecvData = null;
+    for(let i = 0; i < this.list_lhs.firstChild.childNodes.length; i++) {
+      this.list_lhs.firstChild.removeChild(this.list_lhs.firstChild.childNodes[i]);
+    }
     const input_lhs_value = this.input_lhs.value;
     const input_rhs_value = this.input_rhs.value;
 
@@ -298,17 +338,125 @@ export class FolderView implements CompareView {
     });
   }
 
+  _addNode(parent: HTMLElement, data: CompareFolderData): HTMLElement {
+
+    const hasChildren = data.data.isDirectory && data.length > 0, isCollapsed = true;
+
+    const node = $(".node");
+    node.style.paddingLeft = `${data.depth*10}px`;
+    const content = $(".content");
+    const header = $(".ln-header");
+    const body = $(".ln-body");
+    body.innerHTML = data.data.name;
+
+    if(hasChildren) {
+      const arrow = $('.arrow');
+      if(isCollapsed) node.classList.add('collapsed');
+      arrow.onclick = (e) => {
+        // onChange(data.id, { isCollapsed: !isCollapsed });
+        node.classList.toggle('collapsed');
+      };
+
+      const collapseArrow = $('a.codicon.codicon-chevron-right');
+      if(collapseArrow)
+        arrow.appendChild(collapseArrow);
+      else
+        arrow.innerHTML = '>';
+
+      header.append(arrow);
+    }
+    content.appendChild(header);
+    content.appendChild(body);
+    node.appendChild(content);
+    parent.appendChild(node);
+    return node;
+  }
+
   sendRowData(data: CompareFolderData): void {
+    /* log data
     let indent = '';
     for(let i = 0; i < data.depth; i++) indent += '  ';
     let icon;
-    if(data.data.isDirectory) icon = '■'
-    else {
-      if(data.state == 'unchanged') icon = '-';
+    if(data.data.isDirectory) {
+      if(data.length > 0) icon = '+';
+      else icon = '-';
+    } else {
+      if(data.state == 'unchanged') icon = 'u';
       else if(data.state == 'changed') { icon = 'c'; icon += data.changes; }
       else if(data.state == 'removed') icon = 'r';
       else if(data.state == 'inserted') icon = 'i';
     }
-    console.log(icon + ' ' + indent + data.data.name);
+    console.log(icon + ' ' + indent + data.data.name); //*/
+
+    // TODO: use system icon
+    // TODO: occur expand event to parent node when state is not unchanged (changed, removed in left, inserted in right)
+
+    // add node n make tree
+
+    // console.log('data =', data);
+    const currRecvData = data;
+
+    ///* // 최초
+    if(this.treeList == null) {
+      this.treeList = [];
+      const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
+      const node: Node = { parent: null, elem, type: data.type, depth: data.depth};
+      this.treeList.push(node);
+      this.nextNode = node;
+      this.lastRecvData = currRecvData;
+      return;
+    } //*/
+
+    const diff = currRecvData.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
+    // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
+
+    let workNode: Node; //, nextNode: Node;
+
+    if(diff > 0) { // only +1
+      workNode = this.nextNode;
+      const elem: HTMLElement = this._addNode(workNode.elem, data);
+      const node: Node = { parent: workNode, elem, type: data.type, depth: data.depth};
+      if(!workNode.children)
+        workNode.children = [];
+      workNode.children.push(node);
+      // nextNode = node;
+      this.nextNode = node;
+    } else if(diff <= 0) {
+      ///*
+      let workNodeOrTreeList: Node|Node[];
+      function getParentNodeOrList(node: Node, diff: number): Node|Node[] {
+        if(diff < 0)
+          return getParentNodeOrList.bind(this)(node.parent, diff+1);
+        if(node.parent == null) //
+          return this.treeList;
+        return node.parent;
+      }
+
+      workNodeOrTreeList = getParentNodeOrList.bind(this)(this.nextNode, diff);
+
+      // console.log('workNodeOrList =', workNodeOrTreeList);
+      // console.log('typeof workNodeOrList =', typeof workNodeOrTreeList);
+      // console.log('workNodeOrList instanceof Node =', workNodeOrTreeList instanceof Node);
+      // console.log('workNodeOrList === this.treeList =', workNodeOrTreeList === this.treeList);
+      if(workNodeOrTreeList == this.treeList) {
+        const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
+        const node: Node = { parent: null, elem, type: data.type, depth: data.depth};
+        this.treeList.push(node);
+        this.nextNode = node;
+      } else {
+        workNode = workNodeOrTreeList as Node;
+        const elem: HTMLElement = this._addNode(workNode.elem, data);
+        const node: Node = { parent: workNode, elem, type: data.type, depth: data.depth};
+        if(!workNode.children)
+          workNode.children = [];
+        workNode.children.push(node);
+        // nextNode = node;
+        this.nextNode = node;
+      }
+      //*/
+    }
+
+    // console.log('this.treeList =', this.treeList);
+    this.lastRecvData = currRecvData;
   }
 }
