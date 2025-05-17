@@ -15,6 +15,11 @@ export class FolderView implements CompareView {
   scrollbar_lhs: HTMLCanvasElement;
   scrollbar_rhs: HTMLCanvasElement;
 
+  list_selectbar: HTMLElement;
+  list_lhs: HTMLElement;
+  list_changes: HTMLElement;
+  list_rhs: HTMLElement;
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
@@ -54,12 +59,32 @@ export class FolderView implements CompareView {
         </div>
       </div>
       <div class="body">
+        <div class="list-selectbar">
+          <div class="tree"> nodes .. </div>
+        </div>
+
+        <canvas class="list-scrollbar lhs"></div>
         <div class="list-column lhs">
+          <div class="tree">
+            <div class="node" style="padding indent">
+              <div class="content">
+                <div class="ln-header">
+                  <div class="arrow"><a class="codicon codicon-chevron-right"></a></div>
+                </div>
+                <div class="ln-body">
+                  <div class="title"><span class="icon"><a class="codicon codicon-folder"></a></span>folder</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="list-changes">
+          <div class="tree"> nodes .. </div>
         </div>
         <div class="list-column rhs">
+          <div class="tree"> nodes .. </div>
         </div>
+        <canvas class="list-scrollbar rhs"></div>
       </div>
     </div>
     */
@@ -131,12 +156,6 @@ export class FolderView implements CompareView {
     const header_list_column_rhs = $(".list-column.rhs");
     header_list_column_rhs.innerHTML = 'Right';
     const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
-    const body = $(".body");
-    const body_list_scrollbar_lhs = this.scrollbar_lhs = $("canvas.list-scrollbar.lhs");
-    const body_list_column_lhs = $(".list-column.lhs");
-    const body_list_changes = $(".list-changes");
-    const body_list_column_rhs = $(".list-column.rhs");
-    const body_list_scrollbar_rhs = this.scrollbar_rhs = $("canvas.list-scrollbar.rhs");
 
     header.appendChild(header_list_scrollbar_lhs);
     header.appendChild(header_list_column_lhs);
@@ -145,6 +164,25 @@ export class FolderView implements CompareView {
     header.appendChild(header_list_scrollbar_rhs);
     lists.appendChild(header);
 
+    const body = $(".body");
+    const body_list_selectbar = this.list_selectbar = $(".list-selectbar");
+    const body_list_scrollbar_lhs = this.scrollbar_lhs = $("canvas.list-scrollbar.lhs");
+    const body_list_column_lhs = this.list_lhs = $(".list-column.lhs");
+    const body_list_changes = this.list_changes = $(".list-changes");
+    const body_list_column_rhs = this.list_rhs = $(".list-column.rhs");
+    const body_list_scrollbar_rhs = this.scrollbar_rhs = $("canvas.list-scrollbar.rhs");
+
+    function addTree(el: HTMLElement) {
+      const tree = $(".tree");
+      el.appendChild(tree);
+    }
+
+    addTree(body_list_selectbar);
+    addTree(body_list_column_lhs);
+    addTree(body_list_changes);
+    addTree(body_list_column_rhs);
+
+    body.appendChild(body_list_selectbar);
     body.appendChild(body_list_scrollbar_lhs);
     body.appendChild(body_list_column_lhs);
     body.appendChild(body_list_changes);
