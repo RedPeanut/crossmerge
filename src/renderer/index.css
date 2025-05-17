@@ -222,8 +222,6 @@ body { height: 100%; }
 .folder-compare-view .lists .node .ln-header .arrow { cursor: pointer; transform: rotate(90deg); }
 .folder-compare-view .lists .node.collapsed .ln-header .arrow { transform: rotate(0); }
 .folder-compare-view .lists .node.collapsed > .node { display: none; }
-
-
 .folder-compare-view .lists .node .ln-body { width: 100%; }
 
 /* StatusBar */
