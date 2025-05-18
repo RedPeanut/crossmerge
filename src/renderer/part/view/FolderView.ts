@@ -51,7 +51,7 @@ export class FolderView implements CompareView {
   */
 
   treeList: Node[];
-  nextNode;
+  lastNode;
   lastRecvData: CompareFolderData; // for find depth change
 
   constructor(parent: HTMLElement, item: CompareItem) {
@@ -323,7 +323,7 @@ export class FolderView implements CompareView {
   doCompare(): void {
 
     this.treeList = null;
-    this.nextNode = null;
+    this.lastNode = null;
     this.lastRecvData = null;
     for(let i = 0; i < this.list_lhs.firstChild.childNodes.length; i++) {
       this.list_lhs.firstChild.removeChild(this.list_lhs.firstChild.childNodes[i]);
@@ -338,7 +338,7 @@ export class FolderView implements CompareView {
     });
   }
 
-  _addNode(parent: HTMLElement, data: CompareFolderData): HTMLElement {
+  addNode(container: HTMLElement, data: CompareFolderData): HTMLElement {
 
     const hasChildren = data.data.isDirectory && data.length > 0, isCollapsed = true;
 
@@ -368,7 +368,7 @@ export class FolderView implements CompareView {
     content.appendChild(header);
     content.appendChild(body);
     node.appendChild(content);
-    parent.appendChild(node);
+    container.appendChild(node);
     return node;
   }
 
@@ -399,10 +399,10 @@ export class FolderView implements CompareView {
     ///* // 최초
     if(this.treeList == null) {
       this.treeList = [];
-      const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
+      const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
       const node: Node = { parent: null, elem };
       this.treeList.push(node);
-      this.nextNode = node;
+      this.lastNode = node;
       this.lastRecvData = currRecvData;
       return;
     } //*/
@@ -413,17 +413,17 @@ export class FolderView implements CompareView {
     let workNode: Node; //, nextNode: Node;
 
     if(diff > 0) { // only +1
-      workNode = this.nextNode;
-      const elem: HTMLElement = this._addNode(workNode.elem, data);
+      workNode = this.lastNode;
+      const elem: HTMLElement = this.addNode(workNode.elem, data);
       const node: Node = { parent: workNode, elem };
       if(!workNode.children)
         workNode.children = [];
       workNode.children.push(node);
       // nextNode = node;
-      this.nextNode = node;
+      this.lastNode = node;
     } else if(diff <= 0) {
       ///*
-      let workNodeOrTreeList: Node|Node[];
+      let workNodeOrList: Node|Node[];
       function getParentNodeOrList(node: Node, diff: number): Node|Node[] {
         if(diff < 0)
           return getParentNodeOrList.bind(this)(node.parent, diff+1);
@@ -432,26 +432,26 @@ export class FolderView implements CompareView {
         return node.parent;
       }
 
-      workNodeOrTreeList = getParentNodeOrList.bind(this)(this.nextNode, diff);
+      workNodeOrList = getParentNodeOrList.bind(this)(this.lastNode, diff);
 
       // console.log('workNodeOrList =', workNodeOrTreeList);
       // console.log('typeof workNodeOrList =', typeof workNodeOrTreeList);
       // console.log('workNodeOrList instanceof Node =', workNodeOrTreeList instanceof Node);
       // console.log('workNodeOrList === this.treeList =', workNodeOrTreeList === this.treeList);
-      if(workNodeOrTreeList == this.treeList) {
-        const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
+      if(workNodeOrList == this.treeList) {
+        const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
         const node: Node = { parent: null, elem };
         this.treeList.push(node);
-        this.nextNode = node;
+        this.lastNode = node;
       } else {
-        workNode = workNodeOrTreeList as Node;
-        const elem: HTMLElement = this._addNode(workNode.elem, data);
+        workNode = workNodeOrList as Node;
+        const elem: HTMLElement = this.addNode(workNode.elem, data);
         const node: Node = { parent: workNode, elem };
         if(!workNode.children)
           workNode.children = [];
         workNode.children.push(node);
         // nextNode = node;
-        this.nextNode = node;
+        this.lastNode = node;
       }
       //*/
     }
