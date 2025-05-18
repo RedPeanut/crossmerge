@@ -10,6 +10,22 @@ interface Node {
   // depth: number;
 }
 
+interface PartNodeList {
+    left: Node[];
+    right: Node[];
+    changes: Node[];
+    // scrollbar: Node[]; // left
+    selectbar: Node[];
+}
+
+interface PartNode {
+  left: Node;
+  right: Node;
+  changes: Node;
+  // scrollbar: Node; // left
+  selectbar: Node;
+}
+
 export interface FolderViewOptions {}
 
 export class FolderView implements CompareView {
@@ -50,8 +66,10 @@ export class FolderView implements CompareView {
   ]
   */
 
-  treeList: Node[];
-  lastNode;
+  // treeList: Node[];
+  // lastNode;
+  partNodeList: PartNodeList;
+  lastPartNode: PartNode;
   lastRecvData: CompareFolderData; // for find depth change
 
   constructor(parent: HTMLElement, item: CompareItem) {
@@ -322,12 +340,24 @@ export class FolderView implements CompareView {
 
   doCompare(): void {
 
-    this.treeList = null;
-    this.lastNode = null;
+    // reset
+    // this.treeList = null;
+    // this.lastNode = null;
+    this.partNodeList = { left: [], right: [], changes: [], selectbar: [] };
+    this.lastPartNode = null; //{ left: null, right: null, changes: null };
     this.lastRecvData = null;
-    for(let i = 0; i < this.list_lhs.firstChild.childNodes.length; i++) {
-      this.list_lhs.firstChild.removeChild(this.list_lhs.firstChild.childNodes[i]);
+
+    const parts = [ this.list_lhs, this.list_changes, this.list_rhs ];
+    for(let i = 0; i < parts.length; i++) {
+      const length = parts[i].firstChild.childNodes.length;
+      for(let j = 0; j < length; j++)
+        parts[i].firstChild.removeChild(parts[i].firstChild.childNodes[0]);
     }
+
+    /* for(let i = 0; i < this.list_lhs.firstChild.childNodes.length; i++) {
+      this.list_lhs.firstChild.removeChild(this.list_lhs.firstChild.childNodes[i]);
+    } */
+
     const input_lhs_value = this.input_lhs.value;
     const input_rhs_value = this.input_rhs.value;
 
@@ -338,11 +368,32 @@ export class FolderView implements CompareView {
     });
   }
 
-  addNode(container: HTMLElement, data: CompareFolderData): HTMLElement {
-
+  addNode(container: HTMLElement, data: CompareFolderData,
+    mode: string
+  ): HTMLElement {
+    const self = this;
     const hasChildren = data.data.isDirectory && data.length > 0, isCollapsed = true;
-
     const node = $(".node");
+
+    if(mode == 'empty') {
+      if(hasChildren) {
+        if(isCollapsed) node.classList.add('collapsed');
+      }
+      container.appendChild(node);
+      return node;
+    } else if(mode == 'changes') {
+      const content = $(".content");
+      content.innerHTML = data.changes ? data.changes+'' : '';
+
+      if(hasChildren) {
+        if(isCollapsed) node.classList.add('collapsed');
+      }
+
+      node.appendChild(content);
+      container.appendChild(node);
+      return node;
+    }
+
     node.style.paddingLeft = `${data.depth*10}px`;
     const content = $(".content");
     const header = $(".ln-header");
@@ -392,18 +443,46 @@ export class FolderView implements CompareView {
     // TODO: occur expand event to parent node when state is not unchanged (changed, removed in left, inserted in right)
 
     // add node n make tree
-
     // console.log('data =', data);
     const currRecvData = data;
 
     // 최초
-    if(this.treeList == null) {
-      this.treeList = [];
+    // console.log('this.lastRecvData =', this.lastRecvData);
+    if(this.lastRecvData == null) {
+      /* this.treeList = [];
+
       const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
       const node: Node = { parent: null, elem };
 
       this.treeList.push(node);
       this.lastNode = node;
+      this.lastRecvData = currRecvData; */
+
+      let elem: HTMLElement, node: Node;
+      const workPartNode: PartNode = { left: null, right: null, changes: null, selectbar: null };
+
+      elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
+        data.data.side.indexOf('left') > -1 ? null : 'empty'
+      );
+      node = { parent: null, elem };
+      this.partNodeList.left.push(node);
+      workPartNode.left = node;
+
+      elem = this.addNode(this.list_rhs.firstChild as HTMLElement, data,
+        data.data.side.indexOf('right') > -1 ? null : 'empty'
+      );
+      node = { parent: null, elem };
+      this.partNodeList.right.push(node);
+      workPartNode.right = node;
+
+      elem = this.addNode(this.list_changes.firstChild as HTMLElement, data,
+        'changes'
+      );
+      node = { parent: null, elem };
+      this.partNodeList.changes.push(node);
+      workPartNode.changes = node;
+
+      this.lastPartNode = workPartNode;
       this.lastRecvData = currRecvData;
       return;
     }
@@ -411,7 +490,128 @@ export class FolderView implements CompareView {
     const diff = currRecvData.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
     // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
 
-    let workNode: Node;
+    if(diff > 0) { // only +1
+      const workPartNode: PartNode = this.lastPartNode;
+
+      let elem: HTMLElement, node: Node;
+
+      elem = this.addNode(workPartNode.left.elem as HTMLElement, data,
+        data.data.side.indexOf('left') > -1 ? null : 'empty'
+      );
+      node = { parent: workPartNode.left, elem };
+      if(!workPartNode.left.children)
+        workPartNode.left.children = [];
+      workPartNode.left.children.push(node);
+      workPartNode.left = node;
+
+      elem = this.addNode(workPartNode.right.elem as HTMLElement, data,
+        data.data.side.indexOf('right') > -1 ? null : 'empty'
+      );
+      node = { parent: workPartNode.right, elem };
+      if(!workPartNode.right.children)
+        workPartNode.right.children = [];
+      workPartNode.right.children.push(node);
+      workPartNode.right = node;
+
+      elem = this.addNode(workPartNode.changes.elem as HTMLElement, data,
+        'changes'
+      );
+      node = { parent: workPartNode.changes, elem };
+      if(!workPartNode.changes.children)
+        workPartNode.changes.children = [];
+      workPartNode.changes.children.push(node);
+      workPartNode.changes = node;
+
+      this.lastPartNode = workPartNode;
+    } else { //if(diff <= 0) {
+      const workPartNode: PartNode = this.lastPartNode;
+
+      function getParentNodeOrList(node: Node, diff: number, part: string): Node|Node[] {
+        if(diff < 0)
+          return getParentNodeOrList.bind(this)(node.parent, diff+1, part);
+        if(node.parent == null) {
+          if(part == 'left') return this.partNodeList.left;
+          if(part == 'right') return this.partNodeList.right;
+          if(part == 'changes') return this.partNodeList.changes;
+          if(part == 'selectbar') return this.partNodeList.selectbar;
+          throw new Error('do not enter here');
+        }
+        return node.parent;
+      }
+
+      let workNodeOrList: Node|Node[];
+
+      workNodeOrList = getParentNodeOrList.bind(this)(workPartNode.left, diff, 'left');
+      // console.log('workNodeOrList =', typeof workNodeOrList);
+
+      if(Array.isArray(workNodeOrList)) { // root
+        let elem: HTMLElement, node: Node;
+        elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
+          data.data.side.indexOf('left') > -1 ? null : 'empty'
+        );
+        node = { parent: null, elem };
+        this.partNodeList.left.push(node);
+        workPartNode.left = node as Node;
+      } else {
+        const workNode: Node = workNodeOrList as Node;
+        const elem: HTMLElement = this.addNode(workNode.elem, data,
+          data.data.side.indexOf('left') > -1 ? null : 'empty'
+        );
+        const node: Node = { parent: workNode, elem };
+        if(!workNode.children)
+          workNode.children = [];
+        workNode.children.push(node);
+        workPartNode.left = node as Node;
+      }
+
+      workNodeOrList = getParentNodeOrList.bind(this)(workPartNode.right, diff, 'right');
+
+      if(Array.isArray(workNodeOrList)) {
+        let elem: HTMLElement, node: Node;
+        elem = this.addNode(this.list_rhs.firstChild as HTMLElement, data,
+          data.data.side.indexOf('right') > -1 ? null : 'empty'
+        );
+        node = { parent: null, elem };
+        this.partNodeList.right.push(node);
+        workPartNode.right = node as Node;
+      } else {
+        const workNode: Node = workNodeOrList as Node;
+        const elem: HTMLElement = this.addNode(workNode.elem, data,
+          data.data.side.indexOf('right') > -1 ? null : 'empty'
+        );
+        const node: Node = { parent: workNode, elem };
+        if(!workNode.children)
+          workNode.children = [];
+        workNode.children.push(node);
+        workPartNode.right = node as Node;
+      }
+
+      workNodeOrList = getParentNodeOrList.bind(this)(workPartNode.changes, diff, 'changes');
+
+      if(Array.isArray(workNodeOrList)) {
+        let elem: HTMLElement, node: Node;
+        elem = this.addNode(this.list_changes.firstChild as HTMLElement, data,
+          'changes'
+        );
+        node = { parent: null, elem };
+        this.partNodeList.changes.push(node);
+        workPartNode.changes = node as Node;
+      } else {
+        const workNode: Node = workNodeOrList as Node;
+        const elem: HTMLElement = this.addNode(workNode.elem, data,
+          'changes'
+        );
+        const node: Node = { parent: workNode, elem };
+        if(!workNode.children)
+          workNode.children = [];
+        workNode.children.push(node);
+        workPartNode.changes = node as Node;
+      }
+
+      this.lastPartNode = workPartNode;
+    }
+
+    /* let workNode: Node;
 
     if(diff > 0) { // only +1
       workNode = this.lastNode;
@@ -448,7 +648,7 @@ export class FolderView implements CompareView {
         workNode.children.push(node);
         this.lastNode = node;
       }
-    }
+    } */
 
     // console.log('this.treeList =', this.treeList);
     this.lastRecvData = currRecvData;
