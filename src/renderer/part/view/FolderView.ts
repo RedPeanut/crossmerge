@@ -29,7 +29,7 @@ export class FolderView implements CompareView {
   list_rhs: HTMLElement;
 
   /*
-  tree = [
+  treeList = [
     // only directory have children
     // directory can have no children
     {
@@ -396,21 +396,22 @@ export class FolderView implements CompareView {
     // console.log('data =', data);
     const currRecvData = data;
 
-    ///* // 최초
+    // 최초
     if(this.treeList == null) {
       this.treeList = [];
       const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
       const node: Node = { parent: null, elem };
+
       this.treeList.push(node);
       this.lastNode = node;
       this.lastRecvData = currRecvData;
       return;
-    } //*/
+    }
 
     const diff = currRecvData.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
     // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
 
-    let workNode: Node; //, nextNode: Node;
+    let workNode: Node;
 
     if(diff > 0) { // only +1
       workNode = this.lastNode;
@@ -419,11 +420,10 @@ export class FolderView implements CompareView {
       if(!workNode.children)
         workNode.children = [];
       workNode.children.push(node);
-      // nextNode = node;
       this.lastNode = node;
     } else if(diff <= 0) {
-      ///*
       let workNodeOrList: Node|Node[];
+
       function getParentNodeOrList(node: Node, diff: number): Node|Node[] {
         if(diff < 0)
           return getParentNodeOrList.bind(this)(node.parent, diff+1);
@@ -434,10 +434,6 @@ export class FolderView implements CompareView {
 
       workNodeOrList = getParentNodeOrList.bind(this)(this.lastNode, diff);
 
-      // console.log('workNodeOrList =', workNodeOrTreeList);
-      // console.log('typeof workNodeOrList =', typeof workNodeOrTreeList);
-      // console.log('workNodeOrList instanceof Node =', workNodeOrTreeList instanceof Node);
-      // console.log('workNodeOrList === this.treeList =', workNodeOrTreeList === this.treeList);
       if(workNodeOrList == this.treeList) {
         const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
         const node: Node = { parent: null, elem };
@@ -450,10 +446,8 @@ export class FolderView implements CompareView {
         if(!workNode.children)
           workNode.children = [];
         workNode.children.push(node);
-        // nextNode = node;
         this.lastNode = node;
       }
-      //*/
     }
 
     // console.log('this.treeList =', this.treeList);
