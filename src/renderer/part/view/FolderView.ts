@@ -115,7 +115,6 @@ export class FolderView implements CompareView {
         <div class="list-selectbar">
           <div class="tree"> nodes .. </div>
         </div>
-
         <canvas class="list-scrollbar lhs"></div>
         <div class="list-column lhs">
           <div class="tree">
@@ -231,6 +230,7 @@ export class FolderView implements CompareView {
     }
 
     addTree(body_list_selectbar);
+    // addTree(body_list_scrollbar_lhs);
     addTree(body_list_column_lhs);
     addTree(body_list_changes);
     addTree(body_list_column_rhs);
@@ -396,6 +396,19 @@ export class FolderView implements CompareView {
       node.appendChild(content);
       container.appendChild(node);
       return node;
+    } else if(mode == 'selectbar') {
+      node.onclick = (e) => {
+        console.log('selectbar node clicked ..');
+        node.classList.toggle('selected');
+        e.stopPropagation();
+        // return false;
+      }
+
+      if(hasChildren) {
+        if(isCollapsed) node.classList.add('collapsed');
+      }
+      container.appendChild(node);
+      return node;
     }
 
     node.style.paddingLeft = `${data.depth*10}px`;
@@ -413,7 +426,7 @@ export class FolderView implements CompareView {
         node.classList.toggle('collapsed');
 
         // toggle another
-        let another = '|left|right|changes';
+        let another = '|left|right|changes|selectbar';
         another = another.replace('|'+part, '');
         if(another.startsWith('|')) another = another.substring(1);
         let anothers: string[] = another.split('|');
@@ -499,6 +512,14 @@ export class FolderView implements CompareView {
       this.partNodeList.changes.push(node);
       workPartNode.changes = node;
 
+      elem = this.addNode(this.list_selectbar.firstChild as HTMLElement, data,
+        'selectbar',
+        'selectbar', this.recvIndex,
+      );
+      node = { parent: null, elem };
+      this.partNodeList.changes.push(node);
+      workPartNode.selectbar = node;
+
       this.lastPartNode = workPartNode;
       this.lastRecvData = currRecvData;
       this.recvIndex++;
@@ -542,6 +563,16 @@ export class FolderView implements CompareView {
         workPartNode.changes.children = [];
       workPartNode.changes.children.push(node);
       workPartNode.changes = node;
+
+      elem = this.addNode(workPartNode.selectbar.elem as HTMLElement, data,
+        'selectbar',
+        'selectbar', this.recvIndex
+      );
+      node = { parent: workPartNode.selectbar, elem };
+      if(!workPartNode.selectbar.children)
+        workPartNode.selectbar.children = [];
+      workPartNode.selectbar.children.push(node);
+      workPartNode.selectbar = node;
 
       this.lastPartNode = workPartNode;
     } else { //if(diff <= 0) {
@@ -633,6 +664,30 @@ export class FolderView implements CompareView {
           workNode.children = [];
         workNode.children.push(node);
         workPartNode.changes = node as Node;
+      }
+
+      workNodeOrList = getParentNodeOrList.bind(this)(workPartNode.selectbar, diff, 'selectbar');
+
+      if(Array.isArray(workNodeOrList)) {
+        let elem: HTMLElement, node: Node;
+        elem = this.addNode(this.list_selectbar.firstChild as HTMLElement, data,
+          'selectbar',
+          'selectbar', this.recvIndex
+        );
+        node = { parent: null, elem };
+        this.partNodeList.selectbar.push(node);
+        workPartNode.selectbar = node as Node;
+      } else {
+        const workNode: Node = workNodeOrList as Node;
+        const elem: HTMLElement = this.addNode(workNode.elem, data,
+          'selectbar',
+          'selectbar', this.recvIndex
+        );
+        const node: Node = { parent: workNode, elem };
+        if(!workNode.children)
+          workNode.children = [];
+        workNode.children.push(node);
+        workPartNode.selectbar = node as Node;
       }
 
       this.lastPartNode = workPartNode;
