@@ -5,9 +5,9 @@ import { $ } from "../../util/dom";
 interface Node {
   parent: Node | null;
   elem: HTMLElement;
-  type: 'file' | 'folder';
   children?: Node[];
-  depth: number;
+  // type: 'file' | 'folder';
+  // depth: number;
 }
 
 export interface FolderViewOptions {}
@@ -400,7 +400,7 @@ export class FolderView implements CompareView {
     if(this.treeList == null) {
       this.treeList = [];
       const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
-      const node: Node = { parent: null, elem, type: data.type, depth: data.depth};
+      const node: Node = { parent: null, elem };
       this.treeList.push(node);
       this.nextNode = node;
       this.lastRecvData = currRecvData;
@@ -415,7 +415,7 @@ export class FolderView implements CompareView {
     if(diff > 0) { // only +1
       workNode = this.nextNode;
       const elem: HTMLElement = this._addNode(workNode.elem, data);
-      const node: Node = { parent: workNode, elem, type: data.type, depth: data.depth};
+      const node: Node = { parent: workNode, elem };
       if(!workNode.children)
         workNode.children = [];
       workNode.children.push(node);
@@ -440,13 +440,13 @@ export class FolderView implements CompareView {
       // console.log('workNodeOrList === this.treeList =', workNodeOrTreeList === this.treeList);
       if(workNodeOrTreeList == this.treeList) {
         const elem: HTMLElement = this._addNode(this.list_lhs.firstChild as HTMLElement, data);
-        const node: Node = { parent: null, elem, type: data.type, depth: data.depth};
+        const node: Node = { parent: null, elem };
         this.treeList.push(node);
         this.nextNode = node;
       } else {
         workNode = workNodeOrTreeList as Node;
         const elem: HTMLElement = this._addNode(workNode.elem, data);
-        const node: Node = { parent: workNode, elem, type: data.type, depth: data.depth};
+        const node: Node = { parent: workNode, elem };
         if(!workNode.children)
           workNode.children = [];
         workNode.children.push(node);
