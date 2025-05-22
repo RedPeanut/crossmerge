@@ -471,7 +471,6 @@ export class FolderView implements CompareView {
 
     // add node n make tree
     // console.log('data =', data);
-    const currRecvData = data;
 
     // 최초
     // console.log('this.lastRecvData =', this.lastRecvData);
@@ -521,12 +520,12 @@ export class FolderView implements CompareView {
       workPartNode.selectbar = node;
 
       this.lastPartNode = workPartNode;
-      this.lastRecvData = currRecvData;
+      this.lastRecvData = data;
       this.recvIndex++;
       return;
     }
 
-    const diff = currRecvData.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
+    const diff = data.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
     // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
 
     if(diff > 0) { // only +1
@@ -733,7 +732,7 @@ export class FolderView implements CompareView {
     } */
 
     // console.log('this.treeList =', this.treeList);
-    this.lastRecvData = currRecvData;
+    this.lastRecvData = data;
     this.recvIndex++;
   }
 }
