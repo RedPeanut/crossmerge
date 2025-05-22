@@ -375,9 +375,11 @@ export class FolderView implements CompareView {
     node.id = `node_${part}_${index}`;
 
     if(mode == 'empty') {
+      const content = $(".content");
       if(hasChildren) {
         if(isCollapsed) node.classList.add('collapsed');
       }
+      node.appendChild(content);
       container.appendChild(node);
       return node;
     } else if(mode == 'changes') {
@@ -399,9 +401,11 @@ export class FolderView implements CompareView {
         // return false;
       }
 
+      const content = $(".content");
       if(hasChildren) {
         if(isCollapsed) node.classList.add('collapsed');
       }
+      node.appendChild(content);
       container.appendChild(node);
       return node;
     }
