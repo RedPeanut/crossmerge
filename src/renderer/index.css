@@ -228,9 +228,9 @@ body { height: 100%; }
   /* min-height: 22px; */
   border: 1px solid black;
 }
-.folder-compare-view .lists .node.selected {
+.folder-compare-view .lists .node.selected > .content {
   /* background-color: rgb(71 85 102); border-radius: 4px; */
-  background-color: rgba(0,38,88,0.5);
+  background-color: rgba(0,99,225,0.3);
 }
 .folder-compare-view .lists .node .content {
   /* margin: 2px 0; */
