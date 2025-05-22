@@ -45,9 +45,8 @@ export class FolderView implements CompareView {
   list_rhs: HTMLElement;
 
   /*
-  treeList = [
-    // only directory have children
-    // directory can have no children
+  // only directory have children but can have no children
+  Node[] = [
     {
       parent: null, elem, type: 'directory',
       children: [
@@ -66,8 +65,6 @@ export class FolderView implements CompareView {
   ]
   */
 
-  // treeList: Node[];
-  // lastNode;
   partNodeList: PartNodeList;
   lastPartNode: PartNode;
   lastRecvData: CompareFolderData; // for find depth change
@@ -342,8 +339,6 @@ export class FolderView implements CompareView {
   doCompare(): void {
 
     // reset
-    // this.treeList = null;
-    // this.lastNode = null;
     this.partNodeList = { left: [], right: [], changes: [], selectbar: [] };
     this.lastPartNode = null; //{ left: null, right: null, changes: null };
     this.lastRecvData = null;
@@ -392,11 +387,11 @@ export class FolderView implements CompareView {
       if(hasChildren) {
         if(isCollapsed) node.classList.add('collapsed');
       }
-
       node.appendChild(content);
       container.appendChild(node);
       return node;
     } else if(mode == 'selectbar') {
+
       node.onclick = (e) => {
         console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
@@ -475,15 +470,6 @@ export class FolderView implements CompareView {
     // 최초
     // console.log('this.lastRecvData =', this.lastRecvData);
     if(this.recvIndex == 0) {
-      /* this.treeList = [];
-
-      const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
-      const node: Node = { parent: null, elem };
-
-      this.treeList.push(node);
-      this.lastNode = node;
-      this.lastRecvData = currRecvData; */
-
       let elem: HTMLElement, node: Node;
       const workPartNode: PartNode = { left: null, right: null, changes: null, selectbar: null };
 
@@ -692,46 +678,6 @@ export class FolderView implements CompareView {
       this.lastPartNode = workPartNode;
     }
 
-    /* let workNode: Node;
-
-    if(diff > 0) { // only +1
-      workNode = this.lastNode;
-      const elem: HTMLElement = this.addNode(workNode.elem, data);
-      const node: Node = { parent: workNode, elem };
-      if(!workNode.children)
-        workNode.children = [];
-      workNode.children.push(node);
-      this.lastNode = node;
-    } else if(diff <= 0) {
-      let workNodeOrList: Node|Node[];
-
-      function getParentNodeOrList(node: Node, diff: number): Node|Node[] {
-        if(diff < 0)
-          return getParentNodeOrList.bind(this)(node.parent, diff+1);
-        if(node.parent == null) //
-          return this.treeList;
-        return node.parent;
-      }
-
-      workNodeOrList = getParentNodeOrList.bind(this)(this.lastNode, diff);
-
-      if(workNodeOrList == this.treeList) {
-        const elem: HTMLElement = this.addNode(this.list_lhs.firstChild as HTMLElement, data);
-        const node: Node = { parent: null, elem };
-        this.treeList.push(node);
-        this.lastNode = node;
-      } else {
-        workNode = workNodeOrList as Node;
-        const elem: HTMLElement = this.addNode(workNode.elem, data);
-        const node: Node = { parent: workNode, elem };
-        if(!workNode.children)
-          workNode.children = [];
-        workNode.children.push(node);
-        this.lastNode = node;
-      }
-    } */
-
-    // console.log('this.treeList =', this.treeList);
     this.lastRecvData = data;
     this.recvIndex++;
   }
