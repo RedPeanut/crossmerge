@@ -5,6 +5,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import { mainWindow } from './main';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -100,6 +101,40 @@ export default class MenuBuilder {
         },
       ],
     };
+
+    const subMenuMerging: MenuItemConstructorOptions = {
+      label: 'Merging',
+      submenu: [
+        { label: 'Current Change', submenu: [
+          { label: 'Push to Left', accelerator: 'Ctrl+Shift+Left', },
+          { label: 'Push to Right', accelerator: 'Ctrl+Shift+Right', }
+        ] },
+      ],
+    };
+
+    const subMenuActions: MenuItemConstructorOptions = {
+      label: 'Actions',
+      submenu: [
+        { label: 'Select Rows', submenu: [
+          { label: 'Select Changed', accelerator: 'Command+Ctrl+C',
+            click(item, focusedWindow) {
+              mainWindow.send('menu click', { cmd: 'actions:select changed' });
+            }
+          }
+        ] },
+        { label: 'Expand All Folders', accelerator: 'Command+Ctrl+=',
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', { cmd: 'actions:expand all folders' });
+          }
+        },
+        { label: 'Collapse All Folders', accelerator: 'Command+Ctrl+-',
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', { cmd: 'actions:collapse all folders' });
+          }
+        },
+      ],
+    };
+
     const subMenuViewDev: MenuItemConstructorOptions = {
       label: 'View',
       submenu: [
@@ -189,7 +224,9 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [subMenuAbout, subMenuEdit,
+      subMenuMerging, subMenuActions,
+      subMenuView, subMenuWindow, subMenuHelp];
   }
 
   buildDefaultTemplate() {

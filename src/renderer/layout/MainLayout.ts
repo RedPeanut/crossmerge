@@ -96,6 +96,11 @@ export class MainLayout extends Layout implements MainLayoutService {
     window.ipc.on('compare folder end', (...args: any[]) => {
       // console.log('compare folder end event is called ..');
     });
+
+    window.ipc.on('menu click', (...args: any[]) => {
+      console.log('menu click event is called ..');
+      console.log('args[1] =', args[1]);
+    });
   }
 
   startup(): void {

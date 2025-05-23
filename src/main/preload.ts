@@ -27,6 +27,9 @@ export type RenderEvents =
   | 'compare folder start'
   | 'compare folder data'
   | 'compare folder end'
+
+  // menu
+  | 'menu click'
 ;
 
 export type Channels = MainEvents | RenderEvents;
