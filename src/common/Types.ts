@@ -1,6 +1,6 @@
 import { CompareFolderElem } from "../main/compare/CompareFolder";
 
-export type State = undefined | 'unchanged' | 'changed' | 'removed' | 'inserted';
+export type State = 'unchanged' | 'changed' | 'removed' | 'inserted';
 export type CompareItemType = 'file' | 'folder';
 
 // description of compare state

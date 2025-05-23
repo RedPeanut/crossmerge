@@ -466,7 +466,6 @@ export class FolderView implements CompareView {
     console.log(icon + ' ' + indent + data.data.name); //*/
 
     // TODO: use system icon
-    // TODO: occur expand event to parent node when state is not unchanged (changed, removed in left, inserted in right)
 
     // add node n make tree
     // console.log('data =', data);
@@ -513,6 +512,19 @@ export class FolderView implements CompareView {
       this.lastRecvData = data;
       this.recvIndex++;
       return;
+    }
+
+    function getParentNodeOrList(node: Node, diff: number, part: string): Node|Node[] {
+      if(diff < 0)
+        return getParentNodeOrList.bind(this)(node.parent, diff+1, part);
+      if(node.parent == null) {
+        if(part == 'left') return this.partNodeList.left;
+        if(part == 'right') return this.partNodeList.right;
+        if(part == 'changes') return this.partNodeList.changes;
+        if(part == 'selectbar') return this.partNodeList.selectbar;
+        throw new Error('do not enter here');
+      }
+      return node.parent;
     }
 
     const diff = data.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
@@ -566,20 +578,6 @@ export class FolderView implements CompareView {
       this.lastPartNode = workPartNode;
     } else { //if(diff <= 0) {
       const workPartNode: PartNode = this.lastPartNode;
-
-      function getParentNodeOrList(node: Node, diff: number, part: string): Node|Node[] {
-        if(diff < 0)
-          return getParentNodeOrList.bind(this)(node.parent, diff+1, part);
-        if(node.parent == null) {
-          if(part == 'left') return this.partNodeList.left;
-          if(part == 'right') return this.partNodeList.right;
-          if(part == 'changes') return this.partNodeList.changes;
-          if(part == 'selectbar') return this.partNodeList.selectbar;
-          throw new Error('do not enter here');
-        }
-        return node.parent;
-      }
-
       let workNodeOrList: Node|Node[];
 
       workNodeOrList = getParentNodeOrList.bind(this)(workPartNode.left, diff, 'left');
@@ -681,6 +679,38 @@ export class FolderView implements CompareView {
 
       this.lastPartNode = workPartNode;
     }
+
+    // HERE: occur expand event to parent node when changed states are met
+
+    ///*
+    if(data.state != 'unchanged') {
+      // 주의. this.lastPartNode 에 현재 노드 교체된 상태
+      let workedNode: Node, part: string;
+      if(data.state == 'removed') {
+        workedNode = this.lastPartNode.left; part = 'left';
+      } else if(data.state == 'inserted' || data.state == 'changed') {
+        workedNode = this.lastPartNode.right; part = 'right';
+      }
+
+      for(let i = 0; i >= -data.depth; i--) {
+        const nodeOrList = getParentNodeOrList.bind(this)(workedNode, i, part);
+        if(Array.isArray(nodeOrList)) { // root
+        } else {
+          const node = nodeOrList as Node;
+          // console.log(node.elem.id);
+          const id = node.elem.id; // node_${part}_${index}
+          const index = id.split('_')[2]; // pick index
+
+          // clear collapsed in all
+          let all = '|left|right|changes|selectbar';
+          if(all.startsWith('|')) all = all.substring(1);
+          let alls: string[] = all.split('|');
+          for(let i = 0; i < alls.length; i++) {
+            document.getElementById(`node_${alls[i]}_${index}`).classList.remove('collapsed');
+          }
+        }
+      }
+    } //*/
 
     this.lastRecvData = data;
     this.recvIndex++;

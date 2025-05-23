@@ -327,7 +327,7 @@ export class CompareFolder {
         mainWindow.send('compare folder data', {
           uid: this.uid,
           type: 'folder', depth, index: i,
-          parent, data: elem, state: undefined, length: length_array[i]
+          parent, data: elem, state: 'unchanged', length: length_array[i]
         });
 
         const _path_lhs = path_lhs + '/' + elem.name;
