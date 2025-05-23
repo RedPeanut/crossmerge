@@ -85,7 +85,7 @@ class MainWindow {
 
   installIpc = () => {
     ipcMain.on('new', async (event, args: any[]) => {
-      console.log('[index.ts/new] args =', args);
+      console.log('[new] args =', args);
       const arg = args[0] as CompareItem;
       if(arg.type == 'file') {
 
