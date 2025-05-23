@@ -7,6 +7,9 @@ export type MainEvents =
   // compare
   'new'
 
+  // menu
+  | 'menu enable'
+
   // window
   | 'maximize'
   | 'minimize'

@@ -125,6 +125,12 @@ export class MainLayout extends Layout implements MainLayoutService {
       console.log('resize event is called ..');
       this._handleResize();
     });
+
+    window.ipc.send('menu enable', [
+      { menu: 'merging:current change:push to left', enable: false },
+      { menu: 'actions:expand all folders', enable: false },
+      { menu: 'actions:collapse all folders', enable: false },
+    ]);
   }
 
   _handleResize;

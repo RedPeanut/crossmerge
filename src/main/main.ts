@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, screen, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -93,6 +93,65 @@ class MainWindow {
         const ret = await new CompareFolder(arg.uid).run(arg);
         console.log('ret =', ret);
       }
+    });
+    ipcMain.on('menu enable', (event, args: any[]) => {
+      console.log('[menu enable] args =', args);
+      const arg = args[0];
+      const applicationMenu = Menu.getApplicationMenu();
+      applicationMenu.items.find((el) => {});
+
+      // console.log('applicationMenu =', applicationMenu);
+
+      /*
+      applicationMenu = <ref *1> Menu {
+        (object) commandsMap: {
+          'NN': MenuItem {
+            label: 'Label',
+            submenu: [Menu],
+            type: 'submenu',
+            role: null,
+            accelerator: null,
+            icon: null,
+            sublabel: '',
+            toolTip: '',
+            enabled: true,
+            visible: true,
+            checked: false,
+            acceleratorWorksWhenHidden: true,
+            registerAccelerator: true,
+            commandId: 93,
+            userAccelerator: [Getter],
+            click: [Function (anonymous)],
+            menu: [Circular *1]
+          },
+          ...
+        }
+        (array) items: [
+          MenuItem {
+            label: 'Label',
+            submenu: [Menu],
+            type: 'submenu',
+            role: null,
+            accelerator: null,
+            icon: null,
+            sublabel: '',
+            toolTip: '',
+            enabled: true,
+            visible: true,
+            checked: false,
+            acceleratorWorksWhenHidden: true,
+            registerAccelerator: true,
+            commandId: 93,
+            userAccelerator: [Getter],
+            click: [Function (anonymous)],
+            menu: [Circular *1]
+          },
+          ...
+        ]
+      }
+      */
+
+      // for(let i = 0; i < arg.length; i++) {}
     });
   }
 
