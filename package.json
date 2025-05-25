@@ -2,12 +2,13 @@
   "name": "crossmerge",
   "productName": "crossmerge",
   "version": "0.1.9",
-  "description": "My Electron application description",
+  "description": "Crossplatform Merge App",
   "main": "./.erb/dll/main.bundle.dev.js",
   "keywords": [
     "electron",
     "crossplatfrom",
-    "typescript"
+    "typescript",
+    "merge"
   ],
   "author": {
     "name": "김진규",
@@ -120,8 +121,8 @@
     "webpack-merge": "5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "crossmerge",
+    "appId": "org.erb.crossmerge",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -180,8 +181,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "RedPeanut",
+      "repo": "crossmerge"
     }
   },
   "collective": {
@@ -190,7 +191,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=14.x",
+      "version": ">=16.x",
       "onFail": "error"
     },
     "packageManager": {
