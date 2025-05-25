@@ -126,11 +126,11 @@ export class MainLayout extends Layout implements MainLayoutService {
       this._handleResize();
     });
 
-    window.ipc.send('menu enable', [
+    /* window.ipc.send('menu enable', [
       { menu: 'merging:current change:push to left', enable: false },
       { menu: 'actions:expand all folders', enable: false },
       { menu: 'actions:collapse all folders', enable: false },
-    ]);
+    ]); */
   }
 
   _handleResize;

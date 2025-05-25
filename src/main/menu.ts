@@ -60,7 +60,7 @@ export default class MenuBuilder {
     const self = this;
 
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'crossterm',
       submenu: [
         {
           label: 'About ElectronReact',

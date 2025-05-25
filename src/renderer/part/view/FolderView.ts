@@ -393,7 +393,6 @@ export class FolderView implements CompareView {
       container.appendChild(node);
       return node;
     } else if(mode == 'selectbar') {
-
       node.onclick = (e) => {
         console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
