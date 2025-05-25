@@ -1,3 +1,13 @@
+import { ElectronHandler } from '../main/preload';
+declare global {
+  interface Window {
+    ipc: ElectronHandler;
+  }
+}
+
+export type CodeWindow = Window & typeof globalThis;
+export const mainWindow = window as CodeWindow;
+
 import { CompareFileData, CompareFolderData, CompareItem } from "../common/Types";
 
 export type Group = CompareItem[];

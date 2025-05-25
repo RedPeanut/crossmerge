@@ -1,0 +1,55 @@
+/* Common */
+* { margin: 0; padding: 0; }
+html { height: 100%;
+  /* color: white; */
+}
+body { height: 100%; }
+
+/* Preferences */
+.preferences { display: flex; height: 100%; width: 100%;
+  height: calc(100% - 30px);
+  width: calc(100% - 24px);
+  padding: 15px 12px;
+  background: rgb(237,233,240);
+}
+
+.preferences > * {
+  border: 1px solid black;
+}
+
+.tree { width: 160px; height: 100%; overflow: hidden; }
+.body { flex: 1; height: 100%; }
+
+.tree .codicon { display: flex; }
+
+.node {
+  width: 100%;
+  font-size: 14px;
+  /* border: 1px solid black; */
+}
+.node.selected > .content {
+  background-color: rgba(0,99,225,0.3);
+}
+.node .content {
+  display: flex; align-items: center;
+  min-height: 23px;
+  position: relative;
+}
+.node .content.selected .ln-body {
+  background-color: rgb(0,119,214);
+  color: white;
+  border: 1px dotted;
+  /* border-style: dotted;
+  border-color:  */
+}
+.node .ln-header { width: 20px; height: 20px; display: flex; flex-direction: column; }
+.node .ln-header .up { height: 50%;
+  border-left: 1px dotted;
+  border-bottom: 1px dotted;
+}
+.node .ln-header .down { height: 50%;
+  border-left: 1px dotted;
+}
+.node .ln-body {
+  /* width: 100%; */
+}

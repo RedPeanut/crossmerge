@@ -4,17 +4,7 @@ import '@vscode/codicons/dist/codicon.css';
 import './index.css';
 import { MainLayout, MainLayoutService } from './layout/MainLayout';
 import { domContentLoaded } from './util/dom';
-
-import { ElectronHandler } from '../main/preload';
-
-declare global {
-  interface Window {
-    ipc: ElectronHandler;
-  }
-}
-
-export type CodeWindow = Window & typeof globalThis;
-export const mainWindow = window as CodeWindow;
+import { mainWindow } from './Types';
 
 export class Renderer {
   constructor() {}

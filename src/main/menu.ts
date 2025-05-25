@@ -5,7 +5,9 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
+import path from 'path';
 import { mainWindow } from './main';
+import { resolveHtmlPath } from './utils';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -14,6 +16,7 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 
 export default class MenuBuilder {
   browserWindow: BrowserWindow;
+  preferences: BrowserWindow;
 
   constructor(mainWindow: BrowserWindow) {
     this.browserWindow = mainWindow;
@@ -54,12 +57,41 @@ export default class MenuBuilder {
   }
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
+    const self = this;
+
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
       label: 'Electron',
       submenu: [
         {
           label: 'About ElectronReact',
           selector: 'orderFrontStandardAboutPanel:',
+        },
+        { type: 'separator' },
+        {
+          label: 'Preferences...',
+          accelerator: 'Command+,',
+          click(item, focusedWindow) {
+            if(self.preferences && !self.preferences.isDestroyed()) {
+              self.preferences.show();
+            } else {
+              const preferences = self.preferences = new BrowserWindow({
+                parent: self.browserWindow, modal: false, show: false,
+                // titleBarStyle: 'hidden',
+                titleBarStyle: 'default',
+                title: 'Preferences',
+                // x, y, width, height,
+                webPreferences: {
+                  preload: app.isPackaged
+                    ? path.join(__dirname, 'preload.js')
+                    : path.join(__dirname, '../../.erb/dll/preload.js'),
+                },
+              });
+              preferences.loadURL(resolveHtmlPath('preferences.html'));
+              preferences.once('ready-to-show', () => {
+                preferences.show();
+              });
+            }
+          },
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },

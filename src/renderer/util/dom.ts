@@ -1,6 +1,6 @@
-//# region Multi-Window Support Utilities
+import { CodeWindow, mainWindow } from "../Types";
 
-import { mainWindow, CodeWindow } from "..";
+//# region Multi-Window Support Utilities
 
 export const {
   getWindow,
