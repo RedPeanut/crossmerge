@@ -11,12 +11,13 @@ export type MainEvents =
   | 'menu enable'
 
   // window
-  | 'maximize'
-  | 'minimize'
-  | 'resize'
-  | 'open context menu'
-  | 'close'
-  | 'command'
+  | 'window move'
+  | 'window maximize'
+  | 'window minimize'
+  | 'window resize'
+  | 'window open context menu'
+  | 'window close'
+  | 'window command'
 
   // config
   | 'config all'
