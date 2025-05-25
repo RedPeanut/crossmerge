@@ -11,11 +11,11 @@ interface Node {
 }
 
 interface PartNodeList {
-    left: Node[];
-    right: Node[];
-    changes: Node[];
-    // scrollbar: Node[]; // left
-    selectbar: Node[];
+  left: Node[];
+  right: Node[];
+  changes: Node[];
+  // scrollbar: Node[]; // left
+  selectbar: Node[];
 }
 
 interface PartNode {

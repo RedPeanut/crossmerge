@@ -94,6 +94,7 @@ class MainWindow {
         console.log('ret =', ret);
       }
     });
+
     ipcMain.on('menu enable', (event, args: any[]) => {
       console.log('[menu enable] args =', args);
       const arg = args[0];
