@@ -15,6 +15,7 @@ export default class DiffWorker extends EventEmitter {
         split = 'lines'
       } = options;
       const diff = new Diff(lhs, rhs, { ignorews, ignoreaccents, ignorecase, split });
+      console.log('diff.changes() =', diff.changes());
       console.log('diff.normal_form() =', diff.normal_form());
       const changes = new DiffParser().parse(diff.normal_form());
       console.log('changes =', changes);

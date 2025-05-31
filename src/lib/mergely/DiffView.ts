@@ -35,7 +35,10 @@ export default class CodeMirrorDiffView {
   _linkedScrollTimeout;
   _unbound;
   _changedTimeout;
-  editor;
+  editor: {
+    lhs?: CodeMirror.EditorFromTextArea,
+    rhs?: CodeMirror.EditorFromTextArea,
+  };
   _origEl;
   changes;
   _current_diff;
@@ -810,7 +813,7 @@ export default class CodeMirrorDiffView {
     return true;
   }
 
-  _calculateOffsets (changes) {
+  _calculateOffsets(changes) {
     if(this.settings._debug) {
       traceTimeStart('draw#_calculateOffsets');
     }
@@ -831,8 +834,8 @@ export default class CodeMirrorDiffView {
     const mode = 'local';
     const lineWrapping = led.getOption('lineWrapping')
       || red.getOption('lineWrapping');
-    const lhschc = !lineWrapping ? led.charCoords({ line: 0 }, mode) : null;
-    const rhschc = !lineWrapping ? red.charCoords({ line: 0 }, mode) : null;
+    const lhschc = !lineWrapping ? led.charCoords({ line: 0, ch: 0 }, mode) : null;
+    const rhschc = !lineWrapping ? red.charCoords({ line: 0, ch: 0 }, mode) : null;
     const lhsvp = this._getViewportSide('lhs');
     const rhsvp = this._getViewportSide('rhs');
 
