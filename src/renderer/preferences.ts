@@ -16,7 +16,7 @@ export class Preferences {
   container: HTMLElement;
   element: HTMLElement;
   tree: HTMLElement;
-  body: HTMLElement;
+  contents: HTMLElement;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -65,9 +65,7 @@ export class Preferences {
 
             const patternsLabel = $('label');
             patternsLabel.innerHTML = 'Patterns for the active filter:';
-
             const patternsTable = $('table');
-
             const patternsNewBtn = $('button');
             const patternsEditBtn = $('button');
             const patternsDelBtn = $('button');
@@ -78,9 +76,9 @@ export class Preferences {
         ],
       }
     ];
-    this.addNodes(this.tree, tree, 0);
+    this.addNodes(this.tree, tree, 0, '');
     this.callRenders(tree, 0, '');
-    // (this.body.firstChild as HTMLElement).getElementsByClassName('content')
+    (this.tree.getElementsByClassName('content')[1] as HTMLElement).click();
   }
 
   callRender(data: Node, level: number, id: string): void {
@@ -91,21 +89,22 @@ export class Preferences {
     container.appendChild(title);
     if(data.render) data.render(container, data);
     container.style.display = 'none';
-    this.body.appendChild(container);
+    this.contents.appendChild(container);
   }
 
-  callRenders(list: Node[], level: number, label: string): void {
+  callRenders(list: Node[], level: number, id: string): void {
     for(let i = 0; i < list.length; i++) {
-      let id = label + '-' + list[i].label.replace(/ /g, '_');
-      if(id.startsWith('-')) id = id.substring(1);
-      this.callRender(list[i], level, id);
+      let _id = id + '-' + list[i].label.replace(/ /g, '_');
+      if(_id.startsWith('-')) _id = _id.substring(1);
+
+      this.callRender(list[i], level, _id);
       if(list[i].children) {
-        this.callRenders(list[i].children, level+1, id);
+        this.callRenders(list[i].children, level+1, _id);
       }
     }
   }
 
-  addNode(container: HTMLElement, data: Node, level: number): HTMLElement {
+  addNode(container: HTMLElement, data: Node, level: number, id: string): HTMLElement {
     const hasChildren = data.children && data.children.length > 0, isCollapsed = false;
     const node = $(".node");
 
@@ -114,7 +113,21 @@ export class Preferences {
     const body = $(".ln-body");
     body.innerHTML = data.label;
     content.onclick = (e) => {
-      // content.classList.contains('selected')
+      const contents = this.tree.getElementsByClassName('content');
+      for(let i = 0; i < contents.length; i++) {
+        if(contents[i].classList.contains('selected'))
+          contents[i].classList.remove('selected');
+      }
+      content.classList.add('selected');
+
+      const containers = this.contents.getElementsByClassName('container');
+      for(let i = 0; i < containers.length; i++) {
+        const container = containers[i] as HTMLElement;
+        if(container.id == id)
+          container.style.display = 'block';
+        else
+          container.style.display = 'none';
+      }
     }
 
     if(level != 0) {
@@ -131,12 +144,16 @@ export class Preferences {
     return node;
   }
 
-  addNodes(container: HTMLElement, list: Node[], level): void {
+  addNodes(container: HTMLElement, list: Node[], level: number, id: string): void {
     for(let i = 0; i < list.length; i++) {
-      const node = this.addNode(container, list[i], level);
+      let _id = id + '-' + list[i].label.replace(/ /g, '_');
+      if(_id.startsWith('-')) _id = _id.substring(1);
+
+      const node = this.addNode(container, list[i], level, _id);
       if(list[i].children) {
-        this.addNodes(node, list[i].children, level+1);
+        this.addNodes(node, list[i].children, level+1, _id);
       }
+
       if(i == list.length-1 && level != 0) {
         const header_down = node.getElementsByClassName('down')[0] as HTMLElement;
         if(header_down) {
@@ -151,18 +168,38 @@ export class Preferences {
     const el = this.element = $('.preferences');
 
     /*
-    <div class="tree">
-      nodes ..
+    <div class="content_area">
+      <div class="tree">
+        nodes ..
+      </div>
+      <div class="body">
+      </div>
     </div>
-    <div class="body">
+    <div class="btn_area">
     </div>
     */
 
+    const contents_area = $('.contents_area');
     const tree = this.tree = $('.tree');
-    const body = this.body = $('.body');
+    const contents = this.contents = $('.contents');
 
-    el.appendChild(tree);
-    el.appendChild(body);
+    contents_area.appendChild(tree);
+    contents_area.appendChild(contents);
+    el.appendChild(contents_area);
+
+    const btn_area = $('.btn_area');
+    const loadBtn = $('button'); loadBtn.innerHTML = 'Load...';
+    const saveBtn = $('button'); saveBtn.innerHTML = 'Save...';
+    const okBtn = $('button'); okBtn.innerHTML = 'Ok';
+    const cancelBtn = $('button'); cancelBtn.innerHTML = 'Cancel';
+    const applyBtn = $('button'); applyBtn.innerHTML = 'Apply';
+
+    btn_area.appendChild(loadBtn);
+    btn_area.appendChild(saveBtn);
+    btn_area.appendChild(okBtn);
+    btn_area.appendChild(cancelBtn);
+    btn_area.appendChild(applyBtn);
+    el.appendChild(btn_area);
     return el;
   }
 
