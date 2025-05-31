@@ -67,8 +67,8 @@ export class FolderView implements CompareView {
 
   partNodeList: PartNodeList;
   lastPartNode: PartNode;
-  lastRecvData: CompareFolderData; // for find depth change
-  recvIndex: number;
+  lastData: CompareFolderData; // for find depth change
+  index: number;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -341,8 +341,8 @@ export class FolderView implements CompareView {
     // reset
     this.partNodeList = { left: [], right: [], changes: [], selectbar: [] };
     this.lastPartNode = null; //{ left: null, right: null, changes: null };
-    this.lastRecvData = null;
-    this.recvIndex = 0;
+    this.lastData = null;
+    this.index = 0;
 
     const parts = [ this.list_lhs, this.list_changes, this.list_rhs ];
     for(let i = 0; i < parts.length; i++) {
@@ -471,13 +471,13 @@ export class FolderView implements CompareView {
 
     // 최초
     // console.log('this.lastRecvData =', this.lastRecvData);
-    if(this.recvIndex == 0) {
+    if(this.index == 0) {
       let elem: HTMLElement, node: Node;
       const workPartNode: PartNode = { left: null, right: null, changes: null, selectbar: null };
 
       elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
         data.data.side.indexOf('left') > -1 ? null : 'empty',
-        'left', this.recvIndex
+        'left', this.index
       );
       node = { parent: null, elem };
       this.partNodeList.left.push(node);
@@ -485,7 +485,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(this.list_rhs.firstChild as HTMLElement, data,
         data.data.side.indexOf('right') > -1 ? null : 'empty',
-        'right', this.recvIndex
+        'right', this.index
       );
       node = { parent: null, elem };
       this.partNodeList.right.push(node);
@@ -493,7 +493,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(this.list_changes.firstChild as HTMLElement, data,
         'changes',
-        'changes', this.recvIndex,
+        'changes', this.index,
       );
       node = { parent: null, elem };
       this.partNodeList.changes.push(node);
@@ -501,15 +501,15 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(this.list_selectbar.firstChild as HTMLElement, data,
         'selectbar',
-        'selectbar', this.recvIndex,
+        'selectbar', this.index,
       );
       node = { parent: null, elem };
       this.partNodeList.changes.push(node);
       workPartNode.selectbar = node;
 
       this.lastPartNode = workPartNode;
-      this.lastRecvData = data;
-      this.recvIndex++;
+      this.lastData = data;
+      this.index++;
       return;
     }
 
@@ -526,7 +526,7 @@ export class FolderView implements CompareView {
       return node.parent;
     }
 
-    const diff = data.depth - (this.lastRecvData ? this.lastRecvData.depth : 0);
+    const diff = data.depth - (this.lastData ? this.lastData.depth : 0);
     // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
 
     if(diff > 0) { // only +1
@@ -536,7 +536,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(workPartNode.left.elem as HTMLElement, data,
         data.data.side.indexOf('left') > -1 ? null : 'empty',
-        'left', this.recvIndex
+        'left', this.index
       );
       node = { parent: workPartNode.left, elem };
       if(!workPartNode.left.children)
@@ -546,7 +546,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(workPartNode.right.elem as HTMLElement, data,
         data.data.side.indexOf('right') > -1 ? null : 'empty',
-        'right', this.recvIndex
+        'right', this.index
       );
       node = { parent: workPartNode.right, elem };
       if(!workPartNode.right.children)
@@ -556,7 +556,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(workPartNode.changes.elem as HTMLElement, data,
         'changes',
-        'changes', this.recvIndex
+        'changes', this.index
       );
       node = { parent: workPartNode.changes, elem };
       if(!workPartNode.changes.children)
@@ -566,7 +566,7 @@ export class FolderView implements CompareView {
 
       elem = this.addNode(workPartNode.selectbar.elem as HTMLElement, data,
         'selectbar',
-        'selectbar', this.recvIndex
+        'selectbar', this.index
       );
       node = { parent: workPartNode.selectbar, elem };
       if(!workPartNode.selectbar.children)
@@ -586,7 +586,7 @@ export class FolderView implements CompareView {
         let elem: HTMLElement, node: Node;
         elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
           data.data.side.indexOf('left') > -1 ? null : 'empty',
-          'left', this.recvIndex
+          'left', this.index
         );
         node = { parent: null, elem };
         this.partNodeList.left.push(node);
@@ -595,7 +595,7 @@ export class FolderView implements CompareView {
         const workNode: Node = workNodeOrList as Node;
         const elem: HTMLElement = this.addNode(workNode.elem, data,
           data.data.side.indexOf('left') > -1 ? null : 'empty',
-          'left', this.recvIndex
+          'left', this.index
         );
         const node: Node = { parent: workNode, elem };
         if(!workNode.children)
@@ -610,7 +610,7 @@ export class FolderView implements CompareView {
         let elem: HTMLElement, node: Node;
         elem = this.addNode(this.list_rhs.firstChild as HTMLElement, data,
           data.data.side.indexOf('right') > -1 ? null : 'empty',
-          'right', this.recvIndex
+          'right', this.index
         );
         node = { parent: null, elem };
         this.partNodeList.right.push(node);
@@ -619,7 +619,7 @@ export class FolderView implements CompareView {
         const workNode: Node = workNodeOrList as Node;
         const elem: HTMLElement = this.addNode(workNode.elem, data,
           data.data.side.indexOf('right') > -1 ? null : 'empty',
-          'right', this.recvIndex
+          'right', this.index
         );
         const node: Node = { parent: workNode, elem };
         if(!workNode.children)
@@ -634,7 +634,7 @@ export class FolderView implements CompareView {
         let elem: HTMLElement, node: Node;
         elem = this.addNode(this.list_changes.firstChild as HTMLElement, data,
           'changes',
-          'changes', this.recvIndex
+          'changes', this.index
         );
         node = { parent: null, elem };
         this.partNodeList.changes.push(node);
@@ -643,7 +643,7 @@ export class FolderView implements CompareView {
         const workNode: Node = workNodeOrList as Node;
         const elem: HTMLElement = this.addNode(workNode.elem, data,
           'changes',
-          'changes', this.recvIndex
+          'changes', this.index
         );
         const node: Node = { parent: workNode, elem };
         if(!workNode.children)
@@ -658,7 +658,7 @@ export class FolderView implements CompareView {
         let elem: HTMLElement, node: Node;
         elem = this.addNode(this.list_selectbar.firstChild as HTMLElement, data,
           'selectbar',
-          'selectbar', this.recvIndex
+          'selectbar', this.index
         );
         node = { parent: null, elem };
         this.partNodeList.selectbar.push(node);
@@ -667,7 +667,7 @@ export class FolderView implements CompareView {
         const workNode: Node = workNodeOrList as Node;
         const elem: HTMLElement = this.addNode(workNode.elem, data,
           'selectbar',
-          'selectbar', this.recvIndex
+          'selectbar', this.index
         );
         const node: Node = { parent: workNode, elem };
         if(!workNode.children)
@@ -711,7 +711,7 @@ export class FolderView implements CompareView {
       }
     } //*/
 
-    this.lastRecvData = data;
-    this.recvIndex++;
+    this.lastData = data;
+    this.index++;
   }
 }
