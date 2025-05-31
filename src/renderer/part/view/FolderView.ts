@@ -177,8 +177,8 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right folder';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
 
     input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);
