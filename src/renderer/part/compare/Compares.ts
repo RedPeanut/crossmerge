@@ -23,9 +23,10 @@ export class Compares {
 
     for(let i = 0; i < this.group.length; i++) {
       const item: CompareItem = this.group[i];
-      let v;
+      let v: FileView|FolderView;
       if(item.type == 'folder') v = new FolderView(el, item);
-      else v = new FileView(el, item);
+      else if(item.type == 'file') v = new FileView(el, item);
+      else throw new Error('do not enter here');
       this.map.set(item.uid, v);
       el.appendChild(v.create());
     }
@@ -44,6 +45,15 @@ export class Compares {
 
       const v = this.map.get(data.uid);
       v.sendRowData(data);
+    }
+  }
+
+  sendReadData(type: CompareItemType, arg: any) {
+    if(type == 'file') {
+      const v = this.map.get(arg.uid);
+      v.sendReadData(arg);
+    } else if(type == 'folder') {
+
     }
   }
 }

@@ -17,7 +17,9 @@ import { resolveHtmlPath } from './utils';
 
 import { CompareItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
+import { ReadFile } from './util/ReadFile';
 import { Channels } from './preload';
+import fs from 'fs';
 
 class AppUpdater {
   constructor() {
@@ -88,7 +90,8 @@ class MainWindow {
       console.log('[new] args =', args);
       const arg = args[0] as CompareItem;
       if(arg.type == 'file') {
-
+        const ret = new ReadFile(arg.uid).run(arg);
+        console.log('ret =', ret);
       } else if(arg.type == 'folder') {
         const ret = await new CompareFolder(arg.uid).run(arg);
         console.log('ret =', ret);

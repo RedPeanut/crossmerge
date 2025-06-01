@@ -97,6 +97,11 @@ export class MainLayout extends Layout implements MainLayoutService {
       // console.log('compare folder end event is called ..');
     });
 
+    window.ipc.on('read file data', (...args: any[]) => {
+      // console.log('read file data event is called ..');
+      this.bodyLayoutService.sendFileViewReadData(args[1]);
+    });
+
     window.ipc.on('menu click', (...args: any[]) => {
       console.log('menu click event is called ..');
       console.log('args[1] =', args[1]);

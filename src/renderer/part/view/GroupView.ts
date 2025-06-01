@@ -44,4 +44,11 @@ export class GroupView {
     }
   }
 
+  sendReadData(type: CompareItemType, arg: any) {
+    if(type == 'file') {
+      const findIndex = this.group.findIndex((e) => e.uid === arg.uid);
+      this.compares.sendReadData(type, arg);
+    } else if(type == 'folder') {
+    }
+  }
 }

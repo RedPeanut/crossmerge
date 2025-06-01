@@ -23,6 +23,7 @@ export interface BodyLayoutService extends Service {
   addFileCompareView(): void;
   addFolderCompareView(): void;
   sendFolderViewRowData(arg: CompareFolderData): void;
+  sendFileViewReadData(arg): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -83,16 +84,23 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   addFileCompareView(): void {
     // console.log('launchFileCompareView ..');
-    const div = document.createElement('div');
+
+    /* const div = document.createElement('div');
     div.id = 'mergely';
-    div.style.height = '400px';
+    div.style.height = '760px';
     this.container.appendChild(div);
 
     const mergely = new Mergely('#mergely', { ...{},
-      lhs: 'the quick red fox\njumped over the hairy dog',
-      rhs: 'the quick brown fox\njumped over the lazy dog',
+      lhs: "Rhea\nRosalind\nS/2003 J 10\nS/2003 J 12\nS/2003 J 15\nS/2003 J 16\nS/2003 J 18\nS/2003 J 19\nS/2003 J 2\nS/2003 J 23\nS/2003 J 3\nS/2003 J 4\nS/2003 J 5\nS/2003 J 9\nS/2004 N 1\nS/2004 S 12\nS/2004 S 13\nS/2004 S 17\nS/2004 S 7\nS/2006 S 1\nS/2006 S 3\nS/2007 S 2\nS/2007 S 3\nS/2009 S 1\nS/2010 J 1\nS/2010 J 2\nS/2011 J 1\nS/2011 J 2\nSao\nSetebos\nSiarnaq\nSinope\nSkathi\nSkoll\nSponde\nStephano\nStyx\nSurtur\nSuttungr\nSycorax\nTarqeq\nTarvos\nTaygete\nTelesto\nTethys\nThalassa\nThebe\nThelxinoe\nThemisto\nThrymr\nThyone\nTitan\nTitania\nTrinculo\nTriton\nUmbriel\nXI\nYmir\n",
+      rhs: "Rhea\nRosalind\nS/2003 J 10\nS/2003 J 12\nS/2003 J 15\nS/2003 J 16\nS/2003 J 18\nS/2003 J 19\nS/2003 J 2\nS/2003 J 23\nS/2003 J 3\nS/2003 J 4\nS/2003 J 5\nS/2003 J 9\nS/2004 N 1 S/2004 N 1S/2004 N 1S/2004 N 1S/2004 N 1S/2004 N 1S/2004 N 1S/2004 N 1\nS/2004 S 12\nS/2004 S 13\nS/2004 S 17\nS/2004 S 7\nS/2006 S 1\nS/2006 S 3\nS/2007 S 2\nS/2007 S 3\nS/2009 S 1\nS/2010 J 1\nS/2010 J 2\nS/2011 J 1\nS/2011 J 2\nSao\nSetebos\nSiarnaq\nSinope Sinope Sinope Sinope Sinope Sinope Sinope Sinope Sinope Sinope\nSkathi\nSkoll\nSponde\nStephano Stephano  Stephano Stephano Stephano Stephano Stephano\nStyx\nSurtur\nSuttungr\nSycorax\nTarqeq\nTarvos\nTaygete\nTelesto\nTethys\nThalassa\nThebe\nThelxinoe\nThemisto\nThrymr\nThyone\nTitan\nTitania\nTrinculo\nTriton\nUmbrella\nXI\nYmir\n"
       // _debug: true,
-    });
+    }); */
+
+    const group: CompareItem[] = [
+      { type: 'file', uid: uuidv4() }, // blank folder compare
+    ];
+    const groupView = this.groupView = new GroupView(this.container, group, {});
+    this.container.appendChild(groupView.create());
   }
 
   addFolderCompareView(): void {
@@ -107,4 +115,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.groupView.sendRowData('folder', arg);
   }
 
+  sendFileViewReadData(arg: any): void {
+    this.groupView.sendReadData('file', arg);
+  }
 }

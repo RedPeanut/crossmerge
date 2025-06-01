@@ -714,4 +714,8 @@ export class FolderView implements CompareView {
     this.lastData = data;
     this.index++;
   }
+
+  sendReadData(data: any): void {
+    // not use
+  }
 }

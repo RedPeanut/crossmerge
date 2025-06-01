@@ -27,7 +27,7 @@ export type MainEvents =
 ;
 
 export type RenderEvents =
-  'compare file data'
+  'read file data'
   | 'compare folder start'
   | 'compare folder data'
   | 'compare folder end'

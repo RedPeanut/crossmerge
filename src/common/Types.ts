@@ -17,7 +17,7 @@ export interface CompareItem {
 }
 
 export interface CompareFileData {
-  // not implemented yet
+  // not use
 }
 
 export type CompareFolderDataType = 'file' | 'folder';
