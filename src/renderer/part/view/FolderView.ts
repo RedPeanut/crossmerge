@@ -142,15 +142,21 @@ export class FolderView implements CompareView {
     const input_column_lhs = $(".input-column.lhs");
     const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     input_lhs.placeholder = 'Left folder';
-    /* input_lhs.addEventListener('keydown', (e: KeyboardEvent) => {
-      console.log('keydown event is called ..');
-    }); */
-    input_lhs.addEventListener('keypress', (e: KeyboardEvent) => {
+
+    const input_margin = $(".input-margin");
+    const input_column_rhs = $(".input-column.rhs");
+    const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
+    input_rhs.placeholder = 'Right folder';
+
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+
+    function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
       if(e.keyCode == 13) {
-        // launch folder comparison
+        // launch comparison
         this.doCompare();
         return;
       }
@@ -169,16 +175,10 @@ export class FolderView implements CompareView {
       ) {
 
       }
+    }
 
-    });
-
-    const input_margin = $(".input-margin");
-    const input_column_rhs = $(".input-column.rhs");
-    const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
-    input_rhs.placeholder = 'Right folder';
-
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+    input_lhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
+    input_rhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
 
     input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);
