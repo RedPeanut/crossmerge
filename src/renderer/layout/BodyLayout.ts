@@ -22,7 +22,7 @@ export interface BodyLayoutService extends Service {
   layout(offset: number, size: number): void;
   addFileCompareView(): void;
   addFolderCompareView(): void;
-  sendFolderCompareViewRowData(arg: CompareFolderData): void;
+  sendFolderViewRowData(arg: CompareFolderData): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -103,7 +103,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.container.appendChild(groupView.create());
   }
 
-  sendFolderCompareViewRowData(arg: CompareFolderData): void {
+  sendFolderViewRowData(arg: CompareFolderData): void {
     this.groupView.sendRowData('folder', arg);
   }
 

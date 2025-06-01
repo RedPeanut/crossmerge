@@ -91,7 +91,7 @@ export class MainLayout extends Layout implements MainLayoutService {
       // console.log('compare folder data event is called ..');
       // console.log('args[1] =', args[1]);
       // send row data in target
-      this.bodyLayoutService.sendFolderCompareViewRowData(args[1] as CompareFolderData);
+      this.bodyLayoutService.sendFolderViewRowData(args[1] as CompareFolderData);
     });
     window.ipc.on('compare folder end', (...args: any[]) => {
       // console.log('compare folder end event is called ..');
