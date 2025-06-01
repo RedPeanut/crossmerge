@@ -707,7 +707,9 @@ export class FolderView implements CompareView {
           if(all.startsWith('|')) all = all.substring(1);
           let alls: string[] = all.split('|');
           for(let i = 0; i < alls.length; i++) {
-            document.getElementById(`node_${alls[i]}_${index}`).classList.remove('collapsed');
+            const _node = document.getElementById(`node_${alls[i]}_${index}`);
+            if(_node.classList.contains('collapsed'))
+              _node.classList.remove('collapsed');
           }
         }
       }
