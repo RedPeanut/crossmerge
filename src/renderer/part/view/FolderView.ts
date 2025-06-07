@@ -8,6 +8,13 @@ interface Node {
   children?: Node[];
   // type: 'file' | 'folder';
   // depth: number;
+
+  // for scrollbar
+  index?: number;
+  type?: 'file' | 'folder';
+  indexes?: number[];
+  min?: number;
+  max?: number;
 }
 
 interface PartNodeList {
@@ -69,6 +76,11 @@ export class FolderView implements CompareView {
   lastPartNode: PartNode;
   lastData: CompareFolderData; // for find depth change
   index: number;
+
+  // for scrollbar
+  indexes: number[];
+  min: number;
+  max: number;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -344,6 +356,10 @@ export class FolderView implements CompareView {
     this.lastData = null;
     this.index = 0;
 
+    this.indexes = [];
+    this.min = -1;
+    this.max = -1;
+
     const parts = [ this.list_lhs, this.list_changes, this.list_rhs ];
     for(let i = 0; i < parts.length; i++) {
       const length = parts[i].firstChild.childNodes.length;
@@ -475,11 +491,22 @@ export class FolderView implements CompareView {
       let elem: HTMLElement, node: Node;
       const workPartNode: PartNode = { left: null, right: null, changes: null, selectbar: null };
 
+      this.indexes.push(this.index);
+      this.min = 0;
+      this.max = 0;
+
       elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
         data.data.side.indexOf('left') > -1 ? null : 'empty',
         'left', this.index
       );
-      node = { parent: null, elem };
+
+      if(data.data.isDirectory) {
+        const indexes = [];
+        // indexes.push(data.index);
+        node = { parent: null, elem, index: this.index, type: 'folder', indexes, min: -1, max: -1 };
+      } else
+        node = { parent: null, elem, index: this.index, type: 'file' };
+
       this.partNodeList.left.push(node);
       workPartNode.left = node;
 
@@ -526,18 +553,38 @@ export class FolderView implements CompareView {
       return node.parent;
     }
 
+    function recurMax(node: Node, index: number): void {
+      node.max = index;
+      if(node.parent) recurMax(node.parent, index);
+    }
+
     const diff = data.depth - (this.lastData ? this.lastData.depth : 0);
     // console.log(`diff = ${diff}, data.name = ${data.data.name}`);
 
     if(diff > 0) { // only +1
       const workPartNode: PartNode = this.lastPartNode;
 
+      if(workPartNode.left.type == 'folder') {
+        workPartNode.left.indexes.push(this.index);
+        if(workPartNode.left.min == -1) workPartNode.left.min = this.index;
+        workPartNode.left.max = this.index;
+      }
+
+      if(workPartNode.left.parent) recurMax(workPartNode.left.parent, this.index);
+
       let elem: HTMLElement, node: Node;
       elem = this.addNode(workPartNode.left.elem as HTMLElement, data,
         data.data.side.indexOf('left') > -1 ? null : 'empty',
         'left', this.index
       );
-      node = { parent: workPartNode.left, elem };
+
+      if(data.data.isDirectory) {
+        const indexes = [];
+        // indexes.push(data.index);
+        node = { parent: workPartNode.left, elem, index: this.index, type: 'folder', indexes, min: -1, max: -1 };
+      } else
+        node = { parent: workPartNode.left, elem, index: this.index, type: 'file' };
+
       if(!workPartNode.left.children)
         workPartNode.left.children = [];
       workPartNode.left.children.push(node);
@@ -582,16 +629,35 @@ export class FolderView implements CompareView {
       // console.log('workNodeOrList =', typeof workNodeOrList);
 
       if(Array.isArray(workNodeOrList)) { // root
+
+        this.indexes.push(this.index);
+        // this.max = this.index;
+
         let elem: HTMLElement, node: Node;
         elem = this.addNode(this.list_lhs.firstChild as HTMLElement, data,
           data.data.side.indexOf('left') > -1 ? null : 'empty',
           'left', this.index
         );
-        node = { parent: null, elem };
+
+        if(data.data.isDirectory) {
+          const indexes = [];
+          // indexes.push(this.index);
+          node = { parent: null, elem, index: this.index, type: 'folder', indexes, min: -1, max: -1 };
+        } else
+          node = { parent: null, elem, index: this.index, type: 'file' };
+
         this.partNodeList.left.push(node);
         workPartNode.left = node as Node;
       } else {
         const workNode: Node = workNodeOrList as Node;
+
+        if(workNode.type == 'folder') {
+          workNode.indexes.push(this.index);
+          if(workNode.min == -1) workNode.min = this.index;
+          workNode.max = this.index;
+        }
+
+        if(workNode.parent) recurMax(workNode.parent, this.index);
 
         let elem: HTMLElement, node: Node;
         elem = this.addNode(workNode.elem, data,
@@ -599,7 +665,13 @@ export class FolderView implements CompareView {
           'left', this.index
         );
 
-        node = { parent: workNode, elem };
+        if(data.data.isDirectory) {
+          const indexes = [];
+          // indexes.push(this.index);
+          node = { parent: workNode, elem, index: this.index, type: 'folder', indexes, min: -1, max: -1 };
+        } else
+          node = { parent: workNode, elem, index: this.index, type: 'file' };
+
         if(!workNode.children)
           workNode.children = [];
         workNode.children.push(node);
@@ -714,6 +786,11 @@ export class FolderView implements CompareView {
         }
       }
     } //*/
+
+    this.max = this.index;
+    console.log('this.partNodeList.left =', this.partNodeList.left);
+    console.log('this.indexes =', this.indexes);
+    console.log(`this.min = ${this.min}, this.max = ${this.max}`);
 
     this.lastData = data;
     this.index++;
