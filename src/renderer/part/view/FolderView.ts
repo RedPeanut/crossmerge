@@ -1,6 +1,8 @@
 import { CompareFolderData, CompareItem } from "../../../common/Types";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
+import { DebouncedFunc } from "lodash";
+import _ from "lodash";
 
 interface Node {
   parent: Node | null;
@@ -31,6 +33,18 @@ interface PartNode {
   changes: Node;
   // scrollbar: Node; // left
   selectbar: Node;
+}
+
+type Change = {
+  /**
+   * first character of state: r,i,c
+   * 'removed in right'(inserted in left), 'inserted in right'(removed in left), 'changed'
+   */
+  op?: string,
+  index?: number,
+  line?: number,
+  y_start?: number,
+  y_end?: number,
 }
 
 export interface FolderViewOptions {}
@@ -78,13 +92,53 @@ export class FolderView implements CompareView {
   index: number;
 
   // for scrollbar
+  changes: Change[];
   indexes: number[];
   min: number;
   max: number;
 
+  throttle_pushChange: DebouncedFunc<(...args: any[]) => any>;
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
+
+    this.throttle_pushChange = _.throttle(this.pushChange.bind(this), 50);
+  }
+
+  pushChange(op: string, index: number): void {
+
+    function getLineIndex(nodes: Node[], line: number): number {
+      for(let i = 0; i < nodes.length; i++, line++) {
+        const node = nodes[i];
+        if(node.index >= index) return line;
+
+        if(node.type && node.type == 'folder') {
+          if(node.elem.classList.contains('collapsed')) {
+            // line++;
+          } else {
+            if(node.min <= index && index <= node.max) {
+              return getLineIndex.bind(this)(node.children, ++line);
+            } else {
+              if(node.children) line += node.children.length;
+              // line++;
+            }
+          }
+        } else {
+          // line++;
+        }
+      }
+
+      // console.log('line =', line);
+      return line;
+    }
+
+    console.log('this.partNodeList.left =', this.partNodeList.left);
+    const line = getLineIndex.bind(this)(this.partNodeList.left, 0);
+    this.changes.push({ op, index, line });
+    console.log('this.changes =', this.changes);
+    // this.throttle_drawScroll();
+    // this.scroll();
   }
 
   create(): HTMLElement {
@@ -356,6 +410,7 @@ export class FolderView implements CompareView {
     this.lastData = null;
     this.index = 0;
 
+    this.changes = [];
     this.indexes = [];
     this.min = -1;
     this.max = -1;
@@ -533,6 +588,12 @@ export class FolderView implements CompareView {
       node = { parent: null, elem };
       this.partNodeList.changes.push(node);
       workPartNode.selectbar = node;
+
+      if(data.state != 'unchanged') {
+        const op = data.state.substring(0, 1);
+        // this.changes.push({ op: op, index: this.index, line: -1 });
+        this.throttle_pushChange(op, this.index);
+      }
 
       this.lastPartNode = workPartNode;
       this.lastData = data;
@@ -788,9 +849,15 @@ export class FolderView implements CompareView {
     } //*/
 
     this.max = this.index;
-    console.log('this.partNodeList.left =', this.partNodeList.left);
-    console.log('this.indexes =', this.indexes);
-    console.log(`this.min = ${this.min}, this.max = ${this.max}`);
+    // console.log('this.partNodeList.left =', this.partNodeList.left);
+    // console.log('this.indexes =', this.indexes);
+    // console.log(`this.min = ${this.min}, this.max = ${this.max}`);
+
+    if(data.state != 'unchanged') {
+      const op = data.state.substring(0, 1);
+      // this.changes.push({ op: op, index: this.index, line: -1 });
+      this.throttle_pushChange(op, this.index);
+    }
 
     this.lastData = data;
     this.index++;
