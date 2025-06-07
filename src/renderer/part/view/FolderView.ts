@@ -60,6 +60,7 @@ export class FolderView implements CompareView {
   scrollbar_lhs: HTMLCanvasElement;
   scrollbar_rhs: HTMLCanvasElement;
 
+  list_body: HTMLElement;
   list_selectbar: HTMLElement;
   list_lhs: HTMLElement;
   list_changes: HTMLElement;
@@ -98,12 +99,14 @@ export class FolderView implements CompareView {
   max: number;
 
   throttle_pushChange: DebouncedFunc<(...args: any[]) => any>;
+  throttle_scroll: DebouncedFunc<(...args: any[]) => any>;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
 
     this.throttle_pushChange = _.throttle(this.pushChange.bind(this), 50);
+    this.throttle_scroll = _.throttle(this.scroll.bind(this), 50);
   }
 
   pushChange(op: string, index: number): void {
@@ -139,6 +142,12 @@ export class FolderView implements CompareView {
     console.log('this.changes =', this.changes);
     // this.throttle_drawScroll();
     // this.scroll();
+  }
+
+  scroll(e: Event): void {
+    console.log('scroll is called.. e =', e);
+    const { scrollLeft, scrollTop, scrollWidth, scrollHeight } = this.list_body;
+    console.log(`element.scrollLTWH = ${scrollLeft},${scrollTop},${scrollWidth},${scrollHeight}`);
   }
 
   create(): HTMLElement {
@@ -214,8 +223,14 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right folder';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/left';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/right';
+
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
@@ -279,7 +294,7 @@ export class FolderView implements CompareView {
     header.appendChild(header_list_scrollbar_rhs);
     lists.appendChild(header);
 
-    const body = $(".body");
+    const body = this.list_body = $(".body");
     const body_list_selectbar = this.list_selectbar = $(".list-selectbar");
     const body_list_scrollbar_lhs = this.scrollbar_lhs = $("canvas.list-scrollbar.lhs");
     const body_list_column_lhs = this.list_lhs = $(".list-column.lhs");
@@ -307,10 +322,8 @@ export class FolderView implements CompareView {
     lists.appendChild(body);
 
     // TODO: customized scrollbar in list
-    lists.addEventListener('scroll', (e: Event) => {
-      setTimeout(() => {
-        this._scrolling();
-      }, 1);
+    body.addEventListener('scroll', (e: Event) => {
+      this.throttle_scroll(e);
     });
 
     el.appendChild(inputs);

@@ -230,7 +230,10 @@ body { height: 100%; }
 .folder-compare-view .lists .list-scrollbar { width: 16px; }
 
 .folder-compare-view .lists .header { width: 100%; display: flex; flex: 0; }
-.folder-compare-view .lists .body { overflow-y: auto; height: 100%; width: 100%; display: flex; flex: 1; position: relative; }
+.folder-compare-view .lists .body {
+  overflow: hidden auto; /* overflow-x: hidden; overflow-y: auto;  */
+  height: 100%; width: 100%; display: flex; flex: 1; position: relative;
+}
 .folder-compare-view .lists .body > * {
   /* z-index: 10; */
   /* border: 1px solid black; */
