@@ -614,16 +614,25 @@ export class FolderView implements CompareView {
       return;
     }
 
+    /**
+     * diff (number):
+     *   +1: do not occur
+     *    0: current parent node
+     *   -1: parent parent node
+     */
     function getParentNodeOrList(node: Node, diff: number, part: string): Node|Node[] {
       if(diff < 0)
         return getParentNodeOrList.bind(this)(node.parent, diff+1, part);
+
       if(node.parent == null) {
-        if(part == 'left') return this.partNodeList.left;
+        /* if(part == 'left') return this.partNodeList.left;
         if(part == 'right') return this.partNodeList.right;
         if(part == 'changes') return this.partNodeList.changes;
         if(part == 'selectbar') return this.partNodeList.selectbar;
-        throw new Error('do not enter here');
+        throw new Error('do not enter here'); */
+        return this.partNodeList[part];
       }
+
       return node.parent;
     }
 
@@ -828,8 +837,6 @@ export class FolderView implements CompareView {
     }
 
     // HERE: occur expand event to parent node when changed states are met
-
-    ///*
     if(data.state != 'unchanged') {
       // 주의. this.lastPartNode 에 현재 노드 교체된 상태
       let workedNode: Node, part: string;
@@ -859,7 +866,7 @@ export class FolderView implements CompareView {
           }
         }
       }
-    } //*/
+    }
 
     this.max = this.index;
     // console.log('this.partNodeList.left =', this.partNodeList.left);
