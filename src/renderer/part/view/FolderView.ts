@@ -99,14 +99,14 @@ export class FolderView implements CompareView {
   max: number;
 
   throttle_pushChange: DebouncedFunc<(...args: any[]) => any>;
-  throttle_scroll: DebouncedFunc<(...args: any[]) => any>;
+  throttle_scrolling: DebouncedFunc<(...args: any[]) => any>;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
 
     this.throttle_pushChange = _.throttle(this.pushChange.bind(this), 50);
-    this.throttle_scroll = _.throttle(this.scroll.bind(this), 50);
+    this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
   }
 
   pushChange(op: string, index: number): void {
@@ -144,8 +144,8 @@ export class FolderView implements CompareView {
     // this.scroll();
   }
 
-  scroll(e: Event): void {
-    console.log('scroll is called.. e =', e);
+  scrolling(e: Event): void {
+    console.log('scrolling is called.. e =', e);
     const { scrollLeft, scrollTop, scrollWidth, scrollHeight } = this.list_body;
     console.log(`element.scrollLTWH = ${scrollLeft},${scrollTop},${scrollWidth},${scrollHeight}`);
   }
@@ -323,7 +323,7 @@ export class FolderView implements CompareView {
 
     // TODO: customized scrollbar in list
     body.addEventListener('scroll', (e: Event) => {
-      this.throttle_scroll(e);
+      this.throttle_scrolling(e);
     });
 
     el.appendChild(inputs);
