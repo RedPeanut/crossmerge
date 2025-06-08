@@ -57,14 +57,15 @@ export class FolderView implements CompareView {
 
   input_lhs: HTMLInputElement;
   input_rhs: HTMLInputElement;
-  scrollbar_lhs: HTMLCanvasElement;
-  scrollbar_rhs: HTMLCanvasElement;
 
   list_body: HTMLElement;
+  list_scrollable: HTMLElement;
   list_selectbar: HTMLElement;
   list_lhs: HTMLElement;
   list_changes: HTMLElement;
   list_rhs: HTMLElement;
+  list_scrollbar_vertical: HTMLCanvasElement;
+  list_scrollbar_horizontal: HTMLCanvasElement;
 
   /*
   // only directory have children but can have no children
@@ -184,31 +185,34 @@ export class FolderView implements CompareView {
         </div>
       </div>
       <div class="body">
-        <div class="list-selectbar">
-          <div class="tree"> nodes .. </div>
-        </div>
-        <canvas class="list-scrollbar lhs"></div>
-        <div class="list-column lhs">
-          <div class="tree">
-            <div class="node" style="padding indent">
-              <div class="content">
-                <div class="ln-header">
-                  <div class="arrow"><a class="codicon codicon-chevron-right"></a></div>
-                </div>
-                <div class="ln-body">
-                  <div class="title"><span class="icon"><a class="codicon codicon-folder"></a></span>folder</div>
+        <div class="list-scrollable">
+          <div class="list-selectbar">
+            <div class="tree"> nodes .. </div>
+          </div>
+          <!-- <canvas class="list-scrollbar lhs"></div> -->
+          <div class="list-column lhs">
+            <div class="tree">
+              <div class="node" style="padding indent">
+                <div class="content">
+                  <div class="ln-header">
+                    <div class="arrow"><a class="codicon codicon-chevron-right"></a></div>
+                  </div>
+                  <div class="ln-body">
+                    <div class="title"><span class="icon"><a class="codicon codicon-folder"></a></span>folder</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="list-changes">
+            <div class="tree"> nodes .. </div>
+          </div>
+          <div class="list-column rhs">
+            <div class="tree"> nodes .. </div>
+          </div>
         </div>
-        <div class="list-changes">
-          <div class="tree"> nodes .. </div>
-        </div>
-        <div class="list-column rhs">
-          <div class="tree"> nodes .. </div>
-        </div>
-        <canvas class="list-scrollbar rhs"></div>
+        <canvas class="list-scrollbar vertical"></div>
+        <canvas class="list-scrollbar horizontal"></div>
       </div>
     </div>
     */
@@ -278,53 +282,59 @@ export class FolderView implements CompareView {
 
     const lists = $(".lists");
     const header = $(".header");
-    const header_list_scrollbar_lhs = $(".list-scrollbar.lhs");
+    // const header_list_scrollbar_lhs = $(".list-scrollbar.lhs");
     const header_list_column_lhs = $(".list-column.lhs");
     header_list_column_lhs.innerHTML = 'Left';
     const header_list_changes = $(".list-changes");
     header_list_changes.innerHTML = 'Changes';
     const header_list_column_rhs = $(".list-column.rhs");
     header_list_column_rhs.innerHTML = 'Right';
-    const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
+    // const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
 
-    header.appendChild(header_list_scrollbar_lhs);
+    // header.appendChild(header_list_scrollbar_lhs);
     header.appendChild(header_list_column_lhs);
     header.appendChild(header_list_changes);
     header.appendChild(header_list_column_rhs);
-    header.appendChild(header_list_scrollbar_rhs);
+    // header.appendChild(header_list_scrollbar_rhs);
     lists.appendChild(header);
 
     const body = this.list_body = $(".body");
-    const body_list_selectbar = this.list_selectbar = $(".list-selectbar");
-    const body_list_scrollbar_lhs = this.scrollbar_lhs = $("canvas.list-scrollbar.lhs");
-    const body_list_column_lhs = this.list_lhs = $(".list-column.lhs");
-    const body_list_changes = this.list_changes = $(".list-changes");
-    const body_list_column_rhs = this.list_rhs = $(".list-column.rhs");
-    const body_list_scrollbar_rhs = this.scrollbar_rhs = $("canvas.list-scrollbar.rhs");
+    const list_scrollable = this.list_scrollable = $(".list-scrollable");
+    const list_selectbar = this.list_selectbar = $(".list-selectbar");
+    const list_column_lhs = this.list_lhs = $(".list-column.lhs");
+    const list_changes = this.list_changes = $(".list-changes");
+    const list_column_rhs = this.list_rhs = $(".list-column.rhs");
+
+    // const list_scrollbar_lhs = this.list_scrollbar_lhs = $("canvas.list-scrollbar.lhs");
+    const list_scrollbar_vertical = this.list_scrollbar_vertical = $("canvas.list-scrollbar.vertical");
+    const list_scrollbar_horizontal = this.list_scrollbar_horizontal = $("canvas.list-scrollbar.horizontal");
 
     function addTree(el: HTMLElement) {
       const tree = $(".tree");
       el.appendChild(tree);
     }
 
-    addTree(body_list_selectbar);
+    addTree(list_selectbar);
     // addTree(body_list_scrollbar_lhs);
-    addTree(body_list_column_lhs);
-    addTree(body_list_changes);
-    addTree(body_list_column_rhs);
+    addTree(list_column_lhs);
+    addTree(list_changes);
+    addTree(list_column_rhs);
 
-    body.appendChild(body_list_selectbar);
-    body.appendChild(body_list_scrollbar_lhs);
-    body.appendChild(body_list_column_lhs);
-    body.appendChild(body_list_changes);
-    body.appendChild(body_list_column_rhs);
-    body.appendChild(body_list_scrollbar_rhs);
-    lists.appendChild(body);
+    list_scrollable.appendChild(list_selectbar);
+    list_scrollable.appendChild(list_column_lhs);
+    list_scrollable.appendChild(list_changes);
+    list_scrollable.appendChild(list_column_rhs);
 
     // TODO: customized scrollbar in list
-    body.addEventListener('scroll', (e: Event) => {
+    list_scrollable.addEventListener('scroll', (e: Event) => {
       this.throttle_scrolling(e);
     });
+
+    // body.appendChild(list_scrollbar_lhs);
+    body.appendChild(list_scrollable);
+    body.appendChild(list_scrollbar_vertical);
+    body.appendChild(list_scrollbar_horizontal);
+    lists.appendChild(body);
 
     el.appendChild(inputs);
     el.appendChild(suggests);
@@ -338,8 +348,8 @@ export class FolderView implements CompareView {
     // const ctx_lhs = mcanvas_lhs.getContext('2d');
     // mcanvas_lhs.removeEventListener('click', this._handleLhsMarginClick);
 
-    const rhs_margin = this.scrollbar_rhs;
-    const ctx_rhs = rhs_margin.getContext('2d');
+    // const rhs_margin = this.scrollbar_rhs;
+    // const ctx_rhs = rhs_margin.getContext('2d');
     // rhs_margin.removeEventListener('click', this._handleRhsMarginClick);
 
     const radius = 3;
