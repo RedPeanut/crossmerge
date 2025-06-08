@@ -2,7 +2,7 @@ import { SplitView, SplitViewItemSizeType, SplitViewItemView } from "../componen
 import { Layout } from "../Layout";
 import { Orientation } from "../component/Sash";
 import * as dom from "../util/dom";
-import { bodyLayoutServiceId, Service, setService } from "../Service";
+import { bodyLayoutServiceId, getService, mainLayoutServiceId, Service, setService } from "../Service";
 import { SamplePart } from "../part/SamplePart";
 
 import Mergely from '../../lib/mergely/Mergely';
@@ -11,6 +11,7 @@ import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
+import { MainLayoutService } from "./MainLayout";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -55,7 +56,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   } */
   layout(offset: number, size: number): void {
     let dimension = dom.getClientArea(this.container);
+    console.log(`offset = ${offset}, size = ${size}`);
+    console.log('dimension =', dimension);
     // this.splitView.layout(dimension.width);
+    if(this.groupView) this.groupView.layout();
   }
 
   splitView: SplitView<SamplePart>;
@@ -109,6 +113,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     ];
     const groupView = this.groupView = new GroupView(this.container, group, {});
     this.container.appendChild(groupView.create());
+
+    // occur layout event for explicitly set canvas w,h
+    const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+    mainLayoutService.layout();
   }
 
   sendFolderViewRowData(arg: CompareFolderData): void {

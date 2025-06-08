@@ -22,6 +22,7 @@ export const enum Parts {
 }
 
 export interface MainLayoutService extends Service {
+  layout(): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {

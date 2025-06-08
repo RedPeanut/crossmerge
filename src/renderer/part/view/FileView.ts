@@ -118,4 +118,6 @@ export class FileView implements CompareView {
       }
     );
   }
+
+  layout(): void {}
 }

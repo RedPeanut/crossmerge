@@ -56,4 +56,11 @@ export class Compares {
 
     }
   }
+
+  layout(): void {
+    // console.log('layout() is called ..');
+    this.map.forEach((item) => {
+      item.layout();
+    });
+  }
 }

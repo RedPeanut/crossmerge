@@ -27,4 +27,5 @@ export interface CompareView {
   doCompare(): void;
   sendRowData(data: CompareFileData|CompareFolderData): void;
   sendReadData(data: any): void;
+  layout(): void;
 }

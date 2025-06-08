@@ -19,4 +19,5 @@ export class Tabs {
     return el;
   }
 
+  layout(): void {}
 }

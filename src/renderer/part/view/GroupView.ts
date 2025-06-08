@@ -51,4 +51,10 @@ export class GroupView {
     } else if(type == 'folder') {
     }
   }
+
+  layout() {
+    this.tabs.layout();
+    this.compares.layout();
+  }
+
 }

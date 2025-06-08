@@ -49,6 +49,9 @@ type Change = {
 
 export interface FolderViewOptions {}
 
+const SCROLLBAR_WIDTH: number = 16;
+// const SCROLLBAR_HEIGHT = 100%;
+
 export class FolderView implements CompareView {
 
   parent: HTMLElement;
@@ -896,4 +899,13 @@ export class FolderView implements CompareView {
   sendReadData(data: any): void {
     // not use
   }
+
+  layout(): void {
+    // console.log('layout() is called..');
+    // this.scrollbar_horizontal.width = SCROLLBAR_WIDTH;
+    // this.scrollbar_horizontal.height = this.list_body.clientHeight; // 100%
+    this.list_scrollbar_vertical.width = SCROLLBAR_WIDTH;
+    this.list_scrollbar_vertical.height = this.list_body.clientHeight; // 100%
+  }
+
 }
