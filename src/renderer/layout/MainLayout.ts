@@ -121,7 +121,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     };
 
     let resizeTimeout;
-    this._handleResize = () => {
+    let _handleResize = () => {
       if(resizeTimeout)
         clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(resize, 500);
@@ -129,7 +129,7 @@ export class MainLayout extends Layout implements MainLayoutService {
 
     window.addEventListener('resize', () => {
       console.log('resize event is called ..');
-      this._handleResize();
+      _handleResize();
     });
 
     /* window.ipc.send('menu enable', [
@@ -138,6 +138,4 @@ export class MainLayout extends Layout implements MainLayoutService {
       { menu: 'actions:collapse all folders', enable: false },
     ]); */
   }
-
-  _handleResize;
 }

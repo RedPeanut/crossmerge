@@ -140,7 +140,7 @@ export class FolderView implements CompareView {
       return line;
     }
 
-    console.log('this.partNodeList.left =', this.partNodeList.left);
+    // console.log('this.partNodeList.left =', this.partNodeList.left);
     const line = getLineIndex.bind(this)(this.partNodeList.left, 0);
     this.changes.push({ op, index, line });
     console.log('this.changes =', this.changes);

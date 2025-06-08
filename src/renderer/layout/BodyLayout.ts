@@ -1,17 +1,14 @@
 import { SplitView, SplitViewItemSizeType, SplitViewItemView } from "../component/SplitView";
 import { Layout } from "../Layout";
-import { Orientation } from "../component/Sash";
 import * as dom from "../util/dom";
 import { bodyLayoutServiceId, getService, mainLayoutServiceId, Service, setService } from "../Service";
-import { SamplePart } from "../part/SamplePart";
+import { MainLayoutService } from "./MainLayout";
 
-import Mergely from '../../lib/mergely/Mergely';
 import '../../lib/mergely/mergely.css';
 import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
-import { MainLayoutService } from "./MainLayout";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -58,11 +55,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     let dimension = dom.getClientArea(this.container);
     console.log(`offset = ${offset}, size = ${size}`);
     console.log('dimension =', dimension);
-    // this.splitView.layout(dimension.width);
     if(this.groupView) this.groupView.layout();
   }
 
-  splitView: SplitView<SamplePart>;
   groupView: GroupView;
 
   constructor(parent: HTMLElement, options: BodyOptions) {
