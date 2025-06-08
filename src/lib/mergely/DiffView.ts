@@ -27,7 +27,7 @@ const traceTimeEnd = console.timeEnd;
 
 export default class CodeMirrorDiffView {
 
-  el;
+  el: HTMLElement;
   settings;
   lhs_cmsettings;
   rhs_cmsettings;
@@ -64,7 +64,7 @@ export default class CodeMirrorDiffView {
   _handleLhsMarginClick;
   _handleRhsMarginClick;
 
-  constructor(el, options) {
+  constructor(el: HTMLElement, options) {
     CodeMirror.defineExtension('centerOnCursor', function() {
       const coords = this.cursorCoords(null, 'local');
       this.scrollTo(null,
@@ -73,7 +73,7 @@ export default class CodeMirrorDiffView {
     this.init(el, options);
   }
 
-  init(el, options = {}) {
+  init(el: HTMLElement, options = {}) {
     this.setOptions(options);
     this.el = el;
     this.lhs_cmsettings = {
