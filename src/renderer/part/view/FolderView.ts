@@ -198,7 +198,9 @@ export class FolderView implements CompareView {
     const width = this.list_scrollbar_vertical.clientWidth;
     const height = this.list_scrollbar_vertical.clientHeight;
     const ctx = this.list_scrollbar_vertical.getContext('2d');
-    ctx.clearRect(0, 0, width, height);
+    // ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = 'rgb(240 240 240)';
+    ctx.fillRect(0, 0, width, height);
   }
 
   renderScroll(): void {
