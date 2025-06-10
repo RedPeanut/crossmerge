@@ -43,7 +43,7 @@ export class CompareFolder {
   inserted: number = 0;
 
   // type: include|exclude, match: File|Folder|File&Folder, pattern: comma separated regex
-  ignoreFileFolder: string = '.git,.DS_Store,node_modules,package-lock.json,dll';
+  ignoreFileFolder: string = '.git,.DS_Store,node_modules,package-lock.json,dll,dist';
 
   constructor(uid: string) {
     this.uid = uid;
