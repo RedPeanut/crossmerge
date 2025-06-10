@@ -174,18 +174,27 @@ export class FolderView implements CompareView {
 
     const ctx = this.list_scrollbar_vertical.getContext('2d');
 
-    const ratio = clientHeight / scrollHeight;
+    let ratio, y, h;
+
     const totalLine = this.index; // number
+    ratio = scrollHeight / totalLine;
 
     // render changes
     const changes: Change[] = this.changes;
     for(let i = 0; i < changes.length; ++i) {
       const change = changes[i];
+      y = change.line * ratio;
+      h = ratio;
+      if(change.op == 'c') ctx.fillStyle = 'rgb(152 85 214)';
+      else if(change.op == 'r') ctx.fillStyle = 'rgb(224 158 87)';
+      else if(change.op == 'i') ctx.fillStyle = 'rgb(95 216 85)';
+      ctx.fillRect(5, y, 6, h); // xywh
     }
 
     // render thumb
-    const y = scrollTop * ratio;
-    const h = clientHeight * ratio;
+    ratio = clientHeight / scrollHeight;
+    y = scrollTop * ratio;
+    h = clientHeight * ratio;
 
     ctx.fillStyle = 'rgb(167 167 167 / 50%)';
     ctx.fillRect(3, y, 10, h); // xywh
@@ -283,14 +292,17 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right folder';
 
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/right';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
@@ -589,7 +601,8 @@ export class FolderView implements CompareView {
       if(data.state != 'unchanged') {
         const op = data.state.substring(0, 1);
         // this.changes.push({ op: op, index: this.index, line: -1 });
-        this.throttle_pushChange(op, this.index);
+        // this.throttle_pushChange(op, this.index);
+        this.pushChange(op, this.index);
       }
       this.throttle_renderChanges();
 
@@ -861,7 +874,8 @@ export class FolderView implements CompareView {
     if(data.state != 'unchanged') {
       const op = data.state.substring(0, 1);
       // this.changes.push({ op: op, index: this.index, line: -1 });
-      this.throttle_pushChange(op, this.index);
+      // this.throttle_pushChange(op, this.index);
+      this.pushChange(op, this.index);
     }
     this.throttle_renderChanges();
 
