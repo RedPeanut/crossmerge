@@ -115,6 +115,49 @@ export class FolderView implements CompareView {
     this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
   }
 
+  modifyChanges(): void {
+
+    const changes: Change[] = this.changes;
+    for(let i = 0; i < changes.length; i++) {
+      const change = changes[i];
+      const index = change.index;
+
+      function getLineIndex(nodes: Node[], line: number): number {
+        for(let i = 0; i < nodes.length; i++, line++) {
+          const node = nodes[i];
+          if(node.index >= index) return line;
+
+          if(node.type && node.type == 'folder') {
+            if(node.elem.classList.contains('collapsed')) {
+              if(node.min <= index && index <= node.max)
+                return -1;
+              // line++;
+            } else {
+              if(node.min <= index && index <= node.max) {
+                return getLineIndex.bind(this)(node.children, ++line);
+              } else {
+                if(node.children) line += node.children.length;
+                // line++;
+              }
+            }
+          } else {
+            // line++;
+          }
+        }
+
+        // console.log('line =', line);
+        return line;
+      }
+
+      // console.log('this.partNodeList.left =', this.partNodeList.left);
+      const line = getLineIndex.bind(this)(this.partNodeList.left, 0);
+      change.line = line;
+    }
+
+    // console.log('this.changes =', this.changes);
+    this.throttle_renderChanges();
+  }
+
   pushChange(op: string, index: number): void {
 
     function getLineIndex(nodes: Node[], line: number): number {
@@ -124,6 +167,8 @@ export class FolderView implements CompareView {
 
         if(node.type && node.type == 'folder') {
           if(node.elem.classList.contains('collapsed')) {
+            if(node.min <= index && index <= node.max)
+                return -1;
             // line++;
           } else {
             if(node.min <= index && index <= node.max) {
@@ -183,6 +228,7 @@ export class FolderView implements CompareView {
     const changes: Change[] = this.changes;
     for(let i = 0; i < changes.length; ++i) {
       const change = changes[i];
+      if(change.line == -1) continue;
       y = change.line * ratio;
       h = ratio;
       if(change.op == 'c') ctx.fillStyle = 'rgb(152 85 214)';
@@ -511,6 +557,7 @@ export class FolderView implements CompareView {
         for(let i = 0; i < anothers.length; i++) {
           document.getElementById(`node_${anothers[i]}_${index}`).classList.toggle('collapsed');
         }
+        self.modifyChanges();
       };
 
       const collapseArrow = $('a.codicon.codicon-chevron-right');
