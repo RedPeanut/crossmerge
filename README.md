@@ -1,6 +1,6 @@
 ## Desc
-- Crossplatform merge app
-: I plan to make the Araxis Merge program as similar as possible, with only the features I use.
+- Crossplatform merge app<br/>
+(make the Araxis Merge program as similar as possible with only the features I use)
 
 ## Run
 ```bash
