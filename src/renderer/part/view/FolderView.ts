@@ -891,7 +891,29 @@ export class FolderView implements CompareView {
         workedNode = this.lastPartNode.right; part = 'right';
       }
 
-      for(let i = 0; i >= -data.depth; i--) {
+      function recurDo(node: Node, fn: (node: Node) => void): void {
+        if(node.parent) {
+          fn(node.parent);
+          recurDo(node.parent, fn);
+        }
+      }
+
+      recurDo.bind(this)(workedNode, (node: Node) => {
+        const id = node.elem.id; // node_${part}_${index}
+          const index = id.split('_')[2]; // pick index
+
+          // clear collapsed in all
+          let all = '|left|right|changes|selectbar';
+          if(all.startsWith('|')) all = all.substring(1);
+          let alls: string[] = all.split('|');
+          for(let i = 0; i < alls.length; i++) {
+            const _node = document.getElementById(`node_${alls[i]}_${index}`);
+            if(_node.classList.contains('collapsed'))
+              _node.classList.remove('collapsed');
+          }
+      });
+
+      /* for(let i = 0; i >= -data.depth; i--) {
         const nodeOrList = getParentNodeOrList.bind(this)(workedNode, i, part);
         if(Array.isArray(nodeOrList)) { // root
         } else {
@@ -910,7 +932,7 @@ export class FolderView implements CompareView {
               _node.classList.remove('collapsed');
           }
         }
-      }
+      } */
     }
 
     this.max = this.index;
