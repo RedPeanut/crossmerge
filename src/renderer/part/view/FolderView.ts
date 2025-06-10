@@ -36,11 +36,10 @@ interface PartNode {
 }
 
 type Change = {
-  /**
-   * first character of state: r,i,c
-   * 'removed in right'(inserted in left), 'inserted in right'(removed in left), 'changed'
-   */
-  op?: string,
+  op?: string, // first character of state: r,i,c
+               // 'removed' in right (inserted in left)
+               // 'inserted' in right (removed in left)
+               // 'changed'
   index?: number,
   line?: number,
   y_start?: number,
@@ -228,6 +227,7 @@ export class FolderView implements CompareView {
 
     // render changes
     const changes: Change[] = this.changes;
+    // console.log('changes =', changes);
     for(let i = 0; i < changes.length; ++i) {
       const change = changes[i];
       if(change.line == -1) continue;
