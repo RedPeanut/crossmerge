@@ -160,10 +160,12 @@ export class CompareFolder {
 
   async _readdir(path_lhs: string, path_rhs: string, depth: number, parent: CompareFolderElem): Promise<void> {
 
-    const files_lhs: DirentExt[] = await _readdirSyncWithStat(path_lhs);
+    let files_lhs: DirentExt[] = [];
+    if(path_lhs) files_lhs = await _readdirSyncWithStat(path_lhs);
     // console.log('typeof(_files_lhs[0]) =', typeof(files_lhs[0]));
     // console.log('_files_lhs[0] =', files_lhs[0]);
-    const files_rhs: DirentExt[] = await _readdirSyncWithStat(path_rhs);
+    let files_rhs: DirentExt[] = [];
+    if(path_rhs) files_rhs = await _readdirSyncWithStat(path_rhs);
 
     // default sort: name asc + folder n file
     let folders: CompareFolderElem[] = [], files: CompareFolderElem[] = [];
@@ -339,12 +341,18 @@ export class CompareFolder {
           type: 'folder', depth, index: i,
           parent, data: elem, state: 'removed', length: length_array[i]
         });
+        const _path_lhs = path_lhs + '/' + elem.name;
+        // const _path_rhs = path_rhs + '/' + elem.name;
+        await this._readdir(_path_lhs, null, depth+1, elem);
       } else if(elem.side.indexOf('right') > -1) {
         mainWindow.send('compare folder data', {
           uid: this.uid,
           type: 'folder', depth, index: i,
           parent, data: elem, state: 'inserted', length: length_array[i]
         });
+        // const _path_lhs = path_lhs + '/' + elem.name;
+        const _path_rhs = path_rhs + '/' + elem.name;
+        await this._readdir(null, _path_rhs, depth+1, elem);
       }
       // break;
     }
