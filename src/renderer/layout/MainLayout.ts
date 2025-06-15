@@ -128,7 +128,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     };
 
     window.addEventListener('resize', () => {
-      console.log('resize event is called ..');
+      // console.log('resize event is called ..');
       _handleResize();
     });
 

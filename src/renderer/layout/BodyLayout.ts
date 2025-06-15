@@ -53,8 +53,8 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   } */
   layout(offset: number, size: number): void {
     let dimension = dom.getClientArea(this.container);
-    console.log(`offset = ${offset}, size = ${size}`);
-    console.log('dimension =', dimension);
+    // console.log(`offset = ${offset}, size = ${size}`);
+    // console.log('dimension =', dimension);
     if(this.groupView) this.groupView.layout();
   }
 
