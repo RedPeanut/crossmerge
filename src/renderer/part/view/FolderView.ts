@@ -243,13 +243,14 @@ export class FolderView implements CompareView {
     }
 
     // render thumb
-    ratio = clientHeight / scrollHeight;
-    y = scrollTop * ratio;
-    h = clientHeight * ratio;
+    if(scrollHeight > clientHeight) {
+      ratio = clientHeight / scrollHeight;
+      y = scrollTop * ratio;
+      h = clientHeight * ratio;
 
-    ctx.fillStyle = 'rgb(167 167 167 / 50%)';
-    ctx.fillRect(3, y, 10, h); // xywh
-
+      ctx.fillStyle = 'rgb(167 167 167 / 50%)';
+      ctx.fillRect(3, y, 10, h); // xywh
+    }
     // (opt) add click listener
 
   }
@@ -343,11 +344,11 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right folder';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
 
-    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
-    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/right';
