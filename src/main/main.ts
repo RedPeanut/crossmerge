@@ -157,6 +157,16 @@ class MainWindow {
 
       // for(let i = 0; i < arg.length; i++) {}
     });
+
+    ipcMain.on('handle title dblclick', (event, args: any[]) => {
+      // console.log('[handle title dblclick, args =', args);
+      const arg = args[0];
+      if(this.browserWindow.isMaximized()) {
+        this.browserWindow.unmaximize();
+      } else {
+        this.browserWindow.maximize();
+      }
+    });
   }
 
   createWindow = async () => {
@@ -174,10 +184,19 @@ class MainWindow {
 
     const { x, y, width, height } = this.getWindowSize();
 
+    const MENUBAR_HEIGHT = 31;
+    const MACOS_TRAFFIC_LIGHTS_HEIGHT = 16;
+
     this.browserWindow = new BrowserWindow({
       // show: false,
       // width: 1024, height: 728,
-      // titleBarStyle: 'hidden',
+      titleBarStyle: 'hidden',
+      titleBarOverlay: process.platform === 'darwin',
+      trafficLightPosition: {
+        x: 20,
+        y: (MENUBAR_HEIGHT - MACOS_TRAFFIC_LIGHTS_HEIGHT) / 2,
+      },
+
       x, y, width, height,
       minHeight: 600,
       minWidth: 600,

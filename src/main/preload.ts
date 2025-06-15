@@ -24,6 +24,9 @@ export type MainEvents =
   | 'config get'
   | 'config set'
   | 'config update'
+
+  // action
+  | 'handle title dblclick'
 ;
 
 export type RenderEvents =

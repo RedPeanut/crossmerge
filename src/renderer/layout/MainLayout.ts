@@ -12,7 +12,7 @@ import { bodyLayoutServiceId, getService, Service, setService, mainLayoutService
 import { CompareFolderData } from '../../common/Types';
 // import Runtime from './Runtime';
 
-export const TITLEBAR_HEIGHT = 42;
+export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
 
 export const enum Parts {
