@@ -177,8 +177,11 @@ class MainWindow {
     this.browserWindow = new BrowserWindow({
       // show: false,
       // width: 1024, height: 728,
-      titleBarStyle: 'hidden',
+      // titleBarStyle: 'hidden',
       x, y, width, height,
+      minHeight: 600,
+      minWidth: 600,
+
       icon: getAssetPath('icon.png'),
       webPreferences: {
         preload: app.isPackaged

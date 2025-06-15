@@ -205,6 +205,9 @@ export class FolderView implements CompareView {
   renderScroll(): void {
     // console.log('renderScroll is called..'); // e =', e);
 
+    if(!this.changes || !this.changes.length)
+      return;
+
     const { scrollLeft, scrollTop, scrollWidth, scrollHeight,
       clientLeft, clientTop, clientWidth, clientHeight,
       offsetLeft, offsetTop, offsetWidth, offsetHeight
@@ -962,8 +965,11 @@ export class FolderView implements CompareView {
     // console.log('layout() is called..');
     // this.scrollbar_horizontal.width = SCROLLBAR_WIDTH;
     // this.scrollbar_horizontal.height = this.list_body.clientHeight; // 100%
-    this.list_scrollbar_vertical.width = SCROLLBAR_WIDTH;
-    this.list_scrollbar_vertical.height = this.list_body.clientHeight; // 100%
+    if(this.list_scrollbar_vertical.width != SCROLLBAR_WIDTH)
+      this.list_scrollbar_vertical.width = SCROLLBAR_WIDTH;
+    if(this.list_scrollbar_vertical.height != this.list_body.clientHeight)
+      this.list_scrollbar_vertical.height = this.list_body.clientHeight; // 100%
+    this.throttle_renderChanges();
   }
 
 }
