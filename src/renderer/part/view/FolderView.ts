@@ -344,11 +344,11 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right folder';
 
-    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
-    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
+    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple change/right';
