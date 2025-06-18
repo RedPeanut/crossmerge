@@ -153,12 +153,12 @@ body { height: 100%; }
 
 .titlebar .iconbar { display: flex; flex: 1; }
 
-.titlebar .iconbar .center .group {
-  display: flex;
-  flex-direction: column;
+.titlebar .iconbar .group {
+  /* display: flex;
+  flex-direction: column; */
   padding: 0 8px;
+  border-right: 1px solid grey;
 }
-.titlebar .iconbar .group { border-right: 1px solid grey; }
 .titlebar .iconbar .group:last-child { border: none; }
 
 .titlebar .iconbar .group .wrap {
@@ -176,9 +176,9 @@ body { height: 100%; }
 }
 
 .titlebar .iconbar .group .codicon {
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   width: 18px;
   height: 18px;
   font-size: 18px;
@@ -189,6 +189,7 @@ body { height: 100%; }
 
 .titlebar .iconbar .group .codicon:hover {
   background-color: rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
   cursor: pointer;
 }
 
