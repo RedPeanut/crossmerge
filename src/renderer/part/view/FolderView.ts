@@ -357,7 +357,7 @@ export class FolderView implements CompareView {
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
-      console.log('keypress event is called ..');
+      // console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
       if(e.keyCode == 13) {
@@ -402,7 +402,6 @@ export class FolderView implements CompareView {
 
     const lists = $(".lists");
     const header = $(".header");
-    // const header_list_scrollbar_lhs = $(".list-scrollbar.lhs");
     const header_list_column_lhs = $(".list-column.lhs");
     header_list_column_lhs.innerHTML = 'Left';
     const header_list_changes = $(".list-changes");
@@ -411,7 +410,6 @@ export class FolderView implements CompareView {
     header_list_column_rhs.innerHTML = 'Right';
     // const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
 
-    // header.appendChild(header_list_scrollbar_lhs);
     header.appendChild(header_list_column_lhs);
     header.appendChild(header_list_changes);
     header.appendChild(header_list_column_rhs);
@@ -425,7 +423,6 @@ export class FolderView implements CompareView {
     const list_changes = this.list_changes = $(".list-changes");
     const list_column_rhs = this.list_rhs = $(".list-column.rhs");
 
-    // const list_scrollbar_lhs = this.list_scrollbar_lhs = $("canvas.list-scrollbar.lhs");
     const list_scrollbar_vertical = this.list_scrollbar_vertical = $("canvas.list-scrollbar.vertical");
     const list_scrollbar_horizontal = this.list_scrollbar_horizontal = $("canvas.list-scrollbar.horizontal");
 
@@ -435,7 +432,6 @@ export class FolderView implements CompareView {
     }
 
     addTree(list_selectbar);
-    // addTree(body_list_scrollbar_lhs);
     addTree(list_column_lhs);
     addTree(list_changes);
     addTree(list_column_rhs);
@@ -450,7 +446,6 @@ export class FolderView implements CompareView {
       this.throttle_scrolling(e);
     });
 
-    // body.appendChild(list_scrollbar_lhs);
     body.appendChild(list_scrollable);
     body.appendChild(list_scrollbar_vertical);
     body.appendChild(list_scrollbar_horizontal);
@@ -482,10 +477,6 @@ export class FolderView implements CompareView {
       for(let j = 0; j < length; j++)
         parts[i].firstChild.removeChild(parts[i].firstChild.childNodes[0]);
     }
-
-    /* for(let i = 0; i < this.list_lhs.firstChild.childNodes.length; i++) {
-      this.list_lhs.firstChild.removeChild(this.list_lhs.firstChild.childNodes[i]);
-    } */
 
     const input_lhs_value = this.input_lhs.value;
     const input_rhs_value = this.input_rhs.value;
@@ -526,7 +517,7 @@ export class FolderView implements CompareView {
       return node;
     } else if(mode == 'selectbar') {
       node.onclick = (e) => {
-        console.log('selectbar node clicked ..');
+        // console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
         e.stopPropagation();
         // return false;
