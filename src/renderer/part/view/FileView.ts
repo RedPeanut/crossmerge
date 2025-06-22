@@ -19,6 +19,17 @@ export class FileView implements CompareView {
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
+
+    window.ipc.on('read file data', (...args: any[]) => {
+      // console.log('on compare folder data is called ..');
+      // console.log('args =', args);
+      if(!args || args.length <= 1) return;
+
+      const arg = args[1];
+      if(this.item.uid != arg.uid) return;
+
+      this.recvReadData(arg);
+    });
   }
 
   create(): HTMLElement {
@@ -101,11 +112,7 @@ export class FileView implements CompareView {
     });
   }
 
-  sendRowData(data: CompareFileData): void {
-    // not use
-  }
-
-  sendReadData(data: any): void {
+  recvReadData(data: any): void {
     console.log('data =', data);
     const mergely = this.mergely = new Mergely(
       // '#mergely',

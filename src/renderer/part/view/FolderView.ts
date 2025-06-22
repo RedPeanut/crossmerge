@@ -112,6 +112,17 @@ export class FolderView implements CompareView {
     this.throttle_pushChange = _.throttle(this.pushChange.bind(this), 50);
     this.throttle_renderChanges = _.throttle(this.renderChanges.bind(this), 50);
     this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
+
+    window.ipc.on('compare folder data', (...args: any[]) => {
+      // console.log('on compare folder data is called ..');
+      // console.log('args =', args);
+      if(!args || args.length <= 1) return;
+
+      const arg = args[1];
+      if(this.item.uid != arg.uid) return;
+
+      this.recvRowData(arg as CompareFolderData);
+    });
   }
 
   modifyChanges(): void {
@@ -572,7 +583,7 @@ export class FolderView implements CompareView {
     return node;
   }
 
-  sendRowData(data: CompareFolderData): void {
+  recvRowData(data: CompareFolderData): void {
     /* log data
     let indent = '';
     for(let i = 0; i < data.depth; i++) indent += '  ';

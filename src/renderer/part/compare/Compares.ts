@@ -34,29 +34,6 @@ export class Compares {
     return el;
   }
 
-  sendRowData(type: CompareItemType, arg: CompareData) {
-    if(type == 'file') {
-
-    } else if(type == 'folder') {
-      const data = arg as CompareFolderData;
-      // const findIndex = this.group.findIndex((e) => e.uid === data.uid);
-      // console.log('findIndex =', findIndex);
-      // console.log('_arg =', _arg);
-
-      const v = this.map.get(data.uid);
-      v.sendRowData(data);
-    }
-  }
-
-  sendReadData(type: CompareItemType, arg: any) {
-    if(type == 'file') {
-      const v = this.map.get(arg.uid);
-      v.sendReadData(arg);
-    } else if(type == 'folder') {
-
-    }
-  }
-
   layout(): void {
     // console.log('layout() is called ..');
     this.map.forEach((item) => {

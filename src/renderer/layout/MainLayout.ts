@@ -85,24 +85,6 @@ export class MainLayout extends Layout implements MainLayoutService {
   }
 
   installIpc(): void {
-    window.ipc.on('compare folder start', (...args: any[]) => {
-      // console.log('compare folder start event is called ..');
-    });
-    window.ipc.on('compare folder data', (...args: any[]) => {
-      // console.log('compare folder data event is called ..');
-      // console.log('args[1] =', args[1]);
-      // send row data in target
-      this.bodyLayoutService.sendFolderViewRowData(args[1] as CompareFolderData);
-    });
-    window.ipc.on('compare folder end', (...args: any[]) => {
-      // console.log('compare folder end event is called ..');
-    });
-
-    window.ipc.on('read file data', (...args: any[]) => {
-      // console.log('read file data event is called ..');
-      this.bodyLayoutService.sendFileViewReadData(args[1]);
-    });
-
     window.ipc.on('menu click', (...args: any[]) => {
       console.log('menu click event is called ..');
       console.log('args[1] =', args[1]);

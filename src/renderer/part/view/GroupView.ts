@@ -33,25 +33,6 @@ export class GroupView {
     this.group.push(...group);
   }
 
-  sendRowData(type: CompareItemType, arg: CompareData) {
-    if(type == 'file') {
-
-    } else if(type == 'folder') {
-      const _arg = arg as CompareFolderData;
-      const findIndex = this.group.findIndex((e) => e.uid === _arg.uid);
-      // console.log('findIndex =', findIndex);
-      this.compares.sendRowData(type, arg);
-    }
-  }
-
-  sendReadData(type: CompareItemType, arg: any) {
-    if(type == 'file') {
-      const findIndex = this.group.findIndex((e) => e.uid === arg.uid);
-      this.compares.sendReadData(type, arg);
-    } else if(type == 'folder') {
-    }
-  }
-
   layout() {
     this.tabs.layout();
     this.compares.layout();

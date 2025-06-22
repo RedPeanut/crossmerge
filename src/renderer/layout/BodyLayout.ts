@@ -20,8 +20,6 @@ export interface BodyLayoutService extends Service {
   layout(offset: number, size: number): void;
   addFileCompareView(): void;
   addFolderCompareView(): void;
-  sendFolderViewRowData(arg: CompareFolderData): void;
-  sendFileViewReadData(arg): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -114,11 +112,4 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     mainLayoutService.layout();
   }
 
-  sendFolderViewRowData(arg: CompareFolderData): void {
-    this.groupView.sendRowData('folder', arg);
-  }
-
-  sendFileViewReadData(arg: any): void {
-    this.groupView.sendReadData('file', arg);
-  }
 }
