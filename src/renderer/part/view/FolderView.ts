@@ -482,7 +482,7 @@ export class FolderView implements CompareView {
     this.min = -1;
     this.max = -1;
 
-    const parts = [ this.list_lhs, this.list_changes, this.list_rhs ];
+    const parts = [ this.list_selectbar, this.list_lhs, this.list_changes, this.list_rhs ];
     for(let i = 0; i < parts.length; i++) {
       const length = parts[i].firstChild.childNodes.length;
       for(let j = 0; j < length; j++)
