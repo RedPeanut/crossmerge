@@ -167,6 +167,29 @@ class MainWindow {
         this.browserWindow.maximize();
       }
     });
+
+    function helper(obj, type: string, val: string) {
+      if(obj[val]) {
+        // console.log(typeof obj[val]);
+        if(type == 'function')
+          return obj[val]();
+        else if(type == 'property')
+          return obj[val];
+      }
+      return null;
+    }
+
+    ipcMain.handle('window get', (event, args: any[]) => {
+      if(args.length > 1)
+        return helper(this.browserWindow, args[0], args[1]);
+      return null;
+    });
+
+    ipcMain.handle('process get', (event, args: any[]) => {
+      if(args.length > 1)
+        return helper(process, args[0], args[1]);
+      return null;
+    });
   }
 
   createWindow = async () => {

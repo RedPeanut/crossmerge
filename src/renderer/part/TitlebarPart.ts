@@ -1,3 +1,4 @@
+import { renderer } from '..';
 import { VerticalViewItem } from '../component/SplitView';
 import { BodyLayoutService } from '../layout/BodyLayout';
 import { TITLEBAR_HEIGHT } from '../layout/MainLayout';
@@ -20,6 +21,10 @@ export class TitlebarPart extends Part {
       console.log('dblclick is called ..');
       window.ipc.send('handle title dblclick', {});
     });
+
+    // console.log('renderer =', renderer);
+    console.log('renderer.window =', renderer.window);
+    console.log('renderer.process =', renderer.process);
 
     ///*
     const iconbar = $('.iconbar');

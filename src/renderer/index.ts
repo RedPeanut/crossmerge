@@ -7,14 +7,30 @@ import { domContentLoaded } from './util/dom';
 import { mainWindow } from './Types';
 
 export class Renderer {
+
+  window: {
+    isMaximized?: boolean;
+    isMinimized?: boolean;
+  } = {};
+
+  process: {
+    platform?: string // 'darwin', 'window', 'linux'
+  } = {}
+
   constructor() {}
 
   async open() {
-    await Promise.all([domContentLoaded(mainWindow)]);
+    await Promise.all([ domContentLoaded(mainWindow), this.loadInMain() ]);
     const mainLayout = new MainLayout(mainWindow.document.body);
     mainLayout.startup();
   }
+
+  async loadInMain(): Promise<void> {
+    this.window.isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
+    this.window.isMinimized = await window.ipc.invoke('window get', 'function', 'isMinimized');
+    this.process.platform = await window.ipc.invoke('process get', 'property', 'platform');
+  }
 }
 
-const renderer = new Renderer();
+export const renderer = new Renderer();
 renderer.open();

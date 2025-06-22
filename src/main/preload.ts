@@ -18,6 +18,10 @@ export type MainEvents =
   | 'window open context menu'
   | 'window close'
   | 'window command'
+  | 'window get'
+
+  // process
+  | 'process get'
 
   // config
   | 'config all'
