@@ -180,9 +180,22 @@ body { height: 100%; }
   /* display: flex;
   flex-direction: column; */
   padding: 0 8px;
-  border-right: 1px solid grey;
+  /* border-right: 1px solid grey; */
+  position: relative;
 }
-.titlebar .iconbar .group:last-child { border: none; }
+
+/* 구분선 */
+.titlebar .iconbar .group:before {
+  content: "";
+  position: absolute;
+  top: 5px; right:0;
+  height: calc(100% - 10px);
+  width: 0;
+  border-right: 1px solid;
+  color: rgb(172, 172, 172);
+}
+
+.titlebar .iconbar .group:last-child:before { border: none; }
 
 .titlebar .iconbar .group .wrap {
   display: flex;
