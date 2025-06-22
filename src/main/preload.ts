@@ -41,6 +41,9 @@ export type RenderEvents =
 
   // menu
   | 'menu click'
+
+  // window
+  | 'window state changed'
 ;
 
 export type Channels = MainEvents | RenderEvents;

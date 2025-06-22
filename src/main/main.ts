@@ -221,8 +221,8 @@ class MainWindow {
       },
 
       x, y, width, height,
+      minWidth: 800,
       minHeight: 600,
-      minWidth: 600,
 
       icon: getAssetPath('icon.png'),
       webPreferences: {
@@ -249,6 +249,14 @@ class MainWindow {
 
     this.browserWindow.on('closed', () => {
       this.browserWindow = null;
+    });
+
+    this.browserWindow.on('maximize', () => {
+      this.browserWindow.webContents.send('window state changed', { isMaximized: true });
+    });
+
+    this.browserWindow.on('unmaximize', () => {
+      this.browserWindow.webContents.send('window state changed', { isMaximized: false });
     });
 
     const menuBuilder = new MenuBuilder(this.browserWindow);

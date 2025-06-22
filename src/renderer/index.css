@@ -146,9 +146,32 @@ body { height: 100%; }
   flex-direction: column;
 }
 
-.titlebar .menubar { background-color: pink;
+.titlebar .menubar {
+  background-color: pink;
   padding-left: 80px;
   height: 31px;
+  position: relative;
+}
+
+.titlebar .menubar .group { position: absolute; right: 1px; }
+
+.titlebar .menubar .group .codicon {
+  width: 21px;
+  height: 21px;
+  font-size: 21px;
+  -webkit-app-region: no-drag;
+  padding: 0 8px;
+  margin-right: 1px;
+}
+
+.titlebar .menubar .group .codicon:hover {
+  background-color: rgb(229, 229, 229);
+  cursor: pointer;
+}
+
+.titlebar .menubar .group .codicon.close:hover {
+  background-color: rgb(232, 17, 35);
+  color: white;
 }
 
 .titlebar .iconbar { display: flex; flex: 1; }

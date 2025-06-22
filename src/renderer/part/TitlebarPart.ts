@@ -7,10 +7,24 @@ import { bodyLayoutServiceId, getService } from '../Service';
 import { $ } from '../util/dom';
 
 export class TitlebarPart extends Part {
+
+  maxResBtn: HTMLElement;
+
   constructor(parent: HTMLElement, id: string, role: string, classes: string[], options: object) {
     super(parent, id, role, classes, options);
     this.size = TITLEBAR_HEIGHT;
     // this.border = true;
+
+    window.ipc.on('window state changed', (...args: any[]) => {
+      // console.log('on window state changed is called ..');
+      // console.log('args =', args);
+      const arg = args[1];
+      this.maxResBtn.classList.remove('codicon-chrome-restore', 'codicon-chrome-maximize');
+      if(arg.isMaximized)
+        this.maxResBtn.classList.add('codicon-chrome-restore');
+      else
+      this.maxResBtn.classList.add('codicon-chrome-maximize');
+    });
   }
 
   override createContentArea(): HTMLElement {
@@ -23,13 +37,28 @@ export class TitlebarPart extends Part {
     });
 
     // console.log('renderer =', renderer);
-    console.log('renderer.window =', renderer.window);
-    console.log('renderer.process =', renderer.process);
+    // console.log('renderer.window =', renderer.window);
+    // console.log('renderer.process =', renderer.process);
+
+    let group: HTMLElement;
+
+    group = $('.group');
+    const minimizeBtn = $('a.codicon.codicon-chrome-minimize');
+    // const maximizeBtn = $('a.codicon.codicon-chrome-maximize');
+    // const restoreBtn = $('a.codicon.codicon-chrome-restore');
+    const maxResBtn = this.maxResBtn = $('a.codicon');
+    maxResBtn.classList.add('codicon-chrome-' + (renderer.window.isMaximized ? 'restore' : 'maximize'));
+    const closeBtn = $('a.codicon.codicon-chrome-close.close');
+
+    group.appendChild(minimizeBtn);
+    group.appendChild(maxResBtn);
+    group.appendChild(closeBtn);
+    menubar.appendChild(group);
 
     ///*
     const iconbar = $('.iconbar');
 
-    let group: HTMLElement, wrap: HTMLElement, btn: HTMLElement, label: HTMLElement;
+    let wrap: HTMLElement, btn: HTMLElement, label: HTMLElement;
 
     group = $('.group');
     wrap = $('.wrap');
