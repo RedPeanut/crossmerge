@@ -200,7 +200,7 @@ body { height: 100%; }
 .titlebar .iconbar .group .wrap {
   display: flex;
   justify-content: center;
-  margin-top: 10px; height: 22px;
+  margin-top: 6px; height: 26px;
 }
 
 .titlebar .iconbar .group .label {
@@ -215,12 +215,12 @@ body { height: 100%; }
   /* display: flex;
   align-items: center;
   justify-content: center; */
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
   -webkit-app-region: no-drag;
-  margin: 0 2px;
-  padding: 2px;
+  margin: 0 6px;
+  padding: 3px;
 }
 
 .titlebar .iconbar .group .codicon:hover {
