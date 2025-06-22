@@ -60,10 +60,10 @@ export default class MenuBuilder {
     const self = this;
 
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'crossterm',
+      label: 'crossmerge',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About crossmerge',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
