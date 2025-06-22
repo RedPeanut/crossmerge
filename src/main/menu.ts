@@ -27,7 +27,7 @@ export default class MenuBuilder {
       process.env.NODE_ENV === 'development' ||
       process.env.DEBUG_PROD === 'true'
     ) {
-      this.setupDevelopmentEnvironment();
+      this.setupDevelopmentEnvironment(this.browserWindow);
     }
 
     const template =
@@ -41,18 +41,18 @@ export default class MenuBuilder {
     return menu;
   }
 
-  setupDevelopmentEnvironment(): void {
-    this.browserWindow.webContents.on('context-menu', (_, props) => {
+  setupDevelopmentEnvironment(window: BrowserWindow): void {
+    window.webContents.on('context-menu', (_, props) => {
       const { x, y } = props;
 
       Menu.buildFromTemplate([
         {
           label: 'Inspect element',
           click: () => {
-            this.browserWindow.webContents.inspectElement(x, y);
+            window.webContents.inspectElement(x, y);
           },
         },
-      ]).popup({ window: this.browserWindow });
+      ]).popup({ window: window });
     });
   }
 
@@ -81,11 +81,13 @@ export default class MenuBuilder {
                 title: 'Preferences',
                 // x, y, width, height,
                 webPreferences: {
+                  devTools: false,
                   preload: app.isPackaged
                     ? path.join(__dirname, 'preload.js')
                     : path.join(__dirname, '../../.erb/dll/preload.js'),
                 },
               });
+              self.setupDevelopmentEnvironment(preferences);
               preferences.loadURL(resolveHtmlPath('preferences.html'));
               preferences.once('ready-to-show', () => {
                 preferences.show();
@@ -292,7 +294,7 @@ export default class MenuBuilder {
                     : path.join(__dirname, '../../.erb/dll/preload.js'),
                 },
               });
-              // self.setupDevelopmentEnvironment(preferences);
+              self.setupDevelopmentEnvironment(preferences);
               preferences.loadURL(resolveHtmlPath('preferences.html'));
               preferences.once('ready-to-show', () => {
                 preferences.show();
