@@ -11,14 +11,15 @@ export type MainEvents =
   | 'menu enable'
 
   // window
-  | 'window move'
-  | 'window maximize'
-  | 'window minimize'
+  /* | 'window move'
   | 'window resize'
   | 'window open context menu'
-  | 'window close'
-  | 'window command'
+  | 'window command' */
+  // | 'window maximize'
+  // | 'window minimize'
+  // | 'window close'
   | 'window get'
+  | 'window fn'
 
   // process
   | 'process get'
@@ -30,7 +31,7 @@ export type MainEvents =
   | 'config update'
 
   // action
-  | 'handle title dblclick'
+  // | 'handle title dblclick'
 ;
 
 export type RenderEvents =

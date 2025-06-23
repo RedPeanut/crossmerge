@@ -31,10 +31,16 @@ export class TitlebarPart extends Part {
     const container: HTMLElement = super.createContentArea();
 
     const menubar = $('.menubar');
-    menubar.addEventListener('dblclick', () => {
-      console.log('dblclick is called ..');
-      window.ipc.send('handle title dblclick', {});
-    });
+
+    const handleMaxOrRes = async (e) => {
+      const isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
+      if(isMaximized)
+        window.ipc.send('window fn', 'unmaximize');
+      else
+        window.ipc.send('window fn', 'maximize');
+    }
+
+    menubar.addEventListener('dblclick', handleMaxOrRes);
 
     // console.log('renderer =', renderer);
     // console.log('renderer.window =', renderer.window);
@@ -44,11 +50,20 @@ export class TitlebarPart extends Part {
 
     group = $('.group');
     const minimizeBtn = $('a.codicon.codicon-chrome-minimize');
+    minimizeBtn.addEventListener('click', async () => {
+      window.ipc.send('window fn', 'minimize');
+    });
+
     // const maximizeBtn = $('a.codicon.codicon-chrome-maximize');
     // const restoreBtn = $('a.codicon.codicon-chrome-restore');
     const maxResBtn = this.maxResBtn = $('a.codicon');
     maxResBtn.classList.add('codicon-chrome-' + (renderer.window.isMaximized ? 'restore' : 'maximize'));
+    maxResBtn.addEventListener('click', handleMaxOrRes);
+
     const closeBtn = $('a.codicon.codicon-chrome-close.close');
+    closeBtn.addEventListener('click', async () => {
+      window.ipc.send('window fn', 'close');
+    });
 
     group.appendChild(minimizeBtn);
     group.appendChild(maxResBtn);

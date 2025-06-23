@@ -158,7 +158,7 @@ class MainWindow {
       // for(let i = 0; i < arg.length; i++) {}
     });
 
-    ipcMain.on('handle title dblclick', (event, args: any[]) => {
+    /* ipcMain.on('handle title dblclick', (event, args: any[]) => {
       // console.log('[handle title dblclick, args =', args);
       const arg = args[0];
       if(this.browserWindow.isMaximized()) {
@@ -166,7 +166,7 @@ class MainWindow {
       } else {
         this.browserWindow.maximize();
       }
-    });
+    }); */
 
     function helper(obj, type: string, val: string) {
       if(obj[val]) {
@@ -189,6 +189,14 @@ class MainWindow {
       if(args.length > 1)
         return helper(process, args[0], args[1]);
       return null;
+    });
+
+    ipcMain.on('window fn', (event, args: any[]) => {
+      const arg = args[0];
+      // console.log(typeof this.browserWindow[arg]);
+      if(this.browserWindow[arg] && typeof this.browserWindow[arg] == 'function') {
+        this.browserWindow[arg]();
+      }
     });
   }
 
