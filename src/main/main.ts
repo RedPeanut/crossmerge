@@ -218,6 +218,7 @@ class MainWindow {
     const MENUBAR_HEIGHT = 31;
     const MACOS_TRAFFIC_LIGHTS_HEIGHT = 16;
 
+    /*
     this.browserWindow = new BrowserWindow({
       // show: false,
       // width: 1024, height: 728,
@@ -234,15 +235,36 @@ class MainWindow {
 
       icon: getAssetPath('icon.png'),
       webPreferences: {
+        // devTools: false,
         preload: app.isPackaged
           ? path.join(__dirname, 'preload.js')
           : path.join(__dirname, '../../.erb/dll/preload.js'),
       },
     });
+    this.browserWindow.loadURL(resolveHtmlPath('index.html'));
+    //*/
+
+    ///*
+    this.browserWindow = new BrowserWindow({
+      // parent: self.browserWindow, modal: false, show: false,
+      // titleBarStyle: 'hidden',
+      titleBarStyle: 'default',
+      title: 'Preferences',
+      // x, y, width, height,
+      width: 674+250, height: 676,
+      minWidth: 674, minHeight: 676,
+
+      webPreferences: {
+        // devTools: false,
+        preload: app.isPackaged
+          ? path.join(__dirname, 'preload.js')
+          : path.join(__dirname, '../../.erb/dll/preload.js'),
+      },
+    });
+    this.browserWindow.loadURL(resolveHtmlPath('preferences.html'));
+    //*/
 
     this.installIpc();
-
-    this.browserWindow.loadURL(resolveHtmlPath('index.html'));
 
     this.browserWindow.on('ready-to-show', () => {
       if(!this.browserWindow) {

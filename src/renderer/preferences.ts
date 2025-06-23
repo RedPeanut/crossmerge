@@ -31,19 +31,34 @@ export class Preferences {
       {
         label: 'Text comparisons',
         children: [
-          { label: 'Encoding', render: function(container, data) {
-            const tryChkbox = $('checkbox');
-            const tryLabel = $('label');
-            tryLabel.innerHTML = 'Try to auto-detect character encoding from file content';
-            container.appendChild(tryChkbox);
-            container.appendChild(tryLabel);
+          {
+            label: 'Encoding',
+            render: function(container, data) {
+              let p = $('p');
+              // const tryChkbox = $('checkbox');
+              const tryChkbox = $('input');
+              tryChkbox.setAttribute('type', 'checkbox');
+              const tryLabel = $('label') as HTMLLabelElement;
+              tryLabel.innerHTML = 'Try to auto-detect character encoding from file content';
+              // tryLabel.htmlFor = ''; //tryChkbox;
 
-            const defaultLabel = $('label');
-            defaultLabel.innerHTML = 'Default character encoding:';
-            const defaultSelect = $('select');
-            container.appendChild(defaultLabel);
-            container.appendChild(defaultSelect);
-          } },
+              p.appendChild(tryChkbox);
+              p.appendChild(tryLabel);
+              container.appendChild(p);
+
+              p = $('p');
+              const defaultLabel = $('label');
+              defaultLabel.innerHTML = 'Default character encoding:';
+              const defaultSelect = $('select');
+              let option = $('option') as HTMLOptionElement;
+              option.value = 'utf8_without_bom';
+              option.innerText = 'Unicode (UTF-8 without BOM)';
+              defaultSelect.appendChild(option);
+              p.appendChild(defaultLabel);
+              p.appendChild(defaultSelect);
+              container.appendChild(p);
+            }
+          },
           { label: 'Editing', render: null }
         ],
         render: null,
@@ -52,39 +67,82 @@ export class Preferences {
         label: 'Folder comparisons',
         children: [
           // { label: 'Method', render: null, },
-          { label: 'Filters', render: function(container, data) {
-            const activeLabel = $('label');
-            activeLabel.innerHTML = 'Active filter:';
-            const activeSelect = $('select');
-            const activeNewBtn = $('button');
-            const activeDelBtn = $('button');
-            container.appendChild(activeLabel);
-            container.appendChild(activeSelect);
-            container.appendChild(activeNewBtn);
-            container.appendChild(activeDelBtn);
+          {
+            label: 'Filters',
+            render: function(container, data) {
 
-            const patternsLabel = $('label');
-            patternsLabel.innerHTML = 'Patterns for the active filter:';
-            const patternsTable = $('table');
-            const patternsNewBtn = $('button');
-            const patternsEditBtn = $('button');
-            const patternsDelBtn = $('button');
-            const patternsUpBtn = $('button');
-            const patternsDownBtn = $('button');
-            // container.appendChild(patternsLabel);
-          }, }
+              let p = $('p'); //, group;
+
+              const activeLabel = $('label');
+              activeLabel.innerHTML = 'Active filter:';
+              const activeSelect = $('select');
+              let option = $('option') as HTMLOptionElement;
+              option.value = 'default';
+              option.innerText = 'Default';
+              activeSelect.appendChild(option);
+
+              const btnGroup = $('.btn-group');
+              const activeNewBtn = $('button');
+              activeNewBtn.innerHTML = 'New...';
+              const activeDelBtn = $('button');
+              activeDelBtn.innerHTML = 'Delete';
+              btnGroup.appendChild(activeNewBtn);
+              btnGroup.appendChild(activeDelBtn);
+
+              p.appendChild(activeLabel);
+              p.appendChild(activeSelect);
+              p.appendChild(btnGroup);
+              container.appendChild(p);
+
+              p = $('p');
+              const patternsLabel = $('label');
+              patternsLabel.innerHTML = 'Patterns for the active filter:';
+              const patternsTable = $('table');
+
+              const group = $('.group');
+              const left = $('.left');
+              const patternsNewBtn = $('button');
+              patternsNewBtn.innerHTML = 'New...';
+              const patternsEditBtn = $('button');
+              patternsEditBtn.innerHTML = 'Edit...';
+              const patternsDelBtn = $('button');
+              patternsDelBtn.innerHTML = 'Delete';
+
+              left.appendChild(patternsNewBtn);
+              left.appendChild(patternsEditBtn);
+              left.appendChild(patternsDelBtn);
+
+              const right = $('.right');
+              const patternsUpBtn = $('button');
+              patternsUpBtn.innerHTML = '↑ Up';
+              const patternsDownBtn = $('button');
+              patternsDownBtn.innerHTML = '↓ Down';
+
+              right.appendChild(patternsUpBtn);
+              right.appendChild(patternsDownBtn);
+
+              group.appendChild(left);
+              group.appendChild(right);
+
+              p.appendChild(patternsLabel);
+              p.appendChild(patternsTable);
+              p.appendChild(group);
+
+              container.appendChild(p);
+            },
+          }
         ],
       }
     ];
     this.addNodes(this.tree, tree, 0, '');
     this.callRenders(tree, 0, '');
-    (this.tree.getElementsByClassName('content')[1] as HTMLElement).click();
+    (this.tree.getElementsByClassName('content')[4] as HTMLElement).click();
   }
 
   callRender(data: Node, level: number, id: string): void {
     const container = $('.container');
     container.id = id;
-    const title = $('.title');
+    const title = $('h2.title');
     title.innerHTML = data.label;
     container.appendChild(title);
     if(data.render) data.render(container, data);
@@ -179,27 +237,34 @@ export class Preferences {
     </div>
     */
 
-    const contents_area = $('.contents_area');
+    const body = $('.body');
     const tree = this.tree = $('.tree');
     const contents = this.contents = $('.contents');
 
-    contents_area.appendChild(tree);
-    contents_area.appendChild(contents);
-    el.appendChild(contents_area);
+    body.appendChild(tree);
+    body.appendChild(contents);
+    el.appendChild(body);
 
-    const btn_area = $('.btn_area');
+    const bottom = $('.bottom');
+
+    const left = $('.left');
     const loadBtn = $('button'); loadBtn.innerHTML = 'Load...';
     const saveBtn = $('button'); saveBtn.innerHTML = 'Save...';
+    left.appendChild(loadBtn);
+    left.appendChild(saveBtn);
+
+    const right = $('.right');
     const okBtn = $('button'); okBtn.innerHTML = 'Ok';
     const cancelBtn = $('button'); cancelBtn.innerHTML = 'Cancel';
     const applyBtn = $('button'); applyBtn.innerHTML = 'Apply';
 
-    btn_area.appendChild(loadBtn);
-    btn_area.appendChild(saveBtn);
-    btn_area.appendChild(okBtn);
-    btn_area.appendChild(cancelBtn);
-    btn_area.appendChild(applyBtn);
-    el.appendChild(btn_area);
+    right.appendChild(okBtn);
+    right.appendChild(cancelBtn);
+    right.appendChild(applyBtn);
+
+    bottom.appendChild(left);
+    bottom.appendChild(right);
+    el.appendChild(bottom);
     return el;
   }
 

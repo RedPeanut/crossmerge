@@ -80,16 +80,20 @@ export default class MenuBuilder {
                 titleBarStyle: 'default',
                 title: 'Preferences',
                 // x, y, width, height,
+                width: 674+250, height: 676,
+                minWidth: 674, minHeight: 676,
+
                 webPreferences: {
-                  devTools: false,
+                  // devTools: false,
                   preload: app.isPackaged
                     ? path.join(__dirname, 'preload.js')
                     : path.join(__dirname, '../../.erb/dll/preload.js'),
                 },
               });
-              self.setupDevelopmentEnvironment(preferences);
               preferences.loadURL(resolveHtmlPath('preferences.html'));
+              self.setupDevelopmentEnvironment(preferences);
               preferences.once('ready-to-show', () => {
+                // preferences.webContents.openDevTools({activate: false, mode: 'right'});
                 preferences.show();
               });
             }
@@ -288,13 +292,14 @@ export default class MenuBuilder {
                 title: 'Preferences',
                 // x, y, width, height,
                 webPreferences: {
-                  devTools: false,
+                  // devTools: false,
                   preload: app.isPackaged
                     ? path.join(__dirname, 'preload.js')
                     : path.join(__dirname, '../../.erb/dll/preload.js'),
                 },
               });
               self.setupDevelopmentEnvironment(preferences);
+              // preferences.webContents.openDevTools({mode: 'right', activate: false});
               preferences.loadURL(resolveHtmlPath('preferences.html'));
               preferences.once('ready-to-show', () => {
                 preferences.show();
