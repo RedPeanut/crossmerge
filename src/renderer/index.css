@@ -364,6 +364,14 @@ body { height: 100%; }
 }
 .folder-compare-view .lists .node .ln-body { width: 100%; }
 
+.folder-compare-view .lists .list-selectbar .node,
+.folder-compare-view .lists .list-changes .node {
+  padding: 0;
+}
+.folder-compare-view .lists .list-changes .node .content {
+  justify-content: center;
+}
+
 /* StatusBar */
 .part.statusbar {
   height: 22px;
