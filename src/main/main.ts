@@ -218,7 +218,7 @@ class MainWindow {
     const MENUBAR_HEIGHT = 31;
     const MACOS_TRAFFIC_LIGHTS_HEIGHT = 16;
 
-    /*
+    ///* index
     this.browserWindow = new BrowserWindow({
       // show: false,
       // width: 1024, height: 728,
@@ -244,7 +244,7 @@ class MainWindow {
     this.browserWindow.loadURL(resolveHtmlPath('index.html'));
     //*/
 
-    ///*
+    /* preferences
     this.browserWindow = new BrowserWindow({
       // parent: self.browserWindow, modal: false, show: false,
       // titleBarStyle: 'hidden',
@@ -275,6 +275,9 @@ class MainWindow {
       } else {
         this.browserWindow.show();
       }
+
+      // if(process.env.NODE_ENV === 'development')
+      //   this.browserWindow.webContents.openDevTools();
     });
 
     this.browserWindow.on('closed', () => {
