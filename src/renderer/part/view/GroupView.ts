@@ -30,6 +30,9 @@ export class GroupView {
   }
 
   addGroup(group: Group) {
+    this.tabs.addGroup(group);
+    this.compares.addGroup(group);
+    // this.group.splice(0, 0, ...group);
     this.group.push(...group);
   }
 

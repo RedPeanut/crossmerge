@@ -975,4 +975,10 @@ export class FolderView implements CompareView {
     this.throttle_renderChanges();
   }
 
+  css(style: { active?: boolean; }): void {
+    const { active } = style;
+    if(active) this.element.classList.add('active');
+    else this.element.classList.remove('active');
+  }
+
 }

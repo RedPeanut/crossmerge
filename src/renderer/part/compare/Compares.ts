@@ -29,9 +29,35 @@ export class Compares {
       else throw new Error('do not enter here');
       this.map.set(item.uid, v);
       el.appendChild(v.create());
+
+      v.css({ active: true });
     }
 
     return el;
+  }
+
+  addGroup(group: Group) {
+
+    this.map.forEach((item) => {
+      item.css({ active: false });
+    });
+
+    const el = this.element;
+    for(let i = 0; i < group.length; i++) {
+      const item: CompareItem = group[i];
+      let v: FileView|FolderView;
+      if(item.type == 'folder') v = new FolderView(el, item);
+      else if(item.type == 'file') v = new FileView(el, item);
+      else throw new Error('do not enter here');
+      this.map.set(item.uid, v);
+      el.appendChild(v.create());
+
+      if(i == group.length-1)
+        v.css({ active: true });
+    }
+
+    // this.group.splice(0, 0, ...group);
+    this.group.push(...group);
   }
 
   layout(): void {

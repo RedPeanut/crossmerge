@@ -96,20 +96,30 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     const group: CompareItem[] = [
       { type: 'file', uid: uuidv4() }, // blank folder compare
     ];
-    const groupView = this.groupView = new GroupView(this.container, group, {});
-    this.container.appendChild(groupView.create());
+
+    if(this.groupView) {
+      this.groupView.addGroup(group);
+    } else {
+      const groupView = this.groupView = new GroupView(this.container, group, {});
+      this.container.appendChild(groupView.create());
+    }
   }
 
   addFolderCompareView(): void {
     const group: CompareItem[] = [
       { type: 'folder', uid: uuidv4() }, // blank folder compare
     ];
-    const groupView = this.groupView = new GroupView(this.container, group, {});
-    this.container.appendChild(groupView.create());
 
-    // occur layout event for explicitly set canvas w,h
-    const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
-    mainLayoutService.layout();
-  }
+    if(this.groupView) {
+      this.groupView.addGroup(group);
+    } else {
+      const groupView = this.groupView = new GroupView(this.container, group, {});
+      this.container.appendChild(groupView.create());
+
+      // occur layout event for explicitly set canvas w,h
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.layout();
+    }
+    }
 
 }
