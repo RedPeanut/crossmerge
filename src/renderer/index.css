@@ -259,6 +259,7 @@ body { height: 100%; }
   height: calc(100% - 26px);
 }
 
+
 /* file compare view */
 .file-compare-view.active { display: flex; }
 .file-compare-view * {
@@ -329,7 +330,6 @@ body { height: 100%; }
 .folder-compare-view .lists .body .list-scrollbar.vertical { width: 16px; height: 100%; top: 0; right: 0; }
 
 .folder-compare-view .lists .body .list-selectbar {
-  /* z-index: 5; 분명 밑에 깔았는데 왜 위로 올라오지? */
   position: absolute;
   /* height: 100%; width: 100%; */
   width: calc(100% - 16px);

@@ -650,7 +650,7 @@ export class FolderView implements CompareView {
         'selectbar', this.index,
       );
       node = { parent: null, elem };
-      this.partNodeList.changes.push(node);
+      this.partNodeList.selectbar.push(node);
       workPartNode.selectbar = node;
 
       if(data.state != 'unchanged') {
@@ -958,10 +958,6 @@ export class FolderView implements CompareView {
 
     this.lastData = data;
     this.index++;
-  }
-
-  sendReadData(data: any): void {
-    // not use
   }
 
   layout(): void {
