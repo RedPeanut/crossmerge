@@ -205,6 +205,8 @@ export class FolderView implements CompareView {
   }
 
   clearCanvases(): void {
+    // console.log('clearCanvases is called..');
+
     const width = this.list_scrollbar_vertical.clientWidth;
     const height = this.list_scrollbar_vertical.clientHeight;
     const ctx = this.list_scrollbar_vertical.getContext('2d');
@@ -216,9 +218,6 @@ export class FolderView implements CompareView {
 
   renderScroll(): void {
     // console.log('renderScroll is called..'); // e =', e);
-
-    if(!this.changes || !this.changes.length)
-      return;
 
     const { scrollLeft, scrollTop, scrollWidth, scrollHeight,
       clientLeft, clientTop, clientWidth, clientHeight,
@@ -255,21 +254,32 @@ export class FolderView implements CompareView {
     }
 
     // render thumb
-    if(scrollHeight > clientHeight) {
-      ratio = clientHeight / scrollHeight;
-      y = scrollTop * ratio;
-      h = clientHeight * ratio;
+    ratio = clientHeight / scrollHeight;
+    y = scrollTop * ratio;
+    h = clientHeight * ratio;
 
-      ctx.fillStyle = 'rgb(167 167 167 / 50%)';
-      ctx.fillRect(3, y, 10, h); // xywh
-    }
+    ctx.fillStyle = 'rgb(167 167 167 / 50%)';
+    ctx.fillRect(3, y, 10, h); // xywh
+
     // (opt) add click listener
 
   }
 
   renderChanges() {
+
+    if(!this.changes || !this.changes.length)
+      return;
+
     this.clearCanvases();
-    this.renderScroll();
+
+    const { scrollLeft, scrollTop, scrollWidth, scrollHeight,
+      clientLeft, clientTop, clientWidth, clientHeight,
+      offsetLeft, offsetTop, offsetWidth, offsetHeight
+    } = this.list_scrollable;
+
+    if(scrollHeight > clientHeight) {
+      this.renderScroll();
+    }
     // this.element.dispatchEvent(new Event('updated'));
   }
 
@@ -528,6 +538,9 @@ export class FolderView implements CompareView {
       container.appendChild(node);
       return node;
     } else if(mode == 'selectbar') {
+
+      node.classList.add(data.state); // changed, inserted, removed
+
       node.onclick = (e) => {
         // console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
