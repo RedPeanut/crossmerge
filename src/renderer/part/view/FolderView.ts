@@ -123,6 +123,56 @@ export class FolderView implements CompareView {
 
       this.recvRowData(arg as CompareFolderData);
     });
+
+    window.ipc.on('menu click', (...args: any[]) => {
+      // console.log('on menu click is called ..');
+      // console.log('args =', args);
+      const arg = args[1];
+      if(arg.cmd) {
+        const _args = arg.cmd.split(':');
+        console.log('_args =', _args);
+        const menu = _args[0];
+        const action = _args[1];
+
+        // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
+
+        function recur(list: HTMLElement, fn: (el) => void) {
+          for(let i = 0; i < list.childNodes.length; i++) {
+            const child = list.childNodes[i] as HTMLElement;
+
+            if(child.classList.contains('content')) continue;
+            if(child.classList.contains('node')) {
+              fn(child);
+              recur(child, fn);
+            }
+          }
+        }
+
+        if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
+
+          const trees = [
+            this.list_selectbar.firstChild as HTMLElement,
+            this.list_lhs.firstChild as HTMLElement,
+            this.list_changes.firstChild as HTMLElement,
+            this.list_rhs.firstChild as HTMLElement,
+          ];
+
+          for(let i = 0; i < trees.length; i++) {
+            recur(trees[i], (el) => {
+              if(action == 'expand all folders') {
+                if(el.classList.contains('collapsed'))
+                  el.classList.remove('collapsed');
+              } else { // == 'collapse all folders'
+                if(!el.classList.contains('collapsed'))
+                  el.classList.add('collapsed');
+              }
+            });
+          }
+        }
+
+        this.throttle_renderChanges();
+      }
+    });
   }
 
   modifyChanges(): void {

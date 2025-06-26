@@ -85,10 +85,10 @@ export class MainLayout extends Layout implements MainLayoutService {
   }
 
   installIpc(): void {
-    window.ipc.on('menu click', (...args: any[]) => {
+    /* window.ipc.on('menu click', (...args: any[]) => {
       console.log('menu click event is called ..');
       console.log('args[1] =', args[1]);
-    });
+    }); */
   }
 
   startup(): void {
