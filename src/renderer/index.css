@@ -287,10 +287,18 @@ body { height: 100%; }
 /* folder compare view */
 .folder-compare-view.active { display: flex; }
 .folder-compare-view * { /* border: 1px solid black; */ }
-.folder-compare-view { display: none; flex-direction: column; height: 100%; }
+.folder-compare-view { display: none; flex-direction: column;
+  background-color: rgb(240,240,240);
+  height: calc(100% - 8px);
+  /* padding: 0 8px; */
+  padding: 8px 8px 0 8px;
+}
 .folder-compare-view ::-webkit-scrollbar { width: 0; height: 0; }
 
-.folder-compare-view .inputs { display: flex; flex: 0; }
+.folder-compare-view .inputs { display: flex; flex: 0; margin-bottom: 8px; }
+.folder-compare-view .inputs input { height: 23px; border: 1px solid rgb(122,122,122); padding: 3px;
+  /* font-size: 16px; */
+}
 .folder-compare-view .inputs .lhs, .folder-compare-view .inputs .rhs { flex: 1; display: flex; }
 .folder-compare-view .inputs .input-margin { width: 28px; }
 
@@ -301,6 +309,7 @@ body { height: 100%; }
   /* height: 100%; */
   position: relative; flex: 1; display: flex; flex-direction: column;
   overflow: hidden;
+  background-color: white;
 }
 
 .folder-compare-view .lists .header { width: 100%; display: flex; flex: 0; }
@@ -311,7 +320,7 @@ body { height: 100%; }
   flex: 1;
   display: flex;
   position: relative;
-  padding: 0 8px;
+  /* padding: 0 8px; */
 }
 
 .folder-compare-view .lists .body > * {
