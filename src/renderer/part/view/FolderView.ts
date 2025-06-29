@@ -466,6 +466,9 @@ export class FolderView implements CompareView {
     // suggests.appendChild(suggest_column_rhs);
 
     const lists = $(".lists");
+    lists.tabIndex = 0;
+    lists.contentEditable = 'true';
+
     const header = $(".header");
     const header_list_column_lhs = $(".list-column.lhs");
     header_list_column_lhs.innerHTML = 'Left';
