@@ -4,6 +4,7 @@ import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
 import { popup } from "../../util/contextmenu";
+import { Input } from "../../component/Input";
 
 interface Node {
   parent: Node | null;
@@ -58,8 +59,10 @@ export class FolderView implements CompareView {
   element: HTMLElement;
   item: CompareItem;
 
-  input_lhs: HTMLInputElement;
-  input_rhs: HTMLInputElement;
+  // input_lhs: HTMLInputElement;
+  // input_rhs: HTMLInputElement;
+  input_lhs: Input;
+  input_rhs: Input;
 
   list_body: HTMLElement;
   list_scrollable: HTMLElement;
@@ -409,16 +412,20 @@ export class FolderView implements CompareView {
 
     const inputs = $(".inputs");
     const input_column_lhs = $(".input-column.lhs");
-    const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
-    input_lhs.placeholder = 'Left folder';
+    // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
+    // input_lhs.placeholder = 'Left folder';
+    const input_lhs = this.input_lhs = new Input(input_column_lhs);
+    input_lhs.placeholder('Left folder');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
-    const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
-    input_rhs.placeholder = 'Right folder';
+    // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
+    // input_rhs.placeholder = 'Right folder';
+    const input_rhs = this.input_rhs = new Input(input_column_rhs);
+    input_rhs.placeholder('Right folder');
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+    input_lhs.value('/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left');
+    input_rhs.value('/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right');
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
@@ -430,7 +437,7 @@ export class FolderView implements CompareView {
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
-      // console.log('keypress event is called ..');
+      console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
       if(e.keyCode == 13) {
@@ -438,40 +445,25 @@ export class FolderView implements CompareView {
         this.doCompare();
         return;
       }
-
-      // TODO: auto completion
-
-      // check every keyboard's capable char
-      // TODO: capture paste event, arrow event?
-      if(
-        (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
-        || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./
-        || (48 <= e.keyCode && e.keyCode <= 57) // 0-9
-        || (65 <= e.keyCode && e.keyCode <= 90) // A-Z
-        || (97 <= e.keyCode && e.keyCode <= 122) // a-z
-        || e.keyCode == 92 || e.keyCode == 95 // \_
-      ) {
-
-      }
     }
 
     input_lhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
     input_rhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
 
-    input_column_lhs.appendChild(input_lhs);
+    // input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);
     inputs.appendChild(input_margin);
-    input_column_rhs.appendChild(input_rhs);
+    // input_column_rhs.appendChild(input_rhs);
     inputs.appendChild(input_column_rhs);
 
-    const suggests = $(".suggests");
-    suggests.style.display = 'none';
-    const suggest_column_lhs = $(".suggest-column.lhs");
-    const suggest_margin = $(".suggest-margin");
-    const suggest_column_rhs = $(".suggest-column.rhs");
-    suggests.appendChild(suggest_column_lhs);
-    suggests.appendChild(suggest_margin);
-    suggests.appendChild(suggest_column_rhs);
+    // const suggests = $(".suggests");
+    // // suggests.style.display = 'none';
+    // const suggest_column_lhs = $(".suggest-column.lhs");
+    // const suggest_margin = $(".suggest-margin");
+    // const suggest_column_rhs = $(".suggest-column.rhs");
+    // suggests.appendChild(suggest_column_lhs);
+    // suggests.appendChild(suggest_margin);
+    // suggests.appendChild(suggest_column_rhs);
 
     const lists = $(".lists");
     const header = $(".header");
@@ -525,7 +517,7 @@ export class FolderView implements CompareView {
     lists.appendChild(body);
 
     el.appendChild(inputs);
-    el.appendChild(suggests);
+    // el.appendChild(suggests);
     el.appendChild(lists);
 
     return el;
@@ -551,8 +543,8 @@ export class FolderView implements CompareView {
         parts[i].firstChild.removeChild(parts[i].firstChild.childNodes[0]);
     }
 
-    const input_lhs_value = this.input_lhs.value;
-    const input_rhs_value = this.input_rhs.value;
+    const input_lhs_value = this.input_lhs.value();
+    const input_rhs_value = this.input_rhs.value();
 
     window.ipc.send('new', {
       ...this.item,

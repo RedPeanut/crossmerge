@@ -1,0 +1,61 @@
+import { $ } from "../util/dom";
+
+export interface InputOptions {}
+
+export class Input {
+
+  parent: HTMLElement;
+  element: HTMLElement;
+  input: HTMLInputElement;
+  suggest: HTMLElement;
+
+  constructor(parent: HTMLElement) {
+    this.parent = parent;
+    const el = this.element = $('.input');
+    const input = this.input = $('input');
+    const suggest = this.suggest = $('.suggest');
+    suggest.style.display = 'none';
+
+    function inputKeyPressHandler(e: KeyboardEvent) {
+      console.log('keypress event is called ..');
+      // console.log('e.keyCode =', e.keyCode);
+
+      // TODO: auto completion
+
+      // check every keyboard's capable char
+      // TODO: capture paste event, arrow event?
+      if(
+        (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
+        || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./
+        || (48 <= e.keyCode && e.keyCode <= 57) // 0-9
+        || (65 <= e.keyCode && e.keyCode <= 90) // A-Z
+        || (97 <= e.keyCode && e.keyCode <= 122) // a-z
+        || e.keyCode == 92 || e.keyCode == 95 // \_
+      ) {
+
+      }
+    }
+
+    input.addEventListener('keypress', inputKeyPressHandler.bind(this));
+
+    el.appendChild(input);
+    el.appendChild(suggest);
+    parent.appendChild(el);
+  }
+
+  placeholder(value: string): void {
+    this.input.placeholder = value;
+  }
+
+  value(value?: string): void | string {
+    if(arguments.length)
+      this.input.value = value;
+    else
+      return this.input.value;
+  }
+
+  addEventListener(event, handler) {
+    this.input.addEventListener(event, handler);
+  }
+
+}
