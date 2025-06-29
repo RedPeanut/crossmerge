@@ -335,8 +335,8 @@ body { height: 100%; }
   position: relative;
 }
 .folder-compare-view .lists .body .list-scrollbar { position: absolute; }
-.folder-compare-view .lists .body .list-scrollbar.horizontal { height: 16px; width: 100%; left: 0; bottom: 0; }
 .folder-compare-view .lists .body .list-scrollbar.vertical { width: 16px; height: 100%; top: 0; right: 0; }
+.folder-compare-view .lists .body .list-scrollbar.horizontal { height: 16px; width: 100%; left: 0; bottom: 0; }
 
 .folder-compare-view .lists .body .list-selectbar {
   position: absolute;

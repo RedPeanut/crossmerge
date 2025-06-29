@@ -56,11 +56,11 @@ const electronHandler = {
   invoke(channel: Channels, ...args: any[]) {
     return ipcRenderer.invoke(channel, args);
   },
-  on: (channel: Channels, cb: (...args: unknown[]) => void) => {
-    ipcRenderer.on(channel, cb)
+  on: (channel: Channels, cb: (...args: any[]) => void) => {
+    ipcRenderer.on(channel, cb);
   },
-  off: (channel: Channels, cb: (...args: unknown[]) => void) => {
-    ipcRenderer.removeListener(channel, cb)
+  off: (channel: Channels, cb: (...args: any[]) => void) => {
+    ipcRenderer.removeListener(channel, cb);
   },
 };
 
