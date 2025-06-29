@@ -1,8 +1,9 @@
 import { CompareFolderData, CompareItem } from "../../../common/Types";
-import { CompareView } from "../../Types";
+import { CompareView, ContextMenuItem } from "../../Types";
 import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
+import { popup } from "../../util/contextmenu";
 
 interface Node {
   parent: Node | null;
@@ -599,6 +600,19 @@ export class FolderView implements CompareView {
       }
 
       const content = $(".content");
+      content.oncontextmenu = (e) => {
+        // console.log('e =', e);
+        const items: ContextMenuItem[] = [];
+        items.push({
+          accelerator: 'Cmd+Shift+L',
+          label: 'Launch Comparisons for Selected Rows', //localize(key, msg),
+          click: () => {
+            console.log('click event is received ..');
+          }
+        });
+        popup(items);
+      };
+
       if(hasChildren) {
         if(isCollapsed) node.classList.add('collapsed');
       }

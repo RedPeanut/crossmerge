@@ -28,3 +28,39 @@ export interface CompareView {
   layout(): void;
   css(style: { active?: boolean }): void;
 }
+
+/* Context Menu */
+export interface CommonContextMenuItem {
+  label?: string;
+
+  type?: 'normal' | 'separator' | 'submenu' | 'checkbox' | 'radio';
+
+  accelerator?: string;
+
+  enabled?: boolean;
+  visible?: boolean;
+  checked?: boolean;
+}
+
+export interface SerializableContextMenuItem extends CommonContextMenuItem {
+  id: number;
+  submenu?: SerializableContextMenuItem[];
+}
+
+export interface ContextMenuItem extends CommonContextMenuItem {
+  click?: (event: ContextMenuEvent) => void;
+  submenu?: ContextMenuItem[];
+}
+
+export interface ContextMenuEvent {
+  shiftKey?: boolean;
+  ctrlKey?: boolean;
+  altKey?: boolean;
+  metaKey?: boolean;
+}
+
+export interface PopupOptions {
+  x?: number;
+  y?: number;
+  // positioningItem?: number;
+}

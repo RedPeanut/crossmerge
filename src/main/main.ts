@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, screen, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -197,6 +197,84 @@ class MainWindow {
       if(this.browserWindow[arg] && typeof this.browserWindow[arg] == 'function') {
         this.browserWindow[arg]();
       }
+    });
+
+    function createMenu(event: IpcMainEvent, onClick: string, items): Menu {
+      const menu = new Menu();
+
+      items.forEach(item => {
+        let menuitem: MenuItem;
+
+        // Separator
+        if(item.type === 'separator') {
+          menuitem = new MenuItem({
+            type: item.type,
+          });
+        }
+
+        // Sub Menu
+        else if(Array.isArray(item.submenu)) {
+          menuitem = new MenuItem({
+            submenu: createMenu(event, onClick, item.submenu),
+            label: item.label
+          });
+        }
+
+        // Normal Menu Item
+        else {
+          menuitem = new MenuItem({
+            label: item.label,
+            type: item.type,
+            accelerator: item.accelerator,
+            checked: item.checked,
+            enabled: item.enabled,
+            visible: item.visible,
+            click: (menuItem, win, contextmenuEvent) => event.sender.send(onClick, item.id, contextmenuEvent)
+          });
+        }
+
+        menu.append(menuitem);
+      });
+
+      return menu;
+    }
+
+    ipcMain.on('contextmenu', (event, args: any[]) => {
+      // (event, contextMenuId, items, onClick, options) => {
+      // const arg = args[0];
+      // console.log(args.length);
+
+      /* for(let i = 0; i < args.length; i++) {
+        console.log(`typeof args[${i}] = ${typeof args[i]}`);
+      } */
+      // const { contextMenuId, items, onClick, options } = args;
+      // console.log('args =', args);
+
+      const contextMenuId = args[0];
+      const items = args[1];
+      const onClick = args[2];
+      const options = args[3];
+
+      // // console.log('event =', event);
+      // console.log('contextMenuId =', contextMenuId);
+      // console.log('items =', items);
+      // console.log('onClick =', onClick);
+      // console.log('options =', options);
+
+      // const arg = args[0];
+      // console.log(typeof this.browserWindow[arg]);
+
+      const menu = createMenu(event, onClick, items);
+      menu.popup({
+        x: options ? options.x : undefined,
+        y: options ? options.y : undefined,
+        callback: () => {
+          console.log('menu popup callback is called ..');
+          if(menu) {
+            event.sender.send('contextmenu close', contextMenuId);
+          }
+        }
+      });
     });
   }
 

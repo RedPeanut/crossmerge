@@ -32,6 +32,9 @@ export type MainEvents =
 
   // action
   // | 'handle title dblclick'
+
+  // contextmenu
+  | 'contextmenu'
 ;
 
 export type RenderEvents =
@@ -45,6 +48,10 @@ export type RenderEvents =
 
   // window
   | 'window state changed'
+
+  // contextmenu
+  | 'contextmenu on ${contextMenuId}'
+  | 'contextmenu close'
 ;
 
 export type Channels = MainEvents | RenderEvents;
@@ -59,7 +66,11 @@ const electronHandler = {
   on: (channel: Channels, cb: (...args: any[]) => void) => {
     ipcRenderer.on(channel, cb);
   },
-  off: (channel: Channels, cb: (...args: any[]) => void) => {
+
+  once: (channel: string, cb: (...args: any[]) => void) => {
+    ipcRenderer.once(channel, cb);
+  },
+  off: (channel: string, cb: (...args: any[]) => void) => {
     ipcRenderer.removeListener(channel, cb);
   },
 };
