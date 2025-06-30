@@ -616,7 +616,7 @@ export class FolderView implements CompareView {
       return node;
     }
 
-    node.style.paddingLeft = `${data.depth*10}px`;
+    node.style.paddingLeft = `10px`;
     const content = $(".content");
     const header = $(".ln-header");
     const body = $(".ln-body");

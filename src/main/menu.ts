@@ -291,6 +291,9 @@ export default class MenuBuilder {
                 titleBarStyle: 'default',
                 title: 'Preferences',
                 // x, y, width, height,
+                width: 674+250, height: 676,
+                minWidth: 674, minHeight: 676,
+                
                 webPreferences: {
                   // devTools: false,
                   preload: app.isPackaged
