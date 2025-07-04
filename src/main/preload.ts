@@ -30,9 +30,10 @@ export type MainEvents =
   | 'config set'
   | 'config update'
 
-  // action
+  // action (descriptive form)
   // | 'handle title dblclick'
   | 'read file in fileview'
+  | 'read folder in input'
 
   // contextmenu
   | 'contextmenu'

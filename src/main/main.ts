@@ -286,6 +286,15 @@ class MainWindow {
       const data_rhs = decoder.write(buf_rhs);
       return { data_lhs, data_rhs };
     });
+
+    ipcMain.handle('read folder in input', async (event, args: any[]) => {
+      const [ value, type ] = args;
+      const _path = value.substring(0, value.lastIndexOf(path.sep));
+      const last = value.substring(value.lastIndexOf(path.sep)+1, value.length);
+      let reads: DirentExt[] = await _readdirSyncWithStat(_path);
+      reads = reads.filter((item) => item.name.startsWith(last)).filter((item) => item.isDirectory);
+      return reads;
+    });
   }
 
   createWindow = async () => {

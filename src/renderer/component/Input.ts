@@ -18,7 +18,7 @@ export class Input {
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
-      // console.log('e.keyCode =', e.keyCode);
+      console.log('e.keyCode =', e.keyCode);
 
       // TODO: auto completion
 
@@ -32,7 +32,13 @@ export class Input {
         || (97 <= e.keyCode && e.keyCode <= 122) // a-z
         || e.keyCode == 92 || e.keyCode == 95 // \_
       ) {
-
+        const value: string = this.input.value;
+        // value.lastIndexOf(path.Separator);
+        window.ipc.invoke('read folder in input', value, 'folder')
+        .then(result => {
+          console.log('result =', result);
+        })
+        .catch(error => {});
       }
     }
 
