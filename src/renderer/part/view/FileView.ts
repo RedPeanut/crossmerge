@@ -20,7 +20,7 @@ export class FileView implements CompareView {
     this.parent = parent;
     this.item = item;
 
-    window.ipc.on('read file data', (...args: any[]) => {
+    /* window.ipc.on('read file data', (...args: any[]) => {
       // console.log('on compare folder data is called ..');
       // console.log('args =', args);
       if(!args || args.length <= 1) return;
@@ -29,7 +29,7 @@ export class FileView implements CompareView {
       if(this.item.uid != arg.uid) return;
 
       this.recvReadData(arg);
-    });
+    }); */
   }
 
   create(): HTMLElement {
@@ -105,14 +105,33 @@ export class FileView implements CompareView {
     const input_lhs_value = this.input_lhs.value;
     const input_rhs_value = this.input_rhs.value;
 
-    window.ipc.send('new', {
+    /* window.ipc.send('new', {
       ...this.item,
       path_lhs: input_lhs_value,
       path_rhs: input_rhs_value
+    }); */
+
+    window.ipc.invoke('read file in fileview',
+      this.input_lhs.value,
+      this.input_rhs.value
+    ).then(result => {
+      console.log('result =', result);
+      const mergely = this.mergely = new Mergely(
+      // '#mergely',
+      this.mergely_el,
+      {
+        ...{},
+        lhs: result.data_lhs,
+        rhs: result.data_rhs,
+        // _debug: true,
+      }
+    );
+    }).catch(error => {
+      // console.log(error);
     });
   }
 
-  recvReadData(data: any): void {
+  /* recvReadData(data: any): void {
     console.log('data =', data);
     const mergely = this.mergely = new Mergely(
       // '#mergely',
@@ -124,7 +143,7 @@ export class FileView implements CompareView {
         // _debug: true,
       }
     );
-  }
+  } */
 
   layout(): void {}
 

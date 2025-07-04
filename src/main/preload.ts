@@ -32,13 +32,14 @@ export type MainEvents =
 
   // action
   // | 'handle title dblclick'
+  | 'read file in fileview'
 
   // contextmenu
   | 'contextmenu'
 ;
 
 export type RenderEvents =
-  'read file data'
+  // 'read file data'
   | 'compare folder start'
   | 'compare folder data'
   | 'compare folder end'

@@ -13,13 +13,14 @@ import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEven
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './utils';
+import { _readdirSyncWithStat, resolveHtmlPath } from './utils';
 
 import { CompareItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
-import { ReadFile } from './util/ReadFile';
 import { Channels } from './preload';
 import fs from 'fs';
+import { DirentExt } from './Types';
+import { StringDecoder } from 'string_decoder';
 
 class AppUpdater {
   constructor() {
@@ -90,8 +91,7 @@ class MainWindow {
       console.log('[new] args =', args);
       const arg = args[0] as CompareItem;
       if(arg.type == 'file') {
-        const ret = new ReadFile(arg.uid).run(arg);
-        console.log('ret =', ret);
+        // not use
       } else if(arg.type == 'folder') {
         const ret = await new CompareFolder(arg.uid).run(arg);
         console.log('ret =', ret);
@@ -275,6 +275,16 @@ class MainWindow {
           }
         }
       });
+    });
+
+    ipcMain.handle('read file in fileview', async (event, args: any[]) => {
+      const [ path_lhs, path_rhs ] = args;
+      const buf_lhs: Buffer = fs.readFileSync(path_lhs);
+      const buf_rhs: Buffer = fs.readFileSync(path_rhs);
+      const decoder = new StringDecoder('utf8');
+      const data_lhs = decoder.write(buf_lhs);
+      const data_rhs = decoder.write(buf_rhs);
+      return { data_lhs, data_rhs };
     });
   }
 
