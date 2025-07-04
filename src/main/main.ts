@@ -282,9 +282,9 @@ class MainWindow {
   }
 
   createWindow = async () => {
-    if(this.isDebug) {
+    /* if(this.isDebug) {
       await this.installExtensions();
-    }
+    } */
 
     const RESOURCES_PATH = app.isPackaged
       ? path.join(process.resourcesPath, 'assets')

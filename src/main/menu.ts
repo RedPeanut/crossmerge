@@ -293,7 +293,7 @@ export default class MenuBuilder {
                 // x, y, width, height,
                 width: 674+250, height: 676,
                 minWidth: 674, minHeight: 676,
-                
+
                 webPreferences: {
                   // devTools: false,
                   preload: app.isPackaged
