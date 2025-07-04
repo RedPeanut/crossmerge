@@ -180,22 +180,27 @@ class MainWindow {
     }
 
     ipcMain.handle('window get', (event, args: any[]) => {
-      if(args.length > 1)
-        return helper(this.browserWindow, args[0], args[1]);
+      if(args.length > 1) {
+        const [ type, value ] = args;
+        return helper(this.browserWindow, type, value);
+      }
       return null;
     });
 
     ipcMain.handle('process get', (event, args: any[]) => {
-      if(args.length > 1)
-        return helper(process, args[0], args[1]);
+      if(args.length > 1) {
+        const [ type, value ] = args;
+        return helper(process, type, value);
+      }
       return null;
     });
 
     ipcMain.on('window fn', (event, args: any[]) => {
-      const arg = args[0];
+      // const arg = args[0];
+      const [ fn ] = args;
       // console.log(typeof this.browserWindow[arg]);
-      if(this.browserWindow[arg] && typeof this.browserWindow[arg] == 'function') {
-        this.browserWindow[arg]();
+      if(this.browserWindow[fn] && typeof this.browserWindow[fn] == 'function') {
+        this.browserWindow[fn]();
       }
     });
 
@@ -241,28 +246,7 @@ class MainWindow {
 
     ipcMain.on('contextmenu', (event, args: any[]) => {
       // (event, contextMenuId, items, onClick, options) => {
-      // const arg = args[0];
-      // console.log(args.length);
-
-      /* for(let i = 0; i < args.length; i++) {
-        console.log(`typeof args[${i}] = ${typeof args[i]}`);
-      } */
-      // const { contextMenuId, items, onClick, options } = args;
-      // console.log('args =', args);
-
-      const contextMenuId = args[0];
-      const items = args[1];
-      const onClick = args[2];
-      const options = args[3];
-
-      // // console.log('event =', event);
-      // console.log('contextMenuId =', contextMenuId);
-      // console.log('items =', items);
-      // console.log('onClick =', onClick);
-      // console.log('options =', options);
-
-      // const arg = args[0];
-      // console.log(typeof this.browserWindow[arg]);
+      const [ contextMenuId, items, onClick, options ] = args;
 
       const menu = createMenu(event, onClick, items);
       menu.popup({

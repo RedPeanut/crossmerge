@@ -18,12 +18,12 @@ export class Input {
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
-      console.log('e.keyCode =', e.keyCode);
+      // console.log('e.keyCode =', e.keyCode);
 
       // TODO: auto completion
-
       // check every keyboard's capable char
       // TODO: capture paste event, arrow event?
+
       if(
         (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
         || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./

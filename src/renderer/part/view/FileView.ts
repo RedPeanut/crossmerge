@@ -102,8 +102,10 @@ export class FileView implements CompareView {
   }
 
   doCompare(): void {
-    const input_lhs_value = this.input_lhs.value;
-    const input_rhs_value = this.input_rhs.value;
+
+    // const self = this;
+    // const input_lhs_value = this.input_lhs.value;
+    // const input_rhs_value = this.input_rhs.value;
 
     /* window.ipc.send('new', {
       ...this.item,
