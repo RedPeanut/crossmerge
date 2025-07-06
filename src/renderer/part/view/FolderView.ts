@@ -598,8 +598,9 @@ export class FolderView implements CompareView {
       node.onclick = (e) => {
         // console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
-        e.stopPropagation();
+
         // return false;
+        e.stopPropagation();
       }
 
       const content = $(".content");
