@@ -437,7 +437,7 @@ export class FolderView implements CompareView {
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
-      console.log('keypress event is called ..');
+      // console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
       if(e.keyCode == 13) {
@@ -970,9 +970,10 @@ export class FolderView implements CompareView {
       this.lastPartNode = workPartNode;
     }
 
+    // 주의. 여기서 부터 this.lastPartNode 에 현재 노드로 교체된 상태
+
     // HERE: occur expand event to parent node when changed states are met
     if(data.state != 'unchanged') {
-      // 주의. this.lastPartNode 에 현재 노드 교체된 상태
       let workedNode: Node, part: string;
       if(data.state == 'removed') {
         workedNode = this.lastPartNode.left; part = 'left';
@@ -980,14 +981,14 @@ export class FolderView implements CompareView {
         workedNode = this.lastPartNode.right; part = 'right';
       }
 
-      function recurDo(node: Node, fn: (node: Node) => void): void {
+      function recur(node: Node, fn: (node: Node) => void): void {
         if(node.parent) {
           fn(node.parent);
-          recurDo(node.parent, fn);
+          recur(node.parent, fn);
         }
       }
 
-      recurDo.bind(this)(workedNode, (node: Node) => {
+      recur.bind(this)(workedNode, (node: Node) => {
         const id = node.elem.id; // node_${part}_${index}
           const index = id.split('_')[2]; // pick index
 
@@ -1001,27 +1002,6 @@ export class FolderView implements CompareView {
               _node.classList.remove('collapsed');
           }
       });
-
-      /* for(let i = 0; i >= -data.depth; i--) {
-        const nodeOrList = getParentNodeOrList.bind(this)(workedNode, i, part);
-        if(Array.isArray(nodeOrList)) { // root
-        } else {
-          const node = nodeOrList as Node;
-          // console.log(node.elem.id);
-          const id = node.elem.id; // node_${part}_${index}
-          const index = id.split('_')[2]; // pick index
-
-          // clear collapsed in all
-          let all = '|left|right|changes|selectbar';
-          if(all.startsWith('|')) all = all.substring(1);
-          let alls: string[] = all.split('|');
-          for(let i = 0; i < alls.length; i++) {
-            const _node = document.getElementById(`node_${alls[i]}_${index}`);
-            if(_node.classList.contains('collapsed'))
-              _node.classList.remove('collapsed');
-          }
-        }
-      } */
     }
 
     this.max = this.index;
