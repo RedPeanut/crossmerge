@@ -16,16 +16,17 @@ export class Input {
     const suggest = this.suggest = $('.suggest');
     suggest.style.display = 'none';
 
-    function inputKeyPressHandler(e: KeyboardEvent) {
-      console.log('keypress event is called ..');
-      // console.log('e.keyCode =', e.keyCode);
+    function inputKeyDownHandler(e: KeyboardEvent) {
+      // console.log('keydown event is called ..');
+      console.log('e.keyCode =', e.keyCode);
 
       // TODO: auto completion
       // check every keyboard's capable char
       // TODO: capture paste event, arrow event?
 
       if(
-        (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
+        (e.keyCode === 8 || e.keyCode === 46) // backspace
+        || (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
         || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./
         || (48 <= e.keyCode && e.keyCode <= 57) // 0-9
         || (65 <= e.keyCode && e.keyCode <= 90) // A-Z
@@ -42,7 +43,7 @@ export class Input {
       }
     }
 
-    input.addEventListener('keypress', inputKeyPressHandler.bind(this));
+    input.addEventListener('keydown', inputKeyDownHandler.bind(this));
 
     el.appendChild(input);
     el.appendChild(suggest);
