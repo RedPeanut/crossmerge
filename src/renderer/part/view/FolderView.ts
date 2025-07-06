@@ -370,14 +370,14 @@ export class FolderView implements CompareView {
 
     <div class="lists">
       <div class="header">
-        <div class="list-column lhs">
-        </div>
-        <div class="list-changes">
-        </div>
-        <div class="list-column rhs">
-        </div>
+        <div class="list-margin lhs"/>
+        <div class="list-column lhs"/>
+        <div class="list-changes"/>
+        <div class="list-column rhs"/>
+        <div class="list-margin rhs"/>
       </div>
       <div class="body">
+        <div class="list-margin lhs"/>
         <div class="list-scrollable">
           <div class="list-selectbar">
             <div class="tree"> nodes .. </div>
@@ -470,26 +470,32 @@ export class FolderView implements CompareView {
     lists.contentEditable = 'true';
 
     const header = $(".header");
+    const header_list_margin_lhs = $(".list-margin.lhs");
     const header_list_column_lhs = $(".list-column.lhs");
     header_list_column_lhs.innerHTML = 'Left';
     const header_list_changes = $(".list-changes");
     header_list_changes.innerHTML = 'Changes';
     const header_list_column_rhs = $(".list-column.rhs");
     header_list_column_rhs.innerHTML = 'Right';
+    const header_list_margin_rhs = $(".list-margin.rhs");
     // const header_list_scrollbar_rhs = $(".list-scrollbar.rhs");
 
+    header.appendChild(header_list_margin_lhs);
     header.appendChild(header_list_column_lhs);
     header.appendChild(header_list_changes);
     header.appendChild(header_list_column_rhs);
+    header.appendChild(header_list_margin_rhs);
     // header.appendChild(header_list_scrollbar_rhs);
     lists.appendChild(header);
 
     const body = this.list_body = $(".body");
+    const list_margin_lhs = $(".list-margin.lhs");
     const list_scrollable = this.list_scrollable = $(".list-scrollable");
     const list_selectbar = this.list_selectbar = $(".list-selectbar");
     const list_column_lhs = this.list_lhs = $(".list-column.lhs");
     const list_changes = this.list_changes = $(".list-changes");
     const list_column_rhs = this.list_rhs = $(".list-column.rhs");
+    const list_margin_rhs = $(".list-margin.rhs");
 
     const list_scrollbar_vertical = this.list_scrollbar_vertical = $("canvas.list-scrollbar.vertical");
     const list_scrollbar_horizontal = this.list_scrollbar_horizontal = $("canvas.list-scrollbar.horizontal");
@@ -514,7 +520,9 @@ export class FolderView implements CompareView {
       this.throttle_scrolling(e);
     });
 
+    body.appendChild(list_margin_lhs);
     body.appendChild(list_scrollable);
+    body.appendChild(list_margin_rhs);
     body.appendChild(list_scrollbar_vertical);
     body.appendChild(list_scrollbar_horizontal);
     lists.appendChild(body);
