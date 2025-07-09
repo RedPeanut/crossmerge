@@ -5,6 +5,7 @@ import { DebouncedFunc } from "lodash";
 import _ from "lodash";
 import { popup } from "../../util/contextmenu";
 import { Input } from "../../component/Input";
+import { renderer } from "../..";
 
 interface Node {
   parent: Node | null;
@@ -126,6 +127,11 @@ export class FolderView implements CompareView {
     this.throttle_renderChanges = _.throttle(this.renderChanges.bind(this), 50);
     this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
 
+    window.ipc.on('compare folder start', (...args: any[]) => {});
+    window.ipc.on('compare folder end', (...args: any[]) => {
+      this.renewFlatten();
+    });
+
     window.ipc.on('compare folder data', (...args: any[]) => {
       // console.log('on compare folder data is called ..');
       // console.log('args =', args);
@@ -184,8 +190,35 @@ export class FolderView implements CompareView {
         }
 
         this.throttle_renderChanges();
+        this.renewFlatten();
       }
     });
+  }
+
+  renewFlatten(): void {
+    this.flatten = [];
+
+      function recur(list: HTMLElement, fn: (el) => boolean) {
+        for(let i = 0; i < list.childNodes.length; i++) {
+          const child = list.childNodes[i] as HTMLElement;
+
+          if(child.classList.contains('content')) continue;
+          if(child.classList.contains('node')) {
+            if(fn(child))
+              recur(child, fn);
+          }
+        }
+      }
+
+      const tree = this.list_selectbar.firstChild as HTMLElement;
+      recur(tree, (el) => {
+        this.flatten.push({ index: el.dataset.index, elem: el });
+        if(el.classList.contains('collapsed'))
+          return false;
+        else
+          return true;
+      });
+      console.log('this.flatten =', this.flatten);
   }
 
   modifyChanges(): void {
@@ -610,7 +643,79 @@ export class FolderView implements CompareView {
 
       node.onclick = (e: PointerEvent) => {
         // console.log('selectbar node clicked ..');
-        node.classList.toggle('selected');
+
+        function clearSelected() {
+          for(let i = 0; i < this.selected.length; i++) {
+            // (this.list_selectbar.firstChild as HTMLElement).getElement
+            const find = document.getElementById('node_selectbar_' + this.selected[i]);
+            find && find.classList.remove('selected');
+          }
+          this.selected = [];
+        }
+
+        function handleShiftOp(lastIndex: number): void {
+
+          // if(this.selected.length == 0) return;
+          // const lastIndex = this.selected[this.selected.length-1];
+
+          let found = false;
+          let start = 0;
+          for(; start < this.flatten.length; start++) {
+            const item = this.flatten[start];
+            if(item.index == lastIndex) {
+              found = true;
+              break;
+            }
+          }
+
+          if(!found) return;
+
+          found = false;
+          let end = 0;
+          for(; end < this.flatten.length; end++) {
+            const item = this.flatten[end];
+            if(item.index == index) {
+              found = true;
+              break;
+            }
+          }
+
+          if(!found) return;
+
+          console.log(`start: ${start}, end: ${end}`);
+
+          if(start > end) {
+            let tmp = start;
+            start = end;
+            end = tmp;
+          }
+
+          for(let i = start; i <= end; i++) {
+            this.flatten[i].elem.classList.add('selected');
+            if(!this.selected.includes(this.flatten[i].index))
+              this.selected.push(this.flatten[i].index);
+          }
+        }
+
+        const index: number = parseInt((e.target as HTMLElement).parentElement.dataset.index);
+        const cmdOrCtrlKey = renderer.process.platform === 'darwin' ? e.metaKey : e.ctrlKey;
+        if(cmdOrCtrlKey && e.shiftKey) {
+          if(this.selected.length == 0) return;
+          const lastIndex = this.selected[this.selected.length-1];
+          handleShiftOp.bind(this)(lastIndex);
+        } else if(cmdOrCtrlKey) {
+          node.classList.toggle('selected');
+          this.selected.push(index);
+        } else if(e.shiftKey) {
+          if(this.selected.length == 0) return;
+          const lastIndex = this.selected[this.selected.length-1];
+          clearSelected.bind(this)();
+          handleShiftOp.bind(this)(lastIndex);
+        } else {
+          clearSelected.bind(this)();
+          node.classList.toggle('selected');
+          this.selected.push(index);
+        }
 
         // e.preventDefault();
         // return false;
@@ -662,6 +767,47 @@ export class FolderView implements CompareView {
           document.getElementById(`node_${anothers[i]}_${index}`).classList.toggle('collapsed');
         }
         self.modifyChanges();
+
+
+        // HERE: after toggled
+
+        function recur(list: HTMLElement, fn: (el) => boolean) {
+          for(let i = 0; i < list.childNodes.length; i++) {
+            const child = list.childNodes[i] as HTMLElement;
+
+            if(child.classList.contains('content')) continue;
+            if(child.classList.contains('node')) {
+              if(fn(child))
+                recur(child, fn);
+            }
+          }
+        }
+
+        let items: FlattenItem[] = [];
+        let i = 0;
+        for(; i < this.flatten.length; i++) {
+          const item = this.flatten[i];
+          if(item.index == index) {
+            recur(node, (el) => {
+              const index = el.dataset.index;
+              const selectbar = document.getElementById(`node_selectbar_${index}`);
+              items.push({ index, elem: selectbar });
+              if(el.classList.contains('collapsed'))
+                return false;
+              else
+                return true;
+            });
+            break;
+          }
+        }
+
+        const collapsed: boolean = node.classList.contains('collapsed');
+        if(collapsed) {
+          this.flatten.splice(i+1, items.length);
+        } else {
+          this.flatten.splice(i+1, 0, ...items);
+        }
+        console.log('this.flatten =', this.flatten);
       };
 
       const collapseArrow = $('a.codicon.codicon-chevron-right');
