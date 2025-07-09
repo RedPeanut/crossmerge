@@ -140,19 +140,19 @@ export class FolderView implements CompareView {
 
         // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
 
-        function recur(list: HTMLElement, fn: (el) => void) {
-          for(let i = 0; i < list.childNodes.length; i++) {
-            const child = list.childNodes[i] as HTMLElement;
+        if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
 
-            if(child.classList.contains('content')) continue;
-            if(child.classList.contains('node')) {
-              fn(child);
-              recur(child, fn);
+          function recur(list: HTMLElement, fn: (el) => void) {
+            for(let i = 0; i < list.childNodes.length; i++) {
+              const child = list.childNodes[i] as HTMLElement;
+
+              if(child.classList.contains('content')) continue;
+              if(child.classList.contains('node')) {
+                fn(child);
+                recur(child, fn);
+              }
             }
           }
-        }
-
-        if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
 
           const trees = [
             this.list_selectbar.firstChild as HTMLElement,
