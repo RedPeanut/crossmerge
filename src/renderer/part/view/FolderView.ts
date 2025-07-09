@@ -48,6 +48,11 @@ type Change = {
   y_end?: number,
 }
 
+interface FlattenItem {
+  index: number;
+  elem: HTMLElement;
+}
+
 export interface FolderViewOptions {}
 
 const SCROLLBAR_WIDTH: number = 16;
@@ -108,6 +113,10 @@ export class FolderView implements CompareView {
   throttle_pushChange: DebouncedFunc<(...args: any[]) => any>;
   throttle_renderChanges: DebouncedFunc<(...args: any[]) => any>;
   throttle_scrolling: DebouncedFunc<(...args: any[]) => any>;
+
+  // for selectbar
+  selected: number[] = []; // for multi (ctrl or cmd) select
+  flatten: FlattenItem[] = []; // for range (shift) select
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -554,6 +563,9 @@ export class FolderView implements CompareView {
         parts[i].firstChild.removeChild(parts[i].firstChild.childNodes[0]);
     }
 
+    // this.flatten = [];
+    this.selected = [];
+
     const input_lhs_value = this.input_lhs.value();
     const input_rhs_value = this.input_rhs.value();
 
@@ -572,6 +584,7 @@ export class FolderView implements CompareView {
     const hasChildren = data.data.isDirectory && data.length > 0, isCollapsed = true;
     const node = $(".node");
     node.id = `node_${part}_${index}`;
+    node.dataset.index = index+'';
 
     if(mode == 'empty') {
       const content = $(".content");
@@ -595,10 +608,11 @@ export class FolderView implements CompareView {
 
       node.classList.add(data.state); // changed, inserted, removed
 
-      node.onclick = (e) => {
+      node.onclick = (e: PointerEvent) => {
         // console.log('selectbar node clicked ..');
         node.classList.toggle('selected');
 
+        // e.preventDefault();
         // return false;
         e.stopPropagation();
       }
