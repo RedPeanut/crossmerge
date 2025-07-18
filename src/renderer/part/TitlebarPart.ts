@@ -31,6 +31,7 @@ export class TitlebarPart extends Part {
     const container: HTMLElement = super.createContentArea();
 
     const menubar = $('.menubar');
+    console.log('renderer.menu =', renderer.menu);
 
     const middle = $('.middle');
     const handleMaxOrRes = async (e) => {

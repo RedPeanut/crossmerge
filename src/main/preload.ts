@@ -9,6 +9,7 @@ export type MainEvents =
 
   // menu
   | 'menu enable'
+  | 'menu get'
 
   // window
   /* | 'window move'

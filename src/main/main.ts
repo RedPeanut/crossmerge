@@ -9,18 +9,19 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent } from 'electron';
+import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent, MenuItemConstructorOptions } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { _readdirSyncWithStat, resolveHtmlPath } from './utils';
 
-import { CompareItem } from '../common/Types';
+import { CompareItem, SerializableMenuItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
 import { Channels } from './preload';
 import fs from 'fs';
 import { DirentExt } from './Types';
 import { StringDecoder } from 'string_decoder';
+import { Menubar } from './Menubar';
 
 class AppUpdater {
   constructor() {
@@ -33,6 +34,7 @@ class AppUpdater {
 class MainWindow {
   browserWindow: BrowserWindow | null = null;
   isDebug: boolean = false;
+  menubar: Menubar;
 
   constructor() {
     if(process.env.NODE_ENV === 'production') {
@@ -87,6 +89,8 @@ class MainWindow {
   }
 
   installIpc = () => {
+    const self = this;
+
     ipcMain.on('new', async (event, args: any[]) => {
       console.log('[new] args =', args);
       const arg = args[0] as CompareItem;
@@ -279,6 +283,34 @@ class MainWindow {
       reads = reads.filter((item) => item.name.startsWith(last)).filter((item) => item.isDirectory);
       return reads;
     });
+
+    ipcMain.handle('menu get', (event, args: any[]) => {
+      // return serialized menu n install handler
+
+      function createItem(item: MenuItemConstructorOptions/* , processedItems: MenuItemConstructorOptions[] */): SerializableMenuItem {
+        const serializableItem: SerializableMenuItem = {
+          // id: processedItems.length,
+          label: item.label,
+          type: item.type,
+          accelerator: item.accelerator,
+          checked: item.checked,
+          enabled: typeof item.enabled === 'boolean' ? item.enabled : true,
+          visible: typeof item.visible === 'boolean' ? item.visible : true
+        }
+
+        // Submenu
+        if(Array.isArray(item.submenu)) {
+          serializableItem.submenu = item.submenu.map(submenuItem => createItem(submenuItem));
+        }
+
+        return serializableItem;
+      }
+
+      const template = self.menubar.getTemplate();
+      return template
+        .filter(item => item.id !== 'application')
+        .map(item => createItem(item));
+    });
   }
 
   createWindow = async () => {
@@ -373,8 +405,11 @@ class MainWindow {
       this.browserWindow.webContents.send('window state changed', { isMaximized: false });
     });
 
-    const menuBuilder = new MenuBuilder(this.browserWindow);
-    menuBuilder.buildMenu();
+    // const menuBuilder = new MenuBuilder(this.browserWindow);
+    // menuBuilder.buildMenu();
+
+    const menubar = this.menubar = new Menubar(this.browserWindow);
+    menubar.install();
 
     // Open urls in the user's browser
     this.browserWindow.webContents.setWindowOpenHandler((edata) => {

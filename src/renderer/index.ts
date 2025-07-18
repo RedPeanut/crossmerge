@@ -5,6 +5,7 @@ import './index.css';
 import { MainLayout, MainLayoutService } from './layout/MainLayout';
 import { domContentLoaded } from './util/dom';
 import { mainWindow } from './Types';
+import { SerializableMenuItem } from '../common/Types';
 
 export class Renderer {
 
@@ -16,6 +17,8 @@ export class Renderer {
   process: {
     platform?: string // 'darwin', 'window', 'linux'
   } = {}
+
+  menu: SerializableMenuItem[];
 
   constructor() {}
 
@@ -29,6 +32,7 @@ export class Renderer {
     this.window.isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
     this.window.isMinimized = await window.ipc.invoke('window get', 'function', 'isMinimized');
     this.process.platform = await window.ipc.invoke('process get', 'property', 'platform');
+    this.menu = await window.ipc.invoke('menu get');
   }
 }
 
