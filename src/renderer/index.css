@@ -2,6 +2,7 @@
 * { margin: 0; padding: 0; }
 html { height: 100%;
   /* color: white; */
+  font-size: 13px;
 }
 body { height: 100%; }
 
@@ -143,16 +144,80 @@ body { height: 100%; }
   display: flex;
   /* background-color: grey; */
   flex-direction: column;
+  user-select: none;
+  /* -webkit-user-select: none; */
 }
 
 .titlebar .menubar {
-  background-color: pink;
+  /* background-color: pink; */
   padding-left: 80px;
   height: 31px;
   position: relative;
   -webkit-app-region: drag;
   display: flex;
+  line-height: 22px;
 }
+
+.titlebar .menubar .left {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.menubar .button {
+  position: relative;
+  -webkit-app-region: no-drag;
+  white-space: nowrap;
+}
+
+.menubar .button:hover, .menubar .button.on {
+  background-color: rgb(227,227,227);
+  border-radius: 3px;
+}
+
+.menubar .button .title {
+  padding: 0px 8px;
+}
+
+.menubar .button .menubox {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  background: rgb(242,242,242);
+  border: 1px solid rgb(185,185,185);
+  left: 0;
+  top: 100%;
+}
+
+.menubar .button .sub.menubox {
+  left: calc(100% + 4px);
+  top: -4px;
+}
+
+.menubar .button.on .menubox { display: block; }
+
+.menubar .button ul { padding: 4px 0; border-radius: 5px; }
+
+.menubar .button ul li {
+  list-style: none;
+  margin: 0 4px;
+  position: relative;
+  align-items: center;
+}
+
+.menubar .button ul li a { display: flex; }
+.menubar .button ul li a span { flex: 1; padding: 0 8px; }
+
+.menubar .button ul li .keybinding {
+  text-align: right;
+}
+.menubar .button ul li .indicator {
+  padding-top: 1px;
+  position: relative;
+  min-width: 20px;
+}
+
+.menubar .button ul li .indicator::before { position: absolute; right: 8px; }
 
 .titlebar .menubar .middle { flex: 1; }
 .titlebar .menubar .right {
