@@ -32,6 +32,7 @@ export class TitlebarPart extends Part {
 
     const menubar = $('.menubar');
 
+    const middle = $('.middle');
     const handleMaxOrRes = async (e) => {
       const isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
       if(isMaximized)
@@ -39,16 +40,14 @@ export class TitlebarPart extends Part {
       else
         window.ipc.send('window fn', 'maximize');
     }
-
-    menubar.addEventListener('dblclick', handleMaxOrRes);
+    middle.addEventListener('dblclick', handleMaxOrRes);
+    menubar.appendChild(middle);
 
     // console.log('renderer =', renderer);
     // console.log('renderer.window =', renderer.window);
     // console.log('renderer.process =', renderer.process);
 
-    let group: HTMLElement;
-
-    group = $('.group');
+    const right: HTMLElement = $('.right');
     const minimizeBtn = $('a.codicon.codicon-chrome-minimize');
     minimizeBtn.addEventListener('click', async () => {
       window.ipc.send('window fn', 'minimize');
@@ -65,15 +64,15 @@ export class TitlebarPart extends Part {
       window.ipc.send('window fn', 'close');
     });
 
-    group.appendChild(minimizeBtn);
-    group.appendChild(maxResBtn);
-    group.appendChild(closeBtn);
-    menubar.appendChild(group);
+    right.appendChild(minimizeBtn);
+    right.appendChild(maxResBtn);
+    right.appendChild(closeBtn);
+    menubar.appendChild(right);
 
     ///*
     const iconbar = $('.iconbar');
 
-    let wrap: HTMLElement, btn: HTMLElement, label: HTMLElement;
+    let group: HTMLElement, wrap: HTMLElement, btn: HTMLElement, label: HTMLElement;
 
     group = $('.group');
     wrap = $('.wrap');

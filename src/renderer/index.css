@@ -151,11 +151,16 @@ body { height: 100%; }
   height: 31px;
   position: relative;
   -webkit-app-region: drag;
+  display: flex;
 }
 
-.titlebar .menubar .group { position: absolute; right: 1px; }
+.titlebar .menubar .middle { flex: 1; }
+.titlebar .menubar .right {
+  /* position: absolute; right: 1px; */
+  /* width: 114px; */
+}
 
-.titlebar .menubar .group .codicon {
+.titlebar .menubar .right .codicon {
   width: 21px;
   height: 21px;
   font-size: 21px;
