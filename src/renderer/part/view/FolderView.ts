@@ -1,5 +1,5 @@
-import { CompareFolderData, CompareItem } from "../../../common/Types";
-import { CompareView, ContextMenuItem } from "../../Types";
+import { CompareFolderData, CompareItem, MenuItem } from "../../../common/Types";
+import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
@@ -725,7 +725,7 @@ export class FolderView implements CompareView {
       const content = $(".content");
       content.oncontextmenu = (e) => {
         // console.log('e =', e);
-        const items: ContextMenuItem[] = [];
+        const items: MenuItem[] = [];
         items.push({
           accelerator: 'Cmd+Shift+L',
           label: 'Launch Comparisons for Selected Rows', //localize(key, msg),

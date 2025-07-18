@@ -57,3 +57,38 @@ export type CompareData = CompareFileData | CompareFolderData;
   // in renderer
   collapsed: boolean,
 } */
+/* Menu */
+export interface CommonMenuItem {
+  label?: string;
+
+  type?: 'normal' | 'separator' | 'submenu' | 'checkbox' | 'radio';
+
+  accelerator?: string;
+
+  enabled?: boolean;
+  visible?: boolean;
+  checked?: boolean;
+}
+
+export interface SerializableMenuItem extends CommonMenuItem {
+  id?: number;
+  submenu?: SerializableMenuItem[];
+}
+
+export interface MenuItem extends CommonMenuItem {
+  click?: (event: MenuEvent) => void;
+  submenu?: MenuItem[];
+}
+
+export interface MenuEvent {
+  shiftKey?: boolean;
+  ctrlKey?: boolean;
+  altKey?: boolean;
+  metaKey?: boolean;
+}
+
+export interface PopupOptions {
+  x?: number;
+  y?: number;
+  // positioningItem?: number;
+}
