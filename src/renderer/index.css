@@ -231,12 +231,12 @@ body { height: 100%; }
   margin-right: 1px;
 }
 
-.titlebar .menubar .group .codicon:hover {
+.titlebar .menubar .right .codicon:hover {
   background-color: rgb(229, 229, 229);
   cursor: pointer;
 }
 
-.titlebar .menubar .group .codicon.close:hover {
+.titlebar .menubar .right .codicon.close:hover {
   background-color: rgb(232, 17, 35);
   color: white;
 }
