@@ -60,6 +60,9 @@ export class TitlebarPart extends Part {
           label_1st.innerHTML = submenuItem_1st.label.replace(/&/g, '');
           a_1st.appendChild(label_1st);
 
+          const padding_1st = $('span.padding');
+          a_1st.appendChild(padding_1st);
+
           if(submenuItem_1st.accelerator) {
             const keybiding_1st = $('span.keybinding');
             keybiding_1st.innerHTML = submenuItem_1st.accelerator;
@@ -83,6 +86,9 @@ export class TitlebarPart extends Part {
                 const label_2nd = $('span.label');
                 label_2nd.innerHTML = submenuItem_2nd.label.replace(/&/g, '');
                 a_2nd.appendChild(label_2nd);
+
+                const padding_2nd = $('span.padding');
+                a_2nd.appendChild(padding_2nd);
 
                 if(submenuItem_2nd.accelerator) {
                   const keybiding_2nd = $('span.keybinding');

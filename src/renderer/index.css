@@ -206,18 +206,15 @@ body { height: 100%; }
 }
 
 .menubar .button ul li a { display: flex; }
-.menubar .button ul li a span { flex: 1; padding: 0 8px; }
+.menubar .button ul li a span {}
 
-.menubar .button ul li .keybinding {
-  text-align: right;
-}
+.menubar .button ul li .padding { flex: 1; min-width: 20px; }
+.menubar .button ul li .keybinding {}
 .menubar .button ul li .indicator {
   padding-top: 1px;
-  position: relative;
-  min-width: 20px;
 }
 
-.menubar .button ul li .indicator::before { position: absolute; right: 8px; }
+.menubar .button ul li .indicator::before {}
 
 .titlebar .menubar .middle { flex: 1; }
 .titlebar .menubar .right {
