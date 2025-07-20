@@ -175,6 +175,17 @@ body { height: 100%; }
   border-radius: 3px;
 }
 
+.menubar .button.hamburger {
+  /* display: none; */
+  width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* vertical-align: sub; */
+}
+
 .menubar .button .title {
   padding: 0px 8px;
 }
