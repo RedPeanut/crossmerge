@@ -527,7 +527,7 @@ body { height: 100%; }
   border: 1px solid rgb(122,122,122);
   padding: 3px;
 }
-.input .suggest { position: absolute;
+.input .related { position: absolute;
   width: 100%;
   top: 31px;
   height: 266px;

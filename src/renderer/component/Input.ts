@@ -7,16 +7,16 @@ export class Input {
   parent: HTMLElement;
   element: HTMLElement;
   input: HTMLInputElement;
-  suggest: HTMLElement;
+  related: HTMLElement;
 
   constructor(parent: HTMLElement) {
     this.parent = parent;
     const el = this.element = $('.input');
     const input = this.input = $('input');
-    const suggest = this.suggest = $('.suggest');
-    suggest.style.display = 'none';
+    const related = this.related = $('.related');
+    related.style.display = 'none';
 
-    function inputKeyDownHandler(e: KeyboardEvent) {
+    function keyDownHandler(e: KeyboardEvent) {
       // console.log('keydown event is called ..');
       console.log('e.keyCode =', e.keyCode);
 
@@ -43,10 +43,10 @@ export class Input {
       }
     }
 
-    input.addEventListener('keydown', inputKeyDownHandler.bind(this));
+    input.addEventListener('keydown', keyDownHandler.bind(this));
 
     el.appendChild(input);
-    el.appendChild(suggest);
+    el.appendChild(related);
     parent.appendChild(el);
   }
 
