@@ -162,6 +162,7 @@ body { height: 100%; }
   display: flex;
   align-items: center;
   font-size: 14px;
+  outline: none;
 }
 
 .menubar .button {
@@ -176,14 +177,20 @@ body { height: 100%; }
 }
 
 .menubar .button.hamburger {
-  /* display: none; */
+  display: none;
   width: 22px;
   height: 22px;
   padding: 0 8px;
-  display: flex;
   align-items: center;
   justify-content: center;
   /* vertical-align: sub; */
+}
+
+@media (max-width:716px) {
+  .menubar .button { display: none; }
+  .menubar .button.hamburger {
+    display: flex;
+  }
 }
 
 .menubar .button .title {
@@ -201,28 +208,32 @@ body { height: 100%; }
 }
 
 .menubar .button .sub.menubox {
-  left: calc(100% + 4px);
+  left: calc(100% + 0px);
   top: -4px;
 }
 
-.menubar .button.on .menubox { display: block; }
+.menubar .button.on > .menubox { display: block; }
 
 .menubar .button ul { padding: 4px 0; border-radius: 5px; }
 
 .menubar .button ul li {
   list-style: none;
-  margin: 0 4px;
   position: relative;
   align-items: center;
 }
 
-.menubar .button ul li a { display: flex; }
+.menubar .button ul li a { display: flex;
+  margin: 0 4px;
+  padding: 0 8px;
+}
+.menubar .button ul li:hover > a { background-color: rgb(80,162,255); border-radius: 5px; color: white; }
+.menubar .button ul li:hover > .menubox { display: block; }
 .menubar .button ul li a span {}
 
 .menubar .button ul li .padding { flex: 1; min-width: 20px; }
 .menubar .button ul li .keybinding {}
 .menubar .button ul li .indicator {
-  padding-top: 1px;
+  padding-top: 2px;
 }
 
 .menubar .button ul li .indicator::before {}
