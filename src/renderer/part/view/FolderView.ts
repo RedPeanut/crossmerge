@@ -478,19 +478,20 @@ export class FolderView implements CompareView {
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
-    function inputKeyPressHandler(e: KeyboardEvent) {
+    function keyPressHandler(e: KeyboardEvent) {
       // console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
-      if(e.keyCode == 13) {
+      // if(e.keyCode == 13) {
+      if(e.key === 'Enter') {
         // launch comparison
         this.doCompare();
         return;
       }
     }
 
-    input_lhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
-    input_rhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
+    input_lhs.addEventListener('keypress', keyPressHandler.bind(this));
+    input_rhs.addEventListener('keypress', keyPressHandler.bind(this));
 
     // input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);

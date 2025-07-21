@@ -57,6 +57,7 @@ export type CompareData = CompareFileData | CompareFolderData;
   // in renderer
   collapsed: boolean,
 } */
+
 /* Menu */
 export interface CommonMenuItem {
   label?: string;
