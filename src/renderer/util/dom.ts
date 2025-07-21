@@ -173,3 +173,9 @@ export function hide(...elements: HTMLElement[]): void {
     element.setAttribute('aria-hidden', 'true');
   }
 }
+
+export function clearContainer(container: HTMLElement) {
+  while(container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+}

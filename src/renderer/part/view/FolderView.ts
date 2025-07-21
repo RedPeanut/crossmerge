@@ -70,6 +70,7 @@ export class FolderView implements CompareView {
   input_lhs: Input;
   input_rhs: Input;
 
+  lists: HTMLElement;
   list_body: HTMLElement;
   list_scrollable: HTMLElement;
   list_selectbar: HTMLElement;
@@ -486,6 +487,7 @@ export class FolderView implements CompareView {
       if(e.key === 'Enter') {
         // launch comparison
         this.doCompare();
+        this.lists.focus();
         return;
       }
     }
@@ -508,7 +510,7 @@ export class FolderView implements CompareView {
     // suggests.appendChild(suggest_margin);
     // suggests.appendChild(suggest_column_rhs);
 
-    const lists = $(".lists");
+    const lists = this.lists = $(".lists");
     lists.tabIndex = 0;
     lists.contentEditable = 'true';
 

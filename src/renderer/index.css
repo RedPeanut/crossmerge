@@ -522,19 +522,40 @@ body { height: 100%; }
 /* Input */
 .input { position: relative; }
 .input input {
-  width: calc(100% - 6px - 2px); /* - padding - border */
+  width: calc(100% - 16px - 2px); /* - padding - border */
   height: 23px;
   border: 1px solid rgb(122,122,122);
-  padding: 3px;
+  /* padding: 3px; */
+  padding: 2px 8px;
 }
-.input .related { position: absolute;
-  width: 100%;
-  top: 31px;
+.input .related {
+  display: none;
+  position: absolute;
+  width: calc(100% - 2px);
+  top: 29px;
   height: 266px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: white; /* rgba(255, 255, 255, 0.9); */
+  border: 1px solid rgb(138,138,138);
+  border-top: 0;
   z-index: 5;
+  box-shadow: black 0 3px 2px -2px;
+  /* box-shadow: 0 0 8px 2px black; */
+  overflow-y: auto;
 }
 
+.input .related li {
+  list-style-type: none;
+}
+
+.input .related li a {
+  width: calc(100% - 16px);
+  padding: 2px 8px;
+  display: block;
+}
+
+.input .related li.on a {
+  background-color: rgb(208,208,208);
+}
 
 /* StatusBar */
 .part.statusbar {
