@@ -483,7 +483,7 @@ body { height: 100%; }
 
 .folder-compare-view .lists .node {
   width: 100%; padding-left: 4px;
-  font-size: 14px;
+  /* font-size: 14px; */
   /* line-height: 28px; */
   /* min-height: 22px; */
   /* border: 1px solid black; */
@@ -500,7 +500,7 @@ body { height: 100%; }
 .folder-compare-view .lists .node .content {
   /* margin: 2px 0; */
   display: flex; align-items: center;
-  min-height: 23px;
+  min-height: 18px;
 }
 .folder-compare-view .lists .node .ln-header { width: 20px; }
 .folder-compare-view .lists .node .ln-header .arrow { cursor: pointer; transform: rotate(90deg); }
