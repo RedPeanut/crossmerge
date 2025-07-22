@@ -66,6 +66,12 @@ export class Input {
                 after.classList.add('on');
                 this.input.value = (after.firstChild as HTMLElement).innerHTML;
 
+                // set cursor to last
+                const length = this.input.value.length;
+                // console.log('length =', length);
+                this.input.focus();
+                this.input.setSelectionRange(length, length);
+
                 if(after) {
                   if(after.offsetTop < this.related.scrollTop)
                     this.related.scrollTop = after.offsetTop;
@@ -74,8 +80,15 @@ export class Input {
             } else {
               // this.related.children[0].classList.add('on');
             }
+
+            // return false; // x
+            // return true; // x
+            // e.stopPropagation(); // x
+            e.preventDefault();
           }
         }
+      } else if(e.key === 'Escape') {
+        this.related.style.display = 'none';
       }
 
       // TODO: auto completion
