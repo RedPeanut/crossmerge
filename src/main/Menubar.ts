@@ -214,19 +214,19 @@ export class Menubar {
     options.push({
       label: '&Edit',
       submenu: [
-        { label: 'Undo', accelerator: keyBinding['edit.undo'], enabled: true },
-        { label: 'Redo', accelerator: keyBinding['edit.redo'], enabled: true },
+        { label: 'Undo', accelerator: keyBinding['edit.undo'], role: 'undo' },
+        { label: 'Redo', accelerator: keyBinding['edit.redo'], role: 'redo' },
         { type: 'separator' },
-        { label: 'Cut', accelerator: keyBinding['edit.cut'], enabled: true },
-        { label: 'Copy', accelerator: keyBinding['edit.copy'], enabled: true,
+        { label: 'Cut', accelerator: keyBinding['edit.cut'], role: 'cut' },
+        { label: 'Copy', accelerator: keyBinding['edit.copy'],
           role: 'copy',
           // click: () => { console.log('click event handler is called ..'); shell.beep(); },
         },
-        { label: 'Paste', accelerator: keyBinding['edit.paste'], enabled: true,
+        { label: 'Paste', accelerator: keyBinding['edit.paste'],
           role: 'paste',
           // click: () => {},
         },
-        { label: 'Select All', accelerator: keyBinding['edit.selectAll'], enabled: true },
+        { label: 'Select All', accelerator: keyBinding['edit.selectAll'], role: 'selectAll' },
       ],
     });
   }
