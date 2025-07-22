@@ -37,6 +37,13 @@ export class Menu implements MenuService {
     }); */
     container.addEventListener('focusout', (e: KeyboardEvent) => {
       console.log('focusout is called ..');
+      if(this.menuState === MenuState.Hamburger) {
+        this.hamburgerButton.classList.remove('on');
+      } else {
+        for(let i = 0; i < this.normalButtons.length; i++) {
+          this.normalButtons[i].classList.remove('on')
+        }
+      }
     });
 
     /* window.addEventListener('mousedown', (e) => {
@@ -172,7 +179,18 @@ export class Menu implements MenuService {
       });
 
       button.addEventListener('mouseover', (e) => {
-        // any menu on-ed (clicked) n over on not on-ed → change on
+        // if there is any menu on-ed (clicked) → change on
+        let i, b = false;
+        for(i = 0; i < this.normalButtons.length; i++) {
+          if(this.normalButtons[i].classList.contains('on')) {
+            b = true; break;
+          }
+        }
+
+        if(b) {
+          this.normalButtons[i].classList.remove('on');
+          (e.currentTarget as HTMLElement).classList.toggle('on');
+        }
       });
       button.addEventListener('mouseout', (e) => {});
       // button.addEventListener('keydown', (e) => {});
