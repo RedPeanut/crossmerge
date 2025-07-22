@@ -32,16 +32,16 @@ export class Menu implements MenuService {
       console.log('e.key =', e.key);
 
     });
-    container.addEventListener('focusin', (e: KeyboardEvent) => {
+    /* container.addEventListener('focusin', (e: KeyboardEvent) => {
       console.log('focusin is called ..');
-    });
+    }); */
     container.addEventListener('focusout', (e: KeyboardEvent) => {
       console.log('focusout is called ..');
     });
 
-    window.addEventListener('mousedown', (e) => {
+    /* window.addEventListener('mousedown', (e) => {
       console.log('mousedown is called ..');
-    });
+    }); */
     setService(menuServiceId, this);
   }
 
@@ -175,7 +175,7 @@ export class Menu implements MenuService {
         // any menu on-ed (clicked) n over on not on-ed → change on
       });
       button.addEventListener('mouseout', (e) => {});
-      button.addEventListener('keydown', (e) => {});
+      // button.addEventListener('keydown', (e) => {});
 
       const title = $('.title');
       title.innerHTML = menuItem.label.replace(/&/g, '');
