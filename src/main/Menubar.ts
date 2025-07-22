@@ -176,9 +176,10 @@ export class Menubar {
         {
           label: 'Quit',
           accelerator: 'Command+Q',
-          click: () => {
+          role: 'quit',
+          /* click: () => {
             app.quit();
-          },
+          }, */
         },
       ],
     });

@@ -27,7 +27,7 @@ export class Input {
       console.log('e.key =', e.key);
 
       if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        if(this.element.classList.contains('contains-related')) {
+        if(this.element.classList.contains('have-related')) {
           // console.log(this.related.children);
           let b: boolean = false, i = 0;
           for(; i < this.related.children.length; i++) {
@@ -129,10 +129,10 @@ export class Input {
           }
 
           if(result.length > 0) {
-            this.element.classList.add('contains-related');
+            this.element.classList.add('have-related');
             this.related.style.display = 'block';
           } else
-            this.element.classList.remove('contains-related');
+            this.element.classList.remove('have-related');
         })
         .catch(error => { console.log(error); });
     }
