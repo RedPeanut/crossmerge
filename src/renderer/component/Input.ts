@@ -2,6 +2,8 @@ import path from "path";
 import { DirentExt } from "../../main/Types";
 import * as dom from "../util/dom";
 import { $ } from "../util/dom";
+import { DebouncedFunc } from "lodash";
+import _ from "lodash";
 
 export interface InputOptions {}
 
@@ -16,7 +18,7 @@ export class Input {
     this.parent = parent;
     const el = this.element = $('.input');
     const input = this.input = $('input');
-    const related = this.related = $('ul.related');
+    const related = this.related = $('ul.related.scrollable');
     // related.style.display = 'none';
 
     function keyDownHandler(e: KeyboardEvent) {
@@ -35,25 +37,39 @@ export class Input {
           }
 
           if(e.key === 'ArrowDown') {
+            let before, after: HTMLElement;
             if(b) {
               if(i !== this.related.children.length-1) {
                 this.related.children[i].classList.remove('on');
-                this.related.children[++i].classList.add('on');
+                after = this.related.children[++i];
+                after.classList.add('on');
                 // console.log(this.related.children[i].firstChild.innerHTML);
-                this.input.value = this.related.children[i].firstChild.innerHTML;
-                // console.log('', this.input.selectionStart);
-                // console.log('', this.input.selectionEnd);
+                this.input.value = (after.firstChild as HTMLElement).innerHTML;
               }
             } else {
-              this.related.children[0].classList.add('on');
-              this.input.value = this.related.children[0].firstChild.innerHTML;
+              after = this.related.children[0];
+              after.classList.add('on');
+              this.input.value = (after.firstChild as HTMLElement).innerHTML;
             }
+
+            if(after) {
+              if(after.offsetTop + after.clientHeight > this.related.clientHeight)
+                this.related.scrollTop = after.offsetTop + after.clientHeight - this.related.clientHeight;
+            }
+
           } else if(e.key === 'ArrowUp') {
             if(b) {
+              let before, after: HTMLElement;
               if(i !== 0) {
                 this.related.children[i].classList.remove('on');
-                this.related.children[--i].classList.add('on');
-                this.input.value = this.related.children[i].firstChild.innerHTML;
+                after = this.related.children[--i];
+                after.classList.add('on');
+                this.input.value = (after.firstChild as HTMLElement).innerHTML;
+
+                if(after) {
+                  if(after.offsetTop < this.related.scrollTop)
+                    this.related.scrollTop = after.offsetTop;
+                }
               }
             } else {
               // this.related.children[0].classList.add('on');
