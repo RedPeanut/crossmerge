@@ -186,12 +186,12 @@ body { height: 100%; }
   /* vertical-align: sub; */
 }
 
-@media (max-width:716px) {
+/* @media (max-width:716px) {
   .menubar .button { display: none; }
   .menubar .button.hamburger {
     display: flex;
   }
-}
+} */
 
 .menubar .button .title {
   padding: 0px 8px;

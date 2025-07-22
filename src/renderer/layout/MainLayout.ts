@@ -8,8 +8,9 @@ import { BodyLayout, BodyLayoutService } from './BodyLayout';
 import { SplitView } from '../component/SplitView';
 import { getClientArea, position, size } from '../util/dom';
 import { Orientation } from '../component/Sash';
-import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId } from '../Service';
+import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menuServiceId } from '../Service';
 import { CompareFolderData } from '../../common/Types';
+import { MenuService } from '../part/Menu';
 // import Runtime from './Runtime';
 
 export const TITLEBAR_HEIGHT = 83;
@@ -75,6 +76,8 @@ export class MainLayout extends Layout implements MainLayoutService {
       this.splitView.layout(dimension.width);
     else
       this.splitView.layout(dimension.height);
+
+    (getService(menuServiceId) as MenuService).layout(dimension);
   }
 
   bodyLayoutService: BodyLayoutService;
@@ -106,7 +109,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     let _handleResize = () => {
       if(resizeTimeout)
         clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resize, 500);
+      resizeTimeout = setTimeout(resize, 100);
     };
 
     window.addEventListener('resize', () => {

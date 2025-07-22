@@ -1,15 +1,28 @@
 import { renderer } from "..";
 import { SerializableMenuItem } from "../../common/Types";
-import { $ } from "../util/dom";
+import { menuServiceId, Service, setService } from "../Service";
+import { $, Dimension } from "../util/dom";
+import * as dom from "../util/dom";
+
+enum MenuState {
+  Normal,
+  Hamburger,
+}
+
+export interface MenuService extends Service {
+  layout(dimension: Dimension): void;
+}
 
 export interface MenuOptions {}
 
-export class Menu {
+export class Menu implements MenuService {
 
   container: HTMLElement;
   // container: HTMLElement;
   // element: HTMLElement;
-  focusedItem;
+  normalButtons: HTMLElement[] = [];
+  hamburgerButton: HTMLElement;
+  menuState: MenuState;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -29,6 +42,27 @@ export class Menu {
     window.addEventListener('mousedown', (e) => {
       console.log('mousedown is called ..');
     });
+    setService(menuServiceId, this);
+  }
+
+  layout(dimension: Dimension): void {
+    // console.log('dimension =', dimension);
+    if(dimension.width <= 716) {
+      this.hamburgerButton.style.display = 'flex';
+      for(let i = 0; i < this.normalButtons.length; i++) {
+        this.normalButtons[i].classList.remove('on');
+        this.normalButtons[i].style.display = 'none';
+      }
+      this.menuState = MenuState.Hamburger;
+    } else {
+      this.hamburgerButton.classList.remove('on');
+      this.hamburgerButton.style.display = 'none';
+      for(let i = 0; i < this.normalButtons.length; i++) {
+        // this.buttons[i].classList.remove('on')
+        this.normalButtons[i].style.display = 'block';
+      }
+      this.menuState = MenuState.Normal;
+    }
   }
 
   install(): void {
@@ -79,7 +113,7 @@ export class Menu {
   }
 
   createHamburgurMenu(container: HTMLElement) {
-    const button = $('.button.hamburger');
+    const button = this.hamburgerButton = $('.button.hamburger');
     button.addEventListener('click', (e) => {
       // console.log('e.target =', e.target);
       (e.currentTarget as HTMLElement).classList.toggle('on');
@@ -129,6 +163,8 @@ export class Menu {
       const menuItem = renderer.menu[i];
       // console.log('['+index+']', menuItem);
       const button = $('.button');
+      this.normalButtons.push(button);
+
       // button.innerHTML = item.label.replace(/&/g, '');
       button.addEventListener('click', (e) => {
         // console.log('e.target =', e.target);
