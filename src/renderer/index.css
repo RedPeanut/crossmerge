@@ -462,8 +462,13 @@ body { height: 100%; }
 
 .folder-compare-view .lists .body .list-margin.lhs { width: 13px; }
 .folder-compare-view .lists .body .list-margin.rhs { width: 16px; }
-.folder-compare-view .lists .body .list-column { flex: 1; }
-.folder-compare-view .lists .body .list-changes { width: 59px; }
+.folder-compare-view .lists .body .list-column { flex: 1;
+  z-index: 1; pointer-events: none; /* feat. grok */
+}
+.folder-compare-view .lists .body .list-changes {
+  width: 59px;
+  z-index: 1; pointer-events: none;
+}
 .folder-compare-view .lists .body .list-scrollable { flex: 1; display: flex;
   overflow: hidden auto;
   position: relative;
@@ -491,9 +496,9 @@ body { height: 100%; }
   /* border: 1px solid black; */
 }
 
-.folder-compare-view .lists .list-selectbar .node.changed > .content { background-color: rgb(218,205,230,0.5); }
-.folder-compare-view .lists .list-selectbar .node.removed > .content { background-color: rgb(243,230,216,0.5); }
-.folder-compare-view .lists .list-selectbar .node.inserted > .content { background-color: rgb(209,232,207,0.5); }
+.folder-compare-view .lists .list-selectbar .node.changed > .content { background-color: rgb(218,205,230); }
+.folder-compare-view .lists .list-selectbar .node.removed > .content { background-color: rgb(243,230,216); }
+.folder-compare-view .lists .list-selectbar .node.inserted > .content { background-color: rgb(209,232,207); }
 
 .folder-compare-view .lists .list-selectbar .node.selected > .content {
   /* background-color: rgb(71 85 102); border-radius: 4px; */
@@ -505,7 +510,9 @@ body { height: 100%; }
   min-height: 18px;
 }
 .folder-compare-view .lists .node .ln-header { width: 20px; }
-.folder-compare-view .lists .node .ln-header .arrow { cursor: pointer; transform: rotate(90deg); }
+.folder-compare-view .lists .node .ln-header .arrow { cursor: pointer; transform: rotate(90deg);
+  pointer-events: auto;
+}
 .folder-compare-view .lists .node.collapsed .ln-header .arrow { transform: rotate(0); }
 .folder-compare-view .lists .node.collapsed > .node {
   display: none;
