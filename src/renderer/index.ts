@@ -2,6 +2,7 @@ console.log('👋 This message is being logged by "renderer", included via webpa
 
 import '@vscode/codicons/dist/codicon.css';
 import './index.css';
+import './popup.css';
 import { MainLayout, MainLayoutService } from './layout/MainLayout';
 import { domContentLoaded } from './util/dom';
 import { mainWindow } from './Types';

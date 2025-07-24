@@ -266,7 +266,15 @@ export class Menubar {
             click(item, focusedWindow) {
               mainWindow.send('menu click', { cmd: 'actions:select changed' });
             }
-          }
+          },
+          {
+            label: 'Select by State...',
+            // accelerator: keyBinding['actions.selectByState'], // none
+            // enabled: false,
+            click(item, focusedWindow) {
+              mainWindow.send('menu click', { cmd: 'actions:select by state' });
+            }
+          },
         ] },
         { label: 'Expand All Folders', accelerator: keyBinding['actions.expandAllFolders'],
           click(item, focusedWindow) {

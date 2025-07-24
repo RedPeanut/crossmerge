@@ -6,6 +6,7 @@ import _ from "lodash";
 import { popup } from "../../util/contextmenu";
 import { Input } from "../../component/Input";
 import { renderer } from "../..";
+import { SelectByStatePopup } from "../../popup/SelectByStatePopup";
 import { recur_expand, recur_select } from "../../util/utils";
 
 interface Node {
@@ -121,6 +122,8 @@ export class FolderView implements CompareView {
   selected: number[] = []; // for multi (ctrl or cmd) select
   flatten: FlattenItem[] = []; // for range (shift) select
 
+  selectPopup: SelectByStatePopup;
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
@@ -154,6 +157,11 @@ export class FolderView implements CompareView {
         console.log('_args =', _args);
         const menu = _args[0];
         const action = _args[1];
+
+        if(action === 'select by state') {
+          // show select by state popup
+          this.selectPopup.show();
+        }
 
         if(action === 'select changed') {
           // find n select changed in node (only file)
@@ -423,6 +431,8 @@ export class FolderView implements CompareView {
 
   create(): HTMLElement {
     const el = this.element = $('.folder-compare-view');
+
+    const selectPopup = this.selectPopup = new SelectByStatePopup(el);
 
     // tree area, changes area, customized scrollbar, etc.
 

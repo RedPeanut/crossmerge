@@ -1,5 +1,7 @@
 /* Common */
 * { margin: 0; padding: 0; }
+table { border-collapse: collapse; }
+
 html { height: 100%;
   /* color: white; */
   font-size: 13px;
