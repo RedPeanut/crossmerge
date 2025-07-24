@@ -41,6 +41,28 @@
   line-height: 19px;
   padding: 4px 8px;
 }
+
+.popup .titlebar span {}
+
+.popup .titlebar a {
+  position: absolute;
+  right: 5px;
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+  padding: 0 4px;
+}
+
+.titlebar a:hover {
+  background-color: rgb(229, 229, 229);
+  cursor: pointer;
+}
+
+.titlebar a.close:hover {
+  background-color: rgb(232, 17, 35);
+  color: white;
+}
+
 .popup .content-area {
   background-color: rgb(240,240,240);
   padding: 12px;

@@ -5,6 +5,7 @@ export abstract class Popup extends EventEmitter {
   container: HTMLElement;
   popup: HTMLElement;
   titlebar: HTMLElement;
+  title: HTMLElement;
   contentArea: HTMLElement;
 
   constructor(parent: HTMLElement) {
@@ -13,6 +14,14 @@ export abstract class Popup extends EventEmitter {
     container.style.display = 'none';
     const popup = this.popup = $('.popup');
     const titlebar = this.titlebar = $('.titlebar');
+    const title = this.title = $('span.title');
+    this.title.innerHTML = 'should replace title';
+    titlebar.appendChild(title);
+    const closeBtn = $('a.codicon.codicon-chrome-close.close');
+    closeBtn.addEventListener('click', async () => {
+      this.close();
+    });
+    titlebar.appendChild(closeBtn);
     popup.appendChild(titlebar);
 
     const contentArea = this.contentArea = $('.content-area');

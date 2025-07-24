@@ -4,7 +4,7 @@ import { $ } from "../util/dom";
 export class SelectByStatePopup extends Popup {
   constructor(parent: HTMLElement) {
     super(parent);
-    this.titlebar.innerHTML = 'Select files and folders';
+    this.title.innerHTML = 'Select files and folders';
 
     this.contentArea.classList.add('sbs'); // abbr. select by state
 
