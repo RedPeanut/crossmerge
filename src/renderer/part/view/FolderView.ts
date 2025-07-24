@@ -434,6 +434,58 @@ export class FolderView implements CompareView {
 
     const selectPopup = this.selectPopup = new SelectByStatePopup(el);
 
+    selectPopup.on('ok', (data) => {
+      const rdoType = this.selectPopup.contentArea.querySelectorAll('input[name=rdoType]:checked');
+      const chkboxLeft = this.selectPopup.contentArea.querySelectorAll('input[name=chkboxLeft]:checked');
+      const chkboxRight = this.selectPopup.contentArea.querySelectorAll('input[name=chkboxRight]:checked');
+
+      let checkedValues: string[] = [];
+      for(let i = 0; i < chkboxLeft.length; i++) {
+        let value = (chkboxLeft[i] as HTMLInputElement).value;
+        if(!checkedValues.includes(value))
+          checkedValues.push(value);
+      }
+
+      for(let i = 0; i < chkboxRight.length; i++) {
+        let value = (chkboxRight[i] as HTMLInputElement).value;
+        if(!checkedValues.includes(value))
+          checkedValues.push(value);
+      }
+
+      this.clearSelected();
+
+      const tree = this.list_selectbar.firstChild as HTMLElement;
+      recur_select(tree, (node) => {
+        if(node.dataset.type === 'file') {
+
+          for(let i = 0; i < checkedValues.length; i++) {
+            if(node.classList.contains(checkedValues[i])) {
+              const index = parseInt(node.dataset.index);
+
+              // do select
+              node.classList.add('selected');
+              this.selected.push(index);
+
+              // recursively expand node
+              recur_expand(node);
+
+              // expand another
+              let another = 'left|right|changes'; // |selectbar'
+              let anothers: string[] = another.split('|');
+              for(let i = 0; i < anothers.length; i++) {
+                const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                recur_expand(node);
+              }
+            }
+          } // for every checked value
+
+        } // if file
+      });
+
+      this.throttle_renderChanges();
+      this.renewFlatten();
+    });
+
     // tree area, changes area, customized scrollbar, etc.
 
     /*
