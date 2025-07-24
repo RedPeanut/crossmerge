@@ -1,6 +1,8 @@
 ## Desc
 - Crossplatform merge app<br/>
-(make the Araxis Merge program as similar as possible with only the features I use)
+(clone the Araxis Merge as similar as possible with the features that I frequently use)
+- Why I make this?<br/>
+Araxis Merge's copy item to other folder fn and the convenience of UX are irreplaceable. but <b>commercial</b>.
 
 ## Run
 ```bash
