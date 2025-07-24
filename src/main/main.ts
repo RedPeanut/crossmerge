@@ -22,6 +22,7 @@ import fs from 'fs';
 import { DirentExt } from './Types';
 import { StringDecoder } from 'string_decoder';
 import { Menubar } from './Menubar';
+import { StringUtil } from '../common/util/StringUtil';
 
 class AppUpdater {
   constructor() {
@@ -267,8 +268,8 @@ class MainWindow {
 
     ipcMain.handle('read file in fileview', async (event, args: any[]) => {
       const [ path_lhs, path_rhs ] = args;
-      const buf_lhs: Buffer = fs.readFileSync(path_lhs);
-      const buf_rhs: Buffer = fs.readFileSync(path_rhs);
+      const buf_lhs: Buffer = StringUtil.isEmpty(path_lhs) ? Buffer.from('') : fs.readFileSync(path_lhs);
+      const buf_rhs: Buffer = StringUtil.isEmpty(path_rhs) ? Buffer.from('') : fs.readFileSync(path_rhs);
       const decoder = new StringDecoder('utf8');
       const data_lhs = decoder.write(buf_lhs);
       const data_rhs = decoder.write(buf_rhs);

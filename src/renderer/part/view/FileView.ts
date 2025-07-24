@@ -45,8 +45,10 @@ export class FileView implements CompareView {
     const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     input_rhs.placeholder = 'Right file';
 
-    input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/left/moons.txt';
-    input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/right/moons.txt';
+    input_lhs.value = this.item.path_lhs;
+    input_rhs.value = this.item.path_rhs;
+    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/left/moons.txt';
+    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/right/moons.txt';
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');

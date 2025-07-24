@@ -30,6 +30,8 @@ export class Compares {
       this.map.set(item.uid, v);
       el.appendChild(v.create());
 
+      if(item.type == 'file') v.doCompare();
+
       v.css({ active: true });
     }
 
@@ -51,6 +53,8 @@ export class Compares {
       else throw new Error('do not enter here');
       this.map.set(item.uid, v);
       el.appendChild(v.create());
+
+      if(item.type == 'file') v.doCompare();
 
       if(i == group.length-1)
         v.css({ active: true });

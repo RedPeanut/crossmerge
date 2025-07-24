@@ -9,6 +9,10 @@ import { renderer } from "../..";
 import { SelectByStatePopup } from "../../popup/SelectByStatePopup";
 import { recur_expand, recur_select } from "../../util/utils";
 import { CopyFilesPopup } from "../../popup/CopyFilesPopup";
+import { bodyLayoutServiceId, getService } from "src/renderer/Service";
+import { BodyLayoutService } from "src/renderer/layout/BodyLayout";
+import { StringUtil } from "src/common/util/StringUtil";
+import path from "path";
 
 interface Node {
   parent: Node | null;
@@ -735,6 +739,9 @@ export class FolderView implements CompareView {
     node.id = `node_${part}_${index}`;
     node.dataset.index = index+'';
     node.dataset.type = data.data.isDirectory ? 'directory' : 'file';
+    node.dataset.name = data.data.name ? data.data.name : '';
+    node.dataset.path_lhs = data.data.lhs.path ? data.data.lhs.path : '';
+    node.dataset.path_rhs = data.data.rhs.path ? data.data.rhs.path : '';
 
     if(mode == 'empty') {
       const content = $(".content");
@@ -842,12 +849,29 @@ export class FolderView implements CompareView {
       const content = $(".content");
       content.oncontextmenu = (e) => {
         // console.log('e =', e);
+        // console.log('node =', node);
+
         const items: MenuItem[] = [];
         items.push({
           accelerator: 'Cmd+Shift+L',
           label: 'Launch Comparisons for Selected Rows', //localize(key, msg),
           click: () => {
             console.log('click event is received ..');
+
+            let path_lhs, path_rhs;
+
+            if(StringUtil.isEmpty(node.dataset.path_lhs))
+              path_lhs = '';
+            else
+              path_lhs = node.dataset.path_lhs + path.sep + node.dataset.name;
+
+            if(StringUtil.isEmpty(node.dataset.path_rhs))
+              path_rhs = '';
+            else
+              path_rhs = node.dataset.path_rhs + path.sep + node.dataset.name;
+
+            const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+            bodyLayoutService.addFileCompareView(path_lhs, path_rhs);
           }
         });
         popup(items);

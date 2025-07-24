@@ -9,6 +9,7 @@ import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
+import { StringUtil } from "../../common/util/StringUtil";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -18,7 +19,7 @@ export interface BodyLayoutService extends Service {
   getServices(): void;
   inflate(): void;
   layout(offset: number, size: number): void;
-  addFileCompareView(): void;
+  addFileCompareView(path_lhs?: string, path_rhs?: string): void;
   addFolderCompareView(): void;
 }
 
@@ -79,7 +80,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   getServices(): void {}
 
-  addFileCompareView(): void {
+  addFileCompareView(path_lhs: string, path_rhs: string): void {
     // console.log('launchFileCompareView ..');
 
     /* const div = document.createElement('div');
@@ -94,7 +95,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     }); */
 
     const group: CompareItem[] = [
-      { type: 'file', uid: uuidv4() }, // blank folder compare
+      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) }, // blank folder compare
     ];
 
     if(this.groupView) {
