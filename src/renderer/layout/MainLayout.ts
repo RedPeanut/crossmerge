@@ -6,7 +6,8 @@ import { TitlebarPart } from '../part/TitlebarPart';
 import { StatusbarPart } from '../part/StatusbarPart';
 import { BodyLayout, BodyLayoutService } from './BodyLayout';
 import { SplitView } from '../component/SplitView';
-import { getClientArea, position, size } from '../util/dom';
+import { $ } from '../util/dom';
+import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menuServiceId } from '../Service';
 import { CompareFolderData } from '../../common/Types';
@@ -68,10 +69,10 @@ export class MainLayout extends Layout implements MainLayoutService {
   }
 
   layout(): void {
-    let dimension = getClientArea(this.parent);
+    let dimension = dom.getClientArea(this.parent);
     // console.log('dimension =', dimension);
-    position(this.container, 0, 0, 0, 0, 'relative');
-    size(this.container, dimension.width, dimension.height);
+    dom.position(this.container, 0, 0, 0, 0, 'relative');
+    dom.size(this.container, dimension.width, dimension.height);
     if(this.splitView.orientation === Orientation.HORIZONTAL)
       this.splitView.layout(dimension.width);
     else
