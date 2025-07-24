@@ -5,7 +5,9 @@ import { $ } from "../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
 
-export interface InputOptions {}
+export interface InputOptions {
+  mode: 'file' | 'folder';
+}
 
 export class Input {
 
@@ -13,9 +15,12 @@ export class Input {
   element: HTMLElement;
   input: HTMLInputElement;
   related: HTMLElement;
+  options: InputOptions;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, options: InputOptions) {
     this.parent = parent;
+    this.options = options;
+
     const el = this.element = $('.input');
     const input = this.input = $('input');
     const related = this.related = $('ul.related.scrollable');
@@ -120,7 +125,7 @@ export class Input {
       const target = e.target as HTMLInputElement;
       const value: string = target.value;
 
-      window.ipc.invoke('read folder in input', value, 'folder')
+      window.ipc.invoke('read folder in input', value, this.options.mode)
         .then((result: DirentExt[]) => {
           console.log('result =', result);
 

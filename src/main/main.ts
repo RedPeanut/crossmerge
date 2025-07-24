@@ -277,11 +277,13 @@ class MainWindow {
     });
 
     ipcMain.handle('read folder in input', async (event, args: any[]) => {
-      const [ value, type ] = args;
+      const [ value, mode ] = args;
       const _path = value.substring(0, value.lastIndexOf(path.sep));
       const last = value.substring(value.lastIndexOf(path.sep)+1, value.length);
       let reads: DirentExt[] = await _readdirSyncWithStat(_path);
-      reads = reads.filter((item) => item.name.startsWith(last)).filter((item) => item.isDirectory);
+      reads = reads
+          .filter((item) => item.name.startsWith(last))
+          .filter((item) => mode === 'folder' ? item.isDirectory : item.isFile);
       return reads;
     });
 

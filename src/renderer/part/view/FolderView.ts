@@ -574,14 +574,14 @@ export class FolderView implements CompareView {
     const input_column_lhs = $(".input-column.lhs");
     // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     // input_lhs.placeholder = 'Left folder';
-    const input_lhs = this.input_lhs = new Input(input_column_lhs);
+    const input_lhs = this.input_lhs = new Input(input_column_lhs, { mode: 'folder' });
     input_lhs.placeholder('Left folder');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     // input_rhs.placeholder = 'Right folder';
-    const input_rhs = this.input_rhs = new Input(input_column_rhs);
+    const input_rhs = this.input_rhs = new Input(input_column_rhs, { mode: 'folder' });
     input_rhs.placeholder('Right folder');
 
     input_lhs.value('/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/left');
