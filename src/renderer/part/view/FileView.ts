@@ -60,34 +60,8 @@ export class FileView implements CompareView {
     input_lhs.value(this.item.path_lhs);
     input_rhs.value(this.item.path_rhs);
 
-    function inputKeyPressHandler(e: KeyboardEvent) {
-      console.log('keypress event is called ..');
-      // console.log('e.keyCode =', e.keyCode);
-
-      if(e.keyCode == 13) {
-        // launch comparison
-        this.doCompare();
-        return;
-      }
-
-      // TODO: auto completion
-
-      // check every keyboard's capable char
-      // TODO: capture paste event, arrow event?
-      if(
-        (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
-        || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./
-        || (48 <= e.keyCode && e.keyCode <= 57) // 0-9
-        || (65 <= e.keyCode && e.keyCode <= 90) // A-Z
-        || (97 <= e.keyCode && e.keyCode <= 122) // a-z
-        || e.keyCode == 92 || e.keyCode == 95 // \_
-      ) {
-
-      }
-    }
-
-    input_lhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
-    input_rhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
+    input_lhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
+    input_rhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
 
     // input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);
@@ -95,36 +69,51 @@ export class FileView implements CompareView {
     // input_column_rhs.appendChild(input_rhs);
     inputs.appendChild(input_column_rhs);
 
-    const suggests = $(".suggests");
+    /* const suggests = $(".suggests");
     suggests.style.display = 'none';
     const suggest_column_lhs = $(".suggest-column.lhs");
     const suggest_margin = $(".suggest-margin");
     const suggest_column_rhs = $(".suggest-column.rhs");
     suggests.appendChild(suggest_column_lhs);
     suggests.appendChild(suggest_margin);
-    suggests.appendChild(suggest_column_rhs);
+    suggests.appendChild(suggest_column_rhs); */
 
     const mergely = this.mergely_el = $('#mergely');
     // mergely.style.height = '740px';
 
     el.appendChild(inputs);
-    el.appendChild(suggests);
+    // el.appendChild(suggests);
     el.appendChild(mergely);
     return el;
   }
 
+  inputKeyPressHandler(e: KeyboardEvent) {
+    console.log('keypress event is called ..');
+    // console.log('e.keyCode =', e.keyCode);
+
+    if(e.keyCode == 13) {
+      // launch comparison
+      this.doCompare();
+      return;
+    }
+
+    // TODO: auto completion
+
+    // check every keyboard's capable char
+    // TODO: capture paste event, arrow event?
+    if(
+      (33 <= e.keyCode && e.keyCode <= 41) // !"#$%&'()
+      || (42 <= e.keyCode && e.keyCode <= 47) // *+,-./
+      || (48 <= e.keyCode && e.keyCode <= 57) // 0-9
+      || (65 <= e.keyCode && e.keyCode <= 90) // A-Z
+      || (97 <= e.keyCode && e.keyCode <= 122) // a-z
+      || e.keyCode == 92 || e.keyCode == 95 // \_
+    ) {
+
+    }
+  }
+
   doCompare(): void {
-
-    // const self = this;
-    // const input_lhs_value = this.input_lhs.value;
-    // const input_rhs_value = this.input_rhs.value;
-
-    /* window.ipc.send('new', {
-      ...this.item,
-      path_lhs: input_lhs_value,
-      path_rhs: input_rhs_value
-    }); */
-
     window.ipc.invoke('read file in fileview',
       this.input_lhs.value(),
       this.input_rhs.value()

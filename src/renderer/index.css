@@ -543,6 +543,7 @@ body { height: 100%; }
   box-shadow: black 0 3px 2px -2px;
   /* box-shadow: 0 0 8px 2px black; */
   overflow-y: auto;
+  white-space: nowrap;
 }
 
 .input .related li {
