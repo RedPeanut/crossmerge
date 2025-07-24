@@ -56,8 +56,7 @@ export class Compares {
         v.css({ active: true });
     }
 
-    // this.group.splice(0, 0, ...group);
-    this.group.push(...group);
+    this.group.splice(0, 0, ...group);
   }
 
   layout(): void {

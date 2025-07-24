@@ -38,15 +38,14 @@ export class Tabs {
     for(let i = 0; i < group.length; i++) {
       const item: CompareItem = group[i];
       const tab: Tab = new Tab(el, item);
-      el.appendChild(tab.create());
-      this.tabs.push(tab);
+      el.insertBefore(tab.create(), el.firstChild);
+      this.tabs.splice(0, 0, tab);
 
       if(i == group.length-1)
         tab.css({ active: true });
     }
 
-    // this.group.splice(0, 0, ...group);
-    this.group.push(...group);
+    this.group.splice(0, 0, ...group);
   }
 
   layout(): void {}
