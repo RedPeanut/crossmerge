@@ -259,7 +259,10 @@ export class Menubar {
       label: '&Actions',
       submenu: [
         { label: 'Select Rows', submenu: [
-          { label: 'Select Changed', accelerator: keyBinding['actions.selectChanged'], enabled: false,
+          {
+            label: 'Select Changed',
+            accelerator: keyBinding['actions.selectChanged'],
+            // enabled: false,
             click(item, focusedWindow) {
               mainWindow.send('menu click', { cmd: 'actions:select changed' });
             }

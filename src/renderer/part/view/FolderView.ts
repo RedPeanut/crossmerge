@@ -6,6 +6,7 @@ import _ from "lodash";
 import { popup } from "../../util/contextmenu";
 import { Input } from "../../component/Input";
 import { renderer } from "../..";
+import { recur_expand, recur_select } from "../../util/utils";
 
 interface Node {
   parent: Node | null;
@@ -153,6 +154,38 @@ export class FolderView implements CompareView {
         console.log('_args =', _args);
         const menu = _args[0];
         const action = _args[1];
+
+        if(action === 'select changed') {
+          // find n select changed in node (only file)
+          // if node is collapsed then expand recursively top-ward
+
+          this.clearSelected();
+
+          const tree = this.list_selectbar.firstChild as HTMLElement;
+          recur_select(tree, (node) => {
+            if(node.dataset.type === 'file' && node.classList.contains('changed')) {
+              const index = parseInt(node.dataset.index);
+
+              // do select
+              node.classList.add('selected');
+              this.selected.push(index);
+
+              // recursively expand node
+              recur_expand(node);
+
+              // expand another
+              let another = 'left|right|changes'; // |selectbar'
+              let anothers: string[] = another.split('|');
+              for(let i = 0; i < anothers.length; i++) {
+                const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                recur_expand(node);
+              }
+            }
+          });
+
+          this.throttle_renderChanges();
+          this.renewFlatten();
+        }
 
         if(action === 'expand all folders' || action === 'collapse all folders') {
           // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
@@ -622,6 +655,7 @@ export class FolderView implements CompareView {
     const node = $(".node");
     node.id = `node_${part}_${index}`;
     node.dataset.index = index+'';
+    node.dataset.type = data.data.isDirectory ? 'directory' : 'file';
 
     if(mode == 'empty') {
       const content = $(".content");
@@ -1203,4 +1237,12 @@ export class FolderView implements CompareView {
     else this.element.classList.remove('active');
   }
 
+  clearSelected() {
+    for(let i = 0; i < this.selected.length; i++) {
+      // (this.list_selectbar.firstChild as HTMLElement).getElement
+      const find = document.getElementById('node_selectbar_' + this.selected[i]);
+      find && find.classList.remove('selected');
+    }
+    this.selected = [];
+  }
 }
