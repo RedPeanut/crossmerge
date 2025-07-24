@@ -1,3 +1,4 @@
+import { Input } from "../../component/Input";
 import { CompareFileData, CompareItem } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
@@ -11,8 +12,11 @@ export class FileView implements CompareView {
   element: HTMLElement;
   item: CompareItem;
 
-  input_lhs: HTMLInputElement;
-  input_rhs: HTMLInputElement;
+  // input_lhs: HTMLInputElement;
+  // input_rhs: HTMLInputElement;
+  input_lhs: Input;
+  input_rhs: Input;
+
   mergely_el: HTMLInputElement;
   mergely: Mergely;
 
@@ -37,18 +41,24 @@ export class FileView implements CompareView {
 
     const inputs = $(".inputs");
     const input_column_lhs = $(".input-column.lhs");
-    const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
-    input_lhs.placeholder = 'Left file';
+    // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
+    // input_lhs.placeholder = 'Left file';
+    const input_lhs = this.input_lhs = new Input(input_column_lhs, { mode: 'file' });
+    input_lhs.placeholder('Left file');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
-    const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
-    input_rhs.placeholder = 'Right file';
+    // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
+    // input_rhs.placeholder = 'Right file';
+    const input_rhs = this.input_rhs = new Input(input_column_rhs, { mode: 'file' });
+    input_rhs.placeholder('Right file');
 
-    input_lhs.value = this.item.path_lhs;
-    input_rhs.value = this.item.path_rhs;
+    // input_lhs.value = this.item.path_lhs;
+    // input_rhs.value = this.item.path_rhs;
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/left/moons.txt';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/right/moons.txt';
+    input_lhs.value(this.item.path_lhs);
+    input_rhs.value(this.item.path_rhs);
 
     function inputKeyPressHandler(e: KeyboardEvent) {
       console.log('keypress event is called ..');
@@ -79,10 +89,10 @@ export class FileView implements CompareView {
     input_lhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
     input_rhs.addEventListener('keypress', inputKeyPressHandler.bind(this));
 
-    input_column_lhs.appendChild(input_lhs);
+    // input_column_lhs.appendChild(input_lhs);
     inputs.appendChild(input_column_lhs);
     inputs.appendChild(input_margin);
-    input_column_rhs.appendChild(input_rhs);
+    // input_column_rhs.appendChild(input_rhs);
     inputs.appendChild(input_column_rhs);
 
     const suggests = $(".suggests");
@@ -116,8 +126,8 @@ export class FileView implements CompareView {
     }); */
 
     window.ipc.invoke('read file in fileview',
-      this.input_lhs.value,
-      this.input_rhs.value
+      this.input_lhs.value(),
+      this.input_rhs.value()
     ).then(result => {
       console.log('result =', result);
       const mergely = this.mergely = new Mergely(
