@@ -154,7 +154,7 @@ export class FolderView implements CompareView {
       const arg = args[1];
       if(arg.cmd) {
         const _args = arg.cmd.split(':');
-        console.log('_args =', _args);
+        // console.log('_args =', _args);
         const menu = _args[0];
         const action = _args[1];
 
@@ -261,7 +261,7 @@ export class FolderView implements CompareView {
         else
           return true;
       });
-      console.log('this.flatten =', this.flatten);
+      // console.log('this.flatten =', this.flatten);
   }
 
   modifyChanges(): void {
@@ -802,7 +802,7 @@ export class FolderView implements CompareView {
       const arrow = $('.arrow');
       if(isCollapsed) node.classList.add('collapsed');
       arrow.onclick = (e) => {
-        console.log('(arrow) onclick() is called ..');
+        // console.log('(arrow) onclick() is called ..');
         // onChange(data.id, { isCollapsed: !isCollapsed });
         node.classList.toggle('collapsed');
 
@@ -855,7 +855,7 @@ export class FolderView implements CompareView {
         } else {
           this.flatten.splice(i+1, 0, ...items);
         }
-        console.log('this.flatten =', this.flatten);
+        // console.log('this.flatten =', this.flatten);
       };
 
       const collapseArrow = $('a.codicon.codicon-chevron-right');
