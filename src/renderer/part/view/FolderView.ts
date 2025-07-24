@@ -154,44 +154,45 @@ export class FolderView implements CompareView {
         const menu = _args[0];
         const action = _args[1];
 
-        // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
+        if(action === 'expand all folders' || action === 'collapse all folders') {
+          // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
+          if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
 
-        if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
+            function recur(list: HTMLElement, fn: (el) => void) {
+              for(let i = 0; i < list.childNodes.length; i++) {
+                const child = list.childNodes[i] as HTMLElement;
 
-          function recur(list: HTMLElement, fn: (el) => void) {
-            for(let i = 0; i < list.childNodes.length; i++) {
-              const child = list.childNodes[i] as HTMLElement;
-
-              if(child.classList.contains('content')) continue;
-              if(child.classList.contains('node')) {
-                fn(child);
-                recur(child, fn);
+                if(child.classList.contains('content')) continue;
+                if(child.classList.contains('node')) {
+                  fn(child);
+                  recur(child, fn);
+                }
               }
+            }
+
+            const trees = [
+              this.list_selectbar.firstChild as HTMLElement,
+              this.list_lhs.firstChild as HTMLElement,
+              this.list_changes.firstChild as HTMLElement,
+              this.list_rhs.firstChild as HTMLElement,
+            ];
+
+            for(let i = 0; i < trees.length; i++) {
+              recur(trees[i], (el) => {
+                if(action == 'expand all folders') {
+                  if(el.classList.contains('collapsed'))
+                    el.classList.remove('collapsed');
+                } else { // == 'collapse all folders'
+                  if(!el.classList.contains('collapsed'))
+                    el.classList.add('collapsed');
+                }
+              });
             }
           }
 
-          const trees = [
-            this.list_selectbar.firstChild as HTMLElement,
-            this.list_lhs.firstChild as HTMLElement,
-            this.list_changes.firstChild as HTMLElement,
-            this.list_rhs.firstChild as HTMLElement,
-          ];
-
-          for(let i = 0; i < trees.length; i++) {
-            recur(trees[i], (el) => {
-              if(action == 'expand all folders') {
-                if(el.classList.contains('collapsed'))
-                  el.classList.remove('collapsed');
-              } else { // == 'collapse all folders'
-                if(!el.classList.contains('collapsed'))
-                  el.classList.add('collapsed');
-              }
-            });
-          }
+          this.throttle_renderChanges();
+          this.renewFlatten();
         }
-
-        this.throttle_renderChanges();
-        this.renewFlatten();
       }
     });
   }
