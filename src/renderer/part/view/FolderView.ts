@@ -8,6 +8,7 @@ import { Input } from "../../component/Input";
 import { renderer } from "../..";
 import { SelectByStatePopup } from "../../popup/SelectByStatePopup";
 import { recur_expand, recur_select } from "../../util/utils";
+import { CopyFilesPopup } from "../../popup/CopyFilesPopup";
 
 interface Node {
   parent: Node | null;
@@ -123,6 +124,7 @@ export class FolderView implements CompareView {
   flatten: FlattenItem[] = []; // for range (shift) select
 
   selectPopup: SelectByStatePopup;
+  copyPopup: CopyFilesPopup;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -157,6 +159,16 @@ export class FolderView implements CompareView {
         // console.log('_args =', _args);
         const menu = _args[0];
         const action = _args[1];
+
+        if(menu === 'actions') {}
+
+        if(menu === 'merging') {
+          // if(action === 'left to right folder')
+          // if(action === 'right to left folder')
+          // if(action === 'left to other folder')
+          // if(action === 'right to other folder')
+          this.copyPopup.show();
+        }
 
         if(action === 'select by state') {
           // show select by state popup
@@ -484,6 +496,11 @@ export class FolderView implements CompareView {
 
       this.throttle_renderChanges();
       this.renewFlatten();
+    });
+
+    const copyPopup = this.copyPopup = new CopyFilesPopup(el);
+
+    copyPopup.on('ok', (data) => {
     });
 
     // tree area, changes area, customized scrollbar, etc.

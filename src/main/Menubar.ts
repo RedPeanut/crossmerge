@@ -23,6 +23,8 @@ const keyBinding: { [id: string]: string } = isWindows ? {
 
   'merging.pushToLeft': 'Ctrl+W',
   'merging.pushToRight': 'Ctrl+Q',
+  'merging.leftToRightFoler': 'Ctrl+W',
+  'merging.rightToLeftFoler': 'Ctrl+Q',
 
   'actions.selectChanged': 'Ctrl+S',
   'actions.expandAllFolders': 'Ctrl+=',
@@ -40,6 +42,8 @@ const keyBinding: { [id: string]: string } = isWindows ? {
 
   'merging.pushToLeft': 'Cmd+Shift+Left',
   'merging.pushToRight': 'Cmd+Shift+Right',
+  'merging.leftToRightFoler': 'Alt+W',
+  'merging.rightToLeftFoler': 'Alt+Q',
 
   'actions.selectChanged': 'Cmd+Ctrl+C',
   'actions.expandAllFolders': 'Cmd+Ctrl+=',
@@ -248,6 +252,32 @@ export class Menubar {
           submenu: [
             { label: 'Push to Left', accelerator: keyBinding['merging.pushToLeft'], enabled: false },
             { label: 'Push to Right', accelerator: keyBinding['merging.pushToRight'], enabled: false }
+          ]
+        },
+        {
+          label: 'Copy selected items',
+          submenu: [
+            { label: 'From Left to Right Folder...', accelerator: keyBinding['merging.leftToRightFoler'],
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'merging:left to right folder' });
+              }
+            },
+            { label: 'From Right to Left Folder...', accelerator: keyBinding['merging.rightToLeftFoler'],
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'merging:right to left folder' });
+              }
+            },
+            { type: 'separator' },
+            { label: 'From Left to Other Folder...',
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'merging:left to other folder' });
+              }
+            },
+            { label: 'From Right to Other Folder...',
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'merging:right to other folder' });
+              }
+            },
           ]
         },
       ],
