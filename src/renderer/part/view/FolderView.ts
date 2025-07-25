@@ -9,9 +9,9 @@ import { renderer } from "../..";
 import { SelectByStatePopup } from "../../popup/SelectByStatePopup";
 import { recur_expand, recur_select } from "../../util/utils";
 import { CopyFilesPopup } from "../../popup/CopyFilesPopup";
-import { bodyLayoutServiceId, getService } from "src/renderer/Service";
-import { BodyLayoutService } from "src/renderer/layout/BodyLayout";
-import { StringUtil } from "src/common/util/StringUtil";
+import { bodyLayoutServiceId, getService } from "../../Service";
+import { BodyLayoutService } from "../../layout/BodyLayout";
+import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
 
 interface Node {
