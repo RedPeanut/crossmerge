@@ -5,7 +5,7 @@ import { $ } from "../util/dom";
 /** Emit events
  * ok:
  */
-export class FilesFoldersProgressPopup extends Popup {
+export class ProgressPopup extends Popup {
 
   fromSpan: HTMLElement;
   toSpan: HTMLElement;

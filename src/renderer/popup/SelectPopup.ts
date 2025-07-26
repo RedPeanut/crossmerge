@@ -1,7 +1,7 @@
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
 
-export class SelectByStatePopup extends Popup {
+export class SelectPopup extends Popup {
   constructor(parent: HTMLElement) {
     super(parent);
     this.title.innerHTML = 'Select files and folders';

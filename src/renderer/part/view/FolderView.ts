@@ -6,15 +6,15 @@ import _ from "lodash";
 import { popup } from "../../util/contextmenu";
 import { Input } from "../../component/Input";
 import { renderer } from "../..";
-import { SelectByStatePopup } from "../../popup/SelectByStatePopup";
+import { SelectPopup } from "../../popup/SelectPopup";
 import { recur_expand, recur_select } from "../../util/utils";
-import { CopyFilesPopup } from "../../popup/CopyFilesPopup";
+import { CopyPopup } from "../../popup/CopyPopup";
 import { bodyLayoutServiceId, getService } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
 import { Dialog } from "../../Dialog";
-import { FilesFoldersProgressPopup } from "../../popup/FilesFoldersProgress";
+import { ProgressPopup } from "../../popup/ProgressPopup";
 
 interface Node {
   parent: Node | null;
@@ -129,9 +129,9 @@ export class FolderView implements CompareView {
   selected: number[] = []; // for multi (ctrl or cmd) select
   flatten: FlattenItem[] = []; // for range (shift) select
 
-  selectPopup: SelectByStatePopup;
-  copyPopup: CopyFilesPopup;
-  progressPopup: FilesFoldersProgressPopup;
+  selectPopup: SelectPopup;
+  copyPopup: CopyPopup;
+  progressPopup: ProgressPopup;
   dialog: Dialog;
 
   constructor(parent: HTMLElement, item: CompareItem) {
@@ -521,7 +521,7 @@ export class FolderView implements CompareView {
   create(): HTMLElement {
     const el = this.element = $('.folder-compare-view');
 
-    const selectPopup = this.selectPopup = new SelectByStatePopup(el);
+    const selectPopup = this.selectPopup = new SelectPopup(el);
 
     selectPopup.on('ok', (data) => {
       const rdoType = this.selectPopup.contentArea.querySelectorAll('input[name=rdoType]:checked');
@@ -575,13 +575,13 @@ export class FolderView implements CompareView {
       this.renewFlatten();
     });
 
-    const copyPopup = this.copyPopup = new CopyFilesPopup(el);
+    const copyPopup = this.copyPopup = new CopyPopup(el);
     copyPopup.on('ok', (data) => {
     });
     copyPopup.on('folder selected', (data) => {
     });
 
-    const progressPopup = this.progressPopup = new FilesFoldersProgressPopup(el);
+    const progressPopup = this.progressPopup = new ProgressPopup(el);
     const disalog = this.dialog = new Dialog(el);
 
     // tree area, changes area, customized scrollbar, etc.

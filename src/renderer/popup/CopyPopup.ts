@@ -6,7 +6,7 @@ import { $ } from "../util/dom";
  * ok:
  * folder selcted:
  */
-export class CopyFilesPopup extends Popup {
+export class CopyPopup extends Popup {
 
   srcPathInput: HTMLInputElement;
   dstPathInput: HTMLInputElement;
