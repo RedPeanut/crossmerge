@@ -34,7 +34,7 @@ export abstract class Popup extends EventEmitter {
 
   // abstract createContentArea(): HTMLElement;
   show(): void {
-    this.container.style.display = 'block';
+    this.container.style.display = 'flex';
   }
 
   close(): void {
