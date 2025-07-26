@@ -575,4 +575,6 @@ body { height: 100%; }
   /* background-color: orangered; */
   background-color: rgb(240,240,240);
   /* margin-top: 1px; */
+  padding: 0 8px;
 }
+.part.statusbar span {}

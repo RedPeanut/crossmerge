@@ -393,8 +393,7 @@ export class CompareFolder {
       0, // depth
       null // parent
     );
-    mainWindow.send('compare folder end', {});
-    return {
+    const retVal = {
       // folderCount: this.folderCount,
       // fileCount: this.fileCount,
       // totalCount: this.totalCount,
@@ -403,6 +402,8 @@ export class CompareFolder {
       inserted: this.inserted,
       changed: this.changed,
       unchanged: this.unchanged,
-    };
+    }
+    mainWindow.send('compare folder end', { uid: this.uid, ...retVal });
+    return retVal;
   }
 }

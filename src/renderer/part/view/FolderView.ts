@@ -9,12 +9,13 @@ import { renderer } from "../..";
 import { SelectPopup } from "../../popup/SelectPopup";
 import { recur_expand, recur_select } from "../../util/utils";
 import { CopyPopup } from "../../popup/CopyPopup";
-import { bodyLayoutServiceId, getService } from "../../Service";
+import { bodyLayoutServiceId, getService, statusbarPartServiceId } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
 import { Dialog } from "../../Dialog";
 import { ProgressPopup } from "../../popup/ProgressPopup";
+import { StatusbarPartService } from "../StatusbarPart";
 
 interface Node {
   parent: Node | null;
@@ -144,7 +145,16 @@ export class FolderView implements CompareView {
 
     window.ipc.on('compare folder start', (...args: any[]) => {});
     window.ipc.on('compare folder end', (...args: any[]) => {
+
+      if(!args || args.length <= 1) return;
+
+      const arg = args[1];
+      if(this.item.uid != arg.uid) return;
+
       this.renewFlatten();
+
+      const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
+      statusbarPartService.update(args[1]);
     });
 
     window.ipc.on('compare folder data', (...args: any[]) => {
