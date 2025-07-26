@@ -8,7 +8,7 @@ export const blarBlarServiceId = "blarBlarService";
 
 type ServiceId = typeof mainLayoutServiceId // MainLayoutService
   | typeof bodyLayoutServiceId // BodyLayoutService
-  | typeof menuServiceId // MenuServiceId
+  | typeof menuServiceId // MenuService
   | typeof statusbarPartServiceId // StatusbarPartService
   | typeof blarBlarServiceId // BlarBlarService
 ;
