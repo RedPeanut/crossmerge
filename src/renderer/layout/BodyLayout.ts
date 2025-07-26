@@ -121,6 +121,6 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       mainLayoutService.layout();
     }
-    }
+  }
 
 }

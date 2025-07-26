@@ -35,6 +35,7 @@
   background-color: white;
   line-height: 19px;
   padding: 4px 8px;
+  position: relative;
 }
 
 .popup .titlebar span {}
@@ -121,6 +122,7 @@
 .cf .line input { margin-left: 5px; min-width: 320px; }
 .cf .list-view { flex: 1; min-height: 215px; margin-top: 8px; }
 .cf .button-area { text-align: right; margin-top: 8px; }
+
 /* Files and folders progrss */
 .fnfp {}
 .fnfp .top {}

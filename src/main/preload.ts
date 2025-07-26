@@ -3,6 +3,7 @@
 
 import { contextBridge, ipcRenderer, IpcRendererEvent, IpcRenderer } from 'electron';
 
+// render to main
 export type MainEvents =
   // compare
   'new'
@@ -43,6 +44,7 @@ export type MainEvents =
   | 'picker folder'
 ;
 
+// main to render
 export type RenderEvents =
   // 'read file data'
   | 'compare folder start'
