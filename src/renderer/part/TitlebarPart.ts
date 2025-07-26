@@ -31,6 +31,8 @@ export class TitlebarPart extends Part {
     const container: HTMLElement = super.createContentArea();
 
     const menubar = $('.menubar');
+    if(renderer.process.platform === 'darwin')
+      menubar.style.paddingLeft = '80px';
     const left: HTMLElement = $('.left');
 
     const menu = new Menu(left);
