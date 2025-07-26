@@ -85,9 +85,11 @@ export class Menu implements MenuService {
     for(let i = 0; i < menuItem.submenu.length; i++) {
       const submenuItem = menuItem.submenu[i];
       const li = $('li.item');
-      if(submenuItem.type === 'separator')
-        li.classList.add('separator');
-      else {
+      if(submenuItem.type === 'separator') {
+        const a = $('a');
+        a.classList.add('separator');
+        li.appendChild(a);
+      } else {
         li.addEventListener('mouseover', (e) => {});
         li.addEventListener('mouseleave', (e) => {});
         li.addEventListener('focusout', (e) => {});
@@ -135,9 +137,11 @@ export class Menu implements MenuService {
       const menuItem = renderer.menu[i];
       const li = $('li.item');
 
-      if(menuItem.type === 'separator')
-        li.classList.add('separator');
-      else {
+      if(menuItem.type === 'separator') {
+        const a = $('a');
+        a.classList.add('separator');
+        li.appendChild(a);
+      } else {
         li.addEventListener('mouseover', (e) => { (e.currentTarget as HTMLElement).classList.add('on');  });
         li.addEventListener('mouseleave', (e) => { (e.currentTarget as HTMLElement).classList.remove('on'); });
         li.addEventListener('focusout', (e) => { (e.currentTarget as HTMLElement).classList.remove('on'); });

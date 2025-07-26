@@ -228,6 +228,15 @@ body { height: 100%; }
   margin: 0 4px;
   padding: 0 8px;
 }
+
+.menubar .button ul li a.separator {
+  border-bottom: 1px solid;
+  border-bottom-color: rgb(215,215,215);
+  margin: 5px;
+  padding: 0;
+  height: 0;
+}
+
 .menubar .button ul li:hover > a { background-color: rgb(80,162,255); border-radius: 5px; color: white; }
 .menubar .button ul li:hover > .menubox { display: block; }
 .menubar .button ul li a span {}
