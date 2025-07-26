@@ -582,7 +582,7 @@ export class FolderView implements CompareView {
     });
 
     const progressPopup = this.progressPopup = new FilesFoldersProgressPopup(el);
-    const disloag = this.dialog = new Dialog(el);
+    const disalog = this.dialog = new Dialog(el);
 
     // tree area, changes area, customized scrollbar, etc.
 
