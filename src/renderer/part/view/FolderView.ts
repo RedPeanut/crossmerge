@@ -798,9 +798,9 @@ export class FolderView implements CompareView {
     node.id = `node_${part}_${index}`;
     node.dataset.index = index+'';
     node.dataset.type = data.data.isDirectory ? 'directory' : 'file';
-    node.dataset.name = data.data.name ? data.data.name : '';
-    node.dataset.path_lhs = data.data.lhs.path ? data.data.lhs.path : '';
-    node.dataset.path_rhs = data.data.rhs.path ? data.data.rhs.path : '';
+    node.dataset.name = StringUtil.fixNull(data.data.name);
+    node.dataset.path_lhs = StringUtil.fixNull(data.data.lhs.path);
+    node.dataset.path_rhs = StringUtil.fixNull(data.data.rhs.path);
 
     if(mode == 'empty') {
       const content = $(".content");
@@ -827,14 +827,14 @@ export class FolderView implements CompareView {
       node.onclick = (e: PointerEvent) => {
         // console.log('selectbar node clicked ..');
 
-        function clearSelected() {
+        /* function clearSelected() {
           for(let i = 0; i < this.selected.length; i++) {
             // (this.list_selectbar.firstChild as HTMLElement).getElement
             const find = document.getElementById('node_selectbar_' + this.selected[i]);
             find && find.classList.remove('selected');
           }
           this.selected = [];
-        }
+        } */
 
         function handleShiftOp(lastIndex: number): void {
 
@@ -892,10 +892,10 @@ export class FolderView implements CompareView {
         } else if(e.shiftKey) {
           if(this.selected.length == 0) return;
           const lastIndex = this.selected[this.selected.length-1];
-          clearSelected.bind(this)();
+          this.clearSelected.bind(this)();
           handleShiftOp.bind(this)(lastIndex);
         } else {
-          clearSelected.bind(this)();
+          this.clearSelected.bind(this)();
           node.classList.toggle('selected');
           this.selected.push(index);
         }

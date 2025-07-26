@@ -36,7 +36,7 @@ export class Menu implements MenuService {
       console.log('focusin is called ..');
     }); */
     container.addEventListener('focusout', (e: KeyboardEvent) => {
-      console.log('focusout is called ..');
+      // console.log('focusout is called ..');
       if(this.menuState === MenuState.Hamburger) {
         this.hamburgerButton.classList.remove('on');
       } else {

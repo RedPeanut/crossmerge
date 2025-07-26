@@ -28,8 +28,8 @@ export class Input {
 
     function keyDownHandler(e: KeyboardEvent) {
       // console.log('keydown handler is called ..');
-      console.log('e.keyCode =', e.keyCode);
-      console.log('e.key =', e.key);
+      // console.log('e.keyCode =', e.keyCode);
+      // console.log('e.key =', e.key);
 
       if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         if(this.element.classList.contains('have-related')) {
@@ -158,7 +158,7 @@ export class Input {
     input.addEventListener('keydown', keyDownHandler.bind(this));
     input.addEventListener('input', inputHandler.bind(this));
     input.addEventListener('focusout', (e: KeyboardEvent) => {
-      console.log('focusout is called ..');
+      // console.log('focusout is called ..');
       this.related.style.display = 'none';
     });
 

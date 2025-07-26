@@ -1,6 +1,8 @@
 import { EventEmitter } from "events";
 import { $ } from "./util/dom";
 
+export interface PopupOptions {}
+
 export abstract class Popup extends EventEmitter {
   container: HTMLElement;
   popup: HTMLElement;
