@@ -565,6 +565,8 @@ export class FolderView implements CompareView {
 
     copyPopup.on('ok', (data) => {
     });
+    copyPopup.on('folder selected', (data) => {
+    });
 
     // tree area, changes area, customized scrollbar, etc.
 
