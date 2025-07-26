@@ -13,7 +13,8 @@ npm run start
 ```
 
 ## Reference
-- 
+- <a href="https://www.araxis.com/merge/">Araxis Merge</a> (Version 2022.5706)
+- <a href="https://github.com/microsoft/vscode" target="_blank">vscode</a> 1.89.1
 
 ## License
 - MIT
