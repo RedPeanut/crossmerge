@@ -1,0 +1,74 @@
+/* Common */
+.dialog-container { position: absolute;
+  width: calc(100% - 16px);
+  height: calc(100% - 8px);
+  z-index: 5;
+  background-color: rgba(0,0,0,0.16);
+}
+
+.dialog {
+  border: 1px solid rgb(112,112,112);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  /* -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%); */
+  transform: translate(-50%, -50%);
+}
+
+.dialog button {
+  width: 86px;
+  /* height: 28px; */
+  background: rgb(225,225,225);
+  border-width: 1px; border-style: solid;
+  border-color: rgb(173,173,173);
+  margin-right: 8px;
+}
+.dialog button:last-child { margin-right: 0; }
+
+.dialog button.disabled { background: rgb(204,204,204); border-color: rgb(191,191,191); }
+.dialog button:focus { border-color: rgb(0,120,215); border-width: 2px; }
+.dialog button:hover { background: rgb(229,241,251); border-color: rgb(0,120,215); }
+
+.dialog .titlebar {
+  background-color: white;
+  line-height: 19px;
+  padding: 4px 8px;
+  min-height: 19px;
+}
+
+.dialog .titlebar span {}
+
+.dialog .titlebar a {
+  position: absolute;
+  right: 5px;
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+  padding: 0 4px;
+}
+
+.dialog .titlebar a:hover {
+  background-color: rgb(229, 229, 229);
+  cursor: pointer;
+}
+
+.dialog .titlebar a.close:hover {
+  background-color: rgb(232, 17, 35);
+  color: white;
+}
+
+.dialog .content-area {
+  background-color: rgb(240,240,240);
+  padding: 12px;
+}
+
+.dialog .body { display: flex; }
+.dialog .icon.info { color: lightblue; }
+.dialog .icon.warning { background-color: yellow; }
+.dialog .icon.error { color: red; }
+.dialog .codicon { font-size: 28px; }
+.dialog .message { flex: 1; margin-left: 12px; }
+.dialog .buttons { margin-top: 8px; text-align: center; }

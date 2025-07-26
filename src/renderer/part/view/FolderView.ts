@@ -13,6 +13,7 @@ import { bodyLayoutServiceId, getService } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
+import { Dialog } from "../../Dialog";
 import { FilesFoldersProgressPopup } from "../../popup/FilesFoldersProgress";
 
 interface Node {
@@ -131,6 +132,7 @@ export class FolderView implements CompareView {
   selectPopup: SelectByStatePopup;
   copyPopup: CopyFilesPopup;
   progressPopup: FilesFoldersProgressPopup;
+  dialog: Dialog;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -249,6 +251,11 @@ export class FolderView implements CompareView {
 
           if(action === 'left to right folder') {
             this.progressPopup.show();
+            return;
+          }
+
+          if(action === 'right to left folder') {
+            this.dialog.show();
             return;
           }
 
@@ -575,6 +582,7 @@ export class FolderView implements CompareView {
     });
 
     const progressPopup = this.progressPopup = new FilesFoldersProgressPopup(el);
+    const disloag = this.dialog = new Dialog(el);
 
     // tree area, changes area, customized scrollbar, etc.
 
