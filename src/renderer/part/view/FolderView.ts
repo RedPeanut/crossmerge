@@ -13,6 +13,7 @@ import { bodyLayoutServiceId, getService } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
+import { FilesFoldersProgressPopup } from "../../popup/FilesFoldersProgress";
 
 interface Node {
   parent: Node | null;
@@ -129,6 +130,7 @@ export class FolderView implements CompareView {
 
   selectPopup: SelectByStatePopup;
   copyPopup: CopyFilesPopup;
+  progressPopup: FilesFoldersProgressPopup;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -244,6 +246,11 @@ export class FolderView implements CompareView {
         }
 
         if(menu === 'merging') {
+
+          if(action === 'left to right folder') {
+            this.progressPopup.show();
+            return;
+          }
 
           let src_path = '', dest_path = '';
           if(action === 'left to right folder') {
@@ -562,11 +569,12 @@ export class FolderView implements CompareView {
     });
 
     const copyPopup = this.copyPopup = new CopyFilesPopup(el);
-
     copyPopup.on('ok', (data) => {
     });
     copyPopup.on('folder selected', (data) => {
     });
+
+    const progressPopup = this.progressPopup = new FilesFoldersProgressPopup(el);
 
     // tree area, changes area, customized scrollbar, etc.
 
