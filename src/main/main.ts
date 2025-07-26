@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent, MenuItemConstructorOptions } from 'electron';
+import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent, MenuItemConstructorOptions, dialog, OpenDialogOptions } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -313,6 +313,22 @@ class MainWindow {
       return template
         .filter(item => item.id !== 'application')
         .map(item => createItem(item));
+    });
+
+    ipcMain.handle('picker folder', async (event, args: any[]) => {
+      const [ title, defaultPath ] = args;
+      const options: OpenDialogOptions = {
+        properties: ['openDirectory'],
+        // title: 'Select a Folder', // Optional: customize the dialog title
+        // defaultPath: '/path/to/initial/directory' // Optional: set initial directory
+      };
+
+      const result = await dialog.showOpenDialog(this.browserWindow, options);
+      if(!result.canceled) {
+        const selectedFolderPaths = result.filePaths;
+        // Process the selected folder paths (e.g., send to Renderer process)
+        return selectedFolderPaths;
+      }
     });
   }
 

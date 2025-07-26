@@ -1,7 +1,18 @@
+import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
 
+/** Emit events
+ * ok:
+ * folder selcted:
+ */
 export class CopyFilesPopup extends Popup {
+
+  srcPathInput: HTMLInputElement;
+  dstPathInput: HTMLInputElement;
+  table: HTMLElement;
+  tbody: HTMLElement;
+
   constructor(parent: HTMLElement) {
     super(parent);
     this.title.innerHTML = 'Copy files';
@@ -20,11 +31,12 @@ export class CopyFilesPopup extends Popup {
     label = $('label');
     label.setAttribute('for', id);
     label.textContent = 'Source path:';
-    input = $('input');
+    input = this.srcPathInput = $('input');
     input.type = 'text';
     input.id = id;
     input.name = 'source_path';
     input.value = '';
+    input.setAttribute('readonly', true);
 
     line.appendChild(label);
     line.appendChild(input);
@@ -35,7 +47,7 @@ export class CopyFilesPopup extends Popup {
     label = $('label');
     label.setAttribute('for', id);
     label.textContent = 'Destination path:';
-    input = $('input');
+    input = this.dstPathInput = $('input');
     input.type = 'text';
     input.id = id;
     input.name = 'destination_path';
@@ -43,13 +55,23 @@ export class CopyFilesPopup extends Popup {
 
     line.appendChild(label);
     line.appendChild(input);
+
+    const a = $('a.codicon.codicon-ellipsis');
+    a.addEventListener('click', async () =>  {
+      const selectedFolderPaths = await window.ipc.invoke('picker folder');
+      // console.log('selectedFolderPaths =', selectedFolderPaths);
+      this.dstPathInput.value = StringUtil.fixNull(selectedFolderPaths);
+      this.emit('folder selected');
+    });
+    line.appendChild(a);
+
     this.contentArea.appendChild(line);
 
     const listView = $('.list-view');
 
     let table, colgroup, tbody, tr, th, td;
 
-    table = $('table'); colgroup = $('colgroup'); tbody = $('tbody');
+    table = this.table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
     table.appendChild(colgroup);
     table.appendChild(tbody);
 
@@ -60,10 +82,10 @@ export class CopyFilesPopup extends Popup {
     th = $('th'); tr.appendChild(th);
 
     // body
-    tr = $('tr'); tbody.appendChild(tr);
+    /* tr = $('tr'); tbody.appendChild(tr);
     td = $('td'); tr.appendChild(td);
     td = $('td'); tr.appendChild(td);
-    td = $('td'); tr.appendChild(td);
+    td = $('td'); tr.appendChild(td); */
 
     listView.appendChild(table);
     this.contentArea.appendChild(listView);

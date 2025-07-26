@@ -113,8 +113,16 @@
   display: flex;
   flex-direction: column; /* default: row(가로) */
 }
-.cf .line { line-height: 21px; }
+.cf .line { line-height: 21px; position: relative; }
 .cf .line:nth-of-type(2) { margin-top: 2px; }
+.cf .line:nth-of-type(2) a {
+  position: absolute; right: 5px; top: 2px;
+  border-radius: 5px;
+  padding: 0 2px;
+}
+.cf .line:nth-of-type(2) a:hover {
+  background-color: rgb(227,227,227);
+}
 .cf .line label { min-width: 96px; display: inline-block; }
 .cf .line input { margin-left: 5px; min-width: 320px; }
 .cf .list-view { flex: 1; min-height: 215px; margin-top: 8px; }

@@ -38,6 +38,9 @@ export type MainEvents =
 
   // contextmenu
   | 'contextmenu'
+
+  // electron
+  | 'picker folder'
 ;
 
 export type RenderEvents =
