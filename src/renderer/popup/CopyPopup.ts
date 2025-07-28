@@ -1,3 +1,4 @@
+import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
@@ -12,6 +13,8 @@ export class CopyPopup extends Popup {
   dstPathInput: HTMLInputElement;
   table: HTMLElement;
   tbody: HTMLElement;
+
+  fileInfos: {}[];
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -107,4 +110,37 @@ export class CopyPopup extends Popup {
 
     this.contentArea.appendChild(buttonArea);
   }
+
+  clearExceptHead(container: HTMLElement) {
+    while(container.lastChild) {
+      if(container.firstChild !== container.lastChild)
+        container.removeChild(container.lastChild);
+      else
+        break;
+    }
+  }
+
+  open(srcPath: string, dstPath: string, files: { path: string, name: string }[]): void {
+    this.srcPathInput.value = srcPath;
+    this.dstPathInput.value = dstPath;
+    this.fileInfos = [ ...files ];
+
+    this.clearExceptHead(this.tbody);
+    let tr, td, textContent;
+    for(let i = 0; i < files.length; i++) {
+      tr = $('tr');
+      td = $('td'); td.textContent = files[i].name; tr.appendChild(td);
+      td = $('td');
+      if(!StringUtil.isEmpty(dstPath))
+        textContent = dstPath + path.sep + files[i].path + path.sep + files[i].name;
+      else
+        textContent = files[i].path + path.sep + files[i].name;
+      td.textContent = textContent;
+      tr.appendChild(td);
+      td = $('td'); tr.appendChild(td);
+      this.tbody.appendChild(tr);
+    }
+    this.show();
+  }
+
 }

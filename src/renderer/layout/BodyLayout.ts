@@ -10,6 +10,7 @@ import { CompareFolderData, CompareItem } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
 import { StringUtil } from "../../common/util/StringUtil";
+import { FolderView } from "../part/view/FolderView";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -120,6 +121,19 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       // occur layout event for explicitly set canvas w,h
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       mainLayoutService.layout();
+
+      // TEST: do compare automatically
+      // -> select inserted, changed
+      // -> copy selected item to other folder
+      console.log(this.groupView.compares.map);
+      const v = this.groupView.compares.map.get(group[0].uid) as FolderView;
+      v.doCompare();
+      setTimeout(() => {
+        v.selectPopup.emit('ok');
+        /* setTimeout(() => {
+          window.ipc.send('menu click', { cmd: 'merging:right to other folder' });
+        }, 10); */
+      }, 100);
     }
   }
 

@@ -7,7 +7,7 @@ import { popup } from "../../util/contextmenu";
 import { Input } from "../../component/Input";
 import { renderer } from "../..";
 import { SelectPopup } from "../../popup/SelectPopup";
-import { recur_expand, recur_select } from "../../util/utils";
+import { recur_do, recur_expand, recur_select } from "../../util/utils";
 import { CopyPopup } from "../../popup/CopyPopup";
 import { bodyLayoutServiceId, getService, statusbarPartServiceId } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
@@ -203,26 +203,8 @@ export class FolderView implements CompareView {
             dstPath = '';
           } else if(action === 'right to other folder') {
             srcPath = this.input_rhs.value() as string;
-            dstPath = '';
+            dstPath = ''; //'/Users/kimjk/workspace/electron/저장/tmp';
           }
-
-          const input_src = this.copyPopup.container.querySelectorAll('input[name=source_path]')[0] as HTMLInputElement;
-          const input_dest = this.copyPopup.container.querySelectorAll('input[name=destination_path]')[0] as HTMLInputElement;
-
-          input_src.value = srcPath;
-          input_dest.value = dstPath;
-
-          function clearButHead(container: HTMLElement) {
-            while(container.lastChild) {
-              if(container.firstChild !== container.lastChild)
-                container.removeChild(container.lastChild);
-              else
-                break;
-            }
-          }
-
-          const tbody = this.copyPopup.container.querySelectorAll('tbody')[0] as HTMLTableSectionElement;
-          clearButHead(tbody);
 
           let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
           if(action === 'left to right folder') {
@@ -239,7 +221,22 @@ export class FolderView implements CompareView {
             // dest_tree = null;
           }
 
-          // add row
+          let files: { path: string, name: string }[] = [];
+          for(let i = 0; i < this.selected.length; i++) {
+            const index = this.selected[i];
+            const list = src_tree.querySelectorAll(`#node_${src_part}_${index}`);
+            if(list.length > 0) {
+              const node = list[0] as HTMLElement;
+              let _path: string = '';
+              recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
+              _path = _path.replace(path.sep, ''); // replace first
+              files.push({ path: _path, name: node.dataset.name });
+            }
+          }
+          console.log('files =', files);
+          this.copyPopup.open(srcPath, dstPath, files);
+
+          /* // add row
           let tr, td;
           for(let i = 0; i < this.selected.length; i++) {
             const index = this.selected[i];
@@ -253,7 +250,7 @@ export class FolderView implements CompareView {
             tbody.appendChild(tr);
           }
 
-          this.copyPopup.show();
+          this.copyPopup.show(); */
         }
 
         if(menu === 'actions') {
