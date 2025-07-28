@@ -587,7 +587,7 @@ export class FolderView implements CompareView {
     });
 
     const copyPopup = this.copyPopup = new CopyPopup(el);
-    copyPopup.on('ok', (data) => {
+    copyPopup.on('copy clicked', (data) => {
     });
     copyPopup.on('folder selected', (data) => {
     });

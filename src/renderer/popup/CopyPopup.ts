@@ -91,10 +91,10 @@ export class CopyPopup extends Popup {
     this.contentArea.appendChild(listView);
 
     const buttonArea = $('.button-area');
-    const okBtn = $('button');
-    okBtn.innerHTML = 'Ok';
-    okBtn.addEventListener('click', () => {
-      this.emit('ok');
+    const copyBtn = $('button');
+    copyBtn.innerHTML = 'Copy';
+    copyBtn.addEventListener('click', () => {
+      this.emit('copy clicked');
       this.close();
     });
     const cancelBtn = $('button');
@@ -102,7 +102,7 @@ export class CopyPopup extends Popup {
     cancelBtn.addEventListener('click', () => {
       this.close();
     });
-    buttonArea.appendChild(okBtn);
+    buttonArea.appendChild(copyBtn);
     buttonArea.appendChild(cancelBtn);
 
     this.contentArea.appendChild(buttonArea);
