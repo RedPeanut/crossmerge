@@ -579,7 +579,7 @@ body { height: 100%; }
 /* StatusBar */
 .part.statusbar {
   height: 22px;
-  width: 100%;
+  width: calc(100% - 16px);
   display: flex;
   /* background-color: orangered; */
   background-color: rgb(240,240,240);
