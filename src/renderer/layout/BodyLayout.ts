@@ -98,6 +98,19 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
           }
 
           if(action === 'right to left folder') {
+            const from = [
+              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/b/ba/bab.txt',
+              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/b/bc.txt',
+              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/c/ca.txt',
+              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/c/cb.txt',
+            ];
+            const to = [
+              '/Users/kimjk/workspace/electron/저장/tmp/b/ba/bab.txt',
+              '/Users/kimjk/workspace/electron/저장/tmp/b/bc.txt',
+              '/Users/kimjk/workspace/electron/저장/tmp/c/ca.txt',
+              '/Users/kimjk/workspace/electron/저장/tmp/c/cb.txt',
+            ];
+            this.progressPopup.open(from, to);
             return;
           }
         }

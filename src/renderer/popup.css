@@ -23,9 +23,10 @@
   background: rgb(225,225,225);
   border-width: 1px; border-style: solid;
   border-color: rgb(173,173,173);
-  margin-right: 8px;
+  /* margin-right: 8px; */
+  margin: 0 8px 8px 0;
 }
-.popup button:last-child { margin-right: 0; }
+.popup button:last-child { margin: 0; }
 
 .popup button.disabled { background: rgb(204,204,204); border-color: rgb(191,191,191); }
 .popup button:focus { border-color: rgb(0,120,215); border-width: 2px; }
@@ -127,7 +128,16 @@
 
 /* Files and folders progrss */
 .fnfp {}
-.fnfp .top {}
-.fnfp .top .left {}
-.fnfp .top .right {}
+.fnfp .top { display: flex;
+  /* flex-direction: row; */
+}
+.fnfp .top .left { flex: 1; }
+.fnfp .top label { min-width: 90px; display: inline-block; }
+.fnfp .top .line:nth-of-type(2) { margin-top: 4px; }
+.fnfp .top .right { display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
 .fnfp .bottom {}
+.fnfp .bottom h4 { font-weight: normal; margin-top: 12px; }
+.fnfp .bottom .list-view { min-height: 200px; margin-top: 4px; }
