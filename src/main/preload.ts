@@ -36,6 +36,7 @@ export type MainEvents =
   // | 'handle title dblclick'
   | 'read file in fileview'
   | 'read folder in input'
+  | 'copy file'
 
   // contextmenu
   | 'contextmenu'

@@ -93,3 +93,12 @@ export interface PopupOptions {
   y?: number;
   // positioningItem?: number;
 }
+
+export interface ResultMap {
+  resultCode:
+      '0000' // success
+    | '9999' // fail or error
+  ;
+  resultMsg?: string;
+  resultData?: {};
+}

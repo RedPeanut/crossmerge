@@ -15,7 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { _readdirSyncWithStat, resolveHtmlPath } from './utils';
 
-import { CompareItem, SerializableMenuItem } from '../common/Types';
+import { CompareItem, ResultMap, SerializableMenuItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
 import { Channels } from './preload';
 import fs from 'fs';
@@ -328,6 +328,45 @@ class MainWindow {
         const selectedFolderPaths = result.filePaths;
         // Process the selected folder paths (e.g., send to Renderer process)
         return selectedFolderPaths;
+      }
+    });
+
+    /**
+     * @return: {
+     *   resultCode: string,
+     *   resultMsg: string,
+     *   resultData: {} or object
+     * }
+     */
+    ipcMain.handle('copy file', (event, args: any[]): ResultMap => {
+      const [ src, dst ]: string[] = args; // fullpath
+
+      const srcPath = src.substring(0, src.lastIndexOf('/'));
+      const srcFile = src.substring(src.lastIndexOf('/')+1);
+      const dstPath = dst.substring(0, dst.lastIndexOf('/'));
+      const dstFile = dst.substring(dst.lastIndexOf('/')+1);
+
+      if(fs.existsSync(dstPath)) {
+      } else {
+        try {
+          fs.mkdirSync(dstPath, { recursive: true });
+        } catch(error) {
+          console.log(error);
+          return { resultCode: '9999', resultMsg: '폴더 생성중 오류가 발생하였습니다.' };
+        }
+      }
+
+      if(fs.existsSync(dst)) {
+        return { resultCode: '9999', resultMsg: '동일한 파일이 존재합니다.' };
+      }
+
+      try {
+        const read: Buffer = fs.readFileSync(src);
+        fs.writeFileSync(dst, read);
+        return { resultCode: '0000', resultMsg: '정상적으로 처리되었습니다.' };
+      } catch(error) {
+        console.log(error);
+        return { resultCode: '9999', resultMsg: '처리중 오류가 발생하였습니다.' };
       }
     });
   }
