@@ -178,6 +178,84 @@ export class FolderView implements CompareView {
         const menu = _args[0];
         const action = _args[1];
 
+        if(menu === 'merging') {
+
+          if(action === 'left to right folder') {
+            this.progressPopup.show();
+            return;
+          }
+
+          if(action === 'right to left folder') {
+            this.dialog.show();
+            return;
+          }
+
+          let srcPath = '', dstPath = '';
+
+          if(action === 'left to right folder') {
+            srcPath = this.input_lhs.value() as string;
+            dstPath = this.input_rhs.value() as string;
+          } else if(action === 'right to left folder') {
+            srcPath = this.input_rhs.value() as string;
+            dstPath = this.input_lhs.value() as string;
+          } else if(action === 'left to other folder') {
+            srcPath = this.input_lhs.value() as string;
+            dstPath = '';
+          } else if(action === 'right to other folder') {
+            srcPath = this.input_rhs.value() as string;
+            dstPath = '';
+          }
+
+          const input_src = this.copyPopup.container.querySelectorAll('input[name=source_path]')[0] as HTMLInputElement;
+          const input_dest = this.copyPopup.container.querySelectorAll('input[name=destination_path]')[0] as HTMLInputElement;
+
+          input_src.value = srcPath;
+          input_dest.value = dstPath;
+
+          function clearButHead(container: HTMLElement) {
+            while(container.lastChild) {
+              if(container.firstChild !== container.lastChild)
+                container.removeChild(container.lastChild);
+              else
+                break;
+            }
+          }
+
+          const tbody = this.copyPopup.container.querySelectorAll('tbody')[0] as HTMLTableSectionElement;
+          clearButHead(tbody);
+
+          let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
+          if(action === 'left to right folder') {
+            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
+            // dest_tree = this.list_rhs.firstChild as HTMLElement;
+          } else if(action === 'right to left folder') {
+            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'right';
+            // dest_tree = this.list_rhs.firstChild as HTMLElement;
+          } else if(action === 'left to other folder') {
+            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
+            // dest_tree = null;
+          } else if(action === 'right to other folder') {
+            src_tree = this.list_rhs.firstChild as HTMLElement; src_part = 'right';
+            // dest_tree = null;
+          }
+
+          // add row
+          let tr, td;
+          for(let i = 0; i < this.selected.length; i++) {
+            const index = this.selected[i];
+            const node = src_tree.querySelectorAll(`#node_${src_part}_${index}`)[0] as HTMLElement;
+            const name = node.dataset.name;
+
+            tr = $('tr');
+            td = $('td'); td.textContent = name; tr.appendChild(td);
+            td = $('td'); td.textContent = !StringUtil.isEmpty(dstPath) ? dstPath+path.sep+name : name; tr.appendChild(td);
+            td = $('td'); tr.appendChild(td);
+            tbody.appendChild(tr);
+          }
+
+          this.copyPopup.show();
+        }
+
         if(menu === 'actions') {
           if(action === 'select by state') {
             // show select by state popup
@@ -255,83 +333,6 @@ export class FolderView implements CompareView {
             this.throttle_renderChanges();
             this.renewFlatten();
           }
-        }
-
-        if(menu === 'merging') {
-
-          if(action === 'left to right folder') {
-            this.progressPopup.show();
-            return;
-          }
-
-          if(action === 'right to left folder') {
-            this.dialog.show();
-            return;
-          }
-
-          let src_path = '', dest_path = '';
-          if(action === 'left to right folder') {
-            src_path = this.input_lhs.value() as string;
-            dest_path = this.input_rhs.value() as string;
-          } else if(action === 'right to left folder') {
-            src_path = this.input_rhs.value() as string;
-            dest_path = this.input_lhs.value() as string;
-          } else if(action === 'left to other folder') {
-            src_path = this.input_lhs.value() as string;
-            dest_path = '';
-          } else if(action === 'right to other folder') {
-            src_path = this.input_rhs.value() as string;
-            dest_path = '';
-          }
-
-          const input_src = this.copyPopup.container.querySelectorAll('input[name=source_path]')[0] as HTMLInputElement;
-          const input_dest = this.copyPopup.container.querySelectorAll('input[name=destination_path]')[0] as HTMLInputElement;
-
-          input_src.value = src_path;
-          input_dest.value = dest_path;
-
-          function clearButHead(container: HTMLElement) {
-            while(container.lastChild) {
-              if(container.firstChild !== container.lastChild)
-                container.removeChild(container.lastChild);
-              else
-                break;
-            }
-          }
-
-          const tbody = this.copyPopup.container.querySelectorAll('tbody')[0] as HTMLTableSectionElement;
-          clearButHead(tbody);
-
-          let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
-          if(action === 'left to right folder') {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
-            // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(action === 'right to left folder') {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'right';
-            // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(action === 'left to other folder') {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
-            // dest_tree = null;
-          } else if(action === 'right to other folder') {
-            src_tree = this.list_rhs.firstChild as HTMLElement; src_part = 'right';
-            // dest_tree = null;
-          }
-
-          // add row
-          let tr, td;
-          for(let i = 0; i < this.selected.length; i++) {
-            const index = this.selected[i];
-            const node = src_tree.querySelectorAll(`#node_${src_part}_${index}`)[0] as HTMLElement;
-            const name = node.dataset.name;
-
-            tr = $('tr');
-            td = $('td'); td.textContent = name; tr.appendChild(td);
-            td = $('td'); td.textContent = !StringUtil.isEmpty(dest_path) ? dest_path+path.sep+name : name; tr.appendChild(td);
-            td = $('td'); tr.appendChild(td);
-            tbody.appendChild(tr);
-          }
-
-          this.copyPopup.show();
         }
       }
     });

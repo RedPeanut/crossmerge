@@ -93,13 +93,13 @@ class MainWindow {
     const self = this;
 
     ipcMain.on('new', async (event, args: any[]) => {
-      console.log('[new] args =', args);
+      // console.log('[new] args =', args);
       const arg = args[0] as CompareItem;
       if(arg.type == 'file') {
         // not use
       } else if(arg.type == 'folder') {
         const ret = await new CompareFolder(arg.uid).run(arg);
-        console.log('ret =', ret);
+        // console.log('ret =', ret);
       }
     });
 

@@ -223,11 +223,13 @@ export class Menubar {
         { label: 'Redo', accelerator: keyBinding['edit.redo'], role: 'redo' },
         { type: 'separator' },
         { label: 'Cut', accelerator: keyBinding['edit.cut'], role: 'cut' },
-        { label: 'Copy', accelerator: keyBinding['edit.copy'],
+        {
+          label: 'Copy', accelerator: keyBinding['edit.copy'],
           role: 'copy',
           // click: () => { console.log('click event handler is called ..'); shell.beep(); },
         },
-        { label: 'Paste', accelerator: keyBinding['edit.paste'],
+        {
+          label: 'Paste', accelerator: keyBinding['edit.paste'],
           role: 'paste',
           // click: () => {},
         },
@@ -257,23 +259,27 @@ export class Menubar {
         {
           label: 'Copy selected items',
           submenu: [
-            { label: 'From Left to Right Folder...', accelerator: keyBinding['merging.leftToRightFoler'],
+            {
+              label: 'From Left to Right Folder...', accelerator: keyBinding['merging.leftToRightFoler'],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:left to right folder' });
               }
             },
-            { label: 'From Right to Left Folder...', accelerator: keyBinding['merging.rightToLeftFoler'],
+            {
+              label: 'From Right to Left Folder...', accelerator: keyBinding['merging.rightToLeftFoler'],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:right to left folder' });
               }
             },
             { type: 'separator' },
-            { label: 'From Left to Other Folder...',
+            {
+              label: 'From Left to Other Folder...',
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:left to other folder' });
               }
             },
-            { label: 'From Right to Other Folder...',
+            {
+              label: 'From Right to Other Folder...',
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:right to other folder' });
               }
@@ -288,30 +294,37 @@ export class Menubar {
     options.push({
       label: '&Actions',
       submenu: [
-        { label: 'Select Rows', submenu: [
-          {
-            label: 'Select Changed',
-            accelerator: keyBinding['actions.selectChanged'],
-            // enabled: false,
-            click(item, focusedWindow) {
-              mainWindow.send('menu click', { cmd: 'actions:select changed' });
-            }
-          },
-          {
-            label: 'Select by State...',
-            // accelerator: keyBinding['actions.selectByState'], // none
-            // enabled: false,
-            click(item, focusedWindow) {
-              mainWindow.send('menu click', { cmd: 'actions:select by state' });
-            }
-          },
-        ] },
-        { label: 'Expand All Folders', accelerator: keyBinding['actions.expandAllFolders'],
+        {
+          label: 'Select Rows',
+          submenu: [
+            {
+              label: 'Select Changed',
+              accelerator: keyBinding['actions.selectChanged'],
+              // enabled: false,
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'actions:select changed' });
+              }
+            },
+            {
+              label: 'Select by State...',
+              // accelerator: keyBinding['actions.selectByState'], // none
+              // enabled: false,
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', { cmd: 'actions:select by state' });
+              }
+            },
+          ]
+        },
+        {
+          label: 'Expand All Folders',
+          accelerator: keyBinding['actions.expandAllFolders'],
           click(item, focusedWindow) {
             mainWindow.send('menu click', { cmd: 'actions:expand all folders' });
           }
         },
-        { label: 'Collapse All Folders', accelerator: keyBinding['actions.collapseAllFolders'],
+        {
+          label: 'Collapse All Folders',
+          accelerator: keyBinding['actions.collapseAllFolders'],
           click(item, focusedWindow) {
             mainWindow.send('menu click', { cmd: 'actions:collapse all folders' });
           }
