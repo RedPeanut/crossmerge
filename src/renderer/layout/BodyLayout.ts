@@ -10,6 +10,8 @@ import { CompareFolderData, CompareItem } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
 import { StringUtil } from "../../common/util/StringUtil";
+import { CopyPopup } from "../popup/CopyPopup";
+import { ProgressPopup } from "../popup/ProgressPopup";
 import { FolderView } from "../part/view/FolderView";
 
 export interface BodyOptions {
@@ -59,6 +61,8 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   }
 
   groupView: GroupView;
+  copyPopup: CopyPopup;
+  progressPopup: ProgressPopup;
 
   constructor(parent: HTMLElement, options: BodyOptions) {
     super(parent);
@@ -68,13 +72,45 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.border = true;
     this.sashEnablement = false;
     setService(bodyLayoutServiceId, this);
+
+    window.ipc.on('menu click', (...args: any[]) => {
+      // console.log('on menu click is called ..');
+      // console.log('args =', args);
+      const arg = args[1];
+      if(arg.cmd) {
+        const _args = arg.cmd.split(':');
+        // console.log('_args =', _args);
+        const menu = _args[0];
+        const action = _args[1];
+
+        if(menu === 'merging') {
+          if(action === 'left to right folder') {
+            const srcPath = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+            const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
+            const files = [
+              { path: 'b/ba', name: 'bab.txt' },
+              { path: 'b', name: 'bc.txt' },
+              { path: 'c', name: 'ca.txt' },
+              { path: 'c', name: 'cb.txt' },
+            ];
+            this.copyPopup.open(srcPath, dstPath, files);
+            return;
+          }
+
+          if(action === 'right to left folder') {
+            return;
+          }
+        }
+      }
+    });
   }
 
   create(): void {
     this.container.classList.add(...['body', 'layout']);
     // const splitView = this.splitView = new SplitView(this.container, { orientation: Orientation.HORIZONTAL });
-
     this.parent && this.parent.appendChild(this.container);
+    const copyPopup = this.copyPopup = new CopyPopup(this.container);
+    const progressPopup = this.progressPopup = new ProgressPopup(this.container);
   }
 
   inflate(): void {}
