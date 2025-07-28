@@ -67,7 +67,7 @@ export class CopyPopup extends Popup {
 
     this.contentArea.appendChild(line);
 
-    const listView = $('.list-view');
+    const listView = $('.list-view.scrollable');
 
     let table, colgroup, tbody, tr, th, td;
 
