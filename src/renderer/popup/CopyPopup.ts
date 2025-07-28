@@ -1,7 +1,9 @@
 import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
+import { Dialog } from "../Dialog";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
+import { ProgressPopup } from "./ProgressPopup";
 
 /** Emit events
  * ok:
@@ -14,6 +16,8 @@ export class CopyPopup extends Popup {
   table: HTMLElement;
   tbody: HTMLElement;
 
+  progressPopup: ProgressPopup;
+  dialog: Dialog;
   fileInfos: {}[];
 
   constructor(parent: HTMLElement) {
@@ -109,6 +113,9 @@ export class CopyPopup extends Popup {
     buttonArea.appendChild(cancelBtn);
 
     this.contentArea.appendChild(buttonArea);
+
+    this.progressPopup = new ProgressPopup(this.container);
+    this.dialog = new Dialog(this.container);
   }
 
   clearExceptHead(container: HTMLElement) {

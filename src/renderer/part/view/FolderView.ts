@@ -13,8 +13,8 @@ import { bodyLayoutServiceId, getService, statusbarPartServiceId } from "../../S
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 import path from "path";
-import { Dialog } from "../../Dialog";
-import { ProgressPopup } from "../../popup/ProgressPopup";
+// import { Dialog } from "../../Dialog";
+// import { ProgressPopup } from "../../popup/ProgressPopup";
 import { StatusbarPartService } from "../StatusbarPart";
 
 interface Node {
@@ -132,8 +132,8 @@ export class FolderView implements CompareView {
 
   selectPopup: SelectPopup;
   copyPopup: CopyPopup;
-  progressPopup: ProgressPopup;
-  dialog: Dialog;
+  // progressPopup: ProgressPopup;
+  // dialog: Dialog;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -181,12 +181,12 @@ export class FolderView implements CompareView {
         if(menu === 'merging') {
 
           if(action === 'left to right folder') {
-            this.progressPopup.show();
+            // this.progressPopup.show();
             return;
           }
 
           if(action === 'right to left folder') {
-            this.dialog.show();
+            // this.dialog.show();
             return;
           }
 
@@ -589,8 +589,8 @@ export class FolderView implements CompareView {
     copyPopup.on('folder selected', (data) => {
     });
 
-    const progressPopup = this.progressPopup = new ProgressPopup(el);
-    const disalog = this.dialog = new Dialog(el);
+    // const progressPopup = this.progressPopup = new ProgressPopup(el);
+    // const disalog = this.dialog = new Dialog(el);
 
     // tree area, changes area, customized scrollbar, etc.
 
