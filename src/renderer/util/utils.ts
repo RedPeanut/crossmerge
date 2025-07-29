@@ -22,6 +22,7 @@ export function recur_expand(node: HTMLElement): void {
       recur_expand(node.parentElement);
   }
 }
+
 // top-ward
 export function recur_do(node: HTMLElement, fn: (node: HTMLElement) => void): void {
   if(node.classList.contains('tree')) {
