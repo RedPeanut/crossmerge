@@ -88,7 +88,7 @@ export class FolderView implements CompareView {
   list_changes: HTMLElement;
   list_rhs: HTMLElement;
   list_scrollbar_vertical: HTMLCanvasElement;
-  list_scrollbar_horizontal: HTMLCanvasElement;
+  // list_scrollbar_horizontal: HTMLCanvasElement;
 
   /*
   // only directory have children but can have no children
@@ -745,7 +745,7 @@ export class FolderView implements CompareView {
     const list_margin_rhs = $(".list-margin.rhs");
 
     const list_scrollbar_vertical = this.list_scrollbar_vertical = $("canvas.list-scrollbar.vertical");
-    const list_scrollbar_horizontal = this.list_scrollbar_horizontal = $("canvas.list-scrollbar.horizontal");
+    // const list_scrollbar_horizontal = this.list_scrollbar_horizontal = $("canvas.list-scrollbar.horizontal");
 
     function addTree(el: HTMLElement) {
       const tree = $(".tree");
@@ -771,7 +771,7 @@ export class FolderView implements CompareView {
     body.appendChild(list_scrollable);
     body.appendChild(list_margin_rhs);
     body.appendChild(list_scrollbar_vertical);
-    body.appendChild(list_scrollbar_horizontal);
+    // body.appendChild(list_scrollbar_horizontal);
     lists.appendChild(body);
 
     el.appendChild(inputs);
