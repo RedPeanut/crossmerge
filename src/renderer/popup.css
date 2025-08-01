@@ -38,8 +38,7 @@
   padding: 4px 8px;
   position: relative;
 }
-
-.popup .titlebar span {}
+.popup .titlebar:hover { cursor: move; }
 
 .popup .titlebar a {
   position: absolute;
