@@ -27,6 +27,7 @@ const keyBinding: { [id: string]: string } = isWindows ? {
   'merging.rightToLeftFoler': 'Ctrl+Q',
 
   'actions.selectChanged': 'Ctrl+S',
+  'actions.launchComparisons': 'Ctrl+M',
   'actions.expandAllFolders': 'Ctrl+=',
   'actions.collapseAllFolders': 'Ctrl+-',
 } : {
@@ -46,6 +47,7 @@ const keyBinding: { [id: string]: string } = isWindows ? {
   'merging.rightToLeftFoler': 'Alt+Q',
 
   'actions.selectChanged': 'Cmd+Ctrl+C',
+  'actions.launchComparisons': 'Cmd+Shift+L',
   'actions.expandAllFolders': 'Cmd+Ctrl+=',
   'actions.collapseAllFolders': 'Cmd+Ctrl+-',
 };
@@ -315,6 +317,15 @@ export class Menubar {
             },
           ]
         },
+        { type: 'separator' },
+        {
+          label: 'Launch Comparisons for Selected Rows',
+          accelerator: keyBinding['actions.launchComparisons'],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', { cmd: 'actions:launch comparisons' });
+          }
+        },
+        { type: 'separator' },
         {
           label: 'Expand All Folders',
           accelerator: keyBinding['actions.expandAllFolders'],
