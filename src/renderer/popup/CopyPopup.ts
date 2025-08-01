@@ -74,27 +74,28 @@ export class CopyPopup extends Popup {
 
     this.contentArea.appendChild(line);
 
-    const listView = $('.list-view.scrollable');
+    const listView = $('.list-view');
 
     let table, colgroup, tbody, tr, th, td;
 
-    table = this.table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
+    const head = $('.head');
+    table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
     table.appendChild(colgroup);
     table.appendChild(tbody);
-
-    // head
     tr = $('tr'); tbody.appendChild(tr);
     th = $('th'); th.innerHTML = 'Source'; tr.appendChild(th);
     th = $('th'); th.innerHTML = 'Destination'; tr.appendChild(th);
     th = $('th'); tr.appendChild(th);
+    head.appendChild(table);
 
-    // body
-    /* tr = $('tr'); tbody.appendChild(tr);
-    td = $('td'); tr.appendChild(td);
-    td = $('td'); tr.appendChild(td);
-    td = $('td'); tr.appendChild(td); */
+    const body = $('.body.scrollable');
+    table = this.table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
+    table.appendChild(colgroup);
+    table.appendChild(tbody);
+    body.appendChild(table);
 
-    listView.appendChild(table);
+    listView.appendChild(head);
+    listView.appendChild(body);
     this.contentArea.appendChild(listView);
 
     const buttonArea = $('.button-area');

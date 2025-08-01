@@ -123,7 +123,15 @@
 .cf .line input { margin-left: 5px; }
 .cf .line:nth-of-type(1) input { min-width: calc(360px + 26px); }
 .cf .line:nth-of-type(2) input { min-width: 360px; padding-right: 26px; }
-.cf .list-view { flex: 1; min-height: 215px; margin-top: 8px; }
+.cf .list-view {
+  height: 215px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.cf .list-view .head {}
+.cf .list-view .body { flex: 1; }
+
 .cf .button-area { text-align: right; margin-top: 8px; }
 
 /* Files and folders progrss */
