@@ -28,3 +28,9 @@ export interface CompareView {
   layout(): void;
   css(style: { active?: boolean }): void;
 }
+
+export interface FileDesc {
+  path: string, // relative from folder
+  name: string,
+  type: string, // 'file' | 'folder'
+}

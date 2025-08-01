@@ -1,5 +1,5 @@
 import { CompareFolderData, CompareItem, MenuItem } from "../../../common/Types";
-import { CompareView } from "../../Types";
+import { CompareView, FileDesc } from "../../Types";
 import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
@@ -221,7 +221,7 @@ export class FolderView implements CompareView {
             // dest_tree = null;
           }
 
-          let files: { path: string, name: string }[] = [];
+          let files: FileDesc[] = [];
           for(let i = 0; i < this.selected.length; i++) {
             const index = this.selected[i];
             const list = src_tree.querySelectorAll(`#node_${src_part}_${index}`);
@@ -230,7 +230,7 @@ export class FolderView implements CompareView {
               let _path: string = '';
               recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
               _path = _path.replace(path.sep, ''); // replace first
-              files.push({ path: _path, name: node.dataset.name });
+              files.push({ path: _path, name: node.dataset.name, type: node.dataset.type });
             }
           }
           console.log('files =', files);
@@ -825,8 +825,8 @@ export class FolderView implements CompareView {
     node.dataset.index = index+'';
     node.dataset.type = data.data.isDirectory ? 'directory' : 'file';
     node.dataset.name = StringUtil.fixNull(data.data.name);
-    node.dataset.path_lhs = StringUtil.fixNull(data.data.lhs.path);
-    node.dataset.path_rhs = StringUtil.fixNull(data.data.rhs.path);
+    // node.dataset.path_lhs = StringUtil.fixNull(data.data.lhs.path);
+    // node.dataset.path_rhs = StringUtil.fixNull(data.data.rhs.path);
 
     if(mode == 'empty') {
       const content = $(".content");

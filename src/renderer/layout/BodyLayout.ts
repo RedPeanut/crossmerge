@@ -88,10 +88,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
             const srcPath = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
             const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
             const files = [
-              { path: 'b/ba', name: 'bab.txt' },
-              { path: 'b', name: 'bc.txt' },
-              { path: 'c', name: 'ca.txt' },
-              { path: 'c', name: 'cb.txt' },
+              { path: 'b/ba', name: 'bab.txt', type: 'file' },
+              { path: 'b', name: 'bc.txt', type: 'file' },
+              { path: 'c', name: 'ca.txt', type: 'file' },
+              { path: 'c', name: 'cb.txt', type: 'file' },
             ];
             this.copyPopup.open(srcPath, dstPath, files);
             return;
@@ -171,7 +171,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       mainLayoutService.layout();
 
-      // TEST: do compare automatically
+      /* // TEST: do compare automatically
       // -> select inserted, changed
       // -> copy selected item to other folder
       console.log(this.groupView.compares.map);
@@ -179,10 +179,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       v.doCompare();
       setTimeout(() => {
         v.selectPopup.emit('ok');
-        /* setTimeout(() => {
-          window.ipc.send('menu click', { cmd: 'merging:right to other folder' });
-        }, 10); */
-      }, 100);
+        // setTimeout(() => {
+        //   window.ipc.send('menu click', { cmd: 'merging:right to other folder' });
+        // }, 10);
+      }, 100); */
     }
   }
 

@@ -4,6 +4,7 @@ import { Dialog } from "../Dialog";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
 import { ProgressPopup } from "./ProgressPopup";
+import { FileDesc } from "../Types";
 
 /** Emit events
  * ok:
@@ -18,7 +19,7 @@ export class CopyPopup extends Popup {
 
   progressPopup: ProgressPopup;
   dialog: Dialog;
-  fileInfos: {}[];
+  files: {}[];
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -128,10 +129,11 @@ export class CopyPopup extends Popup {
     }
   }
 
-  open(srcPath: string, dstPath: string, files: { path: string, name: string }[]): void {
+  open(srcPath: string, dstPath: string, files: FileDesc[]): void {
     this.srcPathInput.value = srcPath;
     this.dstPathInput.value = dstPath;
-    this.fileInfos = [ ...files ];
+
+    this.files = [ ...files ];
 
     this.clearExceptHead(this.tbody);
     let tr, td, textContent;
