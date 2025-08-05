@@ -1,7 +1,6 @@
-import { CompareItem, State } from "../../common/Types";
+import { CompareItem, DirentExt, State } from "../../common/Types";
 import fs, { Dirent } from 'fs';
 import { _readdirSyncWithStat } from "../utils";
-import { DirentExt } from "../Types";
 import { mainWindow } from "../main";
 import { Myers } from "../../lib/robertelder/Myers";
 import Diff from "../../lib/mergely/Diff";

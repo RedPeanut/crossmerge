@@ -15,11 +15,10 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { _readdirSyncWithStat, resolveHtmlPath } from './utils';
 
-import { CompareItem, ResultMap, SerializableMenuItem } from '../common/Types';
+import { CompareItem, DirentExt, ResultMap, SerializableMenuItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
 import { Channels } from './preload';
 import fs from 'fs';
-import { DirentExt } from './Types';
 import { StringDecoder } from 'string_decoder';
 import { Menubar } from './Menubar';
 import { StringUtil } from '../common/util/StringUtil';

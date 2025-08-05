@@ -1,9 +1,9 @@
 /* eslint import/prefer-default-export: off */
 import { URL } from 'url';
 import path, { join } from 'path';
-import { DirentExt } from './Types';
 import fs, { Dirent } from 'fs';
 import { promisify } from 'util';
+import { DirentExt } from '../common/Types';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {
