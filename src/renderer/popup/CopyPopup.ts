@@ -142,9 +142,9 @@ export class CopyPopup extends Popup {
       td = $('td'); td.textContent = files[i].name; tr.appendChild(td);
       td = $('td');
       if(!StringUtil.isEmpty(dstPath))
-        textContent = dstPath + path.sep + files[i].path + path.sep + files[i].name;
+        textContent = dstPath + path.sep + files[i].relPath + path.sep + files[i].name;
       else
-        textContent = files[i].path + path.sep + files[i].name;
+        textContent = files[i].relPath + path.sep + files[i].name;
       td.textContent = textContent;
       tr.appendChild(td);
       td = $('td'); tr.appendChild(td);

@@ -230,7 +230,7 @@ export class FolderView implements CompareView {
               let _path: string = '';
               recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
               _path = _path.replace(path.sep, ''); // replace first
-              files.push({ path: _path, name: node.dataset.name, type: node.dataset.type });
+              files.push({ relPath: _path, name: node.dataset.name, type: node.dataset.type });
             }
           }
           console.log('files =', files);

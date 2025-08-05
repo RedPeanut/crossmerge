@@ -13,6 +13,7 @@ import { StringUtil } from "../../common/util/StringUtil";
 import { CopyPopup } from "../popup/CopyPopup";
 import { ProgressPopup } from "../popup/ProgressPopup";
 import { FolderView } from "../part/view/FolderView";
+import { FileDesc } from "../Types";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -87,11 +88,11 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
           if(action === 'left to right folder') {
             const srcPath = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
             const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
-            const files = [
-              { path: 'b/ba', name: 'bab.txt', type: 'file' },
-              { path: 'b', name: 'bc.txt', type: 'file' },
-              { path: 'c', name: 'ca.txt', type: 'file' },
-              { path: 'c', name: 'cb.txt', type: 'file' },
+            const files: FileDesc[] = [
+              { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
+              { relPath: 'b', name: 'bc.txt', type: 'file' },
+              { relPath: 'c', name: 'ca.txt', type: 'file' },
+              { relPath: 'c', name: 'cb.txt', type: 'file' },
             ];
             this.copyPopup.open(srcPath, dstPath, files);
             return;

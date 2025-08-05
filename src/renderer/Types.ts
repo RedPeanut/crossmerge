@@ -30,7 +30,7 @@ export interface CompareView {
 }
 
 export interface FileDesc {
-  path: string, // relative from folder
+  relPath: string, // relative from folder
   name: string,
   type: string, // 'file' | 'folder'
 }
