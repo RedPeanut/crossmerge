@@ -86,7 +86,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
         if(menu === 'merging') {
           if(action === 'left to right folder') {
-            const srcPath = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right';
+            const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
             const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
             const files: FileDesc[] = [
               { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
@@ -100,10 +100,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
           if(action === 'right to left folder') {
             const from = [
-              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/b/ba/bab.txt',
-              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/b/bc.txt',
-              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/c/ca.txt',
-              '/Users/kimjk/workspace/electron/crossmerge/test/fixture/mixed case/right/c/cb.txt',
+              '/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/bab.txt',
+              '/Users/kimjk/workspace/electron/fixture/mixed case/right/b/bc.txt',
+              '/Users/kimjk/workspace/electron/fixture/mixed case/right/c/ca.txt',
+              '/Users/kimjk/workspace/electron/fixture/mixed case/right/c/cb.txt',
             ];
             const to = [
               '/Users/kimjk/workspace/electron/저장/tmp/b/ba/bab.txt',
