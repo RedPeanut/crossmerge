@@ -3,6 +3,7 @@ import { StringUtil } from "../../common/util/StringUtil";
 import { Dialog } from "../Dialog";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
+import * as dom from "../util/dom";
 import { ProgressPopup } from "./ProgressPopup";
 import { FileDesc } from "../Types";
 
@@ -135,16 +136,21 @@ export class CopyPopup extends Popup {
 
     this.files = [ ...files ];
 
-    this.clearExceptHead(this.tbody);
+    dom.clearContainer(this.tbody);
+    // this.clearExceptHead(this.tbody);
     let tr, td, textContent;
     for(let i = 0; i < files.length; i++) {
       tr = $('tr');
       td = $('td'); td.textContent = files[i].name; tr.appendChild(td);
       td = $('td');
+
+      textContent = '';
       if(!StringUtil.isEmpty(dstPath))
-        textContent = dstPath + path.sep + files[i].relPath + path.sep + files[i].name;
-      else
-        textContent = files[i].relPath + path.sep + files[i].name;
+        textContent += dstPath + path.sep;
+      if(!StringUtil.isEmpty(files[i].relPath))
+        textContent += files[i].relPath + path.sep;
+      textContent += files[i].name;
+
       td.textContent = textContent;
       tr.appendChild(td);
       td = $('td'); tr.appendChild(td);
