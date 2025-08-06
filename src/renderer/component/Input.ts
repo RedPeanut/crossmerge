@@ -1,5 +1,5 @@
 import path from "path";
-import { DirentExt } from "../../main/Types";
+import { DirentExt } from "../../common/Types";
 import * as dom from "../util/dom";
 import { $ } from "../util/dom";
 import { DebouncedFunc } from "lodash";
