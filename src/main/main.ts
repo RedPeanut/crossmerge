@@ -349,6 +349,11 @@ class MainWindow {
     ipcMain.handle('copy file', (event, args: any[]): ResultMap => {
 
       const [ srcPath, dstPath ]: string[] = args; // fullpath
+      const resultMap = {
+        resultCode: '9999',
+        resultMsg: '처리중 오류가 발생하였습니다.',
+        resultData: { srcPath, dstPath },
+      };
 
       const srcDir = srcPath.substring(0, srcPath.lastIndexOf('/'));
       const srcFilename = srcPath.substring(srcPath.lastIndexOf('/')+1);
@@ -361,21 +366,21 @@ class MainWindow {
           fs.mkdirSync(dstDir, { recursive: true });
         } catch(error) {
           console.log(error);
-          return { resultCode: '9999', resultMsg: '폴더 생성중 오류가 발생하였습니다.' };
+          return { ...resultMap, resultCode: '9999', resultMsg: '폴더 생성중 오류가 발생하였습니다.' };
         }
       }
 
       if(fs.existsSync(dstPath)) {
-        return { resultCode: '9999', resultMsg: '동일한 파일이 존재합니다.' };
+        return { ...resultMap, resultCode: '9998', resultMsg: '동일한 파일이 존재합니다.' };
       }
 
       try {
-        const read: Buffer = fs.readFileSync(srcPath);
-        fs.writeFileSync(dstPath, read);
-        return { resultCode: '0000', resultMsg: '정상적으로 처리되었습니다.' };
+        // const read: Buffer = fs.readFileSync(srcPath);
+        fs.copyFileSync(srcPath, dstPath); // writeFileSync(dstPath, read);
+        return { ...resultMap, resultCode: '0000', resultMsg: '정상적으로 처리되었습니다.' };
       } catch(error) {
         console.log(error);
-        return { resultCode: '9999', resultMsg: '처리중 오류가 발생하였습니다.' };
+        return { ...resultMap, resultCode: '9999', resultMsg: '처리중 오류가 발생하였습니다.' };
       }
     });
   }

@@ -103,21 +103,23 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
           }
 
           if(action === 'right to left folder') {
-            const from = [
-              '/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/bab.txt',
-              '/Users/kimjk/workspace/electron/fixture/mixed case/right/b/bc.txt',
-              '/Users/kimjk/workspace/electron/fixture/mixed case/right/c/ca.txt',
-              '/Users/kimjk/workspace/electron/fixture/mixed case/right/c/cb.txt',
-            ];
-            const to = [
-              '/Users/kimjk/workspace/electron/저장/tmp/b/ba/bab.txt',
-              '/Users/kimjk/workspace/electron/저장/tmp/b/bc.txt',
-              '/Users/kimjk/workspace/electron/저장/tmp/c/ca.txt',
-              '/Users/kimjk/workspace/electron/저장/tmp/c/cb.txt',
-            ];
-            this.progressPopup.open(from, to);
+            const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
+            const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
+            const files: FileDesc[] =
+              [
+                // { relPath: '', name: 'a', type: 'folder' },
+                { relPath: '', name: 'b', type: 'folder' },
+                // { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
+                // { relPath: 'b', name: 'bc.txt', type: 'file' },
+                // { relPath: 'c', name: 'ca.txt', type: 'file' },
+                // { relPath: 'c', name: 'cb.txt', type: 'file' },
+                { relPath: '', name: 'a.txt', type: 'file' }, // empty path case
+              ]
+            ;
+            this.progressPopup.open(srcPath, dstPath, files);
             return;
           }
+
         }
       }
     });

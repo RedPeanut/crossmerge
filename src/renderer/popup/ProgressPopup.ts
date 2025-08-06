@@ -2,6 +2,8 @@ import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
+import { FileDesc } from "../Types";
+import { DirentExt } from "../../common/Types";
 
 /** Emit events
  * ok:
@@ -12,6 +14,11 @@ export class ProgressPopup extends Popup {
   toSpan: HTMLElement;
   table: HTMLElement;
   tbody: HTMLElement;
+
+  srcPath: string;
+  dstPath: string;
+  files: FileDesc[];
+  index: number;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -105,19 +112,63 @@ export class ProgressPopup extends Popup {
     }
   }
 
-  open(from: string[], to: string[]): void {
-    this.show();
-    this.clearExceptHead(this.tbody);
+  async next(): Promise<void> {
+    const srcPath = this.srcPath;
+    const dstPath = this.dstPath;
 
-    let retVal;
-    for(let i = 0; i < from.length; i++) {
-      this.fromSpan.textContent = from[i];
-      this.toSpan.textContent = to[i];
-      retVal = window.ipc.invoke('copy file', from[i], to[i]);
-      window.ipc.invoke('copy file', from[i], to[i])
-        .then(result => console.log(result))
-        .catch(error => console.log(error));
+    const file = this.files[this.index];
+    if(file.type === 'folder') {
+      let _path = srcPath;
+      if(!StringUtil.isEmpty(file.relPath))
+        _path += path.sep + file.relPath;
+      _path += path.sep + file.name;
+      const reads: DirentExt[] = await window.ipc.invoke('read folder', _path);
+      const items: FileDesc[] = [];
+      for(let i = 0; i < reads.length; i++) {
+        items.push({
+          type: reads[i].isDirectory ? 'folder' : 'file',
+          name: reads[i].name,
+          relPath: reads[i].path.replace(srcPath+path.sep, '')
+        });
+      }
+      this.files.splice(this.index+1, 0, ...items);
+      console.log('this.files =', this.files);
+    } else {
+      let from = srcPath;
+      if(!StringUtil.isEmpty(file.relPath)) from += path.sep + file.relPath;
+      from += path.sep + file.name;
+
+      let to = dstPath;
+      if(!StringUtil.isEmpty(file.relPath)) to += path.sep + file.relPath;
+      to += path.sep + file.name;
+
+      this.fromSpan.textContent = from;
+      this.toSpan.textContent = to;
+
+      const resultMap = await window.ipc.invoke('copy file', from, to);
+      console.log('retVal =', resultMap);
+      if(resultMap.resultCode === '9998') {
+      }
     }
+
+    if(this.index < this.files.length-1) {
+      this.index++;
+      this.next();
+    }
+  }
+
+  open(srcPath: string, dstPath: string, files: FileDesc[]): void {
+
+    this.srcPath = srcPath;
+    this.dstPath = dstPath;
+    this.files = [ ...files ];
+
+    // clear screen
+    this.clearExceptHead(this.tbody);
+    this.show();
+
+    this.index = 0;
+    this.next();
   }
 
 }

@@ -97,6 +97,7 @@ export interface PopupOptions {
 export interface ResultMap {
   resultCode:
       '0000' // success
+    | '9991' | '9992' | '9993' | '9994' | '9995' | '9996' | '9997' | '9998' // spare
     | '9999' // fail or error
   ;
   resultMsg?: string;
