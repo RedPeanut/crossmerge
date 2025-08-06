@@ -88,12 +88,16 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
           if(action === 'left to right folder') {
             const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
             const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
-            const files: FileDesc[] = [
-              { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
-              { relPath: 'b', name: 'bc.txt', type: 'file' },
-              { relPath: 'c', name: 'ca.txt', type: 'file' },
-              { relPath: 'c', name: 'cb.txt', type: 'file' },
-            ];
+            const files: FileDesc[] =
+              [
+                { relPath: '', name: 'a', type: 'folder' },
+                { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
+                { relPath: 'b', name: 'bc.txt', type: 'file' },
+                { relPath: 'c', name: 'ca.txt', type: 'file' },
+                { relPath: 'c', name: 'cb.txt', type: 'file' },
+                { relPath: '', name: 'a.txt', type: 'file' }, // empty path case
+              ]
+            ;
             this.copyPopup.open(srcPath, dstPath, files);
             return;
           }

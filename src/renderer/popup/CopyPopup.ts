@@ -57,6 +57,29 @@ export class CopyPopup extends Popup {
     label.setAttribute('for', id);
     label.textContent = 'Destination path:';
     input = this.dstPathInput = $('input');
+
+    function inputHandler(e: Event) {
+      // console.log('input handler is called ..');
+      const target = e.target as HTMLInputElement;
+      const value: string = target.value;
+
+      let tr, td, textContent;
+      for(let i = 0, j = 0; i < this.tbody.children.length; i++, j++) {
+        tr = this.tbody.children[i];
+        td = tr.children[1];
+
+        textContent = '';
+        if(!StringUtil.isEmpty(value))
+          textContent += value + path.sep;
+        if(!StringUtil.isEmpty(this.files[j].path))
+          textContent += this.files[j].path + path.sep;
+        textContent += this.files[j].name;
+
+        td.textContent = textContent;
+      }
+    }
+
+    input.addEventListener('input', inputHandler.bind(this));
     input.type = 'text';
     input.id = id;
     input.name = 'destination_path';
@@ -78,20 +101,30 @@ export class CopyPopup extends Popup {
 
     const listView = $('.list-view');
 
-    let table, colgroup, tbody, tr, th, td;
+    let table, colgroup, col, tbody, tr, th, td;
 
     const head = $('.head');
-    table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
+    table = $('table');
+    colgroup = $('colgroup');
+    col = $('col'); col.setAttribute('width', '20%'); colgroup.appendChild(col);
+    col = $('col'); colgroup.appendChild(col);
+    // col = $('col'); colgroup.appendChild(col);
+    tbody = $('tbody');
     table.appendChild(colgroup);
     table.appendChild(tbody);
     tr = $('tr'); tbody.appendChild(tr);
     th = $('th'); th.innerHTML = 'Source'; tr.appendChild(th);
     th = $('th'); th.innerHTML = 'Destination'; tr.appendChild(th);
-    th = $('th'); tr.appendChild(th);
+    // th = $('th'); tr.appendChild(th);
     head.appendChild(table);
 
     const body = $('.body.scrollable');
-    table = this.table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
+    table = this.table = $('table');
+    colgroup = $('colgroup');
+    col = $('col'); col.setAttribute('width', '20%'); colgroup.appendChild(col);
+    col = $('col'); colgroup.appendChild(col);
+    // col = $('col'); colgroup.appendChild(col);
+    tbody = this.tbody = $('tbody');
     table.appendChild(colgroup);
     table.appendChild(tbody);
     body.appendChild(table);
@@ -153,7 +186,7 @@ export class CopyPopup extends Popup {
 
       td.textContent = textContent;
       tr.appendChild(td);
-      td = $('td'); tr.appendChild(td);
+      // td = $('td'); tr.appendChild(td);
       this.tbody.appendChild(tr);
     }
     this.show();

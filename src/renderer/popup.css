@@ -78,6 +78,7 @@
   border-bottom: 1px solid #dcdcdc;
   padding: 3px 6px 0 6px;
   vertical-align: middle;
+  white-space: nowrap;
 }
 .popup .list-view td input { padding-top: 2px; }
 .popup .list-view td label { margin-left: 5px; }
@@ -123,6 +124,7 @@
 .cf .line:nth-of-type(1) input { min-width: calc(360px + 26px); }
 .cf .line:nth-of-type(2) input { min-width: 360px; padding-right: 26px; }
 .cf .list-view {
+  width: 489px;
   height: 215px;
   margin-top: 8px;
   display: flex;
