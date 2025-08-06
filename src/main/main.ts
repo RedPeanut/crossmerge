@@ -331,6 +331,15 @@ class MainWindow {
     });
 
     /**
+     * @return:
+     */
+    ipcMain.handle('read folder', async (event, args: any[]): Promise<DirentExt[]> => {
+      const [ path ]: string[] = args;
+      let reads: DirentExt[] = await _readdirSyncWithStat(path);
+      return reads;
+    });
+
+    /**
      * @return: {
      *   resultCode: string,
      *   resultMsg: string,

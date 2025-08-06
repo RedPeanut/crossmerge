@@ -37,6 +37,7 @@ export type MainEvents =
   | 'read file in fileview'
   | 'read folder in input'
   | 'copy file'
+  | 'read folder'
 
   // contextmenu
   | 'contextmenu'
