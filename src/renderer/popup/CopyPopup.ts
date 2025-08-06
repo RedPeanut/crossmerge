@@ -20,7 +20,7 @@ export class CopyPopup extends Popup {
 
   progressPopup: ProgressPopup;
   dialog: Dialog;
-  files: {}[];
+  files: FileDesc[];
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -93,7 +93,7 @@ export class CopyPopup extends Popup {
       const selectedFolderPaths = await window.ipc.invoke('picker folder');
       // console.log('selectedFolderPaths =', selectedFolderPaths);
       this.dstPathInput.value = StringUtil.fixNull(selectedFolderPaths);
-      this.emit('folder selected');
+      // this.emit('folder selected');
     });
     line.appendChild(a);
 
@@ -137,8 +137,8 @@ export class CopyPopup extends Popup {
     const copyBtn = $('button');
     copyBtn.innerHTML = 'Copy';
     copyBtn.addEventListener('click', () => {
-      this.emit('copy clicked');
-      this.close();
+      // this.emit('do copy');
+      // this.close();
     });
     const cancelBtn = $('button');
     cancelBtn.innerHTML = 'Cancel';
