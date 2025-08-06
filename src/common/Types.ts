@@ -20,11 +20,11 @@ export interface CompareFileData {
   // not use
 }
 
-export type CompareFolderDataType = 'file' | 'folder';
+// export type CompareFolderDataType = 'file' | 'folder';
 
 export interface CompareFolderData {
   uid: string;
-  type: CompareFolderDataType;
+  type: 'file' | 'folder'; //CompareFolderDataType;
   depth: number;
   index: number;
 

@@ -275,7 +275,7 @@ class MainWindow {
       return { data_lhs, data_rhs };
     });
 
-    ipcMain.handle('read folder in input', async (event, args: any[]) => {
+    ipcMain.handle('read folder in input', async (event, args: any[]): Promise<DirentExt[]> => {
       const [ value, mode ] = args;
       const _path = value.substring(0, value.lastIndexOf(path.sep));
       const last = value.substring(value.lastIndexOf(path.sep)+1, value.length);

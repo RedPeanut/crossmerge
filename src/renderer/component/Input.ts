@@ -120,7 +120,7 @@ export class Input {
     }
 
     function inputHandler(e: Event) {
-      console.log('input handler is called ..');
+      // console.log('input handler is called ..');
       // const self = this;
       const target = e.target as HTMLInputElement;
       const value: string = target.value;
