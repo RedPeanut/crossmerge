@@ -233,7 +233,28 @@ export class FolderView implements CompareView {
               files.push({ relPath: _path, name: node.dataset.name, type: node.dataset.type });
             }
           }
+
+          files = files.filter(f => !StringUtil.isEmpty(f.name));
           console.log('files =', files);
+
+          for(let i = 0; i < files.length; i++) {
+            if(files[i].type === 'folder') {
+              let filtered = [];
+              for(let j = 0; j < files.length; j++) {
+                if(j > i) {
+                  // 폴더의 하위 파일은 무조건 뒤에 위치하기 때문에
+                  if(files[j].relPath.startsWith(files[i].name)) {
+                    /* filter in here */
+                  } else
+                    filtered.push(files[j]);
+                } else
+                  filtered.push(files[j]);
+              }
+              files = filtered;
+            }
+          }
+          console.log('files =', files);
+
           this.copyPopup.open(srcPath, dstPath, files);
 
           /* // add row
@@ -823,8 +844,8 @@ export class FolderView implements CompareView {
     const node = $(".node");
     node.id = `node_${part}_${index}`;
     node.dataset.index = index+'';
-    node.dataset.type = data.data.isDirectory ? 'directory' : 'file';
-    node.dataset.name = StringUtil.fixNull(data.data.name);
+    node.dataset.type = data.type; // data.type; // ? 'folder' : 'file';
+    node.dataset.name = mode === 'empty' ? '' : StringUtil.fixNull(data.data.name);
     // node.dataset.path_lhs = StringUtil.fixNull(data.data.lhs.path);
     // node.dataset.path_rhs = StringUtil.fixNull(data.data.rhs.path);
 
