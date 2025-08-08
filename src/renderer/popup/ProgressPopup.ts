@@ -4,6 +4,7 @@ import { Popup } from "../Popup";
 import { $ } from "../util/dom";
 import { FileDesc } from "../Types";
 import { DirentExt } from "../../common/Types";
+import { Dialog } from "../Dialog";
 
 /** Emit events
  * ok:
@@ -19,6 +20,8 @@ export class ProgressPopup extends Popup {
   dstPath: string;
   files: FileDesc[];
   index: number;
+
+  dialog: Dialog;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -101,6 +104,8 @@ export class ProgressPopup extends Popup {
     listView.appendChild(table);
     bottom.appendChild(listView);
     this.contentArea.appendChild(bottom);
+
+    this.dialog = new Dialog(this.container);
   }
 
   clearExceptHead(container: HTMLElement) {

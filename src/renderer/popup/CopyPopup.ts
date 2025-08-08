@@ -19,7 +19,7 @@ export class CopyPopup extends Popup {
   tbody: HTMLElement;
 
   progressPopup: ProgressPopup;
-  dialog: Dialog;
+  // dialog: Dialog;
   files: FileDesc[];
 
   constructor(parent: HTMLElement) {
@@ -151,7 +151,7 @@ export class CopyPopup extends Popup {
     this.contentArea.appendChild(buttonArea);
 
     this.progressPopup = new ProgressPopup(this.container);
-    this.dialog = new Dialog(this.container);
+    // this.dialog = new Dialog(this.container);
   }
 
   clearExceptHead(container: HTMLElement) {
