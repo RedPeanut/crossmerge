@@ -100,12 +100,6 @@ export class Dialog extends Disposable {
 
   show(): void {
     this.container.style.display = 'flex';
-    /* return new Promise<DialogResult>((resolve) => {
-      resolve({
-        button: 0,
-        values: []
-      });
-    }); */
   }
 
   close(): void {

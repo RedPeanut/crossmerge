@@ -236,6 +236,9 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
 
   open(srcPath: string, dstPath: string, files: FileDesc[]): void {
 
+    this.yesToAll = false;
+    this.noToAll = false;
+
     this.srcPath = srcPath;
     this.dstPath = dstPath;
     this.files = [ ...files ];
