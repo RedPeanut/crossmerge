@@ -66,9 +66,13 @@
 }
 
 .dialog .body { display: flex; }
-.dialog .icon.info { color: lightblue; }
-.dialog .icon.warning { background-color: yellow; }
-.dialog .icon.error { color: red; }
+.dialog .icon.info span { color: lightblue; }
+.dialog .icon.warning span { background-color: yellow; }
+.dialog .icon.error span { color: red; }
 .dialog .codicon { font-size: 28px; }
 .dialog .message { flex: 1; margin-left: 12px; }
-.dialog .buttons { margin-top: 8px; text-align: center; }
+.dialog .buttons { margin-top: 8px; text-align: center;
+  min-height: 19.5px;
+  display: flex;
+  align-items: center;
+}

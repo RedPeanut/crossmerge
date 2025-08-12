@@ -14,6 +14,7 @@ import { CopyPopup } from "../popup/CopyPopup";
 import { ProgressPopup } from "../popup/ProgressPopup";
 import { FolderView } from "../part/view/FolderView";
 import { FileDesc } from "../Types";
+import { Dialog } from "../Dialog";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -64,6 +65,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   groupView: GroupView;
   copyPopup: CopyPopup;
   progressPopup: ProgressPopup;
+  dialog: Dialog;
 
   constructor(parent: HTMLElement, options: BodyOptions) {
     super(parent);
@@ -120,6 +122,16 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
             return;
           }
 
+          if(action === 'left to other folder') {
+            this.dialog.open('warning', 'Confirm replace'); /* , null, [
+              { label: 'Yes', click: () => {} },
+              { label: 'Yes to all', click: () => {} },
+              { label: 'No', click: () => {} },
+              { label: 'No to all', click: () => {} },
+              { label: 'Cancel', click: () => {} },
+            ]); */
+            return;
+          }
         }
       }
     });
@@ -131,6 +143,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.parent && this.parent.appendChild(this.container);
     const copyPopup = this.copyPopup = new CopyPopup(this.container);
     const progressPopup = this.progressPopup = new ProgressPopup(this.container);
+    const dialog = this.dialog = new Dialog(this.container);
   }
 
   inflate(): void {}

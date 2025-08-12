@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { $ } from "./util/dom";
+import * as dom from "./util/dom";
 import { Disposable } from "./util/Lifecycle";
 
 export interface ButtonDesc {
@@ -25,12 +26,12 @@ export class Dialog extends Disposable {
   titlebar: HTMLElement;
   title: HTMLElement;
   contentArea: HTMLElement;
+  icon: HTMLElement;
+  message: HTMLElement;
+  buttons: HTMLElement;
 
   constructor(parent: HTMLElement,
       type: DialogType = 'info',
-      title: string = 'enter title in here',
-      message: string = 'Lorem ipsum dolor sit amet\nLorem ipsum dolor sit amet\nLorem ipsum dolor sit amet\nLorem ipsum dolor sit amet\nLorem ipsum dolor sit amet',
-      buttons: ButtonDesc[] = [ { label: 'Yes' }, { label: 'No' }, { label: 'Cancel' } ],
       options: DialogOptions = {}
   ) {
     super();
@@ -41,10 +42,11 @@ export class Dialog extends Disposable {
     const dialog = this.dialog = $('.dialog');
     const titlebar = this.titlebar = $('.titlebar');
     const _title = this.title = $('span.title');
-    this.title.innerHTML = title;
     titlebar.appendChild(_title);
     const closeBtn = $('a.codicon.codicon-chrome-close.close');
     closeBtn.addEventListener('click', async () => {
+      dom.clearContainer(this.buttons);
+      this.dispose();
       this.close();
     });
     titlebar.appendChild(closeBtn);
@@ -52,23 +54,15 @@ export class Dialog extends Disposable {
 
     const contentArea = this.contentArea = $('.content-area');
     const body = $('.body');
-    const icon = $(`.icon.${type}`);
+    const icon = this.icon = $(`.icon.${type}`);
     const span = $(`span.codicon.codicon-${type}`);
     icon.appendChild(span);
-    const _message = $('.message');
-    _message.textContent = message;
+    const _message = this.message = $('.message');
     body.appendChild(icon);
     body.appendChild(_message);
     contentArea.appendChild(body);
 
-    const _buttons = $('.buttons');
-    let button;
-    for(let i = 0; i < buttons.length; i++) {
-      button = $('button');
-      button.textContent = buttons[i].label;
-      if(buttons[i].click) button.addEventListener('click', buttons[i].click);
-      _buttons.appendChild(button);
-    }
+    const _buttons = this.buttons = $('.buttons');
     contentArea.appendChild(_buttons);
 
     dialog.appendChild(contentArea);
@@ -88,5 +82,40 @@ export class Dialog extends Disposable {
 
   close(): void {
     this.container.style.display = 'none';
+  }
+
+  open(
+    type: DialogType = 'info',
+    title: string = 'enter title in here',
+    message: string = 'Lorem ipsum dolor sit amet<br/>Lorem ipsum dolor sit amet<br/>Lorem ipsum dolor sit amet<br/>Lorem ipsum dolor sit amet<br/>Lorem ipsum dolor sit amet',
+    buttons: ButtonDesc[] = [ { label: 'Yes' }, { label: 'No' }, { label: 'Cancel' } ],
+    options: DialogOptions = {}
+  ): void {
+    this.title.innerHTML = title;
+    this.icon.classList.remove(...['info', 'error', 'warning']);
+    this.icon.classList.add(type);
+    this.icon.children[0].classList.remove(...['codicon-info', 'codicon-error', 'codicon-warning']);
+    this.icon.children[0].classList.add(`codicon-${type}`);
+    this.message.innerHTML = message;
+
+    let button;
+    for(let i = 0; i < buttons.length; i++) {
+      button = $('button');
+      button.textContent = buttons[i].label;
+      if(buttons[i].click) {
+
+        function clickWrapper() {
+          dom.clearContainer(this.buttons);
+          this.dispose();
+          this.close();
+          buttons[i].click();
+        }
+
+        this.register(button, 'click', clickWrapper.bind(this));
+      }
+      this.buttons.appendChild(button);
+    }
+
+    this.show();
   }
 }
