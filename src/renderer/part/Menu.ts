@@ -74,7 +74,7 @@ export class Menu implements MenuService {
 
   install(): void {
     this.createHamburgurMenu(this.container);
-    this.createMenu(this.container);
+    this.createNormalMenu(this.container);
     // this.parent.appendChild(this.container);
   }
 
@@ -90,9 +90,9 @@ export class Menu implements MenuService {
         a.classList.add('separator');
         li.appendChild(a);
       } else {
-        li.addEventListener('mouseover', (e) => {});
-        li.addEventListener('mouseleave', (e) => {});
-        li.addEventListener('focusout', (e) => {});
+        // li.addEventListener('mouseover', (e) => {});
+        // li.addEventListener('mouseleave', (e) => {});
+        // li.addEventListener('focusout', (e) => {});
 
         const a = $('a');
         li.appendChild(a);
@@ -168,7 +168,7 @@ export class Menu implements MenuService {
     container.appendChild(button);
   }
 
-  createMenu(container: HTMLElement) {
+  createNormalMenu(container: HTMLElement) {
 
     for(let i = 0; i < renderer.menu.length; i++) {
       const menuItem = renderer.menu[i];

@@ -41,8 +41,8 @@ const keyBinding: { [id: string]: string } = isWindows ? {
   'edit.paste': 'Cmd+V',
   'edit.selectAll': 'Cmd+A',
 
-  'merging.pushToLeft': 'Cmd+Shift+Left',
-  'merging.pushToRight': 'Cmd+Shift+Right',
+  'merging.pushToLeft': 'Ctrl+Shift+Left',
+  'merging.pushToRight': 'Ctrl+Shift+Right',
   'merging.leftToRightFoler': 'Alt+W',
   'merging.rightToLeftFoler': 'Alt+Q',
 
