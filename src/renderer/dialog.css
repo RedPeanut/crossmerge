@@ -2,20 +2,17 @@
 .dialog-container { position: absolute;
   width: calc(100% - 16px);
   height: calc(100% - 8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: 5;
   background-color: rgba(0,0,0,0.16);
 }
 
 .dialog {
   border: 1px solid rgb(112,112,112);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  /* -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%); */
-  transform: translate(-50%, -50%);
+  /* position: fixed; */
 }
 
 .dialog button {
@@ -37,7 +34,9 @@
   line-height: 19px;
   padding: 4px 8px;
   min-height: 19px;
+  position: relative;
 }
+.dialog .titlebar:hover { cursor: move; }
 
 .dialog .titlebar span {}
 

@@ -30,6 +30,10 @@ export class Dialog extends Disposable {
   message: HTMLElement;
   buttons: HTMLElement;
 
+  isDragging = false;
+  dragOffsetX = 0;
+  dragOffsetY = 0;
+
   constructor(parent: HTMLElement,
       type: DialogType = 'info',
       options: DialogOptions = {}
@@ -43,6 +47,9 @@ export class Dialog extends Disposable {
     const titlebar = this.titlebar = $('.titlebar');
     const _title = this.title = $('span.title');
     titlebar.appendChild(_title);
+    titlebar.addEventListener('mousedown', this.onDragStart.bind(this));
+    document.addEventListener('mousemove', this.onDragMove.bind(this));
+    document.addEventListener('mouseup', this.onDragEnd.bind(this));
     const closeBtn = $('a.codicon.codicon-chrome-close.close');
     closeBtn.addEventListener('click', async () => {
       dom.clearContainer(this.buttons);
@@ -70,8 +77,29 @@ export class Dialog extends Disposable {
     parent.appendChild(container);
   }
 
+  onDragStart(e: MouseEvent) {
+    this.isDragging = true;
+    // 팝업의 현재 위치와 마우스 위치 차이 저장
+    const rect = this.dialog.getBoundingClientRect();
+    this.dragOffsetX = e.clientX - rect.left;
+    this.dragOffsetY = e.clientY - rect.top;
+    // 팝업을 absolute로
+    this.dialog.style.position = 'fixed';
+  }
+
+  onDragMove(e: MouseEvent) {
+    if (!this.isDragging) return;
+    // 팝업 위치 갱신
+    this.dialog.style.left = `${e.clientX - this.dragOffsetX}px`;
+    this.dialog.style.top = `${e.clientY - this.dragOffsetY}px`;
+  }
+
+  onDragEnd(e: MouseEvent) {
+    this.isDragging = false;
+  }
+
   show(): void {
-    this.container.style.display = 'block';
+    this.container.style.display = 'flex';
     /* return new Promise<DialogResult>((resolve) => {
       resolve({
         button: 0,
