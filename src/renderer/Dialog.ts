@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { $ } from "./util/dom";
+import { Disposable } from "./util/Lifecycle";
 
 export interface ButtonDesc {
   label: string;
@@ -17,7 +18,7 @@ export interface DialogOptions {
   // type: 'info' | 'error' | 'warning';
 }
 
-export class Dialog extends EventEmitter {
+export class Dialog extends Disposable {
   container: HTMLElement;
   dialog: HTMLElement;
   options: DialogOptions;
