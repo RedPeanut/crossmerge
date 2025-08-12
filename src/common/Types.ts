@@ -94,14 +94,21 @@ export interface PopupOptions {
   // positioningItem?: number;
 }
 
+/** (Experimental) Use similar to HTTP response code
+ * Informational responses (1xx) -> keep
+ * Successful responses (2xx) -> keep
+ * Client error responses (4xx) -> warning
+ * Server error responses (5xx) -> error
+ */
 export interface ResultMap {
   resultCode:
-      '0000' // success
-    | '9991' | '9992' | '9993' | '9994' | '9995' | '9996' | '9997' | '9998' // spare
-    | '9999' // fail or error
+    | '100' // info
+    | '200' // success
+    | '400' | '401' | '402' | '403' | '404' | '405' // warning
+    | '500' | '501' | '502' | '503' | '504' | '505' // error
   ;
   resultMsg?: string;
-  resultData?: {};
+  resultData?: any;
 }
 export interface DirentExt {
   // side: string; // type Side = 'left' | 'right' | 'both' or 'left|right' (| separated string)

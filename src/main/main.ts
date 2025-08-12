@@ -366,21 +366,21 @@ class MainWindow {
           fs.mkdirSync(dstDir, { recursive: true });
         } catch(error) {
           console.log(error);
-          return { ...resultMap, resultCode: '9999', resultMsg: '폴더 생성중 오류가 발생하였습니다.' };
+          return { ...resultMap, resultCode: '500', resultMsg: '폴더 생성중 오류가 발생하였습니다.' };
         }
       }
 
       if(fs.existsSync(dstPath)) {
-        return { ...resultMap, resultCode: '9998', resultMsg: '동일한 파일이 존재합니다.' };
+        return { ...resultMap, resultCode: '400', resultMsg: '동일한 파일이 존재합니다.' };
       }
 
       try {
         // const read: Buffer = fs.readFileSync(srcPath);
         fs.copyFileSync(srcPath, dstPath); // writeFileSync(dstPath, read);
-        return { ...resultMap, resultCode: '0000', resultMsg: '정상적으로 처리되었습니다.' };
+        return { ...resultMap, resultCode: '200', resultMsg: '정상적으로 처리되었습니다.' };
       } catch(error) {
         console.log(error);
-        return { ...resultMap, resultCode: '9999', resultMsg: '처리중 오류가 발생하였습니다.' };
+        return { ...resultMap, resultCode: '500', resultMsg: '처리중 오류가 발생하였습니다.' };
       }
     });
   }

@@ -3,7 +3,7 @@ import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
 import { FileDesc } from "../Types";
-import { DirentExt } from "../../common/Types";
+import { DirentExt, ResultMap } from "../../common/Types";
 import { Dialog } from "../Dialog";
 
 /** Emit events
@@ -150,9 +150,9 @@ export class ProgressPopup extends Popup {
       this.fromSpan.textContent = from;
       this.toSpan.textContent = to;
 
-      const resultMap = await window.ipc.invoke('copy file', from, to);
+      const resultMap: ResultMap = await window.ipc.invoke('copy file', from, to, {});
       console.log('retVal =', resultMap);
-      if(resultMap.resultCode === '9998') {
+      if(resultMap.resultCode === '400') {
       }
     }
 
