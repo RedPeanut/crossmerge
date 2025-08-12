@@ -348,7 +348,7 @@ class MainWindow {
      */
     ipcMain.handle('copy file', (event, args: any[]): ResultMap => {
 
-      const [ srcPath, dstPath ]: string[] = args; // fullpath
+      const [ srcPath, dstPath, { overwrite = false } ] = args; // fullpath
       const resultMap = {
         resultCode: '9999',
         resultMsg: '처리중 오류가 발생하였습니다.',
@@ -370,8 +370,36 @@ class MainWindow {
         }
       }
 
-      if(fs.existsSync(dstPath)) {
-        return { ...resultMap, resultCode: '400', resultMsg: '동일한 파일이 존재합니다.' };
+      if(fs.existsSync(dstPath) && !overwrite) {
+        let resultData = {}, lstat;
+
+        lstat = fs.lstatSync(srcPath);
+        resultData = {
+          ...resultData,
+          src: {
+            isFile: lstat.isFile(),
+            isDirectory: lstat.isDirectory(),
+            isSymbolicLink: lstat.isSymbolicLink(),
+            mtime: lstat.mtime,
+            size: lstat.size,
+          }
+        };
+
+        lstat = fs.lstatSync(dstPath);
+        resultData = {
+          ...resultData,
+          dst: {
+            isFile: lstat.isFile(),
+            isDirectory: lstat.isDirectory(),
+            isSymbolicLink: lstat.isSymbolicLink(),
+            mtime: lstat.mtime,
+            size: lstat.size,
+          }
+        };
+
+        return { ...resultMap, resultCode: '400', resultMsg: '동일한 파일이 존재합니다.',
+          resultData
+        };
       }
 
       try {

@@ -122,16 +122,16 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
             return;
           }
 
-          if(action === 'left to other folder') {
-            this.dialog.open('warning', 'Confirm replace'); /* , null, [
-              { label: 'Yes', click: () => {} },
-              { label: 'Yes to all', click: () => {} },
-              { label: 'No', click: () => {} },
-              { label: 'No to all', click: () => {} },
-              { label: 'Cancel', click: () => {} },
-            ]); */
-            return;
-          }
+          // if(action === 'left to other folder') {
+          //   this.dialog.open('warning', 'Confirm replace'); /* , null, [
+          //     { label: 'Yes', click: () => {} },
+          //     { label: 'Yes to all', click: () => {} },
+          //     { label: 'No', click: () => {} },
+          //     { label: 'No to all', click: () => {} },
+          //     { label: 'Cancel', click: () => {} },
+          //   ]); */
+          //   return;
+          // }
         }
       }
     });

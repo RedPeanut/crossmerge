@@ -22,6 +22,8 @@ export class ProgressPopup extends Popup {
   index: number;
 
   dialog: Dialog;
+  yesToAll: boolean;
+  noToAll: boolean;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -151,8 +153,78 @@ export class ProgressPopup extends Popup {
       this.toSpan.textContent = to;
 
       const resultMap: ResultMap = await window.ipc.invoke('copy file', from, to, {});
-      console.log('retVal =', resultMap);
+      console.log('resultMap =', resultMap);
       if(resultMap.resultCode === '400') {
+
+        if(this.yesToAll) {
+          await window.ipc.invoke('copy file', from, to, { overwrite: true, });
+          if(this.index < this.files.length-1) {
+            this.index++;
+            this.next();
+          }
+        } else if(this.noToAll) {
+
+        } else {
+          this.dialog.open(
+            'warning',
+            'Confirm replace',
+            `A file being copied already exists.<br/><br/>
+Would like to replace the existing file<br/><br/>
+${from}<br/>
+${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtime}<br/><br/>
+with this file?<br/><br/>
+${to}<br/>
+${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtime}<br/>`,
+            [
+              {
+                label: 'Yes',
+                click: async () => {
+                  await window.ipc.invoke('copy file', from, to, { overwrite: true, });
+                  if(this.index < this.files.length-1) {
+                    this.index++;
+                    this.next();
+                  }
+                }
+              },
+              {
+                label: 'Yes to all',
+                click: async () => {
+                  this.yesToAll = true;
+                  await window.ipc.invoke('copy file', from, to, { overwrite: true, });
+                  if(this.index < this.files.length-1) {
+                    this.index++;
+                    this.next();
+                  }
+                }
+              },
+              {
+                label: 'No',
+                click: () => {
+                  if(this.index < this.files.length-1) {
+                    this.index++;
+                    this.next();
+                  }
+                }
+              },
+              {
+                label: 'No to all',
+                click: () => {
+                  this.noToAll = true;
+                  if(this.index < this.files.length-1) {
+                    this.index++;
+                    this.next();
+                  }
+                }
+              },
+              { label: 'Cancel',
+                click: () => {
+                }
+              },
+            ]
+          );
+        }
+
+        return;
       }
     }
 
