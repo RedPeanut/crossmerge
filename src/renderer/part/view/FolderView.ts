@@ -169,7 +169,7 @@ export class FolderView implements CompareView {
       const arg = args[1];
       if(this.item.uid != arg.uid) return;
 
-      this.recvRowData(arg as CompareFolderData);
+      this.recv(arg as CompareFolderData);
     });
 
     window.ipc.on('menu click', (...args: any[]) => {
@@ -242,8 +242,8 @@ export class FolderView implements CompareView {
             if(files[i].type === 'folder') {
               let filtered = [];
               for(let j = 0; j < files.length; j++) {
+                // 폴더의 하위 파일은 무조건 뒤에 위치하기 때문에
                 if(j > i) {
-                  // 폴더의 하위 파일은 무조건 뒤에 위치하기 때문에
                   if(files[j].relPath.startsWith(files[i].name)) {
                     /* filter in here */
                   } else
@@ -1055,7 +1055,7 @@ export class FolderView implements CompareView {
     return node;
   }
 
-  recvRowData(data: CompareFolderData): void {
+  recv(data: CompareFolderData): void {
     /* log data
     let indent = '';
     for(let i = 0; i < data.depth; i++) indent += '  ';

@@ -232,7 +232,8 @@ export class Menubar {
       });
     }
 
-    if(fileSubmenu.length > 0)fileSubmenu.push({ type: 'separator' as const });
+    if(fileSubmenu.length > 0)
+      fileSubmenu.push({ type: 'separator' as const });
 
     fileSubmenu.push({
       label: '&Close',

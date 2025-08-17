@@ -98,7 +98,7 @@ export interface PopupOptions {
  * Informational responses (1xx) -> keep
  * Successful responses (2xx) -> keep
  * Client error responses (4xx) -> warning
- * Server error responses (5xx) -> error
+ * Server error responses (5xx) -> keep
  */
 export interface ResultMap {
   resultCode:
