@@ -10,8 +10,39 @@ import { isMacintosh, isWindows } from '../common/util/platform';
 import path from 'path';
 import { resolveHtmlPath } from './utils';
 import { mainWindow } from './main';
+import {
+  appPreferencesMenuId, appQuitMenuId, fileCloseMenuId, filePreferencesMenuId,
+  editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId,
+  pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
+  selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
+} from '../common/Types';
 
-const keyBinding: { [id: string]: string } = isWindows ? {
+// { id: [Win, Mac] }
+const keyBindingIdx = isWindows ? 0 : 1;
+const keyBinding: { [id: string]: string[] } = {};
+keyBinding[appPreferencesMenuId] = [ null, 'Cmd+,' ];
+keyBinding[appQuitMenuId] = [ null, 'Cmd+Q' ];
+keyBinding[filePreferencesMenuId] =  ['Ctrl+P', null ];
+keyBinding[fileCloseMenuId] =  ['Ctrl+W', 'Cmd+W' ];
+
+keyBinding[editUndoMenuId] = [ 'Ctrl+Z', 'Cmd+Z' ];
+keyBinding[editRedoMenuId] = [ 'Shift[+Ctrl+Z', 'Shift+Cmd+Z' ];
+keyBinding[editCutMenuId] = [ 'Ctrl+X', 'Cmd+X' ];
+keyBinding[editCopyMenuId] = [ 'Ctrl+C', 'Cmd+C' ];
+keyBinding[editPasteMenuId] = [ 'Ctrl+V', 'Cmd+V' ];
+keyBinding[editSelectAllMenuId] = [ 'Ctrl+A', 'Cmd+A' ];
+
+keyBinding[pushToLeftMenuId] = [ 'Ctrl+W', 'Ctrl+Shift+Left' ];
+keyBinding[pushToRightMenuId] = [ 'Ctrl+Q', 'Ctrl+Shift+Right' ];
+keyBinding[leftToRightFolderMenuId] = [ 'Ctrl+W', 'Alt+W' ];
+keyBinding[rightToLeftFolderMenuId] = [ 'Ctrl+Q', 'Alt+Q' ];
+
+keyBinding[selectChangedMenuId] = [ 'Ctrl+S', 'Cmd+Ctrl+C' ];
+keyBinding[launchComparisonsMenuId] = [ 'Ctrl+M', 'Cmd+Shift+L' ];
+keyBinding[expandAllFoldersMenuId] = [ 'Ctrl+=', 'Cmd+Ctrl+=' ];
+keyBinding[collapseAllFoldersMenuId] = [ 'Ctrl+-', 'Cmd+Ctrl+-' ];
+
+/* const keyBinding: { [id: string]: string } = isWindows ? {
   // 'file.preferences': 'Ctrl+P',
   'file.close': 'Ctrl+W',
   'edit.undo': 'Ctrl+Z',
@@ -50,7 +81,7 @@ const keyBinding: { [id: string]: string } = isWindows ? {
   'actions.launchComparisons': 'Cmd+Shift+L',
   'actions.expandAllFolders': 'Cmd+Ctrl+=',
   'actions.collapseAllFolders': 'Cmd+Ctrl+-',
-};
+}; */
 
 export class Menubar {
   browserWindow: BrowserWindow;
@@ -196,7 +227,7 @@ export class Menubar {
     if(isWindows) {
       fileSubmenu.push({
         label: 'Preferences...',
-        accelerator: 'Ctrl+P',
+        accelerator: keyBinding[filePreferencesMenuId][keyBindingIdx],
         click: this.preferenceClickHandler.bind(this),
       });
     }
@@ -205,7 +236,7 @@ export class Menubar {
 
     fileSubmenu.push({
       label: '&Close',
-      accelerator: keyBinding['file.close'],
+      accelerator: keyBinding[fileCloseMenuId][keyBindingIdx],
       click: () => {
         // this.browserWindow.close();
       },
@@ -221,21 +252,21 @@ export class Menubar {
     options.push({
       label: '&Edit',
       submenu: [
-        { label: 'Undo', accelerator: keyBinding['edit.undo'], role: 'undo' },
-        { label: 'Redo', accelerator: keyBinding['edit.redo'], role: 'redo' },
+        { label: 'Undo', accelerator: keyBinding['edit.undo'][keyBindingIdx], role: 'undo' },
+        { label: 'Redo', accelerator: keyBinding['edit.redo'][keyBindingIdx], role: 'redo' },
         { type: 'separator' },
-        { label: 'Cut', accelerator: keyBinding['edit.cut'], role: 'cut' },
+        { label: 'Cut', accelerator: keyBinding['edit.cut'][keyBindingIdx], role: 'cut' },
         {
-          label: 'Copy', accelerator: keyBinding['edit.copy'],
+          label: 'Copy', accelerator: keyBinding['edit.copy'][keyBindingIdx],
           role: 'copy',
           // click: () => { console.log('click event handler is called ..'); shell.beep(); },
         },
         {
-          label: 'Paste', accelerator: keyBinding['edit.paste'],
+          label: 'Paste', accelerator: keyBinding['edit.paste'][keyBindingIdx],
           role: 'paste',
           // click: () => {},
         },
-        { label: 'Select All', accelerator: keyBinding['edit.selectAll'], role: 'selectAll' },
+        { label: 'Select All', accelerator: keyBinding['edit.selectAll'][keyBindingIdx], role: 'selectAll' },
       ],
     });
   }
@@ -254,21 +285,23 @@ export class Menubar {
         {
           label: 'Current Change',
           submenu: [
-            { label: 'Push to Left', accelerator: keyBinding['merging.pushToLeft'], enabled: false },
-            { label: 'Push to Right', accelerator: keyBinding['merging.pushToRight'], enabled: false }
+            { label: 'Push to Left', accelerator: keyBinding['merging.pushToLeft'][keyBindingIdx], enabled: false },
+            { label: 'Push to Right', accelerator: keyBinding['merging.pushToRight'][keyBindingIdx], enabled: false }
           ]
         },
         {
           label: 'Copy selected items',
           submenu: [
             {
-              label: 'From Left to Right Folder...', accelerator: keyBinding['merging.leftToRightFoler'],
+              label: 'From Left to Right Folder...',
+              accelerator: keyBinding['merging.leftToRightFoler'][keyBindingIdx],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:left to right folder' });
               }
             },
             {
-              label: 'From Right to Left Folder...', accelerator: keyBinding['merging.rightToLeftFoler'],
+              label: 'From Right to Left Folder...',
+              accelerator: keyBinding['merging.rightToLeftFoler'][keyBindingIdx],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'merging:right to left folder' });
               }
@@ -301,7 +334,7 @@ export class Menubar {
           submenu: [
             {
               label: 'Select Changed',
-              accelerator: keyBinding['actions.selectChanged'],
+              accelerator: keyBinding['actions.selectChanged'][keyBindingIdx],
               // enabled: false,
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'actions:select changed' });
@@ -309,7 +342,7 @@ export class Menubar {
             },
             {
               label: 'Select by State...',
-              // accelerator: keyBinding['actions.selectByState'], // none
+              // accelerator: keyBinding['actions.selectByState'][keyBindingIdx], // none
               // enabled: false,
               click(item, focusedWindow) {
                 mainWindow.send('menu click', { cmd: 'actions:select by state' });
@@ -320,7 +353,7 @@ export class Menubar {
         { type: 'separator' },
         {
           label: 'Launch Comparisons for Selected Rows',
-          accelerator: keyBinding['actions.launchComparisons'],
+          accelerator: keyBinding['actions.launchComparisons'][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', { cmd: 'actions:launch comparisons' });
           }
@@ -328,14 +361,14 @@ export class Menubar {
         { type: 'separator' },
         {
           label: 'Expand All Folders',
-          accelerator: keyBinding['actions.expandAllFolders'],
+          accelerator: keyBinding['actions.expandAllFolders'][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', { cmd: 'actions:expand all folders' });
           }
         },
         {
           label: 'Collapse All Folders',
-          accelerator: keyBinding['actions.collapseAllFolders'],
+          accelerator: keyBinding['actions.collapseAllFolders'][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', { cmd: 'actions:collapse all folders' });
           }

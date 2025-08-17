@@ -124,3 +124,33 @@ export interface DirentExt {
   mtime: Date,
   size: number,
 }
+// app
+export const appPreferencesMenuId = 'app.preferences';
+export const appQuitMenuId = 'app.quit';
+
+// file
+export const filePreferencesMenuId = 'file.preferences';
+export const fileCloseMenuId = 'file.close';
+
+// edit
+export const editUndoMenuId = 'edit.undo';
+export const editRedoMenuId = 'edit.redo';
+export const editCutMenuId = 'edit.cut';
+export const editCopyMenuId = 'edit.copy';
+export const editPasteMenuId = 'edit.paste';
+export const editSelectAllMenuId = 'edit.selectAll';
+
+// merging
+export const pushToLeftMenuId = 'merging.pushToLeft';
+export const pushToRightMenuId = 'merging.pushToRight';
+export const leftToRightFolderMenuId = 'merging.leftToRightFoler';
+export const rightToLeftFolderMenuId = 'merging.rightToLeftFoler';
+export const leftToOtherFolderMenuId = 'merging.leftToOtherFolder';
+export const rightToOtherFolderMenuId = 'merging.rightToOtherFolder';
+
+// actions
+export const selectChangedMenuId = 'actions.selectChanged';
+export const selectByStateMenuId = 'actions.selectByState';
+export const launchComparisonsMenuId = 'actions.launchComparisons';
+export const expandAllFoldersMenuId = 'actions.expandAllFolders';
+export const collapseAllFoldersMenuId = 'actions.collapseAllFolders';
