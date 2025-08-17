@@ -253,21 +253,21 @@ export class Menubar {
     options.push({
       label: '&Edit',
       submenu: [
-        { label: 'Undo', accelerator: keyBinding['edit.undo'][keyBindingIdx], role: 'undo' },
-        { label: 'Redo', accelerator: keyBinding['edit.redo'][keyBindingIdx], role: 'redo' },
+        { label: 'Undo', accelerator: keyBinding[editUndoMenuId][keyBindingIdx], role: 'undo' },
+        { label: 'Redo', accelerator: keyBinding[editRedoMenuId][keyBindingIdx], role: 'redo' },
         { type: 'separator' },
-        { label: 'Cut', accelerator: keyBinding['edit.cut'][keyBindingIdx], role: 'cut' },
+        { label: 'Cut', accelerator: keyBinding[editCutMenuId][keyBindingIdx], role: 'cut' },
         {
-          label: 'Copy', accelerator: keyBinding['edit.copy'][keyBindingIdx],
+          label: 'Copy', accelerator: keyBinding[editCopyMenuId][keyBindingIdx],
           role: 'copy',
           // click: () => { console.log('click event handler is called ..'); shell.beep(); },
         },
         {
-          label: 'Paste', accelerator: keyBinding['edit.paste'][keyBindingIdx],
+          label: 'Paste', accelerator: keyBinding[editPasteMenuId][keyBindingIdx],
           role: 'paste',
           // click: () => {},
         },
-        { label: 'Select All', accelerator: keyBinding['edit.selectAll'][keyBindingIdx], role: 'selectAll' },
+        { label: 'Select All', accelerator: keyBinding[editSelectAllMenuId][keyBindingIdx], role: 'selectAll' },
       ],
     });
   }
@@ -286,8 +286,8 @@ export class Menubar {
         {
           label: 'Current Change',
           submenu: [
-            { label: 'Push to Left', accelerator: keyBinding['merging.pushToLeft'][keyBindingIdx], enabled: false },
-            { label: 'Push to Right', accelerator: keyBinding['merging.pushToRight'][keyBindingIdx], enabled: false }
+            { label: 'Push to Left', accelerator: keyBinding[pushToLeftMenuId][keyBindingIdx], enabled: false },
+            { label: 'Push to Right', accelerator: keyBinding[pushToRightMenuId][keyBindingIdx], enabled: false }
           ]
         },
         {
@@ -295,14 +295,14 @@ export class Menubar {
           submenu: [
             {
               label: 'From Left to Right Folder...',
-              accelerator: keyBinding['merging.leftToRightFoler'][keyBindingIdx],
+              accelerator: keyBinding[leftToRightFolderMenuId][keyBindingIdx],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', leftToRightFolderMenuId);
               }
             },
             {
               label: 'From Right to Left Folder...',
-              accelerator: keyBinding['merging.rightToLeftFoler'][keyBindingIdx],
+              accelerator: keyBinding[rightToLeftFolderMenuId][keyBindingIdx],
               click(item, focusedWindow) {
                 mainWindow.send('menu click', rightToLeftFolderMenuId);
               }
@@ -335,7 +335,7 @@ export class Menubar {
           submenu: [
             {
               label: 'Select Changed',
-              accelerator: keyBinding['actions.selectChanged'][keyBindingIdx],
+              accelerator: keyBinding[selectChangedMenuId][keyBindingIdx],
               // enabled: false,
               click(item, focusedWindow) {
                 mainWindow.send('menu click', selectChangedMenuId);
@@ -343,7 +343,7 @@ export class Menubar {
             },
             {
               label: 'Select by State...',
-              // accelerator: keyBinding['actions.selectByState'][keyBindingIdx], // none
+              // accelerator: keyBinding[selectByStateMenuId][keyBindingIdx], // none
               // enabled: false,
               click(item, focusedWindow) {
                 mainWindow.send('menu click', selectByStateMenuId);
@@ -354,7 +354,7 @@ export class Menubar {
         { type: 'separator' },
         {
           label: 'Launch Comparisons for Selected Rows',
-          accelerator: keyBinding['actions.launchComparisons'][keyBindingIdx],
+          accelerator: keyBinding[launchComparisonsMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', launchComparisonsMenuId);
           }
@@ -362,14 +362,14 @@ export class Menubar {
         { type: 'separator' },
         {
           label: 'Expand All Folders',
-          accelerator: keyBinding['actions.expandAllFolders'][keyBindingIdx],
+          accelerator: keyBinding[expandAllFoldersMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', expandAllFoldersMenuId);
           }
         },
         {
           label: 'Collapse All Folders',
-          accelerator: keyBinding['actions.collapseAllFolders'][keyBindingIdx],
+          accelerator: keyBinding[collapseAllFoldersMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', collapseAllFoldersMenuId);
           }
