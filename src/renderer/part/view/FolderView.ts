@@ -19,7 +19,8 @@ import path from "path";
 // import { Dialog } from "../../Dialog";
 // import { ProgressPopup } from "../../popup/ProgressPopup";
 import { StatusbarPartService } from "../StatusbarPart";
-import menu from "../../../main/menu";
+import { listenerManager } from "../../util/ListenerManager";
+import { broadcast } from "../../Broadcast";
 
 interface Node {
   parent: Node | null;
@@ -172,10 +173,10 @@ export class FolderView implements CompareView {
       this.recv(arg as CompareFolderData);
     });
 
-    window.ipc.on('menu click', (...args: any[]) => {
+    const menuClickHandler: (...args: any[]) => void = function(...args: any[]) {
       // console.log('on menu click is called ..');
       // console.log('args =', args);
-      if(args && args.length > 0) {
+      if(args && args.length > 1) {
         const id = args[1];
 
         // merging
@@ -338,7 +339,10 @@ export class FolderView implements CompareView {
           }
         }
       }
-    });
+    };
+
+    listenerManager.register(this, broadcast, 'menu click', menuClickHandler.bind(this));
+    listenerManager.register(this, window.ipc, 'menu click', menuClickHandler.bind(this));
   }
 
   renewFlatten(): void {

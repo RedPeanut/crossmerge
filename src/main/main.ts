@@ -291,13 +291,14 @@ class MainWindow {
 
       function createItem(item: MenuItemConstructorOptions/* , processedItems: MenuItemConstructorOptions[] */): SerializableMenuItem {
         const serializableItem: SerializableMenuItem = {
-          // id: processedItems.length,
+          id: item.id,
           label: item.label,
           type: item.type,
           accelerator: item.accelerator,
           checked: item.checked,
           enabled: typeof item.enabled === 'boolean' ? item.enabled : true,
-          visible: typeof item.visible === 'boolean' ? item.visible : true
+          visible: typeof item.visible === 'boolean' ? item.visible : true,
+          clickable: item.click ? true : false,
         }
 
         // Submenu

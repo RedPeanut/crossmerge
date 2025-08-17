@@ -69,10 +69,11 @@ export interface CommonMenuItem {
   enabled?: boolean;
   visible?: boolean;
   checked?: boolean;
+  clickable?: boolean;
 }
 
 export interface SerializableMenuItem extends CommonMenuItem {
-  id?: number;
+  id?: number | string;
   submenu?: SerializableMenuItem[];
 }
 
@@ -124,6 +125,7 @@ export interface DirentExt {
   mtime: Date,
   size: number,
 }
+
 // app
 export const appPreferencesMenuId = 'app.preferences';
 export const appQuitMenuId = 'app.quit';

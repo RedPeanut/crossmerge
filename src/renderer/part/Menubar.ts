@@ -1,5 +1,6 @@
 import { renderer } from "..";
 import { SerializableMenuItem } from "../../common/Types";
+import { broadcast } from "../Broadcast";
 import { menubarServiceId, Service, setService } from "../Service";
 import { $, Dimension } from "../util/dom";
 import * as dom from "../util/dom";
@@ -95,6 +96,11 @@ export class Menubar implements MenubarService {
         // li.addEventListener('focusout', (e) => {});
 
         const a = $('a');
+        if(submenuItem.enabled && submenuItem.clickable && submenuItem.id) {
+          a.addEventListener('click', () => {
+            broadcast.emit('menu click', null, submenuItem.id);
+          });
+        }
         li.appendChild(a);
 
         const label = $('span.label');

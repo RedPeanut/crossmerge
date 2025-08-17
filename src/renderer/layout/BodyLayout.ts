@@ -81,7 +81,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     window.ipc.on('menu click', (...args: any[]) => {
       // console.log('on menu click is called ..');
       // console.log('args =', args);
-      if(args && args.length > 0) {
+      if(args && args.length > 1) {
         const id = args[1];
 
         // merging.copySelected

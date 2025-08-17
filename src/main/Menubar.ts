@@ -294,6 +294,7 @@ export class Menubar {
           label: 'Copy selected items',
           submenu: [
             {
+              id: leftToRightFolderMenuId,
               label: 'From Left to Right Folder...',
               accelerator: keyBinding[leftToRightFolderMenuId][keyBindingIdx],
               click(item, focusedWindow) {
@@ -301,6 +302,7 @@ export class Menubar {
               }
             },
             {
+              id: rightToLeftFolderMenuId,
               label: 'From Right to Left Folder...',
               accelerator: keyBinding[rightToLeftFolderMenuId][keyBindingIdx],
               click(item, focusedWindow) {
@@ -309,12 +311,14 @@ export class Menubar {
             },
             { type: 'separator' },
             {
+              id: leftToOtherFolderMenuId,
               label: 'From Left to Other Folder...',
               click(item, focusedWindow) {
                 mainWindow.send('menu click', leftToOtherFolderMenuId);
               }
             },
             {
+              id: rightToOtherFolderMenuId,
               label: 'From Right to Other Folder...',
               click(item, focusedWindow) {
                 mainWindow.send('menu click', rightToOtherFolderMenuId);
@@ -334,6 +338,7 @@ export class Menubar {
           label: 'Select Rows',
           submenu: [
             {
+              id: selectChangedMenuId,
               label: 'Select Changed',
               accelerator: keyBinding[selectChangedMenuId][keyBindingIdx],
               // enabled: false,
@@ -342,6 +347,7 @@ export class Menubar {
               }
             },
             {
+              id: selectByStateMenuId,
               label: 'Select by State...',
               // accelerator: keyBinding[selectByStateMenuId][keyBindingIdx], // none
               // enabled: false,
@@ -353,6 +359,7 @@ export class Menubar {
         },
         { type: 'separator' },
         {
+          id: launchComparisonsMenuId,
           label: 'Launch Comparisons for Selected Rows',
           accelerator: keyBinding[launchComparisonsMenuId][keyBindingIdx],
           click(item, focusedWindow) {
@@ -361,6 +368,7 @@ export class Menubar {
         },
         { type: 'separator' },
         {
+          id: expandAllFoldersMenuId,
           label: 'Expand All Folders',
           accelerator: keyBinding[expandAllFoldersMenuId][keyBindingIdx],
           click(item, focusedWindow) {
@@ -368,6 +376,7 @@ export class Menubar {
           }
         },
         {
+          id: collapseAllFoldersMenuId,
           label: 'Collapse All Folders',
           accelerator: keyBinding[collapseAllFoldersMenuId][keyBindingIdx],
           click(item, focusedWindow) {
