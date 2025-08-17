@@ -6,7 +6,9 @@ import { MainLayoutService } from "./MainLayout";
 
 import '../../lib/mergely/mergely.css';
 import { GroupView } from "../part/view/GroupView";
-import { CompareFolderData, CompareItem } from "../../common/Types";
+import { CompareFolderData, CompareItem,
+  leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
+} from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
 import { StringUtil } from "../../common/util/StringUtil";
@@ -79,32 +81,29 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     window.ipc.on('menu click', (...args: any[]) => {
       // console.log('on menu click is called ..');
       // console.log('args =', args);
-      const arg = args[1];
-      if(arg.cmd) {
-        const _args = arg.cmd.split(':');
-        // console.log('_args =', _args);
-        const menu = _args[0];
-        const action = _args[1];
+      if(args && args.length > 0) {
+        const id = args[1];
 
-        if(menu === 'merging') {
-          if(action === 'left to right folder') {
-            const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
-            const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
-            const files: FileDesc[] =
-              [
-                { relPath: '', name: 'a', type: 'folder' },
-                { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
-                { relPath: 'b', name: 'bc.txt', type: 'file' },
-                { relPath: 'c', name: 'ca.txt', type: 'file' },
-                { relPath: 'c', name: 'cb.txt', type: 'file' },
-                { relPath: '', name: 'a.txt', type: 'file' }, // empty path case
-              ]
-            ;
-            this.copyPopup.open(srcPath, dstPath, files);
-            return;
-          }
+        // merging.copySelected
 
-          if(action === 'right to left folder') {
+        if(id === leftToRightFolderMenuId) {
+          const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
+          const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
+          const files: FileDesc[] =
+            [
+              { relPath: '', name: 'a', type: 'folder' },
+              { relPath: 'b/ba', name: 'bab.txt', type: 'file' },
+              { relPath: 'b', name: 'bc.txt', type: 'file' },
+              { relPath: 'c', name: 'ca.txt', type: 'file' },
+              { relPath: 'c', name: 'cb.txt', type: 'file' },
+              { relPath: '', name: 'a.txt', type: 'file' }, // empty path case
+            ]
+          ;
+          this.copyPopup.open(srcPath, dstPath, files);
+          return;
+        }
+
+        if(id === rightToLeftFolderMenuId) {
             const srcPath = '/Users/kimjk/workspace/electron/fixture/mixed case/right';
             const dstPath = '/Users/kimjk/workspace/electron/저장/tmp';
             const files: FileDesc[] =
@@ -120,19 +119,20 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
             ;
             this.progressPopup.open(srcPath, dstPath, files);
             return;
-          }
-
-          // if(action === 'left to other folder') {
-          //   this.dialog.open('warning', 'Confirm replace'); /* , null, [
-          //     { label: 'Yes', click: () => {} },
-          //     { label: 'Yes to all', click: () => {} },
-          //     { label: 'No', click: () => {} },
-          //     { label: 'No to all', click: () => {} },
-          //     { label: 'Cancel', click: () => {} },
-          //   ]); */
-          //   return;
-          // }
         }
+
+        if(id === leftToOtherFolderMenuId) {
+          this.dialog.open('warning', 'Confirm replace');
+          // , null, [
+          //   { label: 'Yes', click: () => {} },
+          //   { label: 'Yes to all', click: () => {} },
+          //   { label: 'No', click: () => {} },
+          //   { label: 'No to all', click: () => {} },
+          //   { label: 'Cancel', click: () => {} },
+          // ]);
+          return;
+        }
+
       }
     });
   }

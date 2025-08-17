@@ -1,4 +1,7 @@
-import { CompareFolderData, CompareItem, MenuItem } from "../../../common/Types";
+import { CompareFolderData, CompareItem, MenuItem,
+  leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
+  selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
+} from "../../../common/Types";
 import { CompareView, FileDesc } from "../../Types";
 import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
@@ -16,6 +19,7 @@ import path from "path";
 // import { Dialog } from "../../Dialog";
 // import { ProgressPopup } from "../../popup/ProgressPopup";
 import { StatusbarPartService } from "../StatusbarPart";
+import menu from "../../../main/menu";
 
 interface Node {
   parent: Node | null;
@@ -171,52 +175,49 @@ export class FolderView implements CompareView {
     window.ipc.on('menu click', (...args: any[]) => {
       // console.log('on menu click is called ..');
       // console.log('args =', args);
-      const arg = args[1];
-      if(arg.cmd) {
-        const _args = arg.cmd.split(':');
-        // console.log('_args =', _args);
-        const menu = _args[0];
-        const action = _args[1];
+      if(args && args.length > 0) {
+        const id = args[1];
 
-        if(menu === 'merging') {
+        // merging
+        if(id.startsWith('merging')) {
 
-          if(action === 'left to right folder') {
+          if(id === leftToRightFolderMenuId) {
             // this.progressPopup.show();
             return;
           }
 
-          if(action === 'right to left folder') {
+          if(id === rightToLeftFolderMenuId) {
             // this.dialog.show();
             return;
           }
 
           let srcPath = '', dstPath = '';
 
-          if(action === 'left to right folder') {
+          if(id === leftToRightFolderMenuId) {
             srcPath = this.input_lhs.value() as string;
             dstPath = this.input_rhs.value() as string;
-          } else if(action === 'right to left folder') {
+          } else if(id === rightToLeftFolderMenuId) {
             srcPath = this.input_rhs.value() as string;
             dstPath = this.input_lhs.value() as string;
-          } else if(action === 'left to other folder') {
+          } else if(id === leftToOtherFolderMenuId) {
             srcPath = this.input_lhs.value() as string;
             dstPath = '';
-          } else if(action === 'right to other folder') {
+          } else if(id === rightToOtherFolderMenuId) {
             srcPath = this.input_rhs.value() as string;
             dstPath = ''; //'/Users/kimjk/workspace/electron/저장/tmp';
           }
 
           let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
-          if(action === 'left to right folder') {
+          if(id === leftToRightFolderMenuId) {
             src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
             // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(action === 'right to left folder') {
+          } else if(id === rightToLeftFolderMenuId) {
             src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'right';
             // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(action === 'left to other folder') {
+          } else if(id === leftToOtherFolderMenuId) {
             src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
             // dest_tree = null;
-          } else if(action === 'right to other folder') {
+          } else if(id === rightToOtherFolderMenuId) {
             src_tree = this.list_rhs.firstChild as HTMLElement; src_part = 'right';
             // dest_tree = null;
           }
@@ -256,31 +257,15 @@ export class FolderView implements CompareView {
           console.log('files =', files);
 
           this.copyPopup.open(srcPath, dstPath, files);
-
-          /* // add row
-          let tr, td;
-          for(let i = 0; i < this.selected.length; i++) {
-            const index = this.selected[i];
-            const node = src_tree.querySelectorAll(`#node_${src_part}_${index}`)[0] as HTMLElement;
-            const name = node.dataset.name;
-
-            tr = $('tr');
-            td = $('td'); td.textContent = name; tr.appendChild(td);
-            td = $('td'); td.textContent = !StringUtil.isEmpty(dstPath) ? dstPath+path.sep+name : name; tr.appendChild(td);
-            td = $('td'); tr.appendChild(td);
-            tbody.appendChild(tr);
-          }
-
-          this.copyPopup.show(); */
         }
 
-        if(menu === 'actions') {
-          if(action === 'select by state') {
+        if(id.startsWith('actions')) {
+          if(id === selectByStateMenuId) {
             // show select by state popup
             this.selectPopup.show();
           }
 
-          if(action === 'select changed') {
+          if(id === selectChangedMenuId) {
             // find n select changed in node (only file)
             // if node is collapsed then expand recursively top-ward
 
@@ -312,7 +297,7 @@ export class FolderView implements CompareView {
             this.renewFlatten();
           }
 
-          if(action === 'expand all folders' || action === 'collapse all folders') {
+          if(id === expandAllFoldersMenuId || id === collapseAllFoldersMenuId) {
             // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
             if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
 
@@ -337,7 +322,7 @@ export class FolderView implements CompareView {
 
               for(let i = 0; i < trees.length; i++) {
                 recur(trees[i], (el) => {
-                  if(action == 'expand all folders') {
+                  if(id === expandAllFoldersMenuId) {
                     if(el.classList.contains('collapsed'))
                       el.classList.remove('collapsed');
                   } else { // == 'collapse all folders'

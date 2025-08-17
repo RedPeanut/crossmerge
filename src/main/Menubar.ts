@@ -296,27 +296,27 @@ export class Menubar {
               label: 'From Left to Right Folder...',
               accelerator: keyBinding['merging.leftToRightFoler'][keyBindingIdx],
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'merging:left to right folder' });
+                mainWindow.send('menu click', leftToRightFolderMenuId);
               }
             },
             {
               label: 'From Right to Left Folder...',
               accelerator: keyBinding['merging.rightToLeftFoler'][keyBindingIdx],
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'merging:right to left folder' });
+                mainWindow.send('menu click', rightToLeftFolderMenuId);
               }
             },
             { type: 'separator' },
             {
               label: 'From Left to Other Folder...',
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'merging:left to other folder' });
+                mainWindow.send('menu click', leftToOtherFolderMenuId);
               }
             },
             {
               label: 'From Right to Other Folder...',
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'merging:right to other folder' });
+                mainWindow.send('menu click', rightToOtherFolderMenuId);
               }
             },
           ]
@@ -337,7 +337,7 @@ export class Menubar {
               accelerator: keyBinding['actions.selectChanged'][keyBindingIdx],
               // enabled: false,
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'actions:select changed' });
+                mainWindow.send('menu click', selectChangedMenuId);
               }
             },
             {
@@ -345,7 +345,7 @@ export class Menubar {
               // accelerator: keyBinding['actions.selectByState'][keyBindingIdx], // none
               // enabled: false,
               click(item, focusedWindow) {
-                mainWindow.send('menu click', { cmd: 'actions:select by state' });
+                mainWindow.send('menu click', selectByStateMenuId);
               }
             },
           ]
@@ -355,7 +355,7 @@ export class Menubar {
           label: 'Launch Comparisons for Selected Rows',
           accelerator: keyBinding['actions.launchComparisons'][keyBindingIdx],
           click(item, focusedWindow) {
-            mainWindow.send('menu click', { cmd: 'actions:launch comparisons' });
+            mainWindow.send('menu click', launchComparisonsMenuId);
           }
         },
         { type: 'separator' },
@@ -363,14 +363,14 @@ export class Menubar {
           label: 'Expand All Folders',
           accelerator: keyBinding['actions.expandAllFolders'][keyBindingIdx],
           click(item, focusedWindow) {
-            mainWindow.send('menu click', { cmd: 'actions:expand all folders' });
+            mainWindow.send('menu click', expandAllFoldersMenuId);
           }
         },
         {
           label: 'Collapse All Folders',
           accelerator: keyBinding['actions.collapseAllFolders'][keyBindingIdx],
           click(item, focusedWindow) {
-            mainWindow.send('menu click', { cmd: 'actions:collapse all folders' });
+            mainWindow.send('menu click', collapseAllFoldersMenuId);
           }
         },
       ],
