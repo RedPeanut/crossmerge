@@ -1,28 +1,28 @@
 import { renderer } from "..";
 import { SerializableMenuItem } from "../../common/Types";
-import { menuServiceId, Service, setService } from "../Service";
+import { menubarServiceId, Service, setService } from "../Service";
 import { $, Dimension } from "../util/dom";
 import * as dom from "../util/dom";
 
-enum MenuState {
+enum MenubarState {
   Normal,
   Hamburger,
 }
 
-export interface MenuService extends Service {
+export interface MenubarService extends Service {
   layout(dimension: Dimension): void;
 }
 
-export interface MenuOptions {}
+export interface MenubarOptions {}
 
-export class Menu implements MenuService {
+export class Menubar implements MenubarService {
 
   container: HTMLElement;
   // container: HTMLElement;
   // element: HTMLElement;
   normalButtons: HTMLElement[] = [];
   hamburgerButton: HTMLElement;
-  menuState: MenuState;
+  menuState: MenubarState;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -37,7 +37,7 @@ export class Menu implements MenuService {
     }); */
     container.addEventListener('focusout', (e: KeyboardEvent) => {
       // console.log('focusout is called ..');
-      if(this.menuState === MenuState.Hamburger) {
+      if(this.menuState === MenubarState.Hamburger) {
         this.hamburgerButton.classList.remove('on');
       } else {
         for(let i = 0; i < this.normalButtons.length; i++) {
@@ -49,7 +49,7 @@ export class Menu implements MenuService {
     /* window.addEventListener('mousedown', (e) => {
       console.log('mousedown is called ..');
     }); */
-    setService(menuServiceId, this);
+    setService(menubarServiceId, this);
   }
 
   layout(dimension: Dimension): void {
@@ -60,7 +60,7 @@ export class Menu implements MenuService {
         this.normalButtons[i].classList.remove('on');
         this.normalButtons[i].style.display = 'none';
       }
-      this.menuState = MenuState.Hamburger;
+      this.menuState = MenubarState.Hamburger;
     } else {
       this.hamburgerButton.classList.remove('on');
       this.hamburgerButton.style.display = 'none';
@@ -68,7 +68,7 @@ export class Menu implements MenuService {
         // this.buttons[i].classList.remove('on')
         this.normalButtons[i].style.display = 'block';
       }
-      this.menuState = MenuState.Normal;
+      this.menuState = MenubarState.Normal;
     }
   }
 

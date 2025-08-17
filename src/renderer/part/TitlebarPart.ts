@@ -4,7 +4,7 @@ import { TITLEBAR_HEIGHT } from '../layout/MainLayout';
 import { Part } from '../Part';
 import { bodyLayoutServiceId, getService } from '../Service';
 import { $ } from '../util/dom';
-import { Menu } from './Menu';
+import { Menubar } from './Menubar';
 
 export class TitlebarPart extends Part {
 
@@ -35,8 +35,8 @@ export class TitlebarPart extends Part {
       menubar.style.paddingLeft = '80px';
     const left: HTMLElement = $('.left');
 
-    const menu = new Menu(left);
-    menu.install();
+    const _menubar = new Menubar(left);
+    _menubar.install();
     menubar.appendChild(left);
 
     const middle = $('.middle');
