@@ -17,6 +17,8 @@ import { ProgressPopup } from "../popup/ProgressPopup";
 import { FolderView } from "../part/view/FolderView";
 import { FileDesc } from "../Types";
 import { Dialog } from "../Dialog";
+import { listenerManager } from "../util/ListenerManager";
+import { broadcast } from "../Broadcast";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -78,7 +80,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.sashEnablement = false;
     setService(bodyLayoutServiceId, this);
 
-    window.ipc.on('menu click', (...args: any[]) => {
+    const menuClickHandler = function(...args: any[]) {
       // console.log('on menu click is called ..');
       // console.log('args =', args);
       if(args && args.length > 1) {
@@ -122,7 +124,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
         }
 
         if(id === leftToOtherFolderMenuId) {
-          this.dialog.open('warning', 'Confirm replace');
+          // this.dialog.open('warning', 'blarblarblar');
+          // this.dialog.open('error', 'blarblarblar');
+          this.dialog.open('info', 'blarblarblar');
           // , null, [
           //   { label: 'Yes', click: () => {} },
           //   { label: 'Yes to all', click: () => {} },
@@ -134,7 +138,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
         }
 
       }
-    });
+    };
+
+    listenerManager.register(this, broadcast, 'menu click', menuClickHandler.bind(this))
+    listenerManager.register(this, window.ipc, 'menu click', menuClickHandler.bind(this));
   }
 
   create(): void {

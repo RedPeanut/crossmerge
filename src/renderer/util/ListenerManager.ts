@@ -1,6 +1,7 @@
 import { Channels, ElectronHandler } from "../../main/preload";
 import { Broadcast } from "../Broadcast";
 import { Dialog } from "../Dialog";
+import { Layout } from "../Layout";
 import { FileView } from "../part/view/FileView";
 import { FolderView } from "../part/view/FolderView";
 
@@ -8,7 +9,7 @@ import { FolderView } from "../part/view/FolderView";
 // where: HTMLElement|broadcast|window.ipc
 // what: event, listener pair
 
-type Who = Dialog | FolderView | FileView;
+type Who = Dialog | FolderView | FileView | Layout;
 type Where = HTMLElement | Broadcast | ElectronHandler;
 // type Handler = (() => void) | ((...args: any[]) => void);
 
