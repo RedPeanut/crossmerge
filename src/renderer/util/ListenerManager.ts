@@ -55,7 +55,7 @@ export class ListenerManager {
     }
   }
 
-  clear(who: Who) {
+  dispose(who: Who) {
     if(this.map.get(who)) {
       for(const [where, what] of this.map.get(who)) {
         for(const [event, handlers] of this.map.get(who).get(where)) {
