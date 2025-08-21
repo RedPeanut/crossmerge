@@ -173,177 +173,177 @@ export class FolderView implements CompareView {
       this.recv(arg as CompareFolderData);
     });
 
-    const menuClickHandler: (...args: any[]) => void = function(...args: any[]) {
-      // console.log('on menu click is called ..');
-      // console.log('args =', args);
-      if(args && args.length > 1) {
-        const id = args[1];
+    listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler);
+    listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler);
+  }
 
-        // merging
-        if(id.startsWith('merging')) {
+  menuClickHandler(...args: any[]) {
+    // console.log('on menu click is called ..');
+    // console.log('args =', args);
+    if(args && args.length > 1) {
+      const id = args[1];
 
-          if(id === leftToRightFolderMenuId) {
-            // this.progressPopup.show();
-            return;
+      // merging
+      if(id.startsWith('merging')) {
+
+        if(id === leftToRightFolderMenuId) {
+          // this.progressPopup.show();
+          return;
+        }
+
+        if(id === rightToLeftFolderMenuId) {
+          // this.dialog.show();
+          return;
+        }
+
+        let srcPath = '', dstPath = '';
+
+        if(id === leftToRightFolderMenuId) {
+          srcPath = this.input_lhs.value() as string;
+          dstPath = this.input_rhs.value() as string;
+        } else if(id === rightToLeftFolderMenuId) {
+          srcPath = this.input_rhs.value() as string;
+          dstPath = this.input_lhs.value() as string;
+        } else if(id === leftToOtherFolderMenuId) {
+          srcPath = this.input_lhs.value() as string;
+          dstPath = '';
+        } else if(id === rightToOtherFolderMenuId) {
+          srcPath = this.input_rhs.value() as string;
+          dstPath = ''; //'/Users/kimjk/workspace/electron/저장/tmp';
+        }
+
+        let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
+        if(id === leftToRightFolderMenuId) {
+          src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
+          // dest_tree = this.list_rhs.firstChild as HTMLElement;
+        } else if(id === rightToLeftFolderMenuId) {
+          src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'right';
+          // dest_tree = this.list_rhs.firstChild as HTMLElement;
+        } else if(id === leftToOtherFolderMenuId) {
+          src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
+          // dest_tree = null;
+        } else if(id === rightToOtherFolderMenuId) {
+          src_tree = this.list_rhs.firstChild as HTMLElement; src_part = 'right';
+          // dest_tree = null;
+        }
+
+        let files: FileDesc[] = [];
+        for(let i = 0; i < this.selected.length; i++) {
+          const index = this.selected[i];
+          const list = src_tree.querySelectorAll(`#node_${src_part}_${index}`);
+          if(list.length > 0) {
+            const node = list[0] as HTMLElement;
+            let _path: string = '';
+            recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
+            _path = _path.replace(path.sep, ''); // replace first
+            files.push({ relPath: _path, name: node.dataset.name, type: node.dataset.type });
           }
+        }
 
-          if(id === rightToLeftFolderMenuId) {
-            // this.dialog.show();
-            return;
-          }
+        files = files.filter(f => !StringUtil.isEmpty(f.name));
+        console.log('files =', files);
 
-          let srcPath = '', dstPath = '';
-
-          if(id === leftToRightFolderMenuId) {
-            srcPath = this.input_lhs.value() as string;
-            dstPath = this.input_rhs.value() as string;
-          } else if(id === rightToLeftFolderMenuId) {
-            srcPath = this.input_rhs.value() as string;
-            dstPath = this.input_lhs.value() as string;
-          } else if(id === leftToOtherFolderMenuId) {
-            srcPath = this.input_lhs.value() as string;
-            dstPath = '';
-          } else if(id === rightToOtherFolderMenuId) {
-            srcPath = this.input_rhs.value() as string;
-            dstPath = ''; //'/Users/kimjk/workspace/electron/저장/tmp';
-          }
-
-          let src_tree: HTMLElement | null | undefined, src_part: 'left' | 'right'; //, dest_tree: HTMLElement | null | undefined;
-          if(id === leftToRightFolderMenuId) {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
-            // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(id === rightToLeftFolderMenuId) {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'right';
-            // dest_tree = this.list_rhs.firstChild as HTMLElement;
-          } else if(id === leftToOtherFolderMenuId) {
-            src_tree = this.list_lhs.firstChild as HTMLElement; src_part = 'left';
-            // dest_tree = null;
-          } else if(id === rightToOtherFolderMenuId) {
-            src_tree = this.list_rhs.firstChild as HTMLElement; src_part = 'right';
-            // dest_tree = null;
-          }
-
-          let files: FileDesc[] = [];
-          for(let i = 0; i < this.selected.length; i++) {
-            const index = this.selected[i];
-            const list = src_tree.querySelectorAll(`#node_${src_part}_${index}`);
-            if(list.length > 0) {
-              const node = list[0] as HTMLElement;
-              let _path: string = '';
-              recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
-              _path = _path.replace(path.sep, ''); // replace first
-              files.push({ relPath: _path, name: node.dataset.name, type: node.dataset.type });
-            }
-          }
-
-          files = files.filter(f => !StringUtil.isEmpty(f.name));
-          console.log('files =', files);
-
-          for(let i = 0; i < files.length; i++) {
-            if(files[i].type === 'folder') {
-              let filtered = [];
-              for(let j = 0; j < files.length; j++) {
-                // 폴더의 하위 파일은 무조건 뒤에 위치하기 때문에
-                if(j > i) {
-                  if(files[j].relPath.startsWith(files[i].name)) {
-                    /* filter in here */
-                  } else
-                    filtered.push(files[j]);
+        for(let i = 0; i < files.length; i++) {
+          if(files[i].type === 'folder') {
+            let filtered = [];
+            for(let j = 0; j < files.length; j++) {
+              // 폴더의 하위 파일은 무조건 뒤에 위치하기 때문에
+              if(j > i) {
+                if(files[j].relPath.startsWith(files[i].name)) {
+                  /* filter in here */
                 } else
                   filtered.push(files[j]);
-              }
-              files = filtered;
+              } else
+                filtered.push(files[j]);
             }
+            files = filtered;
           }
-          console.log('files =', files);
+        }
+        console.log('files =', files);
 
-          this.copyPopup.open(srcPath, dstPath, files);
+        this.copyPopup.open(srcPath, dstPath, files);
+      }
+
+      if(id.startsWith('actions')) {
+        if(id === selectByStateMenuId) {
+          // show select by state popup
+          this.selectPopup.show();
         }
 
-        if(id.startsWith('actions')) {
-          if(id === selectByStateMenuId) {
-            // show select by state popup
-            this.selectPopup.show();
-          }
+        if(id === selectChangedMenuId) {
+          // find n select changed in node (only file)
+          // if node is collapsed then expand recursively top-ward
 
-          if(id === selectChangedMenuId) {
-            // find n select changed in node (only file)
-            // if node is collapsed then expand recursively top-ward
+          this.clearSelected();
 
-            this.clearSelected();
+          const tree = this.list_selectbar.firstChild as HTMLElement;
+          recur_select(tree, (node) => {
+            if(node.dataset.type === 'file' && node.classList.contains('changed')) {
+              const index = parseInt(node.dataset.index);
 
-            const tree = this.list_selectbar.firstChild as HTMLElement;
-            recur_select(tree, (node) => {
-              if(node.dataset.type === 'file' && node.classList.contains('changed')) {
-                const index = parseInt(node.dataset.index);
+              // do select
+              node.classList.add('selected');
+              this.selected.push(index);
 
-                // do select
-                node.classList.add('selected');
-                this.selected.push(index);
+              // recursively expand node
+              recur_expand(node);
 
-                // recursively expand node
+              // expand another
+              let another = 'left|right|changes'; // |selectbar'
+              let anothers: string[] = another.split('|');
+              for(let i = 0; i < anothers.length; i++) {
+                const node = document.getElementById(`node_${anothers[i]}_${index}`);
                 recur_expand(node);
-
-                // expand another
-                let another = 'left|right|changes'; // |selectbar'
-                let anothers: string[] = another.split('|');
-                for(let i = 0; i < anothers.length; i++) {
-                  const node = document.getElementById(`node_${anothers[i]}_${index}`);
-                  recur_expand(node);
-                }
               }
-            });
+            }
+          });
 
-            this.throttle_renderChanges();
-            this.renewFlatten();
-          }
+          this.throttle_renderChanges();
+          this.renewFlatten();
+        }
 
-          if(id === expandAllFoldersMenuId || id === collapseAllFoldersMenuId) {
-            // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
-            if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
+        if(id === expandAllFoldersMenuId || id === collapseAllFoldersMenuId) {
+          // console.log('this.partNodeList.selectbar =', this.partNodeList.selectbar);
+          if(this.list_selectbar && this.list_lhs && this.list_changes && this.list_rhs) {
 
-              function recur(list: HTMLElement, fn: (el) => void) {
-                for(let i = 0; i < list.childNodes.length; i++) {
-                  const child = list.childNodes[i] as HTMLElement;
+            function recur(list: HTMLElement, fn: (el) => void) {
+              for(let i = 0; i < list.childNodes.length; i++) {
+                const child = list.childNodes[i] as HTMLElement;
 
-                  if(child.classList.contains('content')) continue;
-                  if(child.classList.contains('node')) {
-                    fn(child);
-                    recur(child, fn);
-                  }
+                if(child.classList.contains('content')) continue;
+                if(child.classList.contains('node')) {
+                  fn(child);
+                  recur(child, fn);
                 }
-              }
-
-              const trees = [
-                this.list_selectbar.firstChild as HTMLElement,
-                this.list_lhs.firstChild as HTMLElement,
-                this.list_changes.firstChild as HTMLElement,
-                this.list_rhs.firstChild as HTMLElement,
-              ];
-
-              for(let i = 0; i < trees.length; i++) {
-                recur(trees[i], (el) => {
-                  if(id === expandAllFoldersMenuId) {
-                    if(el.classList.contains('collapsed'))
-                      el.classList.remove('collapsed');
-                  } else { // == 'collapse all folders'
-                    if(!el.classList.contains('collapsed'))
-                      el.classList.add('collapsed');
-                  }
-                });
               }
             }
 
-            this.throttle_renderChanges();
-            this.renewFlatten();
+            const trees = [
+              this.list_selectbar.firstChild as HTMLElement,
+              this.list_lhs.firstChild as HTMLElement,
+              this.list_changes.firstChild as HTMLElement,
+              this.list_rhs.firstChild as HTMLElement,
+            ];
+
+            for(let i = 0; i < trees.length; i++) {
+              recur(trees[i], (el) => {
+                if(id === expandAllFoldersMenuId) {
+                  if(el.classList.contains('collapsed'))
+                    el.classList.remove('collapsed');
+                } else { // == 'collapse all folders'
+                  if(!el.classList.contains('collapsed'))
+                    el.classList.add('collapsed');
+                }
+              });
+            }
           }
+
+          this.throttle_renderChanges();
+          this.renewFlatten();
         }
       }
-    };
-
-    listenerManager.register(this, broadcast, 'menu click', menuClickHandler.bind(this));
-    listenerManager.register(this, window.ipc, 'menu click', menuClickHandler.bind(this));
-  }
+    }
+  };
 
   renewFlatten(): void {
     this.flatten = [];
