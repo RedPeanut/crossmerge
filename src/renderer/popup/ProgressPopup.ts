@@ -2,6 +2,7 @@ import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
+import * as dom from "../util/dom";
 import { FileDesc } from "../Types";
 import { DirentExt, ResultMap } from "../../common/Types";
 import { Dialog } from "../Dialog";
@@ -262,7 +263,7 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
     this.files = [ ...files ];
 
     // clear screen
-    this.clearExceptHead(this.tbody);
+    dom.clearContainer(this.tbody);
     this.show();
 
     this.index = 0;

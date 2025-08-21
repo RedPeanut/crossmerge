@@ -65,7 +65,7 @@
 }
 
 .dialog .body { display: flex; }
-.dialog .icon.info span { color: lightblue; }
+.dialog .icon.info span { color: blue; }
 .dialog .icon.warning span { background-color: yellow; }
 .dialog .icon.error span { color: red; }
 .dialog .codicon { font-size: 28px; }
