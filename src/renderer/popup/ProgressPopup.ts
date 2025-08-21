@@ -90,20 +90,38 @@ export class ProgressPopup extends Popup {
     h4.textContent = 'Warnings and errors';
     bottom.appendChild(h4);
 
-    const listView = $('.list-view.scrollable');
-    let table, colgroup, tbody, tr, th, td;
-    table = this.table = $('table'); colgroup = $('colgroup'); tbody = this.tbody = $('tbody');
+    const listView = $('.list-view');
+    let table, colgroup, col, tbody, tr, th, td;
+
+    const head = $('.head');
+    table = $('table');
+    colgroup = $('colgroup');
+    col = $('col'); col.setAttribute('width', '40%'); colgroup.appendChild(col);
+    col = $('col'); col.setAttribute('width', '40%'); colgroup.appendChild(col);
+    col = $('col'); col.setAttribute('width', '20%'); colgroup.appendChild(col);
+
+    tbody = $('tbody');
     table.appendChild(colgroup);
     table.appendChild(tbody);
-
-    // head
     tr = $('tr'); tbody.appendChild(tr);
     th = $('th'); th.innerHTML = 'Event'; tr.appendChild(th);
     th = $('th'); th.innerHTML = 'File'; tr.appendChild(th);
     th = $('th'); th.innerHTML = 'Error'; tr.appendChild(th);
-    // th = $('th'); tr.appendChild(th);
+    head.appendChild(table);
 
-    listView.appendChild(table);
+    const body = $('.body.scrollable');
+    table = this.table = $('table');
+    colgroup = $('colgroup');
+    col = $('col'); col.setAttribute('width', '40%'); colgroup.appendChild(col);
+    col = $('col'); col.setAttribute('width', '40%'); colgroup.appendChild(col);
+    col = $('col'); col.setAttribute('width', '20%'); colgroup.appendChild(col);
+    tbody = this.tbody = $('tbody');
+    table.appendChild(colgroup);
+    table.appendChild(tbody);
+    body.appendChild(table);
+
+    listView.appendChild(head);
+    listView.appendChild(body);
     bottom.appendChild(listView);
     this.contentArea.appendChild(bottom);
 
