@@ -175,6 +175,9 @@ export class ProgressPopup extends Popup {
       console.log('resultMap =', resultMap);
       if(resultMap.resultCode === '400') {
 
+        let relPathName = file.relPath + path.sep + file.name;
+        if(relPathName.startsWith('/')) relPathName = relPathName.substring(1);
+
         if(this.yesToAll) {
           await window.ipc.invoke('copy file', from, to, { overwrite: true, });
           if(this.index < this.files.length-1) {
@@ -182,7 +185,11 @@ export class ProgressPopup extends Popup {
             this.next();
           }
         } else if(this.noToAll) {
-
+          this.addRow('warning', 'The existing file was not replaced', relPathName);
+          if(this.index < this.files.length-1) {
+            this.index++;
+            this.next();
+          }
         } else {
           this.dialog.open(
             'warning',
@@ -219,6 +226,7 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
               {
                 label: 'No',
                 click: () => {
+                  this.addRow('error', 'The existing file was not replaced', relPathName);
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
@@ -229,6 +237,7 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
                 label: 'No to all',
                 click: () => {
                   this.noToAll = true;
+                  this.addRow('warning', 'The existing file was not replaced', relPathName);
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
@@ -251,6 +260,29 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
       this.index++;
       this.next();
     }
+  }
+
+  addRow(level, event, file) {
+    let tr, td, span;
+    tr = $('tr');
+    td = $('td');
+    span = $('span.level');
+    span.classList.add(level);
+    if(level === 'warning' || level === 'info') span.textContent = '!';
+    else if(level === 'error') span.textContent = 'x';
+
+    td.appendChild(span);
+    td.innerHTML = td.innerHTML + event;
+    tr.append(td);
+
+    td = $('td');
+    td.textContent = file;
+    tr.append(td);
+
+    td = $('td');
+    td.textContent = ' ';
+    tr.append(td);
+    this.tbody.appendChild(tr);
   }
 
   open(srcPath: string, dstPath: string, files: FileDesc[]): void {

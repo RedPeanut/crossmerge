@@ -150,3 +150,7 @@
 .fnfp .bottom {}
 .fnfp .bottom h4 { font-weight: normal; margin-top: 12px; }
 .fnfp .bottom .list-view { min-height: 200px; margin-top: 4px; }
+.fnfp .bottom .list-view .body span { display: inline-block; width: 10px; margin-right: 5px; text-align: center; }
+.fnfp .bottom .list-view .body span.info { color: blue; }
+.fnfp .bottom .list-view .body span.warning { background-color: yellow; }
+.fnfp .bottom .list-view .body span.error { color: red; }
