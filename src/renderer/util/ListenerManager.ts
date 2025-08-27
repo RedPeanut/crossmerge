@@ -20,7 +20,7 @@ export class ListenerManager {
 
   map: Map<Who, Map<Where, any>> = new Map<Who, Map<Where, any>>();
 
-  register(who: Who, where: Where, event: string, handler: any) {
+  register(who: any, where: Where, event: string, handler: any) {
 
     if(where instanceof HTMLElement)
       where.addEventListener(event, handler);

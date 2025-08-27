@@ -157,7 +157,7 @@ export class Input {
 
     input.addEventListener('keydown', keyDownHandler.bind(this));
     input.addEventListener('input', inputHandler.bind(this));
-    input.addEventListener('focusout', (e: KeyboardEvent) => {
+    input.addEventListener('focusout', (e: FocusEvent) => {
       // console.log('focusout is called ..');
       this.related.style.display = 'none';
     });
