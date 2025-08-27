@@ -22,6 +22,10 @@ export class Renderer {
 
   menu: SerializableMenuItem[];
 
+  path: {
+    sep?: string;
+  } = {};
+
   constructor() {}
 
   async open() {
@@ -35,6 +39,7 @@ export class Renderer {
     this.window.isMinimized = await window.ipc.invoke('window get', 'function', 'isMinimized');
     this.process.platform = await window.ipc.invoke('process get', 'property', 'platform');
     this.menu = await window.ipc.invoke('menu get');
+    this.path.sep = this.process.platform === 'win32' ? '\\' : '/';
   }
 }
 

@@ -1,4 +1,3 @@
-import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
 import { Dialog } from "../Dialog";
 import { Popup } from "../Popup";
@@ -6,6 +5,7 @@ import { $ } from "../util/dom";
 import * as dom from "../util/dom";
 import { ProgressPopup } from "./ProgressPopup";
 import { FileDesc } from "../Types";
+import { renderer } from "..";
 
 /** Emit events
  * ok:
@@ -70,9 +70,9 @@ export class CopyPopup extends Popup {
 
         textContent = '';
         if(!StringUtil.isEmpty(value))
-          textContent += value + path.sep;
+          textContent += value + renderer.path.sep;
         if(!StringUtil.isEmpty(this.files[j].path))
-          textContent += this.files[j].path + path.sep;
+          textContent += this.files[j].path + renderer.path.sep;
         textContent += this.files[j].name;
 
         td.textContent = textContent;
@@ -179,9 +179,9 @@ export class CopyPopup extends Popup {
 
       textContent = '';
       if(!StringUtil.isEmpty(dstPath))
-        textContent += dstPath + path.sep;
+        textContent += dstPath + renderer.path.sep;
       if(!StringUtil.isEmpty(files[i].relPath))
-        textContent += files[i].relPath + path.sep;
+        textContent += files[i].relPath + renderer.path.sep;
       textContent += files[i].name;
 
       td.textContent = textContent;

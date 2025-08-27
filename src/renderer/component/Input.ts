@@ -1,4 +1,4 @@
-import path from "path";
+import { renderer } from "..";
 import { DirentExt } from "../../common/Types";
 import * as dom from "../util/dom";
 import { $ } from "../util/dom";
@@ -141,7 +141,7 @@ export class Input {
             if(i % 2 === 1)
               li.style.backgroundColor = 'rgb(241,241,241)';
             const a = $('a');
-            a.innerHTML = item.path + path.sep + item.name;
+            a.innerHTML = item.path + renderer.path.sep + item.name;
             li.append(a);
             this.related.appendChild(li);
           }

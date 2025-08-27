@@ -15,7 +15,6 @@ import { CopyPopup } from "../../popup/CopyPopup";
 import { bodyLayoutServiceId, getService, statusbarPartServiceId } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
-import path from "path";
 // import { Dialog } from "../../Dialog";
 // import { ProgressPopup } from "../../popup/ProgressPopup";
 import { StatusbarPartService } from "../StatusbarPart";
@@ -234,8 +233,8 @@ export class FolderView implements CompareView {
           if(list.length > 0) {
             const node = list[0] as HTMLElement;
             let _path: string = '';
-            recur_do(node.parentElement, (node) => { _path = path.sep + node.dataset.name + _path; })
-            _path = _path.replace(path.sep, ''); // replace first
+            recur_do(node.parentElement, (node) => { _path = renderer.path.sep + node.dataset.name + _path; })
+            _path = _path.replace(renderer.path.sep, ''); // replace first
             files.push({ relPath: _path, name: node.dataset.name, type: node.dataset.type });
           }
         }
@@ -956,12 +955,12 @@ export class FolderView implements CompareView {
             if(StringUtil.isEmpty(node.dataset.path_lhs))
               path_lhs = '';
             else
-              path_lhs = node.dataset.path_lhs + path.sep + node.dataset.name;
+              path_lhs = node.dataset.path_lhs + renderer.path.sep + node.dataset.name;
 
             if(StringUtil.isEmpty(node.dataset.path_rhs))
               path_rhs = '';
             else
-              path_rhs = node.dataset.path_rhs + path.sep + node.dataset.name;
+              path_rhs = node.dataset.path_rhs + renderer.path.sep + node.dataset.name;
 
             const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
             bodyLayoutService.addFileCompareView(path_lhs, path_rhs);

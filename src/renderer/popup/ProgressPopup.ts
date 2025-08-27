@@ -1,4 +1,3 @@
-import path from "path";
 import { StringUtil } from "../../common/util/StringUtil";
 import { Popup } from "../Popup";
 import { $ } from "../util/dom";
@@ -6,6 +5,7 @@ import * as dom from "../util/dom";
 import { FileDesc } from "../Types";
 import { DirentExt, ResultMap } from "../../common/Types";
 import { Dialog } from "../Dialog";
+import { renderer } from "..";
 
 /** Emit events
  * ok:
@@ -146,27 +146,27 @@ export class ProgressPopup extends Popup {
     if(file.type === 'folder') {
       let _path = srcPath;
       if(!StringUtil.isEmpty(file.relPath))
-        _path += path.sep + file.relPath;
-      _path += path.sep + file.name;
+        _path += renderer.path.sep + file.relPath;
+      _path += renderer.path.sep + file.name;
       const reads: DirentExt[] = await window.ipc.invoke('read folder', _path);
       const items: FileDesc[] = [];
       for(let i = 0; i < reads.length; i++) {
         items.push({
           type: reads[i].isDirectory ? 'folder' : 'file',
           name: reads[i].name,
-          relPath: reads[i].path.replace(srcPath+path.sep, '')
+          relPath: reads[i].path.replace(srcPath+renderer.path.sep, '')
         });
       }
       this.files.splice(this.index+1, 0, ...items);
       console.log('this.files =', this.files);
     } else {
       let from = srcPath;
-      if(!StringUtil.isEmpty(file.relPath)) from += path.sep + file.relPath;
-      from += path.sep + file.name;
+      if(!StringUtil.isEmpty(file.relPath)) from += renderer.path.sep + file.relPath;
+      from += renderer.path.sep + file.name;
 
       let to = dstPath;
-      if(!StringUtil.isEmpty(file.relPath)) to += path.sep + file.relPath;
-      to += path.sep + file.name;
+      if(!StringUtil.isEmpty(file.relPath)) to += renderer.path.sep + file.relPath;
+      to += renderer.path.sep + file.name;
 
       this.fromSpan.textContent = from;
       this.toSpan.textContent = to;
@@ -175,7 +175,7 @@ export class ProgressPopup extends Popup {
       console.log('resultMap =', resultMap);
       if(resultMap.resultCode === '400') {
 
-        let relPathName = file.relPath + path.sep + file.name;
+        let relPathName = file.relPath + renderer.path.sep + file.name;
         if(relPathName.startsWith('/')) relPathName = relPathName.substring(1);
 
         if(this.yesToAll) {
