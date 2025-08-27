@@ -4,6 +4,7 @@ import * as dom from "../util/dom";
 import { $ } from "../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
+import { FocusManager } from "../util/FocusManager";
 
 export interface InputOptions {
   mode: 'file' | 'folder';
@@ -17,13 +18,22 @@ export class Input {
   related: HTMLElement;
   options: InputOptions;
 
-  constructor(parent: HTMLElement, options: InputOptions) {
+  constructor(parent: HTMLElement, focusManager: FocusManager, options: InputOptions) {
     this.parent = parent;
     this.options = options;
 
     const el = this.element = $('.input');
     const input = this.input = $('input');
+    focusManager.register(input, (...args: any[]) => {
+      console.log(typeof args);
+      const [ event ] = args;
+      if(event === 'focusout') {
+        this.related.style.display = 'none';
+      }
+    });
+
     const related = this.related = $('ul.related.scrollable');
+    related.tabIndex = -1;
     // related.style.display = 'none';
 
     function keyDownHandler(e: KeyboardEvent) {
@@ -127,11 +137,11 @@ export class Input {
 
       window.ipc.invoke('read folder in input', value, this.options.mode)
         .then((result: DirentExt[]) => {
-          console.log('result =', result);
+          // console.log('result =', result);
 
           // draw auto completion
           // const related: HTMLElement = this.related;
-          console.log('this.related =', this.related);
+          // console.log('this.related =', this.related);
           // console.log('self.related =', self.related);
           dom.clearContainer(this.related);
 
@@ -142,6 +152,9 @@ export class Input {
               li.style.backgroundColor = 'rgb(241,241,241)';
             const a = $('a');
             a.innerHTML = item.path + renderer.path.sep + item.name;
+            a.addEventListener('click', (e: MouseEvent) => {
+
+            });
             li.append(a);
             this.related.appendChild(li);
           }
@@ -157,10 +170,13 @@ export class Input {
 
     input.addEventListener('keydown', keyDownHandler.bind(this));
     input.addEventListener('input', inputHandler.bind(this));
+    /* input.addEventListener('focus', (e: FocusEvent) => {
+      console.log('focus is called ..');
+    });
     input.addEventListener('focusout', (e: FocusEvent) => {
       // console.log('focusout is called ..');
       this.related.style.display = 'none';
-    });
+    }); */
 
     /* window.addEventListener('mousedown', (e) => {
       console.log('mousedown is called ..');

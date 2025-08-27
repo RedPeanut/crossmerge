@@ -20,6 +20,7 @@ import { StringUtil } from "../../../common/util/StringUtil";
 import { StatusbarPartService } from "../StatusbarPart";
 import { listenerManager } from "../../util/ListenerManager";
 import { broadcast } from "../../Broadcast";
+import { FocusManager } from "../../util/FocusManager";
 
 interface Node {
   parent: Node | null;
@@ -139,6 +140,8 @@ export class FolderView implements CompareView {
   // progressPopup: ProgressPopup;
   // dialog: Dialog;
 
+  focusManager: FocusManager;
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
@@ -174,6 +177,8 @@ export class FolderView implements CompareView {
 
     listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
     listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
+
+    this.focusManager = new FocusManager();
   }
 
   menuClickHandler(...args: any[]) {
@@ -666,14 +671,14 @@ export class FolderView implements CompareView {
     const input_column_lhs = $(".input-column.lhs");
     // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     // input_lhs.placeholder = 'Left folder';
-    const input_lhs = this.input_lhs = new Input(input_column_lhs, { mode: 'folder' });
+    const input_lhs = this.input_lhs = new Input(input_column_lhs, this.focusManager, { mode: 'folder' });
     input_lhs.placeholder('Left folder');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     // input_rhs.placeholder = 'Right folder';
-    const input_rhs = this.input_rhs = new Input(input_column_rhs, { mode: 'folder' });
+    const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'folder' });
     input_rhs.placeholder('Right folder');
 
     input_lhs.value('/Users/kimjk/workspace/electron/fixture/mixed case/left');
@@ -721,7 +726,10 @@ export class FolderView implements CompareView {
 
     const lists = this.lists = $(".lists");
     lists.tabIndex = 0;
-    lists.contentEditable = 'true';
+    // lists.contentEditable = 'true';
+    this.focusManager.register(lists, (args) => {
+      console.log(args);
+    });
 
     const header = $(".header");
     const header_list_margin_lhs = $(".list-margin.lhs");

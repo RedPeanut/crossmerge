@@ -3,6 +3,7 @@ import { CompareFileData, CompareItem } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
+import { FocusManager } from "../../util/FocusManager";
 
 export interface FileViewOptions {}
 
@@ -20,6 +21,8 @@ export class FileView implements CompareView {
   mergely_el: HTMLInputElement;
   mergely: Mergely;
 
+  focusManager: FocusManager;
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
@@ -34,6 +37,7 @@ export class FileView implements CompareView {
 
       this.recvReadData(arg);
     }); */
+    this.focusManager = new FocusManager();
   }
 
   create(): HTMLElement {
@@ -43,14 +47,14 @@ export class FileView implements CompareView {
     const input_column_lhs = $(".input-column.lhs");
     // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     // input_lhs.placeholder = 'Left file';
-    const input_lhs = this.input_lhs = new Input(input_column_lhs, { mode: 'file' });
+    const input_lhs = this.input_lhs = new Input(input_column_lhs, this.focusManager, { mode: 'file' });
     input_lhs.placeholder('Left file');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     // input_rhs.placeholder = 'Right file';
-    const input_rhs = this.input_rhs = new Input(input_column_rhs, { mode: 'file' });
+    const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'file' });
     input_rhs.placeholder('Right file');
 
     // input_lhs.value = this.item.path_lhs;

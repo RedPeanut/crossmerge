@@ -398,6 +398,9 @@ body { height: 100%; }
   display: block;
 }
 .folder-compare-view * { /* border: 1px solid black; */ }
+.folder-compare-view *:focus { outline: none; }
+.folder-compare-view *.focus { border: 1px solid rgb(86,157,229); }
+
 .folder-compare-view { display: none; flex-direction: column;
   background-color: rgb(240,240,240);
   height: calc(100% - 8px);
@@ -441,6 +444,7 @@ body { height: 100%; }
   border: 1px solid rgb(122,122,122);
   cursor: default;
 }
+.folder-compare-view .lists.focus { border: 1px solid rgb(86,157,229); }
 
 .folder-compare-view .lists ::-webkit-scrollbar {
   width: 0; height: 0;
