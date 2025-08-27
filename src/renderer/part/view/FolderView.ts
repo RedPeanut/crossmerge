@@ -172,8 +172,8 @@ export class FolderView implements CompareView {
       this.recv(arg as CompareFolderData);
     });
 
-    listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler);
-    listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler);
+    listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
+    listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
   }
 
   menuClickHandler(...args: any[]) {
