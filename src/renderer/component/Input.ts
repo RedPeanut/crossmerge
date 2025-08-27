@@ -151,9 +151,16 @@ export class Input {
             if(i % 2 === 1)
               li.style.backgroundColor = 'rgb(241,241,241)';
             const a = $('a');
-            a.innerHTML = item.path + renderer.path.sep + item.name;
+            const innerHTML = item.path + renderer.path.sep + item.name;
+            a.innerHTML = innerHTML;
             a.addEventListener('click', (e: MouseEvent) => {
-
+              for(let i = 0; i < this.related.children.length; i++) {
+                if(this.related.children[i] !== li)
+                  this.related.children[i].classList.remove('on');
+              }
+              li.classList.add('on');
+              this.input.value = innerHTML;
+              this.input.focus();
             });
             li.append(a);
             this.related.appendChild(li);

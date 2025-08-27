@@ -572,6 +572,7 @@ body { height: 100%; }
 
 .input .related li {
   list-style-type: none;
+  cursor: default;
 }
 
 .input .related li a {
