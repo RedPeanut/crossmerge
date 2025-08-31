@@ -297,6 +297,7 @@ export class FolderView implements CompareView {
               let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
                 const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                node.classList.add('selected');
                 recur_expand(node);
               }
             }
@@ -573,9 +574,10 @@ export class FolderView implements CompareView {
             if(node.classList.contains(checkedValues[i])) {
               const index = parseInt(node.dataset.index);
 
+              this.selected.push(index);
+
               // do select
               node.classList.add('selected');
-              this.selected.push(index);
 
               // recursively expand node
               recur_expand(node);
@@ -585,6 +587,7 @@ export class FolderView implements CompareView {
               let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
                 const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                node.classList.add('selected');
                 recur_expand(node);
               }
             }
@@ -915,9 +918,18 @@ export class FolderView implements CompareView {
           }
 
           for(let i = start; i <= end; i++) {
+            const _index = this.flatten[i].index;
             this.flatten[i].elem.classList.add('selected');
-            if(!this.selected.includes(this.flatten[i].index))
-              this.selected.push(this.flatten[i].index);
+
+            let another = 'left|right|changes';
+            let anothers: string[] = another.split('\|');
+            for(let j = 0; j < anothers.length; j++) {
+              const _node = document.getElementById(`node_${anothers[j]}_${_index}`);
+              _node.classList.add('selected');
+            }
+
+            if(!this.selected.includes(_index))
+              this.selected.push(_index);
           }
         }
 
@@ -928,8 +940,23 @@ export class FolderView implements CompareView {
           const lastIndex = this.selected[this.selected.length-1];
           handleShiftOp.bind(this)(lastIndex);
         } else if(cmdOrCtrlKey) {
-          node.classList.toggle('selected');
-          this.selected.push(index);
+          let another = 'left|right|changes';
+          let anothers: string[] = another.split('\|');
+          for(let i = 0; i < anothers.length; i++) {
+            const _node = document.getElementById(`node_${anothers[i]}_${index}`);
+            if(node.classList.contains('selected'))
+              _node.classList.remove('selected');
+            else
+              _node.classList.add('selected');
+          }
+
+          if(node.classList.contains('selected')) {
+            node.classList.remove('selected');
+            this.selected.splice(this.selected.findIndex((v, i) => { return v === index}), 1);
+          } else {
+            node.classList.add('selected');
+            this.selected.push(index);
+          }
         } else if(e.shiftKey) {
           if(this.selected.length == 0) return;
           const lastIndex = this.selected[this.selected.length-1];
@@ -937,8 +964,15 @@ export class FolderView implements CompareView {
           handleShiftOp.bind(this)(lastIndex);
         } else {
           this.clearSelected.bind(this)();
-          node.classList.toggle('selected');
+          node.classList.add('selected');
           this.selected.push(index);
+
+          let another = 'left|right|changes';
+          let anothers: string[] = another.split('\|');
+          for(let i = 0; i < anothers.length; i++) {
+            const _node = document.getElementById(`node_${anothers[i]}_${index}`);
+            _node.classList.add('selected');
+          }
         }
 
         // e.preventDefault();
@@ -1443,8 +1477,12 @@ export class FolderView implements CompareView {
   clearSelected() {
     for(let i = 0; i < this.selected.length; i++) {
       // (this.list_selectbar.firstChild as HTMLElement).getElement
-      const find = document.getElementById('node_selectbar_' + this.selected[i]);
-      find && find.classList.remove('selected');
+      let all = 'left|right|changes|selectbar'
+      let alls: string[] = all.split('\|');
+      for(let j = 0; j < alls.length; j++) {
+        const find = document.getElementById(`node_${alls[j]}_${this.selected[i]}`);
+        find && find.classList.remove('selected');
+      }
     }
     this.selected = [];
   }

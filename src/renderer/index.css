@@ -519,8 +519,13 @@ body { height: 100%; }
 
 .folder-compare-view .lists .list-selectbar .node.selected > .content {
   /* background-color: rgb(71 85 102); border-radius: 4px; */
-  background-color: rgba(0,99,225,0.3);
+  background-color: rgba(0,99,225);
 }
+
+.folder-compare-view .lists .node.selected > .content {
+  color: white;
+}
+
 .folder-compare-view .lists .node .content {
   /* margin: 2px 0; */
   display: flex; align-items: center;
