@@ -731,7 +731,7 @@ export class FolderView implements CompareView {
     lists.tabIndex = 0;
     // lists.contentEditable = 'true';
     this.focusManager.register(lists, (args) => {
-      console.log(args);
+      // console.log(args);
     });
 
     const header = $(".header");
@@ -868,7 +868,7 @@ export class FolderView implements CompareView {
 
       node.classList.add(data.state); // changed, inserted, removed
 
-      node.onclick = (e: PointerEvent) => {
+      node.onclick = (e: MouseEvent) => {
         // console.log('selectbar node clicked ..');
 
         /* function clearSelected() {

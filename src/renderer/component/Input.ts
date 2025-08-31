@@ -25,7 +25,7 @@ export class Input {
     const el = this.element = $('.input');
     const input = this.input = $('input');
     focusManager.register(input, (...args: any[]) => {
-      console.log(typeof args);
+      // console.log(typeof args);
       const [ event ] = args;
       if(event === 'focusout') {
         this.related.style.display = 'none';
