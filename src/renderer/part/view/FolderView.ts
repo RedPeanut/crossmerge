@@ -294,7 +294,7 @@ export class FolderView implements CompareView {
 
               // expand another
               let another = 'left|right|changes'; // |selectbar'
-              let anothers: string[] = another.split('|');
+              let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
                 const node = document.getElementById(`node_${anothers[i]}_${index}`);
                 recur_expand(node);
@@ -582,7 +582,7 @@ export class FolderView implements CompareView {
 
               // expand another
               let another = 'left|right|changes'; // |selectbar'
-              let anothers: string[] = another.split('|');
+              let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
                 const node = document.getElementById(`node_${anothers[i]}_${index}`);
                 recur_expand(node);
@@ -1003,7 +1003,7 @@ export class FolderView implements CompareView {
         let another = '|left|right|changes|selectbar';
         another = another.replace('|'+part, '');
         if(another.startsWith('|')) another = another.substring(1);
-        let anothers: string[] = another.split('|');
+        let anothers: string[] = another.split('\|');
         for(let i = 0; i < anothers.length; i++) {
           document.getElementById(`node_${anothers[i]}_${index}`).classList.toggle('collapsed');
         }
@@ -1397,7 +1397,7 @@ export class FolderView implements CompareView {
           // clear collapsed in all
           let all = '|left|right|changes|selectbar';
           if(all.startsWith('|')) all = all.substring(1);
-          let alls: string[] = all.split('|');
+          let alls: string[] = all.split('\|');
           for(let i = 0; i < alls.length; i++) {
             const _node = document.getElementById(`node_${alls[i]}_${index}`);
             if(_node.classList.contains('collapsed'))
