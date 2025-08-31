@@ -350,7 +350,16 @@ body { height: 100%; }
   border-style: solid;
   border-color: rgb(176,176,176);
   border-width: 0 0 1px 1px;
+  display: flex;
+  padding-left: 8px;
+  align-items: center;
 }
+.tabs .tab .label { margin-left: 5px; }
+.tabs .tab:hover { cursor: pointer; }
+.tabs .tab:hover a.codicon::before { content: '\ea76'; }
+.tabs .tab a.codicon { padding: 2px; }
+.tabs .tab a.codicon:hover { background-color: rgba(90,93,94,0.31); border-radius: 5px; }
+
 .tabs .tab.active { background-color: rgb(240,240,240); border-bottom-width: 0; }
 .tabs .tab:last-child { /* border-right-width: 1px; */ }
 

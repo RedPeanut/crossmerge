@@ -1,3 +1,4 @@
+import { renderer } from "../..";
 import { CompareItem } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
@@ -9,6 +10,7 @@ export class Tab {
   parent: HTMLElement;
   element: HTMLElement;
   item: CompareItem;
+  label: HTMLElement;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -17,6 +19,16 @@ export class Tab {
 
   create(): HTMLElement {
     const el = this.element = $('.tab');
+
+    const typeIcon = $(`a.codicon.codicon-${this.item.type}`);
+    typeIcon.addEventListener('click', (e: MouseEvent) => {
+    });
+
+    el.appendChild(typeIcon);
+
+    const label = this.label = $('a.label');
+    label.innerHTML = `No ${this.item.type} x 2`;
+    el.appendChild(label);
     return el;
   }
 
@@ -26,4 +38,15 @@ export class Tab {
     else this.element.classList.remove('active');
   }
 
+  updateLabel(lhs: string, rhs: string) {
+    const lhs_path = lhs.substring(0, lhs.lastIndexOf(renderer.path.sep));
+    const lhs_name = lhs.substring(lhs.lastIndexOf(renderer.path.sep)+1, lhs.length);
+    const rhs_path = rhs.substring(0, rhs.lastIndexOf(renderer.path.sep));
+    const rhs_name = rhs.substring(rhs.lastIndexOf(renderer.path.sep)+1, rhs.length);
+    if(lhs_name == rhs_name) {
+      this.label.innerHTML = lhs_name + ' x 2';
+    } else {
+      this.label.innerHTML = lhs_name + ', ' + rhs_name;
+    }
+  }
 }

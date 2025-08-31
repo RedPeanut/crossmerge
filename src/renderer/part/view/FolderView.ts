@@ -830,6 +830,9 @@ export class FolderView implements CompareView {
       path_lhs: input_lhs_value,
       path_rhs: input_rhs_value
     });
+
+    const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+    bodyLayoutService.updateTabLabel(this.item.uid, input_lhs_value as string, input_rhs_value as string);
   }
 
   addNode(container: HTMLElement, data: CompareFolderData,

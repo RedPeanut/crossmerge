@@ -40,4 +40,7 @@ export class GroupView {
     this.compares.layout();
   }
 
+  updateTabLabel(id: string, lhs: string, rhs: string) {
+    this.tabs.updateTabLabel(id, lhs, rhs);
+  }
 }

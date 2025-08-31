@@ -49,4 +49,13 @@ export class Tabs {
   }
 
   layout(): void {}
+
+  updateTabLabel(id: string, lhs: string, rhs: string): void {
+    for(let i = 0; i < this.group.length; i++) {
+      if(this.group[i].uid === id) {
+        this.tabs[i].updateLabel(lhs, rhs);
+        break;
+      }
+    }
+  }
 }
