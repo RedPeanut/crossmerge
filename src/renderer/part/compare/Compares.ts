@@ -32,7 +32,7 @@ export class Compares {
 
       if(item.type == 'file') v.doCompare();
 
-      v.css({ active: true });
+      v.setClass({ active: true });
     }
 
     return el;
@@ -41,7 +41,7 @@ export class Compares {
   addGroup(group: Group) {
 
     this.map.forEach((item) => {
-      item.css({ active: false });
+      item.setClass({ active: false });
     });
 
     const el = this.element;
@@ -57,7 +57,7 @@ export class Compares {
       if(item.type == 'file') v.doCompare();
 
       if(i == group.length-1)
-        v.css({ active: true });
+        v.setClass({ active: true });
     }
 
     this.group.splice(0, 0, ...group);

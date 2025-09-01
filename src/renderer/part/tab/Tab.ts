@@ -32,10 +32,16 @@ export class Tab {
     return el;
   }
 
-  css(style: { active?: boolean; }): void {
+  setClass(style: { active?: boolean; }): void {
     const { active } = style;
-    if(active) this.element.classList.add('active');
-    else this.element.classList.remove('active');
+    if(active != null) {
+      if(active) this.element.classList.add('active');
+      else this.element.classList.remove('active');
+    }
+  }
+
+  getClass(): DOMTokenList {
+    return this.element.classList;
   }
 
   updateLabel(lhs: string, rhs: string) {

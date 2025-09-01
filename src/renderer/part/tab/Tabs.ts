@@ -25,14 +25,14 @@ export class Tabs {
       el.appendChild(tab.create());
       this.tabs.push(tab);
 
-      tab.css({ active: true });
+      tab.setClass({ active: true });
     }
     return el;
   }
 
   addGroup(group: Group) {
 
-    this.tabs.map((tab) => { tab.css({ active: false }); });
+    this.tabs.map((tab) => { tab.setClass({ active: false }); });
 
     const el = this.element;
     for(let i = 0; i < group.length; i++) {
@@ -42,7 +42,7 @@ export class Tabs {
       this.tabs.splice(0, 0, tab);
 
       if(i == group.length-1)
-        tab.css({ active: true });
+        tab.setClass({ active: true });
     }
 
     this.group.splice(0, 0, ...group);

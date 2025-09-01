@@ -26,7 +26,8 @@ export function isSplitItem(o: any) {
 export interface CompareView {
   doCompare(): void;
   layout(): void;
-  css(style: { active?: boolean }): void;
+  setClass(style: { active?: boolean; }): void;
+  getClass(): DOMTokenList;
 }
 
 export interface FileDesc {
