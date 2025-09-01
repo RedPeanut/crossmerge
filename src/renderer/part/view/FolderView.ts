@@ -203,16 +203,16 @@ export class FolderView implements CompareView {
         let srcPath = '', dstPath = '';
 
         if(id === leftToRightFolderMenuId) {
-          srcPath = this.input_lhs.value() as string;
-          dstPath = this.input_rhs.value() as string;
+          srcPath = this.input_lhs.getValue()
+          dstPath = this.input_rhs.getValue();
         } else if(id === rightToLeftFolderMenuId) {
-          srcPath = this.input_rhs.value() as string;
-          dstPath = this.input_lhs.value() as string;
+          srcPath = this.input_rhs.getValue();
+          dstPath = this.input_lhs.getValue();
         } else if(id === leftToOtherFolderMenuId) {
-          srcPath = this.input_lhs.value() as string;
+          srcPath = this.input_lhs.getValue();
           dstPath = '';
         } else if(id === rightToOtherFolderMenuId) {
-          srcPath = this.input_rhs.value() as string;
+          srcPath = this.input_rhs.getValue();
           dstPath = ''; //'/Users/kimjk/workspace/electron/저장/tmp';
         }
 
@@ -675,17 +675,17 @@ export class FolderView implements CompareView {
     // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     // input_lhs.placeholder = 'Left folder';
     const input_lhs = this.input_lhs = new Input(input_column_lhs, this.focusManager, { mode: 'folder' });
-    input_lhs.placeholder('Left folder');
+    input_lhs.setPlaceholder('Left folder');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     // input_rhs.placeholder = 'Right folder';
     const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'folder' });
-    input_rhs.placeholder('Right folder');
+    input_rhs.setPlaceholder('Right folder');
 
-    input_lhs.value('/Users/kimjk/workspace/electron/fixture/mixed case/left');
-    input_rhs.value('/Users/kimjk/workspace/electron/fixture/mixed case/right');
+    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left');
+    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right');
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
@@ -822,8 +822,8 @@ export class FolderView implements CompareView {
     // this.flatten = [];
     this.selected = [];
 
-    const input_lhs_value = this.input_lhs.value();
-    const input_rhs_value = this.input_rhs.value();
+    const input_lhs_value = this.input_lhs.getValue();
+    const input_rhs_value = this.input_rhs.getValue();
 
     window.ipc.send('new', {
       ...this.item,

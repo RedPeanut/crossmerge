@@ -194,15 +194,16 @@ export class Input {
     parent.appendChild(el);
   }
 
-  placeholder(value: string): void {
+  setPlaceholder(value: string): void {
     this.input.placeholder = value;
   }
 
-  value(value?: string): void | string {
-    if(arguments.length)
-      this.input.value = value;
-    else
-      return this.input.value;
+  getValue(): string {
+    return this.input.value;
+  }
+
+  setValue(value: string): void {
+    this.input.value = value;
   }
 
   addEventListener(event, handler) {

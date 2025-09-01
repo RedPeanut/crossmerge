@@ -48,21 +48,21 @@ export class FileView implements CompareView {
     // const input_lhs = this.input_lhs = $('input.lhs') as HTMLInputElement;
     // input_lhs.placeholder = 'Left file';
     const input_lhs = this.input_lhs = new Input(input_column_lhs, this.focusManager, { mode: 'file' });
-    input_lhs.placeholder('Left file');
+    input_lhs.setPlaceholder('Left file');
 
     const input_margin = $(".input-margin");
     const input_column_rhs = $(".input-column.rhs");
     // const input_rhs = this.input_rhs = $('input.rhs') as HTMLInputElement;
     // input_rhs.placeholder = 'Right file';
     const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'file' });
-    input_rhs.placeholder('Right file');
+    input_rhs.setPlaceholder('Right file');
 
     // input_lhs.value = this.item.path_lhs;
     // input_rhs.value = this.item.path_rhs;
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/left/moons.txt';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/right/moons.txt';
-    input_lhs.value(this.item.path_lhs);
-    input_rhs.value(this.item.path_rhs);
+    input_lhs.setValue(this.item.path_lhs);
+    input_rhs.setValue(this.item.path_rhs);
 
     input_lhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
     input_rhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
@@ -119,8 +119,8 @@ export class FileView implements CompareView {
 
   doCompare(): void {
     window.ipc.invoke('read file in fileview',
-      this.input_lhs.value(),
-      this.input_rhs.value()
+      this.input_lhs.getValue(),
+      this.input_rhs.getValue()
     ).then(result => {
       console.log('result =', result);
       const mergely = this.mergely = new Mergely(
