@@ -69,4 +69,11 @@ export class Compares {
       item.layout();
     });
   }
+
+  active(id: string) {
+    for(const [k,v] of this.map) {
+      if(k === id) v.setClass({ active: true });
+      else v.setClass({ active: false });
+    }
+  }
 }

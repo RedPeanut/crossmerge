@@ -58,4 +58,11 @@ export class Tabs {
       }
     }
   }
+
+  active(id: string) {
+    for(let i = 0; i < this.tabs.length; i++) {
+      if(this.tabs[i].item.uid === id) this.tabs[i].setClass({ active: true });
+      else this.tabs[i].setClass({ active: false });
+    }
+  }
 }

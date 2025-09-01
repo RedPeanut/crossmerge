@@ -1,5 +1,7 @@
 import { renderer } from "../..";
 import { CompareItem } from "../../../common/Types";
+import { BodyLayoutService } from "../../layout/BodyLayout";
+import { getService, bodyLayoutServiceId } from "../../Service";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
 
@@ -19,6 +21,10 @@ export class Tab {
 
   create(): HTMLElement {
     const el = this.element = $('.tab');
+    el.addEventListener('click', (e: MouseEvent) => {
+      const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+      bodyLayoutService.active(this.item.uid);
+    });
 
     const typeIcon = $(`a.codicon.codicon-${this.item.type}`);
     typeIcon.addEventListener('click', (e: MouseEvent) => {
