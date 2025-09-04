@@ -32,6 +32,7 @@ export interface BodyLayoutService extends Service {
   addFolderCompareView(): void;
   updateTabLabel(id: string, lhs: string, rhs: string): void;
   active(id: string): void;
+  remove(id: string): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -223,5 +224,17 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   active(id: string): void {
     this.groupView && this.groupView.active(id);
+  }
+
+  remove(id: string): void {
+    if(this.groupView) {
+      const length = this.groupView.removeGroup(id);
+
+      if(length === 0) {
+        this.container.removeChild(this.groupView.element);
+        // delete this.groupView;
+        this.groupView = null;
+      }
+    }
   }
 }

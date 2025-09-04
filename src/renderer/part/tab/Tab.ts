@@ -28,6 +28,9 @@ export class Tab {
 
     const typeIcon = $(`a.codicon.codicon-${this.item.type}`);
     typeIcon.addEventListener('click', (e: MouseEvent) => {
+      const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+      bodyLayoutService.remove(this.item.uid);
+      e.stopPropagation();
     });
 
     el.appendChild(typeIcon);

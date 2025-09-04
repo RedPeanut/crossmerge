@@ -53,4 +53,10 @@ export class Tabs {
       else this.tabs[i].setClass({ active: false });
     }
   }
+
+  removeChild(idx: number) {
+    this.element.removeChild(this.tabs[idx].element);
+    this.tabs.splice(idx, 1);
+    // delete this.tabs[idx];
+  }
 }
