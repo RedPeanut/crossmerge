@@ -9,24 +9,14 @@ export class Tabs {
 
   parent: HTMLElement;
   element: HTMLElement;
-  group: Group;
   tabs: Tab[] = [];
 
-  constructor(parent: HTMLElement, group: Group) {
+  constructor(parent: HTMLElement) {
     this.parent = parent;
-    this.group = group;
   }
 
   create(): HTMLElement {
     const el = this.element = $('.tabs');
-    for(let i = 0; i < this.group.length; i++) {
-      const item: CompareItem = this.group[i];
-      const tab: Tab = new Tab(el, item);
-      el.appendChild(tab.create());
-      this.tabs.push(tab);
-
-      tab.setClass({ active: true });
-    }
     return el;
   }
 
@@ -44,8 +34,6 @@ export class Tabs {
       if(i == group.length-1)
         tab.setClass({ active: true });
     }
-
-    this.group.splice(0, 0, ...group);
   }
 
   layout(): void {}

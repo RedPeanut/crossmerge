@@ -10,21 +10,20 @@ export class GroupView {
 
   parent: HTMLElement;
   element: HTMLElement;
-  group: Group;
+  group: Group = [];
 
   tabs: Tabs;
   compares: Compares;
 
-  constructor(parent: HTMLElement, group: Group, options: GroupViewOptions) {
+  constructor(parent: HTMLElement, options: GroupViewOptions) {
     this.parent = parent;
-    this.group = group;
   }
 
   create(): HTMLElement {
     const el = this.element = $('.group-view');
-    const tabs = this.tabs = new Tabs(el, this.group);
+    const tabs = this.tabs = new Tabs(el);
     el.appendChild(tabs.create());
-    const compares = this.compares = new Compares(el, this.group);
+    const compares = this.compares = new Compares(el);
     el.appendChild(compares.create());
     return el;
   }

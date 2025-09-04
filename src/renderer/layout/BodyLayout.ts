@@ -180,8 +180,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     if(this.groupView) {
       this.groupView.addGroup(group);
     } else {
-      const groupView = this.groupView = new GroupView(this.container, group, {});
+      const groupView = this.groupView = new GroupView(this.container, {});
       this.container.appendChild(groupView.create());
+      groupView.addGroup(group);
     }
   }
 
@@ -193,8 +194,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     if(this.groupView) {
       this.groupView.addGroup(group);
     } else {
-      const groupView = this.groupView = new GroupView(this.container, group, {});
+      const groupView = this.groupView = new GroupView(this.container, {});
       this.container.appendChild(groupView.create());
+      groupView.addGroup(group);
 
       // occur layout event for explicitly set canvas w,h
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
