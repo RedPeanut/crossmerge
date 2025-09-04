@@ -218,10 +218,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   }
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {
-    this.groupView.updateTabLabel(id, lhs, rhs);
+    this.groupView && this.groupView.updateTabLabel(id, lhs, rhs);
   }
 
   active(id: string): void {
-    this.groupView.active(id);
+    this.groupView && this.groupView.active(id);
   }
 }

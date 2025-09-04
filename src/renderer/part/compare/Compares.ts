@@ -21,7 +21,7 @@ export class Compares {
     return el;
   }
 
-  addGroup(group: Group) {
+  addGroup(group: Group): void {
 
     this.map.forEach((item) => {
       item.setClass({ active: false });
@@ -51,7 +51,7 @@ export class Compares {
     });
   }
 
-  active(id: string) {
+  active(id: string): void {
     for(const [k,v] of this.map) {
       if(k === id) v.setClass({ active: true });
       else v.setClass({ active: false });
