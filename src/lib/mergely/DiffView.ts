@@ -480,7 +480,7 @@ export default class CodeMirrorDiffView {
         traceTimeEnd('event#resize');
       }
     };
-    this._handleResize = () => {
+    /* this._handleResize = () => {
       if(resizeTimeout) {
         clearTimeout(resizeTimeout);
       }
@@ -488,7 +488,7 @@ export default class CodeMirrorDiffView {
     };
     window.addEventListener('resize', () => {
       this._handleResize();
-    });
+    }); */
 
     resize();
 

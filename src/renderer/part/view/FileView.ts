@@ -154,7 +154,10 @@ export class FileView implements CompareView {
     );
   } */
 
-  layout(): void {}
+  layout(): void {
+    if(this.element.classList.contains('active'))
+      this.mergely.resize(null);
+  }
 
   setClass(style: { active?: boolean; }): void {
     const { active } = style;
