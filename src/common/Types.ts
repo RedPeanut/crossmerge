@@ -14,6 +14,19 @@ export interface CompareItem {
 
   // selected?: boolean; // default: false
   // active?: boolean; // default: false
+
+  status?: {
+    removed?: number;
+    inserted?: number;
+    changed?: number;
+    unchanged?: number;
+
+    encoding?: string;
+    spaces?: number;
+    ln?: number;
+    col?: number;
+    crlf?: string;
+  };
 }
 
 export interface CompareFileData {

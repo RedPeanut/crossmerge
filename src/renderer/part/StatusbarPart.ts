@@ -10,6 +10,7 @@ export interface StatusbarPartService {
     changed: number,
     unchanged: number,
   }): void;
+  clear(): void;
 }
 
 export class StatusbarPart extends Part implements StatusbarPartService {
@@ -32,6 +33,10 @@ export class StatusbarPart extends Part implements StatusbarPartService {
 
   update(status): void {
     this.span.textContent = `${status.removed} removedㆍ${status.inserted} insertedㆍ${status.changed} changedㆍ${status.unchanged} unchanged`;
+  }
+
+  clear(): void {
+    this.span.textContent = ``;
   }
 
   /* layoutContainer(offset: number): void {

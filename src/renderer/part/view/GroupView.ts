@@ -3,6 +3,8 @@ import { $ } from "../../util/dom";
 import { Group } from "../../Types";
 import { Compares } from "../compare/Compares";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
+import { getService, statusbarPartServiceId } from "../../Service";
+import { StatusbarPartService } from "../StatusbarPart";
 
 export interface GroupViewOptions {}
 
@@ -32,6 +34,7 @@ export class GroupView {
     this.tabs.addGroup(group);
     this.compares.addGroup(group);
     this.group.splice(0, 0, ...group);
+    this.updateStatusbar(0);
   }
 
   layout() {
@@ -46,6 +49,26 @@ export class GroupView {
   active(id: string): void {
     this.tabs.active(id);
     this.compares.active(id);
+
+    const i = this.group.findIndex((v, i) => { return v.uid === id });
+    this.updateStatusbar(i);
+  }
+
+  updateStatusbar(i: number): void {
+    if(i > -1) {
+      const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
+      if(this.group[i].type === 'file') {
+        // TODO
+        statusbarPartService.clear();
+      } else if(this.group[i].type === 'folder') {
+        if(this.group[i].status) {
+          const { removed, inserted, changed, unchanged } = this.group[i].status;
+          statusbarPartService.update({ removed, inserted, changed, unchanged });
+        } else {
+          statusbarPartService.clear();
+        }
+      }
+    }
   }
 
   /**

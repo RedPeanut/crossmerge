@@ -161,7 +161,10 @@ export class FolderView implements CompareView {
       this.renewFlatten();
 
       const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
-      statusbarPartService.update(args[1]);
+      statusbarPartService.update(arg);
+
+      const { removed, inserted, changed, unchanged } = arg;
+      this.item.status = { removed, inserted, changed, unchanged };
     });
 
     window.ipc.on('compare folder data', (...args: any[]) => {
