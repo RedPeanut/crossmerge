@@ -299,7 +299,7 @@ export class FolderView implements CompareView {
               let another = 'left|right|changes'; // |selectbar'
               let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
-                const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                const node = this.element.querySelector(`#node_${anothers[i]}_${index}`) as HTMLElement;
                 node.classList.add('selected');
                 recur_expand(node);
               }
@@ -589,7 +589,7 @@ export class FolderView implements CompareView {
               let another = 'left|right|changes'; // |selectbar'
               let anothers: string[] = another.split('\|');
               for(let i = 0; i < anothers.length; i++) {
-                const node = document.getElementById(`node_${anothers[i]}_${index}`);
+                const node = this.element.querySelector(`#node_${anothers[i]}_${index}`) as HTMLElement;
                 node.classList.add('selected');
                 recur_expand(node);
               }
@@ -880,7 +880,7 @@ export class FolderView implements CompareView {
         /* function clearSelected() {
           for(let i = 0; i < this.selected.length; i++) {
             // (this.list_selectbar.firstChild as HTMLElement).getElement
-            const find = document.getElementById('node_selectbar_' + this.selected[i]);
+            const find = this.element.querySelector('#node_selectbar_' + this.selected[i]);
             find && find.classList.remove('selected');
           }
           this.selected = [];
@@ -930,7 +930,7 @@ export class FolderView implements CompareView {
             let another = 'left|right|changes';
             let anothers: string[] = another.split('\|');
             for(let j = 0; j < anothers.length; j++) {
-              const _node = document.getElementById(`node_${anothers[j]}_${_index}`);
+              const _node = this.element.querySelector(`#node_${anothers[j]}_${_index}`);
               _node.classList.add('selected');
             }
 
@@ -949,7 +949,7 @@ export class FolderView implements CompareView {
           let another = 'left|right|changes';
           let anothers: string[] = another.split('\|');
           for(let i = 0; i < anothers.length; i++) {
-            const _node = document.getElementById(`node_${anothers[i]}_${index}`);
+            const _node = this.element.querySelector(`#node_${anothers[i]}_${index}`);
             if(node.classList.contains('selected'))
               _node.classList.remove('selected');
             else
@@ -976,7 +976,7 @@ export class FolderView implements CompareView {
           let another = 'left|right|changes';
           let anothers: string[] = another.split('\|');
           for(let i = 0; i < anothers.length; i++) {
-            const _node = document.getElementById(`node_${anothers[i]}_${index}`);
+            const _node = this.element.querySelector(`#node_${anothers[i]}_${index}`);
             _node.classList.add('selected');
           }
         }
@@ -1045,7 +1045,7 @@ export class FolderView implements CompareView {
         if(another.startsWith('|')) another = another.substring(1);
         let anothers: string[] = another.split('\|');
         for(let i = 0; i < anothers.length; i++) {
-          document.getElementById(`node_${anothers[i]}_${index}`).classList.toggle('collapsed');
+          this.element.querySelector(`#node_${anothers[i]}_${index}`).classList.toggle('collapsed');
         }
         self.modifyChanges();
 
@@ -1071,7 +1071,7 @@ export class FolderView implements CompareView {
           if(item.index == index) {
             recur(node, (el) => {
               const index = el.dataset.index;
-              const selectbar = document.getElementById(`node_selectbar_${index}`);
+              const selectbar = this.element.querySelector(`#node_selectbar_${index}`) as HTMLElement;
               items.push({ index, elem: selectbar });
               if(el.classList.contains('collapsed'))
                 return false;
@@ -1439,7 +1439,7 @@ export class FolderView implements CompareView {
           if(all.startsWith('|')) all = all.substring(1);
           let alls: string[] = all.split('\|');
           for(let i = 0; i < alls.length; i++) {
-            const _node = document.getElementById(`node_${alls[i]}_${index}`);
+            const _node = this.element.querySelector(`#node_${alls[i]}_${index}`);
             if(_node.classList.contains('collapsed'))
               _node.classList.remove('collapsed');
           }
@@ -1492,7 +1492,7 @@ export class FolderView implements CompareView {
       let all = 'left|right|changes|selectbar'
       let alls: string[] = all.split('\|');
       for(let j = 0; j < alls.length; j++) {
-        const find = document.getElementById(`node_${alls[j]}_${this.selected[i]}`);
+        const find = this.element.querySelector(`#node_${alls[j]}_${this.selected[i]}`);
         find && find.classList.remove('selected');
       }
     }
