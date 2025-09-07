@@ -395,7 +395,8 @@ body { height: 100%; }
 }
 .file-compare-view .suggests .suggest-column { flex: 1; } */
 
-.file-compare-view #mergely {
+/* .file-compare-view #mergely { */
+.file-compare-view .mergely {
   /* flex: 1; overflow: hidden; position: relative; */
   height: calc(100% - 19.5px);
 }

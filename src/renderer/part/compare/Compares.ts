@@ -32,11 +32,14 @@ export class Compares {
     for(let i = 0; i < group.length; i++) {
       const item: CompareItem = group[i];
       let v: FileView|FolderView;
-      if(item.type == 'folder') v = new FolderView(el, item);
-      else if(item.type == 'file') v = new FileView(el, item);
-      else throw new Error('do not enter here');
+      if(item.type == 'folder') {
+        v = new FolderView(el, item);
+        el.appendChild(v.create());
+      } else if(item.type == 'file') {
+        v = new FileView(el, item);
+        el.appendChild(v.create(renderer.idx++));
+      } else throw new Error('do not enter here');
       this.map.set(item.uid, v);
-      el.appendChild(v.create());
 
       if(item.type == 'file') v.doCompare();
 

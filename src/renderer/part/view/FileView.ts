@@ -40,7 +40,7 @@ export class FileView implements CompareView {
     this.focusManager = new FocusManager();
   }
 
-  create(): HTMLElement {
+  create(idx: number): HTMLElement {
     const el = this.element = $('.file-compare-view');
 
     const inputs = $(".inputs");
@@ -82,7 +82,9 @@ export class FileView implements CompareView {
     suggests.appendChild(suggest_margin);
     suggests.appendChild(suggest_column_rhs); */
 
-    const mergely = this.mergely_el = $('#mergely');
+    const mergely = this.mergely_el = $('.mergely');
+    // mergely.id = 'mergely';
+    mergely.id = `_${idx}`;
     // mergely.style.height = '740px';
 
     el.appendChild(inputs);

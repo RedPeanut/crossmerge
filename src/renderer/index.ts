@@ -26,6 +26,8 @@ export class Renderer {
     sep?: string;
   } = {};
 
+  idx: number = 0;
+
   constructor() {}
 
   async open() {
