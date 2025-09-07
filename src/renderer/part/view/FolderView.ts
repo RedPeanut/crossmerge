@@ -996,19 +996,18 @@ export class FolderView implements CompareView {
           accelerator: 'Cmd+Shift+L',
           label: 'Launch Comparisons for Selected Rows', //localize(key, msg),
           click: () => {
-            console.log('click event is received ..');
+            // console.log('click event is received ..');
 
-            let path_lhs, path_rhs;
+            let path_lhs = '', path_rhs = '';
 
-            if(StringUtil.isEmpty(node.dataset.path_lhs))
-              path_lhs = '';
-            else
-              path_lhs = node.dataset.path_lhs + renderer.path.sep + node.dataset.name;
+            recur_do(node, (_node) => { path_lhs = _node.dataset.name + renderer.path.sep + path_lhs });
+            recur_do(node, (_node) => { path_rhs = _node.dataset.name + renderer.path.sep + path_rhs });
 
-            if(StringUtil.isEmpty(node.dataset.path_rhs))
-              path_rhs = '';
-            else
-              path_rhs = node.dataset.path_rhs + renderer.path.sep + node.dataset.name;
+            path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
+            path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
+
+            path_lhs = path_lhs.substring(0, path_lhs.lastIndexOf(renderer.path.sep));
+            path_rhs = path_rhs.substring(0, path_rhs.lastIndexOf(renderer.path.sep));
 
             const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
             bodyLayoutService.addFileCompareView(path_lhs, path_rhs);
