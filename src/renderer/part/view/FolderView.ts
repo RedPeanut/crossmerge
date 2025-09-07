@@ -187,7 +187,9 @@ export class FolderView implements CompareView {
   menuClickHandler(...args: any[]) {
     // console.log('on menu click is called ..');
     // console.log('args =', args);
-    if(args && args.length > 1) {
+    if(args && args.length > 1
+      && this.element.classList.contains('active')
+    ) {
       const id = args[1];
 
       // merging
