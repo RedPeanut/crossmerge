@@ -262,9 +262,9 @@ export default class Mergely {
       numChanges: this._changes.length,
       lhsLength: lhs_text.length,
       rhsLength: rhs_text.length,
-      c: this._changes.filter(function (a) { return a.op === 'c'; }).length,
-      a: this._changes.filter(function (a) { return a.op === 'a'; }).length,
-      d: this._changes.filter(function (a) { return a.op === 'd'; }).length
+      c: this._changes.filter(function(a) { return a.op === 'c'; }).length,
+      a: this._changes.filter(function(a) { return a.op === 'a'; }).length,
+      d: this._changes.filter(function(a) { return a.op === 'd'; }).length
     }
   }
 

@@ -257,7 +257,7 @@ class MainWindow {
         x: options ? options.x : undefined,
         y: options ? options.y : undefined,
         callback: () => {
-          console.log('menu popup callback is called ..');
+          // console.log('menu popup callback is called ..');
           if(menu) {
             event.sender.send('contextmenu close', contextMenuId);
           }
