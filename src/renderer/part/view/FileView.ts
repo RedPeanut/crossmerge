@@ -4,6 +4,8 @@ import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { FocusManager } from "../../util/FocusManager";
+import { BodyLayoutService } from "../../layout/BodyLayout";
+import { getService, bodyLayoutServiceId } from "../../Service";
 import { renderer } from "../..";
 
 export interface FileViewOptions {}
@@ -147,6 +149,12 @@ export class FileView implements CompareView {
     }).catch(error => {
       // console.log(error);
     });
+
+    const input_lhs_value = this.input_lhs.getValue();
+    const input_rhs_value = this.input_rhs.getValue();
+
+    const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+    bodyLayoutService.updateTabLabel(this.item.uid, input_lhs_value as string, input_rhs_value as string);
   }
 
   /* recvReadData(data: any): void {

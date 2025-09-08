@@ -1,5 +1,6 @@
 import { renderer } from "../..";
 import { CompareItem } from "../../../common/Types";
+import { StringUtil } from "../../../common/util/StringUtil";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { getService, bodyLayoutServiceId } from "../../Service";
 import { Group } from "../../Types";
@@ -55,9 +56,11 @@ export class Tab {
 
   updateLabel(lhs: string, rhs: string) {
     const lhs_path = lhs.substring(0, lhs.lastIndexOf(renderer.path.sep));
-    const lhs_name = lhs.substring(lhs.lastIndexOf(renderer.path.sep)+1, lhs.length);
+    let lhs_name = lhs.substring(lhs.lastIndexOf(renderer.path.sep)+1, lhs.length);
     const rhs_path = rhs.substring(0, rhs.lastIndexOf(renderer.path.sep));
-    const rhs_name = rhs.substring(rhs.lastIndexOf(renderer.path.sep)+1, rhs.length);
+    let rhs_name = rhs.substring(rhs.lastIndexOf(renderer.path.sep)+1, rhs.length);
+    if(StringUtil.isEmpty(lhs_name)) lhs_name = `No ${this.item.type}`;
+    if(StringUtil.isEmpty(rhs_name)) rhs_name = `No ${this.item.type}`;
     if(lhs_name == rhs_name) {
       this.label.innerHTML = lhs_name + ' x 2';
     } else {
