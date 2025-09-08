@@ -42,24 +42,32 @@ export class Compares {
       } else throw new Error('do not enter here');
       this.map.set(item.uid, v);
 
-      if(item.type == 'file') v.doCompare();
-
       if(i == group.length-1)
         v.setClass({ active: true });
+
+      if(item.type == 'file') {
+        v.doCompare();
+      } else if(item.type == 'folder') {
+        v.layout();
+      }
     }
   }
 
   layout(): void {
     // console.log('layout() is called ..');
-    this.map.forEach((item) => {
-      item.layout();
+    this.map.forEach((v) => {
+      v.element.classList.contains('active') && v.layout();
     });
   }
 
   active(id: string): void {
     for(const [k,v] of this.map) {
-      if(k === id) v.setClass({ active: true });
-      else v.setClass({ active: false });
+      if(k === id) {
+        v.setClass({ active: true });
+        v.layout();
+      } else {
+        v.setClass({ active: false });
+      }
     }
   }
 
