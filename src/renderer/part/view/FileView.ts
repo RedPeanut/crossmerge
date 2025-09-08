@@ -4,6 +4,7 @@ import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { FocusManager } from "../../util/FocusManager";
+import { renderer } from "../..";
 
 export interface FileViewOptions {}
 
@@ -40,7 +41,7 @@ export class FileView implements CompareView {
     this.focusManager = new FocusManager();
   }
 
-  create(idx: number): HTMLElement {
+  create(): HTMLElement {
     const el = this.element = $('.file-compare-view');
 
     const inputs = $(".inputs");
@@ -82,14 +83,14 @@ export class FileView implements CompareView {
     suggests.appendChild(suggest_margin);
     suggests.appendChild(suggest_column_rhs); */
 
-    const mergely = this.mergely_el = $('.mergely');
-    // mergely.id = 'mergely';
-    mergely.id = `_${idx}`;
-    // mergely.style.height = '740px';
+    // const mergely_el = this.mergely_el = $('.mergely');
+    // // mergely.id = 'mergely';
+    // mergely_el.id = `_${renderer.idx++}`;
+    // // mergely.style.height = '740px';
 
     el.appendChild(inputs);
     // el.appendChild(suggests);
-    el.appendChild(mergely);
+    // el.appendChild(mergely_el);
     return el;
   }
 
@@ -120,6 +121,14 @@ export class FileView implements CompareView {
   }
 
   doCompare(): void {
+    this.mergely_el && this.element.removeChild(this.mergely_el);
+    this.mergely_el = null;
+    this.mergely = null;
+
+    const mergely_el = this.mergely_el = $('.mergely');
+    mergely_el.id = `_${renderer.idx++}`;
+    this.element.appendChild(mergely_el);
+
     window.ipc.invoke('read file in fileview',
       this.input_lhs.getValue(),
       this.input_rhs.getValue()

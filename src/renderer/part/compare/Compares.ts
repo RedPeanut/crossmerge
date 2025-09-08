@@ -38,7 +38,7 @@ export class Compares {
         el.appendChild(v.create());
       } else if(item.type == 'file') {
         v = new FileView(el, item);
-        el.appendChild(v.create(renderer.idx++));
+        el.appendChild(v.create());
       } else throw new Error('do not enter here');
       this.map.set(item.uid, v);
 
