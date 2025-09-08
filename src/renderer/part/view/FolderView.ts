@@ -498,7 +498,7 @@ export class FolderView implements CompareView {
     // render changes
     const changes: Change[] = this.changes;
     // console.log('changes =', changes);
-    for(let i = 0; i < changes.length; ++i) {
+    for(let i = 0; i < changes.length; i++) {
       const change = changes[i];
       if(change.line == -1) continue;
       y = change.line * ratio;

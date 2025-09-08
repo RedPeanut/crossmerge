@@ -18,7 +18,7 @@ export class FileView implements CompareView {
   input_lhs: Input;
   input_rhs: Input;
 
-  mergely_el: HTMLInputElement;
+  mergely_el: HTMLElement;
   mergely: Mergely;
 
   focusManager: FocusManager;
