@@ -137,15 +137,15 @@ export class FileView implements CompareView {
     ).then(result => {
       console.log('result =', result);
       const mergely = this.mergely = new Mergely(
-      // '#mergely',
-      this.mergely_el,
-      {
-        ...{},
-        lhs: result.data_lhs,
-        rhs: result.data_rhs,
-        // _debug: true,
-      }
-    );
+        // '#mergely',
+        this.mergely_el,
+        {
+          ...{},
+          lhs: result.data_lhs,
+          rhs: result.data_rhs,
+          // _debug: true,
+        }
+      );
     }).catch(error => {
       // console.log(error);
     });
@@ -173,7 +173,7 @@ export class FileView implements CompareView {
 
   layout(): void {
     if(this.element.classList.contains('active'))
-      this.mergely.resize(null);
+      this.mergely && this.mergely.resize(null);
   }
 
   setClass(style: { active?: boolean; }): void {

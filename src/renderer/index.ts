@@ -1,6 +1,7 @@
 console.log('👋 This message is being logged by "renderer", included via webpack');
 
 import '@vscode/codicons/dist/codicon.css';
+import '../lib/mergely/mergely.css';
 import './index.css';
 import './popup.css';
 import './dialog.css';

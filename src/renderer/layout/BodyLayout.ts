@@ -4,7 +4,6 @@ import * as dom from "../util/dom";
 import { bodyLayoutServiceId, getService, mainLayoutServiceId, Service, setService } from "../Service";
 import { MainLayoutService } from "./MainLayout";
 
-import '../../lib/mergely/mergely.css';
 import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,

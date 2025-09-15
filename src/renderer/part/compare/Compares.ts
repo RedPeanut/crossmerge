@@ -1,4 +1,3 @@
-import { renderer } from "../..";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";

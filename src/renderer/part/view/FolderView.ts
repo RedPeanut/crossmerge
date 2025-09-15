@@ -496,8 +496,8 @@ export class FolderView implements CompareView {
     ratio = scrollHeight / totalLine;
 
     // render changes
+    // console.log('this.changes.length =', this.changes.length);
     const changes: Change[] = this.changes;
-    // console.log('changes =', changes);
     for(let i = 0; i < changes.length; i++) {
       const change = changes[i];
       if(change.line == -1) continue;
