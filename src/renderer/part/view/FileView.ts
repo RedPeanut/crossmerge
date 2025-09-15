@@ -60,12 +60,12 @@ export class FileView implements CompareView {
     const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'file' });
     input_rhs.setPlaceholder('Right file');
 
-    // input_lhs.value = this.item.path_lhs;
-    // input_rhs.value = this.item.path_rhs;
-    // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/left/moons.txt';
-    // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/one single diff file/right/moons.txt';
-    input_lhs.setValue(this.item.path_lhs);
-    input_rhs.setValue(this.item.path_rhs);
+    // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/left/moons.txt');
+    // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/right/moons.txt');
+    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/bab.txt');
+    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/bab.txt');
+    // input_lhs.setValue(this.item.path_lhs);
+    // input_rhs.setValue(this.item.path_rhs);
 
     input_lhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
     input_rhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));

@@ -378,15 +378,16 @@ body { height: 100%; }
 .file-compare-view { display: none; flex-direction: column; height: 100%;
   background-color: rgb(240,240,240);
   position: relative;
+  padding: 8px 8px 0;
 }
 .file-compare-view ::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
-.file-compare-view .inputs { display: flex; flex: 0; }
+.file-compare-view .inputs { display: flex; flex: 0; margin-bottom: 8px; }
 .file-compare-view .inputs .lhs, .file-compare-view .inputs .rhs { flex: 1; }
-.file-compare-view .inputs .input-margin { width: 28px; }
+.file-compare-view .inputs .input-margin { width: 45px; }
 
 /* .file-compare-view .suggests { position: absolute;
   width: 100%;
@@ -398,9 +399,10 @@ body { height: 100%; }
 /* .file-compare-view #mergely { */
 .file-compare-view .mergely {
   /* flex: 1; overflow: hidden; position: relative; */
-  height: calc(100% - 19.5px);
+  height: calc(100% - 8px - 29px - 8px);
 }
 
+.file-compare-view .mergely-editor .mergely-canvas canvas { width: 45px; }
 
 /* folder compare view */
 .folder-compare-view.active {

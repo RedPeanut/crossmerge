@@ -85,7 +85,7 @@ export function getEditorTemplate({ id }) {
 export function getCenterCanvasTemplate({ id }) {
   return htmlToElement(`\
 <div class="mergely-canvas">
-  <canvas id="${id}-lhs-rhs-canvas" width="28px"></canvas>
+  <canvas id="${id}-lhs-rhs-canvas" width="45px"></canvas>
 </div>`);
 }
 
