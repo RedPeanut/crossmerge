@@ -143,6 +143,8 @@ export class FileView implements CompareView {
           ...{},
           lhs: result.data_lhs,
           rhs: result.data_rhs,
+          bgcolor: 'white',
+          vpcolor: 'rgb(167 167 167 / 50%)',
           // _debug: true,
         }
       );

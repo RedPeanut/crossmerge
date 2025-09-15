@@ -578,16 +578,16 @@ export default class CodeMirrorDiffView {
     const ctx_lhs = ex.lhs_margin.getContext('2d');
     ctx_lhs.beginPath();
     ctx_lhs.fillStyle = this.settings.bgcolor;
-    ctx_lhs.strokeStyle = '#888';
-    ctx_lhs.fillRect(0, 0, 6.5, ex.visible_page_height);
-    ctx_lhs.strokeRect(0, 0, 6.5, ex.visible_page_height);
+    // ctx_lhs.strokeStyle = '#888';
+    ctx_lhs.fillRect(0, 0, 16, ex.visible_page_height);
+    // ctx_lhs.strokeRect(0, 0, 6.5, ex.visible_page_height);
 
     const ctx_rhs = ex.rhs_margin.getContext('2d');
     ctx_rhs.beginPath();
     ctx_rhs.fillStyle = this.settings.bgcolor;
-    ctx_rhs.strokeStyle = '#888';
-    ctx_rhs.fillRect(0, 0, 6.5, ex.visible_page_height);
-    ctx_rhs.strokeRect(0, 0, 6.5, ex.visible_page_height);
+    // ctx_rhs.strokeStyle = '#888';
+    ctx_rhs.fillRect(0, 0, 16, ex.visible_page_height);
+    // ctx_rhs.strokeRect(0, 0, 6.5, ex.visible_page_height);
 
     const ctx = ex.dcanvas.getContext('2d');
     ctx.beginPath();
@@ -1140,23 +1140,31 @@ export default class CodeMirrorDiffView {
 
       const mkr_lhs_y_start = change['lhs-y-start'] * lratio;
       const mkr_lhs_y_end = Math.max(change['lhs-y-end'] * lratio, 5);
+
+      let fillStyle;
+      if(change.op == 'c') fillStyle = 'rgb(152 85 214)';
+      else if(change.op == 'd') fillStyle = 'rgb(224 158 87)';
+      else if(change.op == 'a') fillStyle = 'rgb(95 216 85)';
+
       ctx_lhs.beginPath();
-      ctx_lhs.fillStyle = '#a3a3a3';
-      ctx_lhs.strokeStyle = '#000';
-      ctx_lhs.lineWidth = 0.5;
-      ctx_lhs.fillRect(1.5, mkr_lhs_y_start, 4.5, Math.max(mkr_lhs_y_end - mkr_lhs_y_start, 5));
-      ctx_lhs.strokeRect(1.5, mkr_lhs_y_start, 4.5, Math.max(mkr_lhs_y_end - mkr_lhs_y_start, 5));
-      ctx_lhs.stroke();
+      // ctx_lhs.fillStyle = '#a3a3a3';
+      ctx_lhs.fillStyle = fillStyle;
+      // ctx_lhs.strokeStyle = '#000';
+      // ctx_lhs.lineWidth = 0.5;
+      ctx_lhs.fillRect(5, mkr_lhs_y_start, 6, Math.max(mkr_lhs_y_end - mkr_lhs_y_start, 5));
+      // ctx_lhs.strokeRect(1.5, mkr_lhs_y_start, 4.5, Math.max(mkr_lhs_y_end - mkr_lhs_y_start, 5));
+      // ctx_lhs.stroke();
 
       const mkr_rhs_y_start = change['rhs-y-start'] * lratio;
       const mkr_rhs_y_end = Math.max(change['rhs-y-end'] * lratio, 5);
       ctx_rhs.beginPath();
-      ctx_rhs.fillStyle = '#a3a3a3';
-      ctx_rhs.strokeStyle = '#000';
-      ctx_rhs.lineWidth = 0.5;
-      ctx_rhs.fillRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
-      ctx_rhs.strokeRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
-      ctx_rhs.stroke();
+      // ctx_rhs.fillStyle = '#a3a3a3';
+      ctx_rhs.fillStyle = fillStyle;
+      // ctx_rhs.strokeStyle = '#000';
+      // ctx_rhs.lineWidth = 0.5;
+      ctx_rhs.fillRect(5, mkr_rhs_y_start, 6, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
+      // ctx_rhs.strokeRect(1.5, mkr_rhs_y_start, 4.5, Math.max(mkr_rhs_y_end - mkr_rhs_y_start, 5));
+      // ctx_rhs.stroke();
 
       // draw canvas markup changes
       if(!this._isChangeInView('lhs', lhsvp, change)
@@ -1235,8 +1243,8 @@ export default class CodeMirrorDiffView {
     const rfrom = rhsScrollTop * rratio;
     const rto = Math.max(ex.rhs_scroller.clientHeight * rratio, 5);
 
-    ctx_lhs.fillRect(1.5, lfrom, 4.5, lto);
-    ctx_rhs.fillRect(1.5, rfrom, 4.5, rto);
+    ctx_lhs.fillRect(3, lfrom, 10, lto);
+    ctx_rhs.fillRect(3, rfrom, 10, rto);
 
     this._handleLhsMarginClick = function(ev) {
       const y = ev.pageY - ex.lhs_xyoffset.top - (lto / 2);

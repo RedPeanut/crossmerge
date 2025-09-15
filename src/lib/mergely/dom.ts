@@ -73,7 +73,7 @@ export function getMergelyContainer({ clazz = '' }) {
 export function getMarginTemplate({ id }) {
   return htmlToElement(`\
 <div class="mergely-margin">
-  <canvas id="${id}-margin" width="8px"></canvas>
+  <canvas id="${id}-margin" width="16px"></canvas>
 </div>`);
 }
 

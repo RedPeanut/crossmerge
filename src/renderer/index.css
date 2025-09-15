@@ -402,6 +402,7 @@ body { height: 100%; }
   height: calc(100% - 8px - 29px - 8px);
 }
 
+.file-compare-view .mergely-editor .mergely-margin canvas { width: 16px; }
 .file-compare-view .mergely-editor .mergely-canvas canvas { width: 45px; }
 
 /* folder compare view */
