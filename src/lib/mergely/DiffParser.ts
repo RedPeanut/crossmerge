@@ -1,16 +1,6 @@
-const changeExp = new RegExp(/(^(?![><\-])*\d+(?:,\d+)?)([acd])(\d+(?:,\d+)?)/);
+import { Change } from "./Types";
 
-type Change = {
-  'lhs-line-to' ?: number,
-  'lhs-line-from' ?: number,
-  'rhs-line-from' ?: number,
-  'rhs-line-to' ?: number,
-  'op' ?: string,
-  'lhs-y-start' ?: number,
-  'lhs-y-end' ?: number,
-  'rhs-y-start' ?: number,
-  'rhs-y-end' ?: number,
-}
+const changeExp = new RegExp(/(^(?![><\-])*\d+(?:,\d+)?)([acd])(\d+(?:,\d+)?)/);
 
 export default class DiffParser {
   constructor() {};

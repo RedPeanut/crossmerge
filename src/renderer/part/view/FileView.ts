@@ -5,8 +5,10 @@ import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { FocusManager } from "../../util/FocusManager";
 import { BodyLayoutService } from "../../layout/BodyLayout";
-import { getService, bodyLayoutServiceId } from "../../Service";
+import { getService, bodyLayoutServiceId, statusbarPartServiceId } from "../../Service";
 import { renderer } from "../..";
+import { StatusbarPartService } from "../StatusbarPart";
+import { Change } from "../../../lib/mergely/Types";
 
 export interface FileViewOptions {}
 
@@ -146,6 +148,22 @@ export class FileView implements CompareView {
           bgcolor: 'white',
           vpcolor: 'rgb(167 167 167 / 50%)',
           // _debug: true,
+          changed: (changes: Change[]) => {
+            console.log('changes =', changes);
+            let removal = 0, insertion = 0, change = 0;
+            for(let i = 0; i < changes.length; i++) {
+              if(changes[i].op == 'd')
+                removal++;
+              else if(changes[i].op == 'a')
+                insertion++;
+              else //if(changes[i].op == 'c')
+                change++;
+            }
+
+            this.item.status = { removal, insertion, change };
+            const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
+            statusbarPartService.update(this.item);
+          }
         }
       );
     }).catch(error => {

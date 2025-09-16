@@ -6,6 +6,7 @@ import CodeMirrorDiffView from './DiffView';
 import DiffWorker from './DiffWorker';
 import Diff from './Diff';
 import * as dom from './dom';
+import { Change } from './Types';
 
 const trace = console.log;
 
@@ -33,7 +34,8 @@ const defaultOptions = {
   rhs_cmsettings: {},
   lhs: null,
   rhs: null,
-  _debug: false
+  _debug: false,
+  changed: null,
 };
 
 export default class Mergely {
@@ -124,12 +126,13 @@ export default class Mergely {
         console.error('Unexpected error with web worker', ev);
       }
       // worker.onmessage = (ev) => {
-      worker.on('changes', (changes) => {
+      worker.on('changes', (changes: Change[]) => {
         if(options._debug) {
           trace('event#changed worker finished');
         }
         this._changes = changes;
         view.setChanges(this._changes);
+        this._options.changed && this._options.changed(changes);
       });
       worker.postMessage({
         lhs: this.get('lhs'),

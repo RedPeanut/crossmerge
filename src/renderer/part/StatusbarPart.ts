@@ -28,7 +28,10 @@ export class StatusbarPart extends Part implements StatusbarPartService {
   }
 
   update(item: CompareItem): void {
-    this.span.textContent = `${item.status.removed} removedㆍ${item.status.inserted} insertedㆍ${item.status.changed} changedㆍ${item.status.unchanged} unchanged`;
+    if(item.type === 'file')
+      this.span.textContent = `${item.status.removal} removalㆍ${item.status.insertion} insertionㆍ${item.status.change} change`;
+    else if(item.type === 'folder')
+      this.span.textContent = `${item.status.removed} removedㆍ${item.status.inserted} insertedㆍ${item.status.changed} changedㆍ${item.status.unchanged} unchanged`;
   }
 
   clear(): void {

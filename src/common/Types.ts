@@ -4,10 +4,16 @@ export type State = 'unchanged' | 'changed' | 'removed' | 'inserted';
 export type CompareItemType = 'file' | 'folder';
 
 export interface Status {
+  // folder
   removed?: number;
   inserted?: number;
   changed?: number;
   unchanged?: number;
+
+  // file
+  removal?: number;
+  insertion?: number;
+  change?: number;
 
   encoding?: string;
   spaces?: number;
