@@ -282,7 +282,7 @@ class MainWindow {
       let reads: DirentExt[] = await _readdirSyncWithStat(_path);
       reads = reads
           .filter((item) => item.name.startsWith(last))
-          .filter((item) => mode === 'folder' ? item.isDirectory : item.isFile);
+          .filter((item) => mode === 'folder' ? item.isDirectory : true);
       return reads;
     });
 

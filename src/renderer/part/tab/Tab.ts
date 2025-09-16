@@ -55,10 +55,13 @@ export class Tab {
   }
 
   updateLabel(lhs: string, rhs: string) {
-    const lhs_path = lhs.substring(0, lhs.lastIndexOf(renderer.path.sep));
-    let lhs_name = lhs.substring(lhs.lastIndexOf(renderer.path.sep)+1, lhs.length);
-    const rhs_path = rhs.substring(0, rhs.lastIndexOf(renderer.path.sep));
-    let rhs_name = rhs.substring(rhs.lastIndexOf(renderer.path.sep)+1, rhs.length);
+    const sep = '/';
+    lhs = lhs.replace(/\\/g, sep);
+    rhs = rhs.replace(/\\/g, sep);
+    const lhs_path = lhs.substring(0, lhs.lastIndexOf(sep));
+    let lhs_name = lhs.substring(lhs.lastIndexOf(sep)+1, lhs.length);
+    const rhs_path = rhs.substring(0, rhs.lastIndexOf(sep));
+    let rhs_name = rhs.substring(rhs.lastIndexOf(sep)+1, rhs.length);
     if(StringUtil.isEmpty(lhs_name)) lhs_name = `No ${this.item.type}`;
     if(StringUtil.isEmpty(rhs_name)) rhs_name = `No ${this.item.type}`;
     if(lhs_name == rhs_name) {
