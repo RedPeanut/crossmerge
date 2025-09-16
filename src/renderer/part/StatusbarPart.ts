@@ -1,15 +1,11 @@
+import { CompareItem } from '../../common/Types';
 import { STATUSBAR_HEIGHT } from '../layout/MainLayout';
 import { Part } from '../Part';
 import { setService, statusbarPartServiceId } from '../Service';
 import { $ } from '../util/dom';
 
 export interface StatusbarPartService {
-  update(status: {
-    removed: number,
-    inserted: number,
-    changed: number,
-    unchanged: number,
-  }): void;
+  update(item: CompareItem): void;
   clear(): void;
 }
 
@@ -31,8 +27,8 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     return container;
   }
 
-  update(status): void {
-    this.span.textContent = `${status.removed} removedㆍ${status.inserted} insertedㆍ${status.changed} changedㆍ${status.unchanged} unchanged`;
+  update(item: CompareItem): void {
+    this.span.textContent = `${item.status.removed} removedㆍ${item.status.inserted} insertedㆍ${item.status.changed} changedㆍ${item.status.unchanged} unchanged`;
   }
 
   clear(): void {

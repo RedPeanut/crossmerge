@@ -62,8 +62,7 @@ export class GroupView {
         statusbarPartService.clear();
       } else if(this.group[i].type === 'folder') {
         if(this.group[i].status) {
-          const { removed, inserted, changed, unchanged } = this.group[i].status;
-          statusbarPartService.update({ removed, inserted, changed, unchanged });
+          statusbarPartService.update(this.group[i]);
         } else {
           statusbarPartService.clear();
         }

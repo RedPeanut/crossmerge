@@ -3,6 +3,19 @@ import { CompareFolderElem } from "../main/compare/CompareFolder";
 export type State = 'unchanged' | 'changed' | 'removed' | 'inserted';
 export type CompareItemType = 'file' | 'folder';
 
+export interface Status {
+  removed?: number;
+  inserted?: number;
+  changed?: number;
+  unchanged?: number;
+
+  encoding?: string;
+  spaces?: number;
+  ln?: number;
+  col?: number;
+  crlf?: string;
+}
+
 // description of compare state
 export interface CompareItem {
   type: CompareItemType;
@@ -15,18 +28,7 @@ export interface CompareItem {
   // selected?: boolean; // default: false
   // active?: boolean; // default: false
 
-  status?: {
-    removed?: number;
-    inserted?: number;
-    changed?: number;
-    unchanged?: number;
-
-    encoding?: string;
-    spaces?: number;
-    ln?: number;
-    col?: number;
-    crlf?: string;
-  };
+  status?: Status;
 }
 
 export interface CompareFileData {
