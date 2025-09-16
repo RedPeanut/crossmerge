@@ -137,7 +137,7 @@ export class FileView implements CompareView {
       this.input_lhs.getValue(),
       this.input_rhs.getValue()
     ).then(result => {
-      console.log('result =', result);
+      // console.log('result =', result);
       const mergely = this.mergely = new Mergely(
         // '#mergely',
         this.mergely_el,
@@ -167,7 +167,7 @@ export class FileView implements CompareView {
         }
       );
     }).catch(error => {
-      // console.log(error);
+      console.log(error);
     });
 
     const input_lhs_value = this.input_lhs.getValue();
