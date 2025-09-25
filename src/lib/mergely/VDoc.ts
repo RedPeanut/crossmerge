@@ -1,3 +1,4 @@
+// import CodeMirror from 'codemirror';
 // const diff = require('./diff');
 import Diff from './Diff';
 
@@ -197,7 +198,7 @@ export default class VDoc {
     return this._rendered[side][changeId] = true;
   }
 
-  _getLine(side, id) {
+  _getLine(side, id): VLine {
     let line = this._lines[side][id];
     if(line) {
       return line;
@@ -245,7 +246,7 @@ class VLine {
   background;
   gutter;
   marker;
-  editor;
+  editor: CodeMirror.EditorFromTextArea;
   markup;
   _clearMarkup;
   rendered;
@@ -273,7 +274,7 @@ class VLine {
     this.markup.push([ charFrom, charTo, className ]);
   }
 
-  update(editor) {
+  update(editor: CodeMirror.EditorFromTextArea) {
     if(this.rendered) {
       // FIXME: probably do not need this now
       console.log('already rendered', this.id);
@@ -300,8 +301,8 @@ class VLine {
         const mapped = mapLettersToChars(editor.getValue());
         for(const markup of this.markup) {
           const [ charFrom, charTo, className ] = markup;
-          const fromPos = { line: this.id };
-          const toPos = { line: this.id };
+          const fromPos = { line: this.id, ch: null };
+          const toPos = { line: this.id, ch: null };
           if(charFrom >= 0) {
             fromPos.ch = mapped[charFrom];
           }

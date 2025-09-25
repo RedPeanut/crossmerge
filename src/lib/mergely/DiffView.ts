@@ -6,13 +6,14 @@
 // const dom = require('./dom.js');
 // const VDoc = require('./vdoc');
 
-import CodeMirror from "codemirror";
+import CodeMirror from 'codemirror';
 // import { DocOrEditor, SearchCursor } from 'codemirror/addon/search/searchcursor';
 // import { EditorConfiguration } from 'codemirror/addon/selection/mark-selection';
 import 'codemirror/lib/codemirror.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
+import { Change } from './Types';
 
 const NOTICES = [
   'lgpl-separate-notice',
@@ -31,7 +32,7 @@ export default class CodeMirrorDiffView {
   settings;
   lhs_cmsettings;
   rhs_cmsettings;
-  _vdoc;
+  _vdoc: VDoc;
   _linkedScrollTimeout;
   _unbound;
   _changedTimeout;
@@ -40,7 +41,7 @@ export default class CodeMirrorDiffView {
     rhs?: CodeMirror.EditorFromTextArea,
   };
   _origEl;
-  changes;
+  changes: Change[];
   _current_diff;
   id;
   prev_query;
@@ -747,7 +748,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  setChanges(changes) {
+  setChanges(changes: Change[]) {
     this.trace('change#setChanges');
     this._clear();
     // after clear, set the new changes
@@ -916,7 +917,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _markupLineChanges (changes) {
+  _markupLineChanges(changes: Change[]) {
     if(this.settings._debug) {
       traceTimeStart('draw#_markupLineChanges');
     }
