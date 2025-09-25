@@ -9,3 +9,12 @@ export type Change = {
   'rhs-y-start' ?: number,
   'rhs-y-end' ?: number,
 }
+
+export type Side = 'lhs' | 'rhs';
+
+export interface Viewport {
+  from: number;
+  to: number;
+}
+
+export type Direction = 'next' | 'prev';

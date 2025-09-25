@@ -1,6 +1,7 @@
 // import CodeMirror from 'codemirror';
 // const diff = require('./diff');
 import Diff from './Diff';
+import { Side, Change, Viewport } from './Types';
 
 const trace = console.log;
 
@@ -8,13 +9,30 @@ const expLetters = new RegExp(
   /\p{Letter}\p{Mark}*|\p{Number}\p{Mark}*|\p{Punctuation}\p{Mark}*|\p{Symbol}\p{Mark}*|\p{White_Space}/gu
 );
 
+interface VDocOptions {
+  _debug: boolean;
+}
+
+interface RenderOptions {
+  isCurrent?: any;
+  lineDiff?: any;
+  mergeButton?: any;
+  getMergeHandler?: any;
+}
+
 export default class VDoc {
 
-  options;
-  _lines;
-  _rendered;
+  options: VDocOptions;
+  _lines: {
+    lhs: { [id: number]: VLine },
+    rhs: { [id: number]: VLine },
+  };
+  _rendered: {
+    lhs: { [id: number]: boolean },
+    rhs: { [id: number]: boolean },
+  };
 
-  constructor(options) {
+  constructor(options: VDocOptions) {
     this.options = options;
     this._lines = {
       lhs: {},
@@ -26,7 +44,7 @@ export default class VDoc {
     };
   }
 
-  addRender(side, change, changeId, options) {
+  addRender(side: Side, change: Change, changeId: number, options: RenderOptions) {
     if(this.options._debug) {
       trace('vdoc#addRender', side, changeId, change);
     }
@@ -135,7 +153,7 @@ export default class VDoc {
     this._setRenderedChange(side, changeId);
   }
 
-  addInlineDiff(change, changeId, { getText, ignorews, ignoreaccents, ignorecase }) {
+  addInlineDiff(change: Change, changeId: number, { getText, ignorews, ignoreaccents, ignorecase }) {
     if(this.options._debug) {
       trace('vdoc#addInlineDiff', changeId, change);
     }
@@ -191,14 +209,14 @@ export default class VDoc {
     }
   }
 
-  _setRenderedChange(side, changeId) {
+  _setRenderedChange(side: Side, changeId: number) {
     if(this.options._debug) {
       trace('vdoc#_setRenderedChange', side, changeId);
     }
     return this._rendered[side][changeId] = true;
   }
 
-  _getLine(side, id): VLine {
+  _getLine(side: Side, id: number): VLine {
     let line = this._lines[side][id];
     if(line) {
       return line;
@@ -208,13 +226,13 @@ export default class VDoc {
     return line;
   }
 
-  update(side, editor, viewport) {
+  update(side: Side, editor: CodeMirror.EditorFromTextArea, viewport: Viewport) {
     if(this.options._debug) {
       trace('vdoc#update', side, editor, viewport);
     }
     const lines = Object.keys(this._lines[side]);
     for(let i = 0; i < lines.length; ++i) {
-      const id = lines[i];
+      const id = parseInt(lines[i]);
       if(id < viewport.from || id > viewport.to) {
         continue;
       }
@@ -242,16 +260,16 @@ export default class VDoc {
 
 class VLine {
 
-  id;
-  background;
-  gutter;
-  marker;
+  id: number;
+  background; //: Set<unknown>;
+  gutter; //: Set<unknown>;
+  marker: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
   editor: CodeMirror.EditorFromTextArea;
-  markup;
-  _clearMarkup;
-  rendered;
+  markup: [charFrom: number, charTo: number, className: string][];
+  _clearMarkup: CodeMirror.TextMarker<CodeMirror.MarkerRange>[];
+  rendered: boolean;
 
-  constructor(id) {
+  constructor(id: number) {
     this.id = id;
     this.background = new Set();
     this.gutter = new Set();
@@ -262,15 +280,15 @@ class VLine {
     this.rendered = false;
   }
 
-  addLineClass(location, clazz) {
+  addLineClass(location, clazz: string) {
     this[location].add(clazz);
   }
 
-  addMergeButton(name, item, handler) {
+  addMergeButton(name: string, item, handler) {
     this.marker = [ name, item, handler ];
   }
 
-  markText(charFrom, charTo, className) {
+  markText(charFrom: number, charTo: number, className: string) {
     this.markup.push([ charFrom, charTo, className ]);
   }
 
@@ -301,8 +319,8 @@ class VLine {
         const mapped = mapLettersToChars(editor.getValue());
         for(const markup of this.markup) {
           const [ charFrom, charTo, className ] = markup;
-          const fromPos = { line: this.id, ch: null };
-          const toPos = { line: this.id, ch: null };
+          const fromPos: CodeMirror.Position = { line: this.id, ch: null };
+          const toPos: CodeMirror.Position = { line: this.id, ch: null };
           if(charFrom >= 0) {
             fromPos.ch = mapped[charFrom];
           }
@@ -348,7 +366,7 @@ class VLine {
   }
 }
 
-function getExtents(side, change) {
+function getExtents(side: Side, change: Change) {
   const oside = (side === 'lhs') ? 'rhs' : 'lhs';
   return {
     lf: change[`${side}-line-from`],

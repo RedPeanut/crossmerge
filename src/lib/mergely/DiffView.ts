@@ -13,7 +13,7 @@ import 'codemirror/lib/codemirror.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
-import { Change } from './Types';
+import { Change, Side, Viewport, Direction } from './Types';
 
 const NOTICES = [
   'lgpl-separate-notice',
@@ -43,12 +43,12 @@ export default class CodeMirrorDiffView {
   _origEl;
   changes: Change[];
   _current_diff;
-  id;
+  id: string;
   prev_query;
   cursor;
   em_height;
-  lhsId;
-  rhsId;
+  lhsId: string;
+  rhsId: string;
   chfns;
   _skipscroll;
   change_exp;
@@ -155,7 +155,7 @@ export default class CodeMirrorDiffView {
     this.el.dispatchEvent(new Event('updated'));
   }
 
-  scrollToDiff(direction) {
+  scrollToDiff(direction: Direction) {
     this.trace('api#scrollToDiff', direction);
     if(!this.changes.length) return;
     if(direction === 'next') {
@@ -304,7 +304,7 @@ export default class CodeMirrorDiffView {
     this._set_top_offset('lhs');
   }
 
-  bind(container) {
+  bind(container: HTMLElement) {
     this.trace('api#bind', container);
     const el = dom.getMergelyContainer({ clazz: container.className });
     const computedStyle = window.getComputedStyle(container);
@@ -680,7 +680,7 @@ export default class CodeMirrorDiffView {
       }
     }
 
-    const vp = this.editor[oside].getViewport();
+    const vp: Viewport = this.editor[oside].getViewport();
     let scroll = true;
     if(last_change) {
       this.trace('scroll#_scrolling', 'last change before midline', last_change);
@@ -771,7 +771,7 @@ export default class CodeMirrorDiffView {
     this.el.dispatchEvent(new Event('updated'));
   }
 
-  _getViewportSide(side) {
+  _getViewportSide(side: Side): Viewport {
     const editor = this.editor[side];
       const rect = editor.getWrapperElement().getBoundingClientRect();
       const topVisibleLine = editor.lineAtHeight(rect.top, 'window');
@@ -814,7 +814,7 @@ export default class CodeMirrorDiffView {
     return true;
   }
 
-  _calculateOffsets(changes) {
+  _calculateOffsets(changes: Change[]) {
     if(this.settings._debug) {
       traceTimeStart('draw#_calculateOffsets');
     }
@@ -947,7 +947,7 @@ export default class CodeMirrorDiffView {
           isCurrent,
           lineDiff,
           // TODO: move out of loop
-          getMergeHandler: (change, side, oside) => {
+          getMergeHandler: (change: Change, side: Side, oside: Side) => {
             return () => this._merge_change(change, side, oside);
           },
           mergeButton: osideEditable
@@ -964,7 +964,7 @@ export default class CodeMirrorDiffView {
           isCurrent,
           lineDiff,
           // TODO: move out of loop
-          getMergeHandler: (change, side, oside) => {
+          getMergeHandler: (change: Change, side: Side, oside: Side) => {
             return () => this._merge_change(change, side, oside);
           },
           mergeButton: osideEditable
@@ -1002,7 +1002,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _merge_change(change, side, oside) {
+  _merge_change(change: Change, side: Side, oside: Side) {
     if(!change) {
       return;
     }
@@ -1049,16 +1049,16 @@ export default class CodeMirrorDiffView {
   }
 
   _draw_info(): {
-    visible_page_height,
-    lhs_scroller,
-    rhs_scroller,
-    lhs_lines,
-    rhs_lines,
+    visible_page_height: number,
+    lhs_scroller: HTMLElement,
+    rhs_scroller: HTMLElement,
+    lhs_lines: number,
+    rhs_lines: number,
     dcanvas: HTMLCanvasElement,
     lhs_margin: HTMLCanvasElement,
     rhs_margin: HTMLCanvasElement,
-    lhs_xyoffset,
-    rhs_xyoffset
+    lhs_xyoffset: { top: number, left: number },
+    rhs_xyoffset: { top: number, left: number }
   } {
     const lhsScroll = this.editor.lhs.getScrollerElement();
     const rhsScroll = this.editor.rhs.getScrollerElement();
@@ -1090,7 +1090,7 @@ export default class CodeMirrorDiffView {
     };
   }
 
-  _renderDiff(changes) {
+  _renderDiff(changes: Change[]) {
     if(this.settings._debug) {
       traceTimeStart('draw#_renderDiff');
     }

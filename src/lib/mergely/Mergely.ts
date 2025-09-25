@@ -10,7 +10,32 @@ import { Change } from './Types';
 
 const trace = console.log;
 
-const defaultOptions = {
+interface MergelyOptions {
+  autoupdate?: any;
+  rhs_margin?: any;
+  wrap_lines?: boolean;
+  line_numbers?: boolean;
+  lcs?: boolean;
+  sidebar?: boolean;
+  viewport?: boolean;
+  ignorews?: boolean;
+  ignorecase?: boolean;
+  ignoreaccents?: boolean;
+  resize_timeout?: any;
+  change_timeout?: any;
+  bgcolor?: any;
+  vpcolor?: any;
+  license?: any;
+  cmsettings?: any;
+  lhs_cmsettings?: any;
+  rhs_cmsettings?: any;
+  lhs?: any;
+  rhs?: any;
+  _debug?: boolean;
+  changed?: (changes: Change[]) => void;
+}
+
+const defaultOptions: MergelyOptions = {
   autoupdate: true,
   rhs_margin: 'right',
   wrap_lines: false,
@@ -40,7 +65,7 @@ const defaultOptions = {
 
 export default class Mergely {
 
-  el;
+  el: HTMLElement;
   _initOptions;
   _viewOptions;
   _diffView;
@@ -65,15 +90,17 @@ export default class Mergely {
   public update(side: string) { return this._diffView.update(side); }
   //*/
 
-  constructor(selector, options) {
-    let element = selector;
+  constructor(selector: string | HTMLElement, options: MergelyOptions) {
+    let element: HTMLElement;
     if(typeof selector === 'string') {
-      element = document.querySelector(selector);
+      element = document.querySelector(selector) as HTMLElement;
       if(!element) {
         throw new Error(`Failed to find: ${selector}`);
       }
     } else if(typeof selector !== 'object') {
       throw new Error(`The 'selector' element must be a string or DOM element`);
+    } else {
+      element = selector as HTMLElement;
     }
 
     const computedStyle = window.getComputedStyle(element);
@@ -148,7 +175,7 @@ export default class Mergely {
     view.bind(this.el);
   }
 
-  _setOptions(options) {
+  _setOptions(options: MergelyOptions) {
     if(this._options && this._options._debug) {
       trace('api#options');
     }
