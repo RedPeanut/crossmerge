@@ -125,9 +125,12 @@ export class FileView implements CompareView {
   }
 
   doCompare(): void {
+    if(this.mergely) {
+      this.mergely.unbind();
+      this.mergely = null;
+    }
     this.mergely_el && this.element.removeChild(this.mergely_el);
     this.mergely_el = null;
-    this.mergely = null;
 
     const mergely_el = this.mergely_el = $('.mergely');
     mergely_el.id = `_${renderer.idx++}`;
