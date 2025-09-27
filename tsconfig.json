@@ -13,6 +13,7 @@
     // "jsx": "react-jsx",
     // "strict": true,
     "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./src/types"]
   },
   "exclude": ["test", "release/build", "release/app/dist", ".erb/dll"]
 }
