@@ -14,10 +14,10 @@ interface VDocOptions {
 }
 
 interface RenderOptions {
-  isCurrent?: any;
-  lineDiff?: any;
-  mergeButton?: any;
-  getMergeHandler?: any;
+  isCurrent?: boolean;
+  lineDiff?: boolean;
+  mergeButton?: HTMLElement;
+  getMergeHandler?: (change: Change, side: Side, oside: Side) => void;
 }
 
 export default class VDoc {
@@ -261,8 +261,8 @@ export default class VDoc {
 class VLine {
 
   id: number;
-  background; //: Set<unknown>;
-  gutter; //: Set<unknown>;
+  background: Set<string>;
+  gutter: Set<string>;
   marker: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
   editor: CodeMirror.EditorFromTextArea;
   markup: [charFrom: number, charTo: number, className: string][];
@@ -271,8 +271,8 @@ class VLine {
 
   constructor(id: number) {
     this.id = id;
-    this.background = new Set();
-    this.gutter = new Set();
+    this.background = new Set<string>();
+    this.gutter = new Set<string>();
     this.marker = null;
     this.editor = null;
     this.markup = [];
@@ -280,8 +280,13 @@ class VLine {
     this.rendered = false;
   }
 
-  addLineClass(location, clazz: string) {
+  addLineClass(location: 'background' | 'gutter', clazz: string) {
     this[location].add(clazz);
+    /* what is better?
+    if(location === 'background')
+    this.background.add(clazz);
+    else if(location === 'gutter')
+    this.gutter.add(clazz); */
   }
 
   addMergeButton(name: string, item, handler) {

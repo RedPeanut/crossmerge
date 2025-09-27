@@ -18,3 +18,28 @@ export interface Viewport {
 }
 
 export type Direction = 'next' | 'prev';
+
+export interface Colors {
+  current: {
+    border: string
+  },
+  a: {
+    border: string,
+    bg: string,
+    fg: string,
+    ch: string,
+    in: string
+  },
+  d: {
+    border: string,
+    bg: string,
+    fg: string,
+    ch: string,
+    in: string
+  },
+  c: {
+    border: string,
+    bg: string,
+    fg: string,
+  }
+}

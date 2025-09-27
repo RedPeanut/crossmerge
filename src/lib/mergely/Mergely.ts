@@ -10,7 +10,7 @@ import { Change } from './Types';
 
 const trace = console.log;
 
-interface MergelyOptions {
+export interface MergelyOptions {
   autoupdate?: any;
   rhs_margin?: any;
   wrap_lines?: boolean;

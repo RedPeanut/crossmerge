@@ -13,7 +13,8 @@ import 'codemirror/lib/codemirror.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
-import { Change, Side, Viewport, Direction } from './Types';
+import { Change, Side, Viewport, Direction, Colors } from './Types';
+import { MergelyOptions } from './Mergely';
 
 const NOTICES = [
   'lgpl-separate-notice',
@@ -26,10 +27,14 @@ const trace = console.log;
 const traceTimeStart = console.time;
 const traceTimeEnd = console.timeEnd;
 
+export interface CodeMirrorDiffViewOptions extends MergelyOptions {
+  _colors: Colors;
+}
+
 export default class CodeMirrorDiffView {
 
   el: HTMLElement;
-  settings;
+  settings: CodeMirrorDiffViewOptions;
   lhs_cmsettings;
   rhs_cmsettings;
   _vdoc: VDoc;
@@ -40,7 +45,7 @@ export default class CodeMirrorDiffView {
     lhs?: CodeMirror.EditorFromTextArea,
     rhs?: CodeMirror.EditorFromTextArea,
   };
-  _origEl;
+  _origEl: { className: string };
   changes: Change[];
   _current_diff;
   id: string;
@@ -52,16 +57,16 @@ export default class CodeMirrorDiffView {
   chfns;
   _skipscroll;
   change_exp;
-  merge_lhs_button;
-  merge_rhs_button;
+  merge_lhs_button: HTMLElement;
+  merge_rhs_button: HTMLElement;
   _handleResize;
   midway;
-  draw_top_offset
-  draw_mid_width;
-  draw_lhs_min;
-  draw_rhs_max;
-  draw_lhs_width;
-  draw_rhs_width;
+  draw_top_offset: number;
+  draw_mid_width: number;
+  draw_lhs_min: number;
+  draw_rhs_max: number;
+  draw_lhs_width: number;
+  draw_rhs_width: number;
   _handleLhsMarginClick;
   _handleRhsMarginClick;
 
@@ -782,7 +787,7 @@ export default class CodeMirrorDiffView {
     };
   }
 
-  _isChangeInView(side, vp, change) {
+  _isChangeInView(side: Side, vp: Viewport, change: Change) {
     if(change[`${side}-line-from`] < 0 || change[`${side}-line-to`] < 0) {
       // handle case where the diff is "empty" - always in view
       return true;
@@ -793,7 +798,7 @@ export default class CodeMirrorDiffView {
       (vp.from >= change[`${side}-line-from`] && vp.to <= change[`${side}-line-to`]);
   }
 
-  _set_top_offset(side) {
+  _set_top_offset(side: Side) {
     // save the current scroll position of the editor
     const saveY = this.editor[side].getScrollInfo().top;
     // temporarily scroll to top
@@ -805,7 +810,7 @@ export default class CodeMirrorDiffView {
     if(!topnode.offsetParent) {
       return false;
     }
-    const top_offset = topnode.offsetParent.offsetTop + 4;
+    const top_offset: number = topnode.offsetParent.offsetTop + 4;
 
     // restore editor's scroll position
     this.editor[side].scrollTo(null, saveY);
@@ -951,7 +956,7 @@ export default class CodeMirrorDiffView {
             return () => this._merge_change(change, side, oside);
           },
           mergeButton: osideEditable
-            ? this.merge_rhs_button.cloneNode(true) : null
+            ? this.merge_rhs_button.cloneNode(true) as HTMLElement : null
         });
       }
 
@@ -968,7 +973,7 @@ export default class CodeMirrorDiffView {
             return () => this._merge_change(change, side, oside);
           },
           mergeButton: osideEditable
-            ? this.merge_lhs_button.cloneNode(true) : null
+            ? this.merge_lhs_button.cloneNode(true) as HTMLElement : null
         });
       }
 
@@ -1002,7 +1007,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _merge_change(change: Change, side: Side, oside: Side) {
+  _merge_change(change: Change, side: Side, oside: Side): void {
     if(!change) {
       return;
     }
@@ -1090,7 +1095,7 @@ export default class CodeMirrorDiffView {
     };
   }
 
-  _renderDiff(changes: Change[]) {
+  _renderDiff(changes: Change[]): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_renderDiff');
     }
@@ -1142,7 +1147,7 @@ export default class CodeMirrorDiffView {
       const mkr_lhs_y_start = change['lhs-y-start'] * lratio;
       const mkr_lhs_y_end = Math.max(change['lhs-y-end'] * lratio, 5);
 
-      let fillStyle;
+      let fillStyle: string;
       if(change.op == 'c') fillStyle = 'rgb(152 85 214)';
       else if(change.op == 'd') fillStyle = 'rgb(224 158 87)';
       else if(change.op == 'a') fillStyle = 'rgb(95 216 85)';
@@ -1265,7 +1270,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _queryElement(selector) {
+  _queryElement(selector: string) {
     const cacheName = `_element:${selector}`;
     const element = this[cacheName] || document.querySelector(selector);
     if(!this[cacheName]) {
@@ -1274,7 +1279,7 @@ export default class CodeMirrorDiffView {
     return this[cacheName];
   }
 
-  trace(...args) {
+  trace(...args: any[]) {
     if(this.settings._debug) {
       console.log(...args);
     }

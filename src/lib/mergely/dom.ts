@@ -1,16 +1,17 @@
+import { Colors } from "./Types";
 
 /**
  * @param {String} HTML representing a single element
  * @return {Element}
  */
-export function htmlToElement(html): HTMLElement {
+export function htmlToElement(html: string): HTMLElement {
     var template = document.createElement('template') as HTMLTemplateElement;
     html = html.trim(); // Never return a text node of whitespace as the result
     template.innerHTML = html;
     return template.content.firstChild as HTMLElement;
 }
 
-export function getColors(el) {
+export function getColors(el: HTMLElement): Colors {
   // get current diff border color from user-defined css
   const classes = ['mergely-editor', ...el.classList];
   const text = `
@@ -64,32 +65,32 @@ export function getColors(el) {
   return colors;
 }
 
-export function getMergelyContainer({ clazz = '' }) {
+export function getMergelyContainer({ clazz = '' }): HTMLElement {
   const classes = [ 'mergely-editor', clazz ]
   return htmlToElement(`\
 <div class="${classes.join(' ')}" style="display:flex;height:100%;position:relative;overflow:hidden;"></div>`);
 }
 
-export function getMarginTemplate({ id }) {
+export function getMarginTemplate({ id }): HTMLElement {
   return htmlToElement(`\
 <div class="mergely-margin">
   <canvas id="${id}-margin" width="16px"></canvas>
 </div>`);
 }
 
-export function getEditorTemplate({ id }) {
+export function getEditorTemplate({ id }): HTMLElement {
   return htmlToElement(`\
 <textarea id="${id}" class="mergely-column"></textarea>`);
 }
 
-export function getCenterCanvasTemplate({ id }) {
+export function getCenterCanvasTemplate({ id }): HTMLElement {
   return htmlToElement(`\
 <div class="mergely-canvas">
   <canvas id="${id}-lhs-rhs-canvas" width="45px"></canvas>
 </div>`);
 }
 
-export function getSplash({ notice, left, top }) {
+export function getSplash({ notice, left, top }): HTMLElement {
   return htmlToElement(`\
 <div class="mergely-splash" style="left: ${left}px; top: ${top}px">
   <p>
