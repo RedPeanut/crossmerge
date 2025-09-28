@@ -95,6 +95,17 @@
   color: #fff;
 }
 
+.mergely-editor .CodeMirror-inlineWidget-wrapper { right: 3px; }
+
+.mergely-editor .merge-button {
+  color: black;
+  border: 1px solid black; border-radius: 5px;
+  width: 16px; height: 16px;
+  background-color: white;
+}
+.mergely-editor .merge-button:hover { color: black; }
+.mergely-editor .current .merge-button:hover { color: black; }
+
 /* changed styles */
 .mergely-editor .mergely.c.CodeMirror-linebackground {
   border-color: #a3a3a3;

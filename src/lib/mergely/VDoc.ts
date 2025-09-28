@@ -146,9 +146,9 @@ export default class VDoc {
     }
 
     if(mergeButton) {
-      mergeButton.className = `merge-button merge-${oside}-button`;
+      mergeButton.className += ` merge-button merge-${oside}-button`;
       const handler = getMergeHandler(change, side, oside);
-      this._getLine(side, lf).addMergeButton('merge', mergeButton, handler);
+      this._getLine(side, lf).addMergeButton_('merge', mergeButton, handler);
     }
     this._setRenderedChange(side, changeId);
   }
@@ -264,6 +264,7 @@ class VLine {
   background: Set<string>;
   gutter: Set<string>;
   marker: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
+  mergeBtn: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
   editor: CodeMirror.EditorFromTextArea;
   markup: [charFrom: number, charTo: number, className: string][];
   _clearMarkup: CodeMirror.TextMarker<CodeMirror.MarkerRange>[];
@@ -274,6 +275,7 @@ class VLine {
     this.background = new Set<string>();
     this.gutter = new Set<string>();
     this.marker = null;
+    this.mergeBtn = null;
     this.editor = null;
     this.markup = [];
     this._clearMarkup = [];
@@ -289,8 +291,12 @@ class VLine {
     this.gutter.add(clazz); */
   }
 
-  addMergeButton(name: string, item, handler) {
+  addMergeButton(name: string, item: HTMLElement, handler) {
     this.marker = [ name, item, handler ];
+  }
+
+  addMergeButton_(name: string, item: HTMLElement, handler) {
+    this.mergeBtn = [ name, item, handler ];
   }
 
   markText(charFrom: number, charTo: number, className: string) {
@@ -317,6 +323,11 @@ class VLine {
         const [ name, item, handler ] = this.marker;
         item.addEventListener('click', handler);
         editor.setGutterMarker(this.id, name, item);
+      }
+      if(this.mergeBtn) {
+        const [ name, item, handler ] = this.mergeBtn;
+        item.addEventListener('click', handler);
+        editor.setInlineWidget(this.id, name, item);
       }
       if(this.markup.length) {
         // while Mergely diffs unicode chars (letters+mark), CM is by character,
@@ -357,6 +368,13 @@ class VLine {
         const [ name, item, handler ] = this.marker;
         // set with `null` to clear marker
         editor.setGutterMarker(this.id, name, null);
+        item.removeEventListener('click', handler);
+        item.remove();
+      }
+      if(this.mergeBtn) {
+        const [ name, item, handler ] = this.mergeBtn;
+        // set with `null` to clear marker
+        editor.setInlineWidget(this.id, name, null);
         item.removeEventListener('click', handler);
         item.remove();
       }

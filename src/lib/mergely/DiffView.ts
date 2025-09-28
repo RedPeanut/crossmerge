@@ -89,6 +89,7 @@ export default class CodeMirrorDiffView {
       lineWrapping: this.settings.wrap_lines,
       lineNumbers: this.settings.line_numbers,
       gutters: (this.settings.line_numbers && [ 'merge', 'CodeMirror-linenumbers' ]) || [],
+      inlineWidgets: [ 'merge' ]
     };
     this.rhs_cmsettings = {
       ...this.settings.cmsettings,
@@ -97,6 +98,7 @@ export default class CodeMirrorDiffView {
       lineWrapping: this.settings.wrap_lines,
       lineNumbers: this.settings.line_numbers,
       gutters: (this.settings.line_numbers && [ 'merge', 'CodeMirror-linenumbers' ]) || [],
+      inlineWidgets: [ 'merge' ]
     };
     this._vdoc = new VDoc({ _debug: this.settings._debug });
     this._linkedScrollTimeout = {};
@@ -331,8 +333,10 @@ export default class CodeMirrorDiffView {
     this._skipscroll = {};
     this.change_exp = new RegExp(/(\d+(?:,\d+)?)([acd])(\d+(?:,\d+)?)/);
     // homebrew button
-    const lhsTemplate = `<div class="merge-button" title="Merge left">&#x25C0;</div>`;
-    const rhsTemplate = `<div class="merge-button" title="Merge right">&#x25B6;</div>`;
+    // const lhsTemplate = `<div class="merge-button" title="Merge left">&#x25C0;</div>`;
+    // const rhsTemplate = `<div class="merge-button" title="Merge right">&#x25B6;</div>`;
+    const lhsTemplate = `<span class="codicon codicon-arrow-left" title="Merge left"></span>`;
+    const rhsTemplate = `<span class="codicon codicon-arrow-right" title="Merge right"></span>`;
     this.merge_lhs_button = dom.htmlToElement(lhsTemplate);
     this.merge_rhs_button = dom.htmlToElement(rhsTemplate);
 

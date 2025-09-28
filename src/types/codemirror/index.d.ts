@@ -349,6 +349,9 @@ declare namespace CodeMirror {
         /** Remove all gutter markers in the gutter with the given ID. */
         clearGutter(gutterID: string): void;
 
+        setInlineWidget(line: any, widgetId: string, value: HTMLElement | null): LineHandle;
+        clearInlineWidget(widgetId: string): void;
+
         /**
          * Set a CSS class name for the given line.line can be a number or a line handle.
          * where determines to which element this class should be applied, can can be one of "text" (the text element, which lies in front of the selection),
