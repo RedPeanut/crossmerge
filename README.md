@@ -20,4 +20,6 @@ npm run start
 - MIT
 
 ## Thanks to
-- Open source community
+- Open source community<br/>
+<a href="https://github.com/wickedest/Mergely">Mergely</a> (v5.3.6)<br/>
+<a href="https://github.com/codemirror/codemirror5">codemirror5</a> (v5.65.20)<br/>
