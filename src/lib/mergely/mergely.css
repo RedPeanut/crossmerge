@@ -55,17 +55,21 @@
 }
 
 /* common stles */
-.mergely-editor .mergely.CodeMirror-linebackground {
+.mergely-editor .mergely .CodeMirror-line,
+.mergely-editor .mergely .CodeMirror-gutter-elt {
   border-style: solid;
   border-width: 0px;
 }
-.mergely-editor .mergely.start.CodeMirror-linebackground {
+.mergely-editor .mergely.start .CodeMirror-line,
+.mergely-editor .mergely.start .CodeMirror-gutter-elt {
   border-top-width: 1px;
 }
-.mergely-editor .mergely.end.CodeMirror-linebackground {
+.mergely-editor .mergely.end .CodeMirror-line,
+.mergely-editor .mergely.end .CodeMirror-gutter-elt {
   border-bottom-width: 1px;
 }
-.mergely-editor .mergely.no-end.CodeMirror-linebackground {
+.mergely-editor .mergely.no-end .CodeMirror-line,
+.mergely-editor .mergely.no-end .CodeMirror-gutter-elt {
   border-bottom-width: 0px;
   background-color: initial;
 }
@@ -78,7 +82,7 @@
 .mergely-editor .CodeMirror {
   border: 1px solid #ccc;
 }
-.mergely-editor .mergely.CodeMirror-gutter-background.current {
+.mergely-editor .mergely.current .CodeMirror-gutter-elt {
   background-color: #777;
 }
 .mergely-editor .mergely.current .CodeMirror-linenumber {
@@ -107,19 +111,26 @@
 .mergely-editor .current .merge-button:hover { color: black; }
 
 /* changed styles */
-.mergely-editor .mergely.c.CodeMirror-linebackground {
+.mergely-editor .mergely.c .CodeMirror-line,
+.mergely-editor .mergely.c .CodeMirror-gutter-elt {
   border-color: #a3a3a3;
   background-color: #fafafa;
 }
 
 /* lhs styles (deleted-from) */
-.mergely-editor .mergely.rhs.a.no-end.CodeMirror-linebackground,
-.mergely-editor .mergely.rhs.a.no-start.CodeMirror-linebackground,
-.mergely-editor .mergely.lhs.no-end.CodeMirror-linebackground,
-.mergely-editor .mergely.lhs.d.CodeMirror-linebackground {
+.mergely-editor .mergely.rhs.a.no-end .CodeMirror-line,
+.mergely-editor .mergely.rhs.a.no-start .CodeMirror-line,
+.mergely-editor .mergely.lhs.no-end .CodeMirror-line,
+.mergely-editor .mergely.lhs.d .CodeMirror-line,
+
+.mergely-editor .mergely.rhs.a.no-end .CodeMirror-gutter-elt,
+.mergely-editor .mergely.rhs.a.no-start .CodeMirror-gutter-elt,
+.mergely-editor .mergely.lhs.no-end .CodeMirror-gutter-elt,
+.mergely-editor .mergely.lhs.d .CodeMirror-gutter-elt {
   border-color: #ff7f7f;
 }
-.mergely-editor .mergely.lhs.d.CodeMirror-linebackground {
+.mergely-editor .mergely.lhs.d .CodeMirror-line,
+.mergely-editor .mergely.lhs.d .CodeMirror-gutter-elt {
   background-color: #ffe9e9;
 }
 /* ind is an inline delete */
@@ -133,12 +144,16 @@
 }
 
 /* rhs styles (added-to) */
-.mergely-editor .mergely.lhs.no-end.CodeMirror-linebackground,
-.mergely-editor .mergely.lhs.no-start.CodeMirror-linebackground,
-.mergely-editor .mergely.rhs.a.CodeMirror-linebackground {
+.mergely-editor .mergely.lhs.no-end .CodeMirror-line,
+.mergely-editor .mergely.lhs.no-start .CodeMirror-line,
+.mergely-editor .mergely.rhs.a .CodeMirror-line,
+.mergely-editor .mergely.lhs.no-end .CodeMirror-gutter-elt,
+.mergely-editor .mergely.lhs.no-start .CodeMirror-gutter-elt,
+.mergely-editor .mergely.rhs.a .CodeMirror-gutter-elt {
   border-color: #a3d1ff;
 }
-.mergely-editor .mergely.rhs.a.CodeMirror-linebackground {
+.mergely-editor .mergely.rhs.a .CodeMirror-line,
+.mergely-editor .mergely.rhs.a .CodeMirror-gutter-elt {
   background-color: #eff7ff;
 }
 /* ina is an inline add */
@@ -148,12 +163,16 @@
 .mergely-editor .mergely.ch.a.rhs {
   color: inherit;
 }
-.mergely-editor .mergely.current.lhs.CodeMirror-linebackground,
-.mergely-editor .mergely.current.rhs.CodeMirror-linebackground {
+.mergely-editor .mergely.current.lhs .CodeMirror-line,
+.mergely-editor .mergely.current.rhs .CodeMirror-line,
+.mergely-editor .mergely.current.lhs .CodeMirror-gutter-elt,
+.mergely-editor .mergely.current.rhs .CodeMirror-gutter-elt {
   border-color: black;
 }
 
-.mergely-editor .mergely.no-start.end.CodeMirror-linebackground,
-.mergely-editor .mergely.no-end.start.CodeMirror-linebackground {
+.mergely-editor .mergely.no-start.end .CodeMirror-line,
+.mergely-editor .mergely.no-end.start .CodeMirror-line,
+.mergely-editor .mergely.no-start.end .CodeMirror-gutter-elt,
+.mergely-editor .mergely.no-end.start .CodeMirror-gutter-elt {
   background: none;
 }

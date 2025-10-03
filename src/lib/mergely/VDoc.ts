@@ -97,7 +97,7 @@ export default class VDoc {
       bgClass.push('start');
       bgClass.push('no-end');
       bgClass.push(bgChangeOp);
-      this._getLine(side, 0).addLineClass('background', bgClass.join(' '));
+      this._getLine(side, 0).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       return;
     }
@@ -106,7 +106,7 @@ export default class VDoc {
       bgClass.push('no-start');
       bgClass.push('end');
       bgClass.push(bgChangeOp);
-      this._getLine(side, lf).addLineClass('background', bgClass.join(' '));
+      this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       return;
     }
@@ -115,17 +115,17 @@ export default class VDoc {
       bgClass.push('no-start');
       bgClass.push('end');
       bgClass.push(bgChangeOp);
-      this._getLine(side, lf).addLineClass('background', bgClass.join(' '));
+      this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       return;
     }
 
-    this._getLine(side, lf).addLineClass('background', 'start');
-    this._getLine(side, lt).addLineClass('background', 'end');
+    this._getLine(side, lf).addLineClass('wrapper', 'start');
+    this._getLine(side, lt).addLineClass('wrapper', 'end');
 
     for(let j = lf, k = olf; lf !== -1 && lt !== -1 && j <= lt; ++j, ++k) {
-      this._getLine(side, j).addLineClass('background', bgChangeOp);
-      this._getLine(side, j).addLineClass('background', bgClass.join(' '));
+      this._getLine(side, j).addLineClass('wrapper', bgChangeOp);
+      this._getLine(side, j).addLineClass('wrapper', bgClass.join(' '));
 
       if(!lineDiff) {
         // inner line diffs are disabled, skip the rest
@@ -262,6 +262,7 @@ class VLine {
 
   id: number;
   background: Set<string>;
+  wrapper: Set<string>;
   gutter: Set<string>;
   marker: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
   mergeBtn: [ name: string, item: HTMLElement, handler: (this: HTMLElement, ev: PointerEvent) => any ];
@@ -273,6 +274,7 @@ class VLine {
   constructor(id: number) {
     this.id = id;
     this.background = new Set<string>();
+    this.wrapper = new Set<string>();
     this.gutter = new Set<string>();
     this.marker = null;
     this.mergeBtn = null;
@@ -282,7 +284,7 @@ class VLine {
     this.rendered = false;
   }
 
-  addLineClass(location: 'background' | 'gutter', clazz: string) {
+  addLineClass(location: 'background' | 'gutter' | 'wrapper', clazz: string) {
     this[location].add(clazz);
     /* what is better?
     if(location === 'background')
@@ -314,6 +316,10 @@ class VLine {
       if(this.background.size) {
         const clazz = Array.from(this.background).join(' ');
         editor.addLineClass(this.id, 'background', clazz);
+      }
+      if(this.wrapper.size) {
+        const clazz = Array.from(this.wrapper).join(' ');
+        editor.addLineClass(this.id, 'wrapper', clazz);
       }
       if(this.gutter.size) {
         const clazz = Array.from(this.gutter).join(' ');
@@ -360,6 +366,9 @@ class VLine {
     editor.operation(() => {
       if(this.background) {
         editor.removeLineClass(this.id, 'background');
+      }
+      if(this.wrapper) {
+        editor.removeLineClass(this.id, 'wrapper');
       }
       if(this.gutter) {
         editor.removeLineClass(this.id, 'gutter');

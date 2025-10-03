@@ -17,9 +17,9 @@ export function getColors(el: HTMLElement): Colors {
   const text = `
 <div style="display:none" class="${classes.join(' ')}">
   <div class="mergely current start"></div>
-  <div class="mergely start end rhs a CodeMirror-linebackground"></div>
-  <div class="mergely start end lhs d CodeMirror-linebackground"></div>
-  <div class="mergely start end lhs c CodeMirror-linebackground"></div>
+  <div class="mergely start end rhs a"><div class="CodeMirror-line"></div></div>
+  <div class="mergely start end lhs d"><div class="CodeMirror-line"></div></div>
+  <div class="mergely start end lhs c"><div class="CodeMirror-line"></div></div>
   <div class="mergely ch rhs a"></div>
   <div class="mergely ch rhs ina"></div>
   <div class="mergely ch lhs d"></div>
@@ -29,9 +29,9 @@ export function getColors(el: HTMLElement): Colors {
   const node = htmlToElement(text);
   el.appendChild(node);
   const currentStyle = window.getComputedStyle(node.children[0]);
-  const aStyle = window.getComputedStyle(node.children[1]);
-  const dStyle = window.getComputedStyle(node.children[2]);
-  const cStyle = window.getComputedStyle(node.children[3]);
+  const aStyle = window.getComputedStyle(node.children[1].children[0]);
+  const dStyle = window.getComputedStyle(node.children[2].children[0]);
+  const cStyle = window.getComputedStyle(node.children[3].children[0]);
   const achStyle = window.getComputedStyle(node.children[4]);
   const ainStyle = window.getComputedStyle(node.children[5]);
   const dchStyle = window.getComputedStyle(node.children[6]);
