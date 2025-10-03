@@ -196,7 +196,7 @@ export class FileView implements CompareView {
 
   layout(): void {
     if(this.element.classList.contains('active'))
-      this.mergely && this.mergely.resize(null);
+      this.mergely && this.mergely.resize();
   }
 
   setClass(style: { active?: boolean; }): void {

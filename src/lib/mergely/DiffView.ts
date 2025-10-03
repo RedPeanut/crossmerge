@@ -328,7 +328,7 @@ export default class CodeMirrorDiffView {
     this.lhsId = `${container.id}-lhs`;
     this.rhsId = `${container.id}-rhs`;
     this.chfns = { lhs: [], rhs: [] };
-    this.prev_query = [];
+    this.prev_query = { lhs: '', rhs: '' };
     this.cursor = [];
     this._skipscroll = {};
     this.change_exp = new RegExp(/(\d+(?:,\d+)?)([acd])(\d+(?:,\d+)?)/);
