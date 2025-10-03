@@ -99,50 +99,49 @@ export default class VDoc {
       bgClass.push(bgChangeOp);
       this._getLine(side, 0).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
-      return;
-    }
-    if(side === 'lhs' && change['lhs-y-start'] === change['lhs-y-end']) {
+      // return;
+    } else if(side === 'lhs' && change['lhs-y-start'] === change['lhs-y-end']) {
       // if lhs, and start/end are the same, it has end but no-start
       bgClass.push('no-start');
       bgClass.push('end');
       bgClass.push(bgChangeOp);
       this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
-      return;
-    }
-    if(side === 'rhs' && change['rhs-y-start'] === change['rhs-y-end']) {
+      // return;
+    } else if(side === 'rhs' && change['rhs-y-start'] === change['rhs-y-end']) {
       // if rhs, and start/end are the same, it has end but no-start
       bgClass.push('no-start');
       bgClass.push('end');
       bgClass.push(bgChangeOp);
       this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
       this._setRenderedChange(side, changeId);
-      return;
-    }
+      // return;
+    } else {
+      this._getLine(side, lf).addLineClass('wrapper', 'start');
+      this._getLine(side, lt).addLineClass('wrapper', 'end');
 
-    this._getLine(side, lf).addLineClass('wrapper', 'start');
-    this._getLine(side, lt).addLineClass('wrapper', 'end');
+      for(let j = lf, k = olf; lf !== -1 && lt !== -1 && j <= lt; ++j, ++k) {
+        this._getLine(side, j).addLineClass('wrapper', bgChangeOp);
+        this._getLine(side, j).addLineClass('wrapper', bgClass.join(' '));
 
-    for(let j = lf, k = olf; lf !== -1 && lt !== -1 && j <= lt; ++j, ++k) {
-      this._getLine(side, j).addLineClass('wrapper', bgChangeOp);
-      this._getLine(side, j).addLineClass('wrapper', bgClass.join(' '));
+        if(!lineDiff) {
+          // inner line diffs are disabled, skip the rest
+          continue;
+        }
 
-      if(!lineDiff) {
-        // inner line diffs are disabled, skip the rest
-        continue;
+        if(side === 'lhs' && (change.op === 'd')) {
+          // mark entire line text with deleted (strikeout) if the
+          // change is a delete, or if it is changed text and the
+          // line goes past the end of the other side.
+          this._getLine(side, j).markText(0, undefined, `mergely ch d lhs cid-${changeId}`);
+        } else if(side === 'rhs' && (change.op === 'a')) {
+          // mark entire line text with added if the change is an
+          // add, or if it is changed text and the line goes past the
+          // end of the other side.
+          this._getLine(side, j).markText(0, undefined, `mergely ch a rhs cid-${changeId}`);
+        }
       }
-
-      if(side === 'lhs' && (change.op === 'd')) {
-        // mark entire line text with deleted (strikeout) if the
-        // change is a delete, or if it is changed text and the
-        // line goes past the end of the other side.
-        this._getLine(side, j).markText(0, undefined, `mergely ch d lhs cid-${changeId}`);
-      } else if(side === 'rhs' && (change.op === 'a')) {
-        // mark entire line text with added if the change is an
-        // add, or if it is changed text and the line goes past the
-        // end of the other side.
-        this._getLine(side, j).markText(0, undefined, `mergely ch a rhs cid-${changeId}`);
-      }
+      this._setRenderedChange(side, changeId);
     }
 
     if(mergeButton) {
@@ -150,7 +149,6 @@ export default class VDoc {
       const handler = getMergeHandler(change, side, oside);
       this._getLine(side, lf).addMergeButton_('merge', mergeButton, handler);
     }
-    this._setRenderedChange(side, changeId);
   }
 
   addInlineDiff(change: Change, changeId: number, { getText, ignorews, ignoreaccents, ignorecase }) {

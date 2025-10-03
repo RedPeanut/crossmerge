@@ -99,12 +99,18 @@
   color: #fff;
 }
 
-.mergely-editor .CodeMirror-inlineWidget-wrapper { right: 3px; }
+.mergely-editor .CodeMirror-inlineWidget-wrapper {
+  right: 3px;
+}
+
+.mergely-editor .CodeMirror-inlineWidget-elt {
+  padding: 2px 0;
+}
 
 .mergely-editor .merge-button {
   color: black;
   border: 1px solid black; border-radius: 5px;
-  width: 16px; height: 16px;
+  width: 14px; height: 14px; font-size: 14px;
   background-color: white;
 }
 .mergely-editor .merge-button:hover { color: black; }
@@ -175,4 +181,8 @@
 .mergely-editor .mergely.no-start.end .CodeMirror-gutter-elt,
 .mergely-editor .mergely.no-end.start .CodeMirror-gutter-elt {
   background: none;
+}
+
+.mergely-editor .mergely.no-start .CodeMirror-inlineWidget-wrapper {
+  bottom: -13px;
 }
