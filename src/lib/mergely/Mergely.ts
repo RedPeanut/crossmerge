@@ -6,7 +6,9 @@ import CodeMirrorDiffView from './DiffView';
 import DiffWorker from './DiffWorker';
 import Diff from './Diff';
 import * as dom from './dom';
-import { Change } from './Types';
+import { Change, Direction, Side } from './Types';
+import DiffView from './DiffView';
+import { EditorConfiguration } from '../../types/codemirror';
 
 const trace = console.log;
 
@@ -68,26 +70,26 @@ export default class Mergely {
   el: HTMLElement;
   _initOptions;
   _viewOptions;
-  _diffView;
+  _diffView: CodeMirrorDiffView;
   _listeners;
   _addEventListener;
   _removeEventListener;
   _options;
   _diffWorker;
-  _changes;
+  _changes: Change[];
 
   ///* // exposes view methods
-  public cm(side: string) { return this._diffView.cm(side); }
-  public get(side: string) { return this._diffView.get(side); }
+  public cm(side: Side) { return this._diffView.cm(side); }
+  public get(side: Side) { return this._diffView.get(side); }
   public lhs(text: string) { return this._diffView.lhs(text); }
-  public mergeCurrentChange(side: string) { return this._diffView.mergeCurrentChange(side); }
-  public resize(side: string) { return this._diffView.resize(side); }
+  public mergeCurrentChange(side: Side) { return this._diffView.mergeCurrentChange(side); }
+  public resize() { return this._diffView.resize(); }
   public rhs(text: string) { return this._diffView.rhs(text); }
-  public scrollTo(side: string) { return this._diffView.scrollTo(side); }
-  public scrollToDiff(side: string) { return this._diffView.scrollToDiff(side); }
-  public search(side: string) { return this._diffView.search(side); }
-  public unmarkup(side: string) { return this._diffView.unmarkup(side); }
-  public update(side: string) { return this._diffView.update(side); }
+  public scrollTo(side: Side) { return this._diffView.scrollTo(side); }
+  public scrollToDiff(direction: Direction) { return this._diffView.scrollToDiff(direction); }
+  public search(side: Side) { return this._diffView.search(side); }
+  public unmarkup() { return this._diffView.unmarkup(); }
+  public update() { return this._diffView.update(); }
   //*/
 
   constructor(selector: string | HTMLElement, options: MergelyOptions) {
@@ -220,17 +222,17 @@ export default class Mergely {
   mergelyUnregister() {
   }
 
-  on(event, handler) {
+  on(event: string, handler: () => void) {
     this._listeners.push([ event, handler ]);
     this._addEventListener(event, handler);
   }
 
-  once(event, handler) {
+  once(event: string, handler: () => void) {
     this._listeners.push([ event, handler ]);
     this._addEventListener(event, handler, { once: true });
   }
 
-  clear(side) {
+  clear(side: Side): void {
     if(this._options._debug) {
       trace('api#clear', side);
     }
@@ -245,7 +247,7 @@ export default class Mergely {
     }
   }
 
-  diff() {
+  diff(): string {
     if(this._options._debug) {
       trace('api#diff');
     }
@@ -259,7 +261,7 @@ export default class Mergely {
     return comparison.normal_form();
   }
 
-  merge(side) {
+  merge(side: Side): void {
     if(this._options._debug) {
       trace('api#merge', side);
     }
@@ -272,7 +274,7 @@ export default class Mergely {
     }
   }
 
-  options(opts) {
+  options(opts): void | MergelyOptions {
     if(opts) {
       this._setOptions(opts);
       this._diffView.setOptions(opts);
@@ -282,7 +284,14 @@ export default class Mergely {
     }
   }
 
-  summary() {
+  summary(): {
+    numChanges: number;
+    lhsLength: number;
+    rhsLength: number;
+    c: number;
+    a: number;
+    d: number;
+  } {
     if(this._options._debug) {
       trace('api#summary');
     }
@@ -298,7 +307,7 @@ export default class Mergely {
     }
   }
 
-  swap() {
+  swap(): void {
     if(this._options._debug) {
       trace('api#swap');
     }

@@ -1,3 +1,5 @@
+import { Context, Side } from "./Types";
+
 const SMS_TIMEOUT_SECONDS = 1.0;
 
 interface DiffOptions {
@@ -9,10 +11,10 @@ interface DiffOptions {
 
 export default class Diff {
 
-  codeify;
+  codeify: CodeifyText;
   items;
 
-  constructor(lhs, rhs, options: DiffOptions = {}) {
+  constructor(lhs: string, rhs: string, options: DiffOptions = {}) {
     const {
       ignorews = false,
       ignoreaccents = false,
@@ -46,11 +48,11 @@ export default class Diff {
     return this.items;
   }
 
-  getLines(side) {
+  getLines(side: Side): string[] {
     return this.codeify.getLines(side);
   }
 
-  normal_form() {
+  normal_form(): string {
     let nf = '';
     for(let index = 0; index < this.items.length; ++index) {
       const item = this.items[index];
@@ -253,16 +255,23 @@ export default class Diff {
 
 }
 
+interface CodeifyTextOptions {
+  ignorews?: boolean;
+  ignoreaccents?: boolean;
+  ignorecase?: boolean;
+  split?: string;
+}
+
 export class CodeifyText {
 
-  _max_code;
-  _diff_codes;
-  ctxs;
-  options;
-  lhs;
-  rhs;
+  _max_code: number;
+  _diff_codes: { [id: string]: number };
+  ctxs: { lhs?: Context, rhs?: Context };
+  options: CodeifyTextOptions;
+  lhs: string[];
+  rhs: string[];
 
-  constructor(lhs, rhs, options) {
+  constructor(lhs: string, rhs: string, options: CodeifyTextOptions) {
     this._max_code = 0;
     this._diff_codes = {};
     this.ctxs = {};
@@ -298,7 +307,7 @@ export class CodeifyText {
     }
   }
 
-  getCodes(side) {
+  getCodes(side: Side): { length: number } {
     if(!this.ctxs.hasOwnProperty(side)) {
       var ctx = this._diff_ctx(this[side]);
       this.ctxs[side] = ctx;
@@ -307,18 +316,18 @@ export class CodeifyText {
     return this.ctxs[side].codes;
   }
 
-  getLines(side) {
+  getLines(side: Side): string[] {
     return this.ctxs[side].lines;
   }
 
-  _diff_ctx(lines) {
+  _diff_ctx(lines: string[]): Context {
     // fix Property 'length' does not exist on type - 250511
     var ctx = {i: 0, codes: { length: 0, }, lines: lines};
     this._codeify(lines, ctx);
     return ctx;
   }
 
-  _codeify(lines, ctx) {
+  _codeify(lines: string[], ctx: Context): void {
     for(let i = 0; i < lines.length; ++i) {
       let line = lines[i];
       if(this.options.ignorews) {

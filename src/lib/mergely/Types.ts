@@ -10,7 +10,7 @@ export type Change = {
   'rhs-y-end' ?: number,
 }
 
-export type Side = 'lhs' | 'rhs';
+export type Side = 'lhs' | 'rhs' | 'both';
 
 export interface Viewport {
   from: number;
@@ -42,4 +42,9 @@ export interface Colors {
     bg: string,
     fg: string,
   }
+}
+export interface Context {
+  i: number;
+  codes: { length: number };
+  lines: string[];
 }

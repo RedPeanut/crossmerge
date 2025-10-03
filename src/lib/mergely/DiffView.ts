@@ -28,15 +28,15 @@ const traceTimeStart = console.time;
 const traceTimeEnd = console.timeEnd;
 
 export interface CodeMirrorDiffViewOptions extends MergelyOptions {
-  _colors: Colors;
+  _colors?: Colors;
 }
 
 export default class CodeMirrorDiffView {
 
   el: HTMLElement;
   settings: CodeMirrorDiffViewOptions;
-  lhs_cmsettings;
-  rhs_cmsettings;
+  lhs_cmsettings: CodeMirror.EditorConfiguration;
+  rhs_cmsettings: CodeMirror.EditorConfiguration;
   _vdoc: VDoc;
   _linkedScrollTimeout;
   _unbound;
@@ -49,9 +49,9 @@ export default class CodeMirrorDiffView {
   changes: Change[];
   _current_diff;
   id: string;
-  prev_query;
+  prev_query: { lhs: string, rhs: string } ;
   cursor;
-  em_height;
+  em_height: number;
   lhsId: string;
   rhsId: string;
   chfns;
@@ -70,7 +70,7 @@ export default class CodeMirrorDiffView {
   _handleLhsMarginClick;
   _handleRhsMarginClick;
 
-  constructor(el: HTMLElement, options) {
+  constructor(el: HTMLElement, options: CodeMirrorDiffViewOptions) {
     CodeMirror.defineExtension('centerOnCursor', function() {
       const coords = this.cursorCoords(null, 'local');
       this.scrollTo(null,
@@ -79,7 +79,7 @@ export default class CodeMirrorDiffView {
     this.init(el, options);
   }
 
-  init(el: HTMLElement, options = {}) {
+  init(el: HTMLElement, options: CodeMirrorDiffViewOptions = {}): void {
     this.setOptions(options);
     this.el = el;
     this.lhs_cmsettings = {
@@ -125,7 +125,7 @@ export default class CodeMirrorDiffView {
     this._unbound = true;
   }
 
-  readOnly(side) {
+  readOnly(side: Side = 'both'): boolean | "nocursor" | undefined {
     if(side === 'lhs') {
       return this.lhs_cmsettings.readOnly;
     } else if(side === 'rhs') {
@@ -135,7 +135,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  lhs(text) {
+  lhs(text: string): void {
     this.trace('api#lhs', text && text.length);
     // invalidate existing changes and current position
     this.changes = [];
@@ -143,7 +143,7 @@ export default class CodeMirrorDiffView {
     this.editor.lhs.setValue(text);
   }
 
-  rhs(text) {
+  rhs(text: string): void {
     // invalidate existing changes and current position
     this.trace('api#rhs', text && text.length);
     this.changes = [];
@@ -151,18 +151,18 @@ export default class CodeMirrorDiffView {
     this.editor.rhs.setValue(text);
   }
 
-  update() {
+  update(): void {
     this.trace('api#update');
     this.el.dispatchEvent(new Event('changed'));
   }
 
-  unmarkup() {
+  unmarkup(): void {
     this.trace('api#unmarkup');
     this._clear();
     this.el.dispatchEvent(new Event('updated'));
   }
 
-  scrollToDiff(direction: Direction) {
+  scrollToDiff(direction: Direction): void {
     this.trace('api#scrollToDiff', direction);
     if(!this.changes.length) return;
     if(direction === 'next') {
@@ -186,7 +186,7 @@ export default class CodeMirrorDiffView {
     this.setChanges(this.changes);
   }
 
-  mergeCurrentChange(side) {
+  mergeCurrentChange(side): void {
     this.trace('api#mergeCurrentChange', side);
     if(!this.changes.length) return;
     if(side == 'lhs' && !this.lhs_cmsettings.readOnly) {
@@ -197,7 +197,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  scrollTo(side, num) {
+  scrollTo(side: Side, num: number = 0): void {
     this.trace('api#scrollTo', side, num);
     const ed = this.editor[side];
     ed.setCursor(num);
@@ -206,7 +206,7 @@ export default class CodeMirrorDiffView {
     this.el.dispatchEvent(new Event('updated'));
   }
 
-  setOptions(opts) {
+  setOptions(opts: CodeMirrorDiffViewOptions): void {
     const current_margin_rhs = this.settings ? this.settings.rhs_margin : 'right';
     this.settings = {
       ...this.settings,
@@ -246,22 +246,22 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  get(side) {
+  get(side: Side): string {
     this.trace('api#get', side);
-    const ed = this.editor[side];
-    const value = ed.getValue();
+    const ed: CodeMirror.EditorFromTextArea = this.editor[side];
+    const value: string = ed.getValue();
     if(value === undefined) {
       return '';
     }
     return value;
   }
 
-  cm(side) {
+  cm(side: Side): CodeMirror.EditorFromTextArea {
     this.trace('api#cm', 'side');
     return this.editor[side];
   }
 
-  search(side, query, direction) {
+  search(side: Side, query: string = '', direction: Direction = 'next'): void {
     this.trace('api#search', side, query, direction);
     const editor = this.editor[side];
     if(!editor.getSearchCursor) {
@@ -288,7 +288,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  resize() {
+  resize(): void {
     this.trace('api#resize');
     const parent = this.el;
     const contentHeight = parent.offsetHeight - 2;
@@ -311,7 +311,7 @@ export default class CodeMirrorDiffView {
     this._set_top_offset('lhs');
   }
 
-  bind(container: HTMLElement) {
+  bind(container: HTMLElement): void {
     this.trace('api#bind', container);
     const el = dom.getMergelyContainer({ clazz: container.className });
     const computedStyle = window.getComputedStyle(container);
@@ -554,7 +554,7 @@ export default class CodeMirrorDiffView {
   /**
    * Clears current diff, rendered canvases, and text markup.
    */
-  _clear() {
+  _clear(): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_clear');
     }
@@ -566,7 +566,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _clearMarkup () {
+  _clearMarkup(): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_clearMarkup');
     }
@@ -577,7 +577,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _clearCanvases() {
+  _clearCanvases(): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_clearCanvases');
     }
@@ -609,7 +609,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _scroll_to_change(change) {
+  _scroll_to_change(change: Change): void {
     if(!change) {
       return;
     }
@@ -630,7 +630,7 @@ export default class CodeMirrorDiffView {
     led.focus();
   }
 
-  _scrolling({ side }) {
+  _scrolling({ side }: { side: Side }): void {
     if(this.settings._debug) {
       traceTimeStart(`scroll#_scrolling ${side}`);
     }
@@ -730,7 +730,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _changing() {
+  _changing(): void {
     if(!this.settings.autoupdate) {
       this.trace('change#_changing autoupdate is disabled');
       return;
@@ -757,7 +757,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  setChanges(changes: Change[]) {
+  setChanges(changes: Change[]): void {
     this.trace('change#setChanges');
     this._clear();
     // after clear, set the new changes
@@ -765,7 +765,7 @@ export default class CodeMirrorDiffView {
     this._renderChanges();
   }
 
-  _renderChanges() {
+  _renderChanges(): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_renderChanges');
       this.trace('draw#_renderChanges [start]', this.changes.length, 'changes');
@@ -791,7 +791,7 @@ export default class CodeMirrorDiffView {
     };
   }
 
-  _isChangeInView(side: Side, vp: Viewport, change: Change) {
+  _isChangeInView(side: Side, vp: Viewport, change: Change): boolean {
     if(change[`${side}-line-from`] < 0 || change[`${side}-line-to`] < 0) {
       // handle case where the diff is "empty" - always in view
       return true;
@@ -802,7 +802,7 @@ export default class CodeMirrorDiffView {
       (vp.from >= change[`${side}-line-from`] && vp.to <= change[`${side}-line-to`]);
   }
 
-  _set_top_offset(side: Side) {
+  _set_top_offset(side: Side): boolean {
     // save the current scroll position of the editor
     const saveY = this.editor[side].getScrollInfo().top;
     // temporarily scroll to top
@@ -823,7 +823,7 @@ export default class CodeMirrorDiffView {
     return true;
   }
 
-  _calculateOffsets(changes: Change[]) {
+  _calculateOffsets(changes: Change[]): void {
     if(this.settings._debug) {
       traceTimeStart('draw#_calculateOffsets');
     }
