@@ -1398,6 +1398,11 @@ declare namespace CodeMirror {
         gutters?: Array<string | { className: string; style?: string | undefined }> | undefined;
 
         /**
+         *
+         */
+        inlineWidgets?: Array<string>;
+
+        /**
          * Determines whether the gutter scrolls along with the content horizontally (false)
          * or whether it stays fixed during horizontal scrolling (true, the default).
          */

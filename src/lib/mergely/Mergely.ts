@@ -25,12 +25,15 @@ export interface MergelyOptions {
   ignoreaccents?: boolean;
   resize_timeout?: any;
   change_timeout?: any;
-  bgcolor?: any;
-  vpcolor?: any;
-  license?: any;
-  cmsettings?: any;
-  lhs_cmsettings?: any;
-  rhs_cmsettings?: any;
+  bgcolor?: string;
+  vpcolor?: string;
+  license?: string;
+  cmsettings?: {
+    styleSelectedText?: boolean,
+    mode?: string
+  };
+  lhs_cmsettings?: CodeMirror.EditorConfiguration;
+  rhs_cmsettings?: CodeMirror.EditorConfiguration;
   lhs?: any;
   rhs?: any;
   _debug?: boolean;
