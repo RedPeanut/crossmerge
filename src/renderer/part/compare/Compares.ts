@@ -63,7 +63,6 @@ export class Compares {
     for(const [k,v] of this.map) {
       if(k === id) {
         v.setClass({ active: true });
-        v.layout();
       } else {
         v.setClass({ active: false });
       }

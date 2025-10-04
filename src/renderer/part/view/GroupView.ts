@@ -57,15 +57,10 @@ export class GroupView {
   updateStatusbar(i: number): void {
     if(i > -1) {
       const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
-      if(this.group[i].type === 'file') {
-        // TODO
+      if(this.group[i].status) {
+        statusbarPartService.update(this.group[i]);
+      } else {
         statusbarPartService.clear();
-      } else if(this.group[i].type === 'folder') {
-        if(this.group[i].status) {
-          statusbarPartService.update(this.group[i]);
-        } else {
-          statusbarPartService.clear();
-        }
       }
     }
   }
