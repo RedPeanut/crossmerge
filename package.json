@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@electron/notarize": "2.3.2",
-    "codemirror": "https://github.com/RedPeanut/codemirror5-5.65.20-custom.git",
+    "codemirror": "git+https://github.com/RedPeanut/codemirror5-5.65.20-custom.git",
     "electron-debug": "3.2.0",
     "electron-log": "4.4.8",
     "electron-squirrel-startup": "1.0.1",

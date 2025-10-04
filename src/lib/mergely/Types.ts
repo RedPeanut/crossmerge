@@ -43,6 +43,7 @@ export interface Colors {
     fg: string,
   }
 }
+
 export interface Context {
   i: number;
   codes: { length: number };

@@ -184,7 +184,7 @@ export class FolderView implements CompareView {
     this.focusManager = new FocusManager();
   }
 
-  menuClickHandler(...args: any[]) {
+  menuClickHandler(...args: any[]): void {
     // console.log('on menu click is called ..');
     // console.log('args =', args);
     if(args && args.length > 1
