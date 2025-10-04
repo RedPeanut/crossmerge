@@ -152,8 +152,13 @@ export const appPreferencesMenuId = 'app.preferences';
 export const appQuitMenuId = 'app.quit';
 
 // file
+export const fileSaveMenuId = 'file.save';
+export const fileSaveLeftMenuId = 'file.saveLeft';
+export const fileSaveRightMenuId = 'file.saveRight';
+export const fileSaveAllMenuId = 'file.saveAll';
 export const filePreferencesMenuId = 'file.preferences';
-export const fileCloseMenuId = 'file.close';
+// export const fileCloseMenuId = 'file.close';
+export const fileCloseTabMenuId = 'file.closeTab';
 
 // edit
 export const editUndoMenuId = 'edit.undo';
@@ -162,6 +167,8 @@ export const editCutMenuId = 'edit.cut';
 export const editCopyMenuId = 'edit.copy';
 export const editPasteMenuId = 'edit.paste';
 export const editSelectAllMenuId = 'edit.selectAll';
+export const editPrevChangeMenuId = 'edit.prevChange';
+export const editNextChangeMenuId = 'edit.nextChange';
 
 // merging
 export const pushToLeftMenuId = 'merging.pushToLeft';

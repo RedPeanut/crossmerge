@@ -11,8 +11,9 @@ import path from 'path';
 import { resolveHtmlPath } from './utils';
 import { mainWindow } from './main';
 import {
-  appPreferencesMenuId, appQuitMenuId, fileCloseMenuId, filePreferencesMenuId,
-  editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId,
+  appPreferencesMenuId, appQuitMenuId,
+  fileSaveMenuId, fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, /* fileCloseMenuId,  */fileCloseTabMenuId, filePreferencesMenuId,
+  editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId, editPrevChangeMenuId, editNextChangeMenuId,
   pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
 } from '../common/Types';
@@ -22,8 +23,11 @@ const keyBindingIdx = isWindows ? 0 : 1;
 const keyBinding: { [id: string]: string[] } = {};
 keyBinding[appPreferencesMenuId] = [ null, 'Cmd+,' ];
 keyBinding[appQuitMenuId] = [ null, 'Cmd+Q' ];
+keyBinding[fileSaveLeftMenuId] =  ['Ctrl+1', 'Cmd+1' ];
+keyBinding[fileSaveRightMenuId] =  ['Ctrl+2', 'Cmd+2' ];
+keyBinding[fileSaveAllMenuId] =  ['Ctrl+S', 'Cmd+Alt+S' ];
 keyBinding[filePreferencesMenuId] =  ['Ctrl+P', null ];
-keyBinding[fileCloseMenuId] =  ['Ctrl+W', 'Cmd+W' ];
+keyBinding[fileCloseTabMenuId] =  ['Ctrl+W', 'Cmd+W' ];
 
 keyBinding[editUndoMenuId] = [ 'Ctrl+Z', 'Cmd+Z' ];
 keyBinding[editRedoMenuId] = [ 'Shift[+Ctrl+Z', 'Shift+Cmd+Z' ];
@@ -31,6 +35,8 @@ keyBinding[editCutMenuId] = [ 'Ctrl+X', 'Cmd+X' ];
 keyBinding[editCopyMenuId] = [ 'Ctrl+C', 'Cmd+C' ];
 keyBinding[editPasteMenuId] = [ 'Ctrl+V', 'Cmd+V' ];
 keyBinding[editSelectAllMenuId] = [ 'Ctrl+A', 'Cmd+A' ];
+keyBinding[editPrevChangeMenuId] = [ 'Ctrl+PageUp', 'Ctrl+Alt+Up' ];
+keyBinding[editNextChangeMenuId] = [ 'Ctrl+PageDown', 'Ctrl+Alt+Down' ];
 
 keyBinding[pushToLeftMenuId] = [ 'Ctrl+W', 'Ctrl+Shift+Left' ];
 keyBinding[pushToRightMenuId] = [ 'Ctrl+Q', 'Ctrl+Shift+Right' ];
@@ -224,6 +230,17 @@ export class Menubar {
 
   addFileMenu(options: MenuItemConstructorOptions[]): void {
     const fileSubmenu: MenuItemConstructorOptions[] = [];
+
+    fileSubmenu.push({
+      label: 'Save',
+      submenu: [
+        { label: 'Save Left', accelerator: keyBinding[fileSaveLeftMenuId][keyBindingIdx], enabled: false },
+        { label: 'Save Right', accelerator: keyBinding[fileSaveRightMenuId][keyBindingIdx], enabled: false },
+        { type: 'separator' as const },
+        { label: 'Save All', accelerator: keyBinding[fileSaveAllMenuId][keyBindingIdx], enabled: false }
+      ]
+    });
+
     if(isWindows) {
       fileSubmenu.push({
         label: 'Preferences...',
@@ -236,8 +253,8 @@ export class Menubar {
       fileSubmenu.push({ type: 'separator' as const });
 
     fileSubmenu.push({
-      label: '&Close',
-      accelerator: keyBinding[fileCloseMenuId][keyBindingIdx],
+      label: 'Close &Tab',
+      accelerator: keyBinding[fileCloseTabMenuId][keyBindingIdx],
       click: () => {
         // this.browserWindow.close();
       },
@@ -268,6 +285,17 @@ export class Menubar {
           // click: () => {},
         },
         { label: 'Select All', accelerator: keyBinding[editSelectAllMenuId][keyBindingIdx], role: 'selectAll' },
+        { type: 'separator' },
+        { label: 'Previous Change', accelerator: keyBinding[editPrevChangeMenuId][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', editPrevChangeMenuId);
+          }
+        },
+        { label: 'Next Change', accelerator: keyBinding[editNextChangeMenuId][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', editNextChangeMenuId);
+          }
+        },
       ],
     });
   }
