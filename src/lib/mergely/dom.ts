@@ -17,9 +17,9 @@ export function getColors(el: HTMLElement): Colors {
   const text = `
 <div style="display:none" class="${classes.join(' ')}">
   <div class="mergely current start"></div>
-  <div class="mergely start end rhs a"><div class="CodeMirror-line"></div></div>
-  <div class="mergely start end lhs d"><div class="CodeMirror-line"></div></div>
-  <div class="mergely start end lhs c"><div class="CodeMirror-line"></div></div>
+  <div class="mergely start end rhs a"><div class="CodeMirror-linebackground"></div></div>
+  <div class="mergely start end lhs d"><div class="CodeMirror-linebackground"></div></div>
+  <div class="mergely start end lhs c"><div class="CodeMirror-linebackground"></div></div>
   <div class="mergely ch rhs a"></div>
   <div class="mergely ch rhs ina"></div>
   <div class="mergely ch lhs d"></div>

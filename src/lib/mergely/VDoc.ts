@@ -65,16 +65,20 @@ export default class VDoc {
     }
 
     const oside = (side === 'lhs') ? 'rhs' : 'lhs';
-    const bgClass = [ 'mergely', side, `cid-${changeId}` ];
+    const wrapClass = [ 'mergely', side, `cid-${changeId}` ];
+    const bgClass = [ 'bg' ]; // marker
     const { lf, lt, olf } = getExtents(side, change);
 
     if(isCurrent) {
-      if(lf !== lt) {
-        this._getLine(side, lf).addLineClass('background', 'current');
+      /* if(lf !== lt) {
+        this._getLine(side, lf).addLineClass(['background'], 'current');
       }
-      this._getLine(side, lt).addLineClass('background', 'current');
+      this._getLine(side, lt).addLineClass(['background'], 'current');
       for(let j = lf; j <= lt; ++j) {
-        this._getLine(side, j).addLineClass('gutter', 'mergely current');
+        this._getLine(side, j).addLineClass(['gutter'], 'mergely current');
+      } */
+      for(let j = lf; j <= lt; ++j) {
+        this._getLine(side, j).addLineClass(['wrapper'], 'mergely current');
       }
     }
 
@@ -94,35 +98,39 @@ export default class VDoc {
 
     if(lf < 0) {
       // If this is the first, line it has start but no end
-      bgClass.push('start');
-      bgClass.push('no-end');
-      bgClass.push(bgChangeOp);
-      this._getLine(side, 0).addLineClass('wrapper', bgClass.join(' '));
+      wrapClass.push('start');
+      wrapClass.push('no-end');
+      wrapClass.push(bgChangeOp);
+      this._getLine(side, 0).addLineClass(['wrapper'], wrapClass.join(' '));
+      this._getLine(side, 0).addLineClass(['background', 'gutter'], bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       // return;
     } else if(side === 'lhs' && change['lhs-y-start'] === change['lhs-y-end']) {
       // if lhs, and start/end are the same, it has end but no-start
-      bgClass.push('no-start');
-      bgClass.push('end');
-      bgClass.push(bgChangeOp);
-      this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
+      wrapClass.push('no-start');
+      wrapClass.push('end');
+      wrapClass.push(bgChangeOp);
+      this._getLine(side, lf).addLineClass(['wrapper'], wrapClass.join(' '));
+      this._getLine(side, lf).addLineClass(['background', 'gutter'], bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       // return;
     } else if(side === 'rhs' && change['rhs-y-start'] === change['rhs-y-end']) {
       // if rhs, and start/end are the same, it has end but no-start
-      bgClass.push('no-start');
-      bgClass.push('end');
-      bgClass.push(bgChangeOp);
-      this._getLine(side, lf).addLineClass('wrapper', bgClass.join(' '));
+      wrapClass.push('no-start');
+      wrapClass.push('end');
+      wrapClass.push(bgChangeOp);
+      this._getLine(side, lf).addLineClass(['wrapper'], wrapClass.join(' '));
+      this._getLine(side, lf).addLineClass(['background', 'gutter'], bgClass.join(' '));
       this._setRenderedChange(side, changeId);
       // return;
     } else {
-      this._getLine(side, lf).addLineClass('wrapper', 'start');
-      this._getLine(side, lt).addLineClass('wrapper', 'end');
+      this._getLine(side, lf).addLineClass(['wrapper'], 'start');
+      this._getLine(side, lt).addLineClass(['wrapper'], 'end');
 
       for(let j = lf, k = olf; lf !== -1 && lt !== -1 && j <= lt; ++j, ++k) {
-        this._getLine(side, j).addLineClass('wrapper', bgChangeOp);
-        this._getLine(side, j).addLineClass('wrapper', bgClass.join(' '));
+        this._getLine(side, j).addLineClass(['wrapper'], bgChangeOp);
+        this._getLine(side, j).addLineClass(['wrapper'], wrapClass.join(' '));
+        this._getLine(side, j).addLineClass(['background', 'gutter'], bgClass.join(' '));
 
         if(!lineDiff) {
           // inner line diffs are disabled, skip the rest
@@ -282,8 +290,12 @@ class VLine {
     this.rendered = false;
   }
 
-  addLineClass(location: 'background' | 'gutter' | 'wrapper', clazz: string) {
-    this[location].add(clazz);
+  addLineClass(location: string[] // ('background' | 'gutter' | 'wrapper')[]
+    , clazz: string
+  ) {
+    for(let i = 0; i < location.length; i++)
+      this[location[i]].add(clazz);
+
     /* what is better?
     if(location === 'background')
     this.background.add(clazz);
