@@ -47,7 +47,7 @@ export default class CodeMirrorDiffView {
   };
   _origEl: { className: string };
   changes: Change[];
-  _current_diff;
+  _current_diff: number;
   id: string;
   prev_query: { lhs: string, rhs: string } ;
   cursor;
