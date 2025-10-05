@@ -170,7 +170,19 @@ export class FileView implements CompareView {
           changed: (args: any[]) => {
             if(args && args.length > 0) {
               const ev = args[0] as CustomEvent;
-              console.log('ev.detail.historySize =', ev.detail.historySize);
+              if(ev.detail && ev.detail.side && ev.detail.historySize) {
+                if(ev.detail.side === 'lhs') {
+                  if(ev.detail.historySize.undo > 0)
+                    this.input_lhs.setChanged();
+                  else
+                    this.input_lhs.clearChanged();
+                } else if(ev.detail.side === 'rhs') {
+                  if(ev.detail.historySize.undo > 0)
+                    this.input_rhs.setChanged();
+                  else
+                    this.input_rhs.clearChanged();
+                }
+              }
             }
           }
         }

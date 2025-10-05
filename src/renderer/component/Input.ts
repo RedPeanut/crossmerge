@@ -15,6 +15,7 @@ export class Input {
   parent: HTMLElement;
   element: HTMLElement;
   input: HTMLInputElement;
+  mark: HTMLElement;
   related: HTMLElement;
   options: InputOptions;
 
@@ -31,6 +32,10 @@ export class Input {
         this.related.style.display = 'none';
       }
     });
+
+    const mark = this.mark = $('.mark');
+    const span = $('span.codicon.codicon-circle-filled');
+    mark.appendChild(span);
 
     const related = this.related = $('ul.related.scrollable');
     related.tabIndex = -1;
@@ -190,6 +195,7 @@ export class Input {
     }); */
 
     el.appendChild(input);
+    el.appendChild(mark);
     el.appendChild(related);
     parent.appendChild(el);
   }
@@ -210,4 +216,10 @@ export class Input {
     this.input.addEventListener(event, handler);
   }
 
+  setChanged(): void {
+    this.mark.style.display = 'flex';
+  }
+  clearChanged(): void {
+    this.mark.style.display = 'none';
+  }
 }

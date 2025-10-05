@@ -564,14 +564,21 @@ body { height: 100%; }
 
 
 /* Input */
-.input { position: relative; }
+.input { position: relative; display: flex; }
 .input input {
-  width: calc(100% - 16px - 2px); /* - padding - border */
+  /* width: calc(100% - 16px - 2px); */ /* - padding - border */
+  flex: 1;
   height: 23px;
   border: 1px solid rgb(122,122,122);
   /* padding: 3px; */
   padding: 2px 8px;
 }
+.input .mark {
+  display: none;
+  width: 12px;
+  align-items: center;
+}
+.input .mark span { color: red; font-size: 12px; }
 .input .related {
   display: none;
   position: absolute;
