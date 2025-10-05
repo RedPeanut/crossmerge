@@ -49,6 +49,7 @@ export interface Context {
   codes: { length: number };
   lines: string[];
 }
+
 export interface HistorySize {
   undo: number;
   redo: number;
