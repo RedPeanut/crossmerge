@@ -9,6 +9,8 @@ import { getService, bodyLayoutServiceId, statusbarPartServiceId } from "../../S
 import { renderer } from "../..";
 import { StatusbarPartService } from "../StatusbarPart";
 import { Change } from "../../../lib/mergely/Types";
+import { broadcast } from "../../Broadcast";
+import { listenerManager } from "../../util/ListenerManager";
 
 export interface FileViewOptions {}
 
@@ -42,7 +44,26 @@ export class FileView implements CompareView {
 
       this.recvReadData(arg);
     }); */
+
+    listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
+    listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
+
     this.focusManager = new FocusManager();
+  }
+
+  menuClickHandler(...args: any[]): void {
+    if(args && args.length > 1
+      && this.element.classList.contains('active')
+    ) {
+      // console.log('args =', args);
+      const id = args[1];
+
+      if(id.startsWith('file')) {
+
+      } else if(id.startsWith('edit')) {
+
+      }
+    }
   }
 
   create(): HTMLElement {
