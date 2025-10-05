@@ -13,7 +13,7 @@ import 'codemirror/lib/codemirror.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
-import { Change, Side, Viewport, Direction, Colors } from './Types';
+import { Change, Side, Viewport, Direction, Colors, HistorySize } from './Types';
 import { MergelyOptions } from './Mergely';
 
 const NOTICES = [
@@ -444,9 +444,9 @@ export default class CodeMirrorDiffView {
       }
     });
 
-    this.editor.lhs.on('change', (instance, ev) => {
+    this.editor.lhs.on('change', (instance: CodeMirror.Editor, ev: CodeMirror.EditorChange) => {
       this.trace('event#lhs-change');
-      this._changing();
+      this._changing('lhs', instance.historySize());
       this.trace('event#lhs-change [emitted]');
     });
     this.editor.lhs.on('scroll', () => {
@@ -461,9 +461,9 @@ export default class CodeMirrorDiffView {
         this._scrolling({ side: 'lhs' });
       }, 1);
     });
-    this.editor.rhs.on('change', (instance, ev) => {
+    this.editor.rhs.on('change', (instance: CodeMirror.Editor, ev: CodeMirror.EditorChange) => {
       this.trace('event#rhs-change', ev);
-      this._changing();
+      this._changing('rhs', instance.historySize());
     });
     this.editor.rhs.on('scroll', () => {
       if(this._skipscroll.rhs) {
@@ -730,7 +730,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _changing(): void {
+  _changing(side: Side = null, historySize: HistorySize = null): void {
     if(!this.settings.autoupdate) {
       this.trace('change#_changing autoupdate is disabled');
       return;
@@ -741,7 +741,7 @@ export default class CodeMirrorDiffView {
     }
     const handleChange = () => {
       this._changedTimeout = null;
-      this.el.dispatchEvent(new Event('changed'));
+      this.el.dispatchEvent(new CustomEvent('changed', { detail: { side, historySize } }));
     };
     if(this.settings.change_timeout > 0) {
       this.trace('change#setting timeout', this.settings.change_timeout)
@@ -1278,6 +1278,11 @@ export default class CodeMirrorDiffView {
     if(this.settings._debug) {
       traceTimeEnd('draw#_renderDiff');
     }
+  }
+
+  clearHistory(side: string = 'both') {
+    this.editor.lhs.clearHistory();
+    this.editor.rhs.clearHistory();
   }
 
   _queryElement(selector: string) {

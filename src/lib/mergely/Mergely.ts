@@ -38,6 +38,7 @@ export interface MergelyOptions {
   rhs?: any;
   _debug?: boolean;
   changes?: (changes: Change[]) => void;
+  changed?: any;
 }
 
 const defaultOptions: MergelyOptions = {
@@ -66,6 +67,7 @@ const defaultOptions: MergelyOptions = {
   rhs: null,
   _debug: false,
   changes: null,
+  changed: null
 };
 
 export default class Mergely {
@@ -93,6 +95,7 @@ export default class Mergely {
   public search(side: Side) { return this._diffView.search(side); }
   public unmarkup() { return this._diffView.unmarkup(); }
   public update() { return this._diffView.update(); }
+  public clearHistory(side: Side) { return this._diffView.clearHistory(side); }
   //*/
 
   constructor(selector: string | HTMLElement, options: MergelyOptions) {
@@ -144,7 +147,7 @@ export default class Mergely {
     this._removeEventListener = element.removeEventListener.bind(element);
 
     // Add change listener for when the view needs a new diff
-    this.on('changed', () => {
+    this.on('changed', (...args) => {
       const options = this._options;
       if(options._debug) {
         trace('event#changed got event');
@@ -175,6 +178,12 @@ export default class Mergely {
           ignorecase: options.ignorecase,
         }
       });
+
+      this._options.changed && this._options.changed(args);
+    });
+
+    this.once('changed', (...args) => {
+      view.clearHistory();
     });
 
     view.bind(this.el);

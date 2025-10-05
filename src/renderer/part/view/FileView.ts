@@ -166,6 +166,12 @@ export class FileView implements CompareView {
             this.item.status = { removal, insertion, change };
             const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
             statusbarPartService.update(this.item);
+          },
+          changed: (args: any[]) => {
+            if(args && args.length > 0) {
+              const ev = args[0] as CustomEvent;
+              console.log('ev.detail.historySize =', ev.detail.historySize);
+            }
           }
         }
       );
