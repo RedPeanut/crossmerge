@@ -119,8 +119,10 @@
 /* changed styles */
 .mergely-editor .mergely.c .CodeMirror-linebackground,
 .mergely-editor .mergely.c .CodeMirror-gutter-background {
-  border-color: #a3a3a3;
-  background-color: #fafafa;
+  /* border-color: #a3a3a3; */
+  border-color: rgb(113 113 113);
+  /* background-color: #fafafa; */
+  background-color: rgb(152 85 214 / 0.1);
 }
 
 /* lhs styles (deleted-from) */
@@ -133,11 +135,13 @@
 .mergely-editor .mergely.rhs.a.no-start .CodeMirror-gutter-background,
 .mergely-editor .mergely.lhs.no-end .CodeMirror-gutter-background,
 .mergely-editor .mergely.lhs.d .CodeMirror-gutter-background {
-  border-color: #ff7f7f;
+  /* border-color: #ff7f7f; */
+  border-color: rgb(113 113 113);
 }
 .mergely-editor .mergely.lhs.d .CodeMirror-linebackground,
 .mergely-editor .mergely.lhs.d .CodeMirror-gutter-background {
-  background-color: #ffe9e9;
+  /* background-color: #ffe9e9; */
+  background-color: rgb(224 158 87 / 0.1);
 }
 /* ind is an inline delete */
 .mergely-editor .mergely.ch.ind.lhs {
@@ -156,11 +160,13 @@
 .mergely-editor .mergely.lhs.no-end .CodeMirror-gutter-background,
 .mergely-editor .mergely.lhs.no-start .CodeMirror-gutter-background,
 .mergely-editor .mergely.rhs.a .CodeMirror-gutter-background {
-  border-color: #a3d1ff;
+  /* border-color: #a3d1ff; */
+  border-color: rgb(113 113 113);
 }
 .mergely-editor .mergely.rhs.a .CodeMirror-linebackground,
 .mergely-editor .mergely.rhs.a .CodeMirror-gutter-background {
-  background-color: #eff7ff;
+  /* background-color: #eff7ff; */
+  background-color: rgb(95 216 85 / 0.1);
 }
 /* ina is an inline add */
 .mergely-editor .mergely.ch.ina.rhs {
