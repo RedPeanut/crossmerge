@@ -212,7 +212,7 @@ export class Input {
     this.input.value = value;
   }
 
-  addEventListener(event, handler) {
+  addEventListener(event, handler): void {
     this.input.addEventListener(event, handler);
   }
 

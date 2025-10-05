@@ -49,13 +49,13 @@ export default class CodeMirrorDiffView {
   changes: Change[];
   _current_diff: number;
   id: string;
-  prev_query: { lhs: string, rhs: string } ;
-  cursor;
+  prev_query: { lhs: string | RegExp, rhs: string | RegExp };
+  cursor: any[];
   em_height: number;
   lhsId: string;
   rhsId: string;
   chfns;
-  _skipscroll;
+  _skipscroll: { lhs: boolean, rhs: boolean };
   change_exp;
   merge_lhs_button: HTMLElement;
   merge_rhs_button: HTMLElement;
@@ -261,9 +261,9 @@ export default class CodeMirrorDiffView {
     return this.editor[side];
   }
 
-  search(side: Side, query: string = '', direction: Direction = 'next'): void {
+  search(side: Side, query: string | RegExp = '', direction: Direction = 'next'): void {
     this.trace('api#search', side, query, direction);
-    const editor = this.editor[side];
+    const editor: CodeMirror.EditorFromTextArea = this.editor[side];
     if(!editor.getSearchCursor) {
       throw new Error('install CodeMirror search addon');
     }
@@ -330,7 +330,7 @@ export default class CodeMirrorDiffView {
     this.chfns = { lhs: [], rhs: [] };
     this.prev_query = { lhs: '', rhs: '' };
     this.cursor = [];
-    this._skipscroll = {};
+    this._skipscroll = { lhs: false, rhs: false };
     this.change_exp = new RegExp(/(\d+(?:,\d+)?)([acd])(\d+(?:,\d+)?)/);
     // homebrew button
     // const lhsTemplate = `<div class="merge-button" title="Merge left">&#x25C0;</div>`;

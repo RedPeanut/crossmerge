@@ -13,7 +13,7 @@ import { EditorConfiguration } from '../../types/codemirror';
 const trace = console.log;
 
 export interface MergelyOptions {
-  autoupdate?: any;
+  autoupdate?: boolean;
   rhs_margin?: any;
   wrap_lines?: boolean;
   line_numbers?: boolean;
@@ -23,8 +23,8 @@ export interface MergelyOptions {
   ignorews?: boolean;
   ignorecase?: boolean;
   ignoreaccents?: boolean;
-  resize_timeout?: any;
-  change_timeout?: any;
+  resize_timeout?: number;
+  change_timeout?: number;
   bgcolor?: string;
   vpcolor?: string;
   license?: string;
