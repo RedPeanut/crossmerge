@@ -37,7 +37,7 @@ export interface MergelyOptions {
   lhs?: any;
   rhs?: any;
   _debug?: boolean;
-  changed?: (changes: Change[]) => void;
+  changes?: (changes: Change[]) => void;
 }
 
 const defaultOptions: MergelyOptions = {
@@ -65,7 +65,7 @@ const defaultOptions: MergelyOptions = {
   lhs: null,
   rhs: null,
   _debug: false,
-  changed: null,
+  changes: null,
 };
 
 export default class Mergely {
@@ -164,7 +164,7 @@ export default class Mergely {
         }
         this._changes = changes;
         view.setChanges(this._changes);
-        this._options.changed && this._options.changed(changes);
+        this._options.changes && this._options.changes(changes);
       });
       worker.postMessage({
         lhs: this.get('lhs'),

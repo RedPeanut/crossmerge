@@ -151,7 +151,7 @@ export class FileView implements CompareView {
           bgcolor: 'white',
           vpcolor: 'rgb(167 167 167 / 50%)',
           // _debug: true,
-          changed: (changes: Change[]) => {
+          changes: (changes: Change[]) => {
             // console.log('changes =', changes);
             let removal = 0, insertion = 0, change = 0;
             for(let i = 0; i < changes.length; i++) {
