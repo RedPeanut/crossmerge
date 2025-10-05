@@ -3,7 +3,7 @@ import { CompareFileData, CompareItem } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
-import { FocusManager } from "../../util/FocusManager";
+import { SimpleFocusManager } from "../../util/SimpleFocusManager";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { getService, bodyLayoutServiceId, statusbarPartServiceId } from "../../Service";
 import { renderer } from "../..";
@@ -28,7 +28,7 @@ export class FileView implements CompareView {
   mergely_el: HTMLElement;
   mergely: Mergely;
 
-  focusManager: FocusManager;
+  focusManager: SimpleFocusManager;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -48,7 +48,7 @@ export class FileView implements CompareView {
     listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
     listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
 
-    this.focusManager = new FocusManager();
+    this.focusManager = new SimpleFocusManager();
   }
 
   menuClickHandler(...args: any[]): void {

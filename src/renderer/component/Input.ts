@@ -4,7 +4,7 @@ import * as dom from "../util/dom";
 import { $ } from "../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
-import { FocusManager } from "../util/FocusManager";
+import { SimpleFocusManager } from "../util/SimpleFocusManager";
 
 export interface InputOptions {
   mode: 'file' | 'folder';
@@ -19,7 +19,7 @@ export class Input {
   related: HTMLElement;
   options: InputOptions;
 
-  constructor(parent: HTMLElement, focusManager: FocusManager, options: InputOptions) {
+  constructor(parent: HTMLElement, focusManager: SimpleFocusManager, options: InputOptions) {
     this.parent = parent;
     this.options = options;
 

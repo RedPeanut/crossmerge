@@ -1,4 +1,4 @@
-interface Item { what: HTMLElement, cb: (...args: any[]) => void }
+interface SimpleItem { what: HTMLElement, cb: (...args: any[]) => void }
 
 /**
  * 브라우저 포커스 처리와 좀 다르게 처리하기위해
@@ -9,16 +9,16 @@ interface Item { what: HTMLElement, cb: (...args: any[]) => void }
  * = To ignore focus movement to unregistered elements
  * = To enable click on related list items in Input components
  */
-export class FocusManager {
+export class SimpleFocusManager {
 
-  list: Item[] = [];
+  list: SimpleItem[] = [];
 
   register(what: HTMLElement, cb: (...args: any[]) => void = null) {
     this.list.push({what, cb});
     what.addEventListener('focus', (e: FocusEvent) => {
       // (e.currentTarget as HTMLElement)
       for(let i = 0; i < this.list.length; i++) {
-        const item: Item = this.list[i];
+        const item: SimpleItem = this.list[i];
         if(item.what === e.currentTarget) {
           (e.currentTarget as HTMLElement).classList.add('focus');
           if(item.cb) item.cb('focus');

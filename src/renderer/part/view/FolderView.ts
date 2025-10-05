@@ -20,7 +20,7 @@ import { StringUtil } from "../../../common/util/StringUtil";
 import { StatusbarPartService } from "../StatusbarPart";
 import { listenerManager } from "../../util/ListenerManager";
 import { broadcast } from "../../Broadcast";
-import { FocusManager } from "../../util/FocusManager";
+import { SimpleFocusManager } from "../../util/SimpleFocusManager";
 
 interface Node {
   parent: Node | null;
@@ -140,7 +140,7 @@ export class FolderView implements CompareView {
   // progressPopup: ProgressPopup;
   // dialog: Dialog;
 
-  focusManager: FocusManager;
+  focusManager: SimpleFocusManager;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -181,7 +181,7 @@ export class FolderView implements CompareView {
     listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
     listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
 
-    this.focusManager = new FocusManager();
+    this.focusManager = new SimpleFocusManager();
   }
 
   menuClickHandler(...args: any[]): void {
