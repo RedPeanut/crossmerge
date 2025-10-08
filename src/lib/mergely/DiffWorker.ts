@@ -4,8 +4,21 @@ import DiffParser from "./DiffParser";
 import { Change } from "./Types";
 
 export default class DiffWorker extends EventEmitter {
+
+  _listeners: [ event: string, listener: (...args: any[]) => void ][] = [];
+
   onerror(ev) {}
-  terminate() {}
+
+  terminate() {
+    for(const [ event, listener ] of this._listeners) {
+      this.off(event, listener);
+    }
+  }
+
+  on(event: string, listener: (...args: any[]) => void): this{
+    this._listeners.push([ event, listener ]);
+    return super.on(event, listener);
+  }
 
   postMessage({lhs, rhs, options}) {
     setTimeout(() => {
