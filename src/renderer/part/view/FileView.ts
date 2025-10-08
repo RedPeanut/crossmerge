@@ -3,7 +3,7 @@ import { CompareFileData, CompareItem, editPrevChangeMenuId, editNextChangeMenuI
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
-import { SimpleFocusManager } from "../../util/SimpleFocusManager";
+import { ComplexFocusManager } from "../../util/ComplexFocusManager";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { getService, bodyLayoutServiceId, statusbarPartServiceId } from "../../Service";
 import { renderer } from "../..";
@@ -28,7 +28,7 @@ export class FileView implements CompareView {
   mergely_el: HTMLElement;
   mergely: Mergely;
 
-  focusManager: SimpleFocusManager;
+  focusManager: ComplexFocusManager;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -48,7 +48,7 @@ export class FileView implements CompareView {
     listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
     listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
 
-    this.focusManager = new SimpleFocusManager();
+    this.focusManager = new ComplexFocusManager();
   }
 
   menuClickHandler(...args: any[]): void {
@@ -155,11 +155,16 @@ export class FileView implements CompareView {
 
   doCompare(): void {
     if(this.mergely) {
+      this.focusManager.unregister(this.mergely.cm('lhs'));
+      this.focusManager.unregister(this.mergely.cm('rhs'));
       this.mergely.unbind();
       this.mergely = null;
     }
     this.mergely_el && this.element.removeChild(this.mergely_el);
     this.mergely_el = null;
+
+    this.input_lhs.related.style.display = 'none';
+    this.input_rhs.related.style.display = 'none';
 
     const mergely_el = this.mergely_el = $('.mergely');
     mergely_el.id = `_${renderer.idx++}`;
@@ -216,6 +221,10 @@ export class FileView implements CompareView {
           }
         }
       );
+
+      this.focusManager.register(this.mergely.cm('lhs'));
+      this.focusManager.register(this.mergely.cm('rhs'));
+
     }).catch(error => {
       console.log(error);
     });
