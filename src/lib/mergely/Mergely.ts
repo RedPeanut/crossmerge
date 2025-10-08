@@ -92,6 +92,7 @@ export default class Mergely {
   public rhs(text: string) { return this._diffView.rhs(text); }
   public scrollTo(side: Side) { return this._diffView.scrollTo(side); }
   public scrollToDiff(direction: Direction) { return this._diffView.scrollToDiff(direction); }
+  public scrollToDiffByPos(direction: Direction): void { return this._diffView.scrollToDiffByPos(direction); }
   public search(side: Side) { return this._diffView.search(side); }
   public unmarkup() { return this._diffView.unmarkup(); }
   public update() { return this._diffView.update(); }

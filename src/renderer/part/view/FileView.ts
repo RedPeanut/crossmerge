@@ -1,5 +1,5 @@
 import { Input } from "../../component/Input";
-import { CompareFileData, CompareItem } from "../../../common/Types";
+import { CompareFileData, CompareItem, editPrevChangeMenuId, editNextChangeMenuId } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
@@ -61,7 +61,11 @@ export class FileView implements CompareView {
       if(id.startsWith('file')) {
 
       } else if(id.startsWith('edit')) {
-
+        if(id === editPrevChangeMenuId) {
+          this.mergely.scrollToDiffByPos('prev');
+        } else if(id === editNextChangeMenuId) {
+          this.mergely.scrollToDiffByPos('next');
+        }
       }
     }
   }

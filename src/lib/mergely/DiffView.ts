@@ -186,6 +186,47 @@ export default class CodeMirrorDiffView {
     this.setChanges(this.changes);
   }
 
+  scrollToDiffByPos(direction: Direction): void {
+    this.trace('api#scrollToDiffByPos', direction);
+    if(!this.changes.length) return;
+
+    const side = this.editor.rhs.hasFocus() ? 'rhs' : 'lhs';
+    const editor = side === 'rhs' ? this.editor.rhs : this.editor.lhs;
+    const pos = editor.getCursor();
+    // console.log('pos =', pos);
+
+    // console.log('this.changes =', this.changes);
+    let curr = -1, next = 0, prev = this.changes.length-1;
+    for(let i = 0; i < this.changes.length; i++) {
+      const lf = this.changes[i][`${side}-line-from`];
+      const lt = this.changes[i][`${side}-line-to`];
+      if(lf <= pos.line && pos.line <= lt) {
+        curr = i;
+        break;
+      } else if(pos.line < lf) {
+        break;
+      } else
+        curr = i+0.5;
+    }
+    // console.log('curr =', curr);
+
+    if(direction === 'next') {
+      next = Math.floor(curr+1);
+      if(next > this.changes.length-1)
+        next = 0;
+      this._current_diff = next;
+    } else if(direction === 'prev') {
+      prev = Math.ceil(curr-1);
+      if(prev < 0)
+        prev = this.changes.length-1;
+      this._current_diff = prev;
+    }
+    // console.log('this._current_diff =', this._current_diff);
+
+    this._scroll_to_change(this.changes[this._current_diff]);
+    this.setChanges(this.changes);
+  }
+
   mergeCurrentChange(side): void {
     this.trace('api#mergeCurrentChange', side);
     if(!this.changes.length) return;
