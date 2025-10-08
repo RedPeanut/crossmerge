@@ -8,7 +8,7 @@ import Diff from './Diff';
 import * as dom from './dom';
 import { Change, Direction, Side } from './Types';
 import DiffView from './DiffView';
-import { EditorConfiguration } from '../../types/codemirror';
+import { EditorConfiguration, EditorFromTextArea } from '../../types/codemirror';
 
 const trace = console.log;
 
@@ -38,7 +38,7 @@ export interface MergelyOptions {
   rhs?: any;
   _debug?: boolean;
   changes?: (changes: Change[]) => void;
-  changed?: any;
+  changed?: (args: any[]) => void;
 }
 
 const defaultOptions: MergelyOptions = {
@@ -80,23 +80,23 @@ export default class Mergely {
   _addEventListener;
   _removeEventListener;
   _options;
-  _diffWorker;
+  _diffWorker: DiffWorker;
   _changes: Change[];
 
   ///* // exposes view methods
-  public cm(side: Side) { return this._diffView.cm(side); }
-  public get(side: Side) { return this._diffView.get(side); }
-  public lhs(text: string) { return this._diffView.lhs(text); }
-  public mergeCurrentChange(side: Side) { return this._diffView.mergeCurrentChange(side); }
-  public resize() { return this._diffView.resize(); }
-  public rhs(text: string) { return this._diffView.rhs(text); }
-  public scrollTo(side: Side) { return this._diffView.scrollTo(side); }
-  public scrollToDiff(direction: Direction) { return this._diffView.scrollToDiff(direction); }
+  public cm(side: Side): EditorFromTextArea { return this._diffView.cm(side); }
+  public get(side: Side): string { return this._diffView.get(side); }
+  public lhs(text: string): void { return this._diffView.lhs(text); }
+  public mergeCurrentChange(side: Side): void { return this._diffView.mergeCurrentChange(side); }
+  public resize(): void { return this._diffView.resize(); }
+  public rhs(text: string): void { return this._diffView.rhs(text); }
+  public scrollTo(side: Side): void { return this._diffView.scrollTo(side); }
+  public scrollToDiff(direction: Direction): void { return this._diffView.scrollToDiff(direction); }
   public scrollToDiffByPos(direction: Direction): void { return this._diffView.scrollToDiffByPos(direction); }
-  public search(side: Side) { return this._diffView.search(side); }
-  public unmarkup() { return this._diffView.unmarkup(); }
-  public update() { return this._diffView.update(); }
-  public clearHistory(side: Side) { return this._diffView.clearHistory(side); }
+  public search(side: Side): void { return this._diffView.search(side); }
+  public unmarkup(): void { return this._diffView.unmarkup(); }
+  public update(): void { return this._diffView.update(); }
+  public clearHistory(side: Side): void { return this._diffView.clearHistory(side); }
   //*/
 
   constructor(selector: string | HTMLElement, options: MergelyOptions) {
