@@ -192,17 +192,17 @@ export class FileView implements CompareView {
             if(args && args.length > 0) {
               const ev = args[0] as CustomEvent;
               if(ev.detail && ev.detail.side && ev.detail.historySize && ev.detail.ohistorySize) {
-                if(ev.detail.side === 'lhs') {
-                  if(ev.detail.historySize.undo > 0)
-                    this.input_lhs.setChanged();
-                  else
-                    this.input_lhs.clearChanged();
-                } else if(ev.detail.side === 'rhs') {
-                  if(ev.detail.historySize.undo > 0)
-                    this.input_rhs.setChanged();
-                  else
-                    this.input_rhs.clearChanged();
-                }
+                const input = ev.detail.side === 'rhs' ? this.input_rhs : this.input_lhs;
+                if(ev.detail.historySize.undo > 0)
+                  input.setChanged();
+                else
+                  input.clearChanged();
+
+                const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+                if(ev.detail.historySize.undo > 0 || ev.detail.ohistorySize.undo > 0)
+                  bodyLayoutService.callTabFn(this.item.uid, 'setChanged');
+                else
+                  bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
               }
             }
           }

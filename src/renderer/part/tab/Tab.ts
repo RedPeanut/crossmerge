@@ -14,6 +14,7 @@ export class Tab {
   element: HTMLElement;
   item: CompareItem;
   label: HTMLElement;
+  mark: HTMLElement;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -39,6 +40,11 @@ export class Tab {
     const label = this.label = $('a.label');
     label.innerHTML = `No ${this.item.type} x 2`;
     el.appendChild(label);
+
+    const mark = this.mark = $('.mark');
+    const span = $('span.codicon.codicon-circle-filled');
+    mark.appendChild(span);
+    el.appendChild(mark);
     return el;
   }
 
@@ -69,5 +75,12 @@ export class Tab {
     } else {
       this.label.innerHTML = lhs_name + ', ' + rhs_name;
     }
+  }
+
+  setChanged(): void {
+    this.mark.style.display = 'flex';
+  }
+  clearChanged(): void {
+    this.mark.style.display = 'none';
   }
 }

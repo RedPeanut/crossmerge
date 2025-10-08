@@ -47,6 +47,15 @@ export class Tabs {
     }
   }
 
+  callTabFn(id: string, fn: string): void {
+    for(let i = 0; i < this.tabs.length; i++) {
+      if(this.tabs[i].item.uid === id) {
+        this.tabs[i][fn]();
+        break;
+      }
+    }
+  }
+
   active(id: string) {
     for(let i = 0; i < this.tabs.length; i++) {
       if(this.tabs[i].item.uid === id) this.tabs[i].setClass({ active: true });

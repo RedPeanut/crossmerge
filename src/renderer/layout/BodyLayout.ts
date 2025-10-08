@@ -30,6 +30,7 @@ export interface BodyLayoutService extends Service {
   addFileCompareView(path_lhs?: string, path_rhs?: string): void;
   addFolderCompareView(): void;
   updateTabLabel(id: string, lhs: string, rhs: string): void;
+  callTabFn(id: string, fn: string): void;
   active(id: string): void;
   remove(id: string): void;
 }
@@ -219,6 +220,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {
     this.groupView && this.groupView.updateTabLabel(id, lhs, rhs);
+  }
+
+  callTabFn(id: string, fn: string): void {
+    this.groupView && this.groupView.callTabFn(id, fn);
   }
 
   active(id: string): void {
