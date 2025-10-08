@@ -86,8 +86,8 @@
   background-color: #777;
 }
 .mergely-editor .mergely.current .CodeMirror-linenumber {
-  color: #F9F9F9;
-  font-weight: bold;
+  /* color: #F9F9F9;
+  font-weight: bold; */
 }
 .mergely-editor .merge-button {
   color: #ccc;

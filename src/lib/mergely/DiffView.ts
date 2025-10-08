@@ -663,12 +663,12 @@ export default class CodeMirrorDiffView {
     const rlf = Math.max(change['rhs-line-from'], 0);
     led.setCursor(llf, 0);
     red.setCursor(rlf, 0);
-    if(change['lhs-line-to'] >= 0) {
-      this.scrollTo('lhs', change['lhs-line-to']);
-    } else if(change['rhs-line-to'] >= 0) {
-      this.scrollTo('rhs', change['rhs-line-to']);
+    if(change['lhs-line-from'] >= 0) {
+      this.scrollTo('lhs', change['lhs-line-from']);
+    } else if(change['rhs-line-from'] >= 0) {
+      this.scrollTo('rhs', change['rhs-line-from']);
     }
-    led.focus();
+    // led.focus();
   }
 
   _scrolling({ side }: { side: Side }): void {
