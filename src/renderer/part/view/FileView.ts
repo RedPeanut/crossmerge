@@ -128,7 +128,7 @@ export class FileView implements CompareView {
   }
 
   inputKeyPressHandler(e: KeyboardEvent) {
-    console.log('keypress event is called ..');
+    // console.log('keypress event is called ..');
     // console.log('e.keyCode =', e.keyCode);
 
     if(e.keyCode == 13) {
@@ -136,8 +136,6 @@ export class FileView implements CompareView {
       this.doCompare();
       return;
     }
-
-    // TODO: auto completion
 
     // check every keyboard's capable char
     // TODO: capture paste event, arrow event?

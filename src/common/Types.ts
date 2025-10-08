@@ -184,5 +184,6 @@ export const selectByStateMenuId = 'actions.selectByState';
 export const launchComparisonsMenuId = 'actions.launchComparisons';
 export const expandAllFoldersMenuId = 'actions.expandAllFolders';
 export const collapseAllFoldersMenuId = 'actions.collapseAllFolders';
+
 // view
 export const toggleWrapLinesMenuId = 'view.toggleWrapLines';

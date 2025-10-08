@@ -87,21 +87,6 @@ export class GroupView {
       }
     }
 
-    /* let group, find = false, i = 0;
-    for(; i < this.group.length; i++) {
-      if(this.group[i].uid == id) {
-        find = true;
-        group = this.group[i];
-        break;
-      }
-    }
-
-    if(find) {
-      this.tabs.removeChild(i);
-      this.compares.removeChild(id);
-      this.group.splice(i, 1);
-    } */
-
     return this.group.length;
   }
 }
