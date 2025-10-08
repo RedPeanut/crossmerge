@@ -72,7 +72,9 @@ export class ListenerManager {
             }
           }
         }
+        // this.map.get(who).get(where).clear();
       }
+      this.map.get(who).clear();
     }
   }
 }
