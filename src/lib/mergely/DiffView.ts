@@ -446,7 +446,7 @@ export default class CodeMirrorDiffView {
 
     this.editor.lhs.on('change', (instance: CodeMirror.Editor, ev: CodeMirror.EditorChange) => {
       this.trace('event#lhs-change');
-      this._changing('lhs', instance.historySize());
+      this._changing('lhs', instance.historySize(), this.editor.rhs.historySize());
       this.trace('event#lhs-change [emitted]');
     });
     this.editor.lhs.on('scroll', () => {
@@ -463,7 +463,7 @@ export default class CodeMirrorDiffView {
     });
     this.editor.rhs.on('change', (instance: CodeMirror.Editor, ev: CodeMirror.EditorChange) => {
       this.trace('event#rhs-change', ev);
-      this._changing('rhs', instance.historySize());
+      this._changing('rhs', instance.historySize(), this.editor.lhs.historySize());
     });
     this.editor.rhs.on('scroll', () => {
       if(this._skipscroll.rhs) {
@@ -730,7 +730,7 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  _changing(side: Side = null, historySize: HistorySize = null): void {
+  _changing(side: Side = null, historySize: HistorySize = null, ohistorySize: HistorySize = null): void {
     if(!this.settings.autoupdate) {
       this.trace('change#_changing autoupdate is disabled');
       return;
@@ -741,7 +741,7 @@ export default class CodeMirrorDiffView {
     }
     const handleChange = () => {
       this._changedTimeout = null;
-      this.el.dispatchEvent(new CustomEvent('changed', { detail: { side, historySize } }));
+      this.el.dispatchEvent(new CustomEvent('changed', { detail: { side, historySize, ohistorySize } }));
     };
     if(this.settings.change_timeout > 0) {
       this.trace('change#setting timeout', this.settings.change_timeout)
