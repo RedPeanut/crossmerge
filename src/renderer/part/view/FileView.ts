@@ -1,5 +1,5 @@
 import { Input } from "../../component/Input";
-import { CompareFileData, CompareItem, editPrevChangeMenuId, editNextChangeMenuId } from "../../../common/Types";
+import { CompareFileData, CompareItem, editPrevChangeMenuId, editNextChangeMenuId, toggleWrapLinesMenuId } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
@@ -66,6 +66,10 @@ export class FileView implements CompareView {
         } else if(id === editNextChangeMenuId) {
           this.mergely.scrollToDiffByPos('next');
         }
+      } else if(id.startsWith('view')) {
+        if(id === toggleWrapLinesMenuId) {
+          // this.mergely.options({ wrap_lines: !curr });
+        }
       }
     }
   }
@@ -89,8 +93,8 @@ export class FileView implements CompareView {
 
     // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/left/moons.txt');
     // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/right/moons.txt');
-    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/bab.txt');
-    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/bab.txt');
+    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt');
+    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/baa.txt');
     // input_lhs.setValue(this.item.path_lhs);
     // input_rhs.setValue(this.item.path_rhs);
 

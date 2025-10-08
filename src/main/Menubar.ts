@@ -15,7 +15,8 @@ import {
   fileSaveMenuId, fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, /* fileCloseMenuId,  */fileCloseTabMenuId, filePreferencesMenuId,
   editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId, editPrevChangeMenuId, editNextChangeMenuId,
   pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
-  selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
+  selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
+  toggleWrapLinesMenuId
 } from '../common/Types';
 
 // { id: [Win, Mac] }
@@ -47,6 +48,8 @@ keyBinding[selectChangedMenuId] = [ 'Ctrl+S', 'Cmd+Ctrl+C' ];
 keyBinding[launchComparisonsMenuId] = [ 'Ctrl+M', 'Cmd+Shift+L' ];
 keyBinding[expandAllFoldersMenuId] = [ 'Ctrl+=', 'Cmd+Ctrl+=' ];
 keyBinding[collapseAllFoldersMenuId] = [ 'Ctrl+-', 'Cmd+Ctrl+-' ];
+
+keyBinding[toggleWrapLinesMenuId] = [ 'Alt+Z', 'Alt+Z' ];
 
 /* const keyBinding: { [id: string]: string } = isWindows ? {
   // 'file.preferences': 'Ctrl+P',
@@ -303,7 +306,16 @@ export class Menubar {
   addViewMenu(options: MenuItemConstructorOptions[]): void {
     options.push({
       label: '&View',
-      submenu: [],
+      submenu: [
+        {
+          id: toggleWrapLinesMenuId,
+          label: 'Toggle Wrap Lines',
+          accelerator: keyBinding[toggleWrapLinesMenuId][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', toggleWrapLinesMenuId);
+          }
+        },
+      ],
     });
   }
 
