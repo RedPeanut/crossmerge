@@ -100,10 +100,12 @@
 }
 
 .mergely-editor .CodeMirror-inlineWidget-wrapper {
-  right: 3px;
+  position: absolute;
+  /* right: 3px; */
 }
 
 .mergely-editor .CodeMirror-inlineWidget-elt {
+  margin-left: calc(100% - 20px);
   padding: 1px 0;
 }
 
