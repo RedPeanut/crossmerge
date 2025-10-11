@@ -68,7 +68,8 @@ export class FileView implements CompareView {
         }
       } else if(id.startsWith('view')) {
         if(id === toggleWrapLinesMenuId) {
-          // this.mergely.options({ wrap_lines: !curr });
+          const toggled = renderer.wrapLine = !renderer.wrapLine;
+          this.mergely.options({ wrap_lines: toggled });
         }
       }
     }
