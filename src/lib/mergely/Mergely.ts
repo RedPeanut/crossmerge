@@ -30,7 +30,8 @@ export interface MergelyOptions {
   license?: string;
   cmsettings?: {
     styleSelectedText?: boolean,
-    mode?: string
+    mode?: string,
+    scrollbarStyle?: keyof CodeMirror.ScrollbarModels
   };
   lhs_cmsettings?: CodeMirror.EditorConfiguration;
   rhs_cmsettings?: CodeMirror.EditorConfiguration;

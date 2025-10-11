@@ -1280,6 +1280,8 @@ declare namespace CodeMirror {
     interface ScrollbarModels {
         native: ScrollbarModelConstructor;
         null: ScrollbarModelConstructor;
+        scroll: ScrollbarModelConstructor;
+        overlay: ScrollbarModelConstructor;
     }
 
     const scrollbarModel: ScrollbarModels;

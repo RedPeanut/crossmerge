@@ -383,8 +383,8 @@ body { height: 100%; }
   padding: 8px 8px 0;
 }
 .file-compare-view ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  /* width: 0;
+  height: 0; */
 }
 
 .file-compare-view .inputs { display: flex; flex: 0; margin-bottom: 8px; }

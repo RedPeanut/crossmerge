@@ -10,6 +10,8 @@ import CodeMirror from 'codemirror';
 // import { DocOrEditor, SearchCursor } from 'codemirror/addon/search/searchcursor';
 // import { EditorConfiguration } from 'codemirror/addon/selection/mark-selection';
 import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/scroll/simplescrollbars.js';
+import 'codemirror/addon/scroll/simplescrollbars.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';

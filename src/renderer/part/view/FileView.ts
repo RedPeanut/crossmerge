@@ -216,6 +216,9 @@ export class FileView implements CompareView {
                   bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
               }
             }
+          },
+          cmsettings: {
+            scrollbarStyle: 'simple'
           }
         }
       );

@@ -192,3 +192,18 @@
 .mergely-editor .mergely.no-start .CodeMirror-inlineWidget-wrapper {
   bottom: -12px;
 }
+.mergely .CodeMirror-simplescroll-horizontal div,
+.mergely .CodeMirror-simplescroll-vertical div {
+  border: none;
+  background: rgb(167 167 167 / 50%);
+}
+
+.mergely .CodeMirror-simplescroll-horizontal,
+.mergely .CodeMirror-simplescroll-vertical {
+  background: white;
+}
+
+.mergely .CodeMirror-overlayscroll-horizontal div,
+.mergely .CodeMirror-overlayscroll-vertical div {
+  background: rgb(167 167 167 / 50%);
+}
