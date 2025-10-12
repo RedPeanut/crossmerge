@@ -68,8 +68,12 @@ export class FileView implements CompareView {
         }
       } else if(id.startsWith('view')) {
         if(id === toggleWrapLinesMenuId) {
-          const toggled = renderer.wrapLine = !renderer.wrapLine;
-          this.mergely.options({ wrap_lines: toggled });
+          // const toggled = renderer.wrapLine = !renderer.wrapLine;
+          window.ipc.invoke('config get', 'wrap_lines').then((v) => {
+            const toggled = !v;
+            this.mergely.options({ wrap_lines: toggled });
+            window.ipc.invoke('config update', { wrap_lines: toggled });
+          });
         }
       }
     }
@@ -169,73 +173,80 @@ export class FileView implements CompareView {
     mergely_el.id = `_${renderer.idx++}`;
     this.element.appendChild(mergely_el);
 
-    window.ipc.invoke('read file in fileview',
-      this.input_lhs.getValue(),
-      this.input_rhs.getValue()
-    ).then(result => {
-      // console.log('result =', result);
-      const mergely = this.mergely = new Mergely(
-        // '#mergely',
-        this.mergely_el,
-        {
-          ...{},
-          lhs: result.data_lhs,
-          rhs: result.data_rhs,
-          bgcolor: 'white',
-          vpcolor: 'rgb(167 167 167 / 50%)',
-          // _debug: true,
-          changes: (changes: Change[]) => {
-            // console.log('changes =', changes);
-            let removal = 0, insertion = 0, change = 0;
-            for(let i = 0; i < changes.length; i++) {
-              if(changes[i].op == 'd')
-                removal++;
-              else if(changes[i].op == 'a')
-                insertion++;
-              else //if(changes[i].op == 'c')
-                change++;
-            }
+    window.ipc.invoke('config get', 'wrap_lines').then(result => {
 
-            this.item.status = { removal, insertion, change };
-            const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
-            statusbarPartService.update(this.item);
-          },
-          changed: (args: any[]) => {
-            if(args && args.length > 0) {
-              const ev = args[0] as CustomEvent;
-              if(ev.detail && ev.detail.side && ev.detail.historySize && ev.detail.ohistorySize) {
-                const input = ev.detail.side === 'rhs' ? this.input_rhs : this.input_lhs;
-                if(ev.detail.historySize.undo > 0)
-                  input.setChanged();
-                else
-                  input.clearChanged();
+      const wrap_lines = result;
 
-                const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-                if(ev.detail.historySize.undo > 0 || ev.detail.ohistorySize.undo > 0)
-                  bodyLayoutService.callTabFn(this.item.uid, 'setChanged');
-                else
-                  bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
+      window.ipc.invoke('read file in fileview',
+        this.input_lhs.getValue(),
+        this.input_rhs.getValue()
+      ).then(result => {
+        // console.log('result =', result);
+        const mergely = this.mergely = new Mergely(
+          // '#mergely',
+          this.mergely_el,
+          {
+            ...{},
+            lhs: result.data_lhs,
+            rhs: result.data_rhs,
+            bgcolor: 'white',
+            vpcolor: 'rgb(167 167 167 / 50%)',
+            // _debug: true,
+            changes: (changes: Change[]) => {
+              // console.log('changes =', changes);
+              let removal = 0, insertion = 0, change = 0;
+              for(let i = 0; i < changes.length; i++) {
+                if(changes[i].op == 'd')
+                  removal++;
+                else if(changes[i].op == 'a')
+                  insertion++;
+                else //if(changes[i].op == 'c')
+                  change++;
               }
-            }
-          },
-          cmsettings: {
-            scrollbarStyle: 'simple'
+
+              this.item.status = { removal, insertion, change };
+              const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
+              statusbarPartService.update(this.item);
+            },
+            changed: (args: any[]) => {
+              if(args && args.length > 0) {
+                const ev = args[0] as CustomEvent;
+                if(ev.detail && ev.detail.side && ev.detail.historySize && ev.detail.ohistorySize) {
+                  const input = ev.detail.side === 'rhs' ? this.input_rhs : this.input_lhs;
+                  if(ev.detail.historySize.undo > 0)
+                    input.setChanged();
+                  else
+                    input.clearChanged();
+
+                  const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+                  if(ev.detail.historySize.undo > 0 || ev.detail.ohistorySize.undo > 0)
+                    bodyLayoutService.callTabFn(this.item.uid, 'setChanged');
+                  else
+                    bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
+                }
+              }
+            },
+            cmsettings: {
+              scrollbarStyle: 'simple'
+            },
+            // wrap_lines: wrap_lines
+            wrap_lines
           }
-        }
-      );
+        );
 
-      this.focusManager.register(this.mergely.cm('lhs'));
-      this.focusManager.register(this.mergely.cm('rhs'));
+        this.focusManager.register(this.mergely.cm('lhs'));
+        this.focusManager.register(this.mergely.cm('rhs'));
 
-    }).catch(error => {
-      console.log(error);
+      }).catch(error => {
+        console.log(error);
+      });
+
+      const input_lhs_value = this.input_lhs.getValue();
+      const input_rhs_value = this.input_rhs.getValue();
+
+      const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+      bodyLayoutService.updateTabLabel(this.item.uid, input_lhs_value as string, input_rhs_value as string);
     });
-
-    const input_lhs_value = this.input_lhs.getValue();
-    const input_rhs_value = this.input_rhs.getValue();
-
-    const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-    bodyLayoutService.updateTabLabel(this.item.uid, input_lhs_value as string, input_rhs_value as string);
   }
 
   /* recvReadData(data: any): void {

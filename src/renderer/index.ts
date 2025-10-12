@@ -28,7 +28,7 @@ export class Renderer {
   } = {};
 
   idx: number = 0;
-  wrapLine: boolean = false; // temp
+  // wrapLine: boolean = false; // temp
 
   constructor() {}
 

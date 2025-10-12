@@ -22,6 +22,9 @@ import fs from 'fs';
 import { StringDecoder } from 'string_decoder';
 import { Menubar } from './Menubar';
 import { StringUtil } from '../common/util/StringUtil';
+import Runtime from './util/Runtime';
+import PotDb from 'potdb';
+import configs from './configs';
 
 class AppUpdater {
   constructor() {
@@ -411,6 +414,38 @@ class MainWindow {
         console.log(error);
         return { ...resultMap, resultCode: '500', resultMsg: '처리중 오류가 발생하였습니다.' };
       }
+    });
+
+    function getDb(): PotDb {
+      let dir = path.join(app.getPath('userData'), 'potdb');
+      if(!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      return new PotDb(dir);;
+    }
+
+    ipcMain.handle('config all', (event, args: any[]) => {
+      const db = getDb();
+      return { ...configs, ...db.dict.cfg.all()};
+    });
+
+    ipcMain.handle('config get', (event, args: any[]) => {
+      const db = getDb();
+      const [ key ] = args;
+      return db.dict.cfg.get(key, configs[key]);
+    });
+
+    ipcMain.handle('config set', async (event, args: any[]) => {
+      const db = getDb();
+      const [ key, val ] = args;
+      await db.dict.cfg.set(key, val);
+    });
+
+    ipcMain.handle('config update', async (event, args: any[]) => {
+      const db = getDb();
+      const [ data ] = args;
+      let _new = { ...db.dict.cfg.all(), ...data };
+      await db.dict.cfg.update(_new);
     });
   }
 

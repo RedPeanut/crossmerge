@@ -73,6 +73,7 @@
     "electron-squirrel-startup": "1.0.1",
     "electron-updater": "6.1.4",
     "lodash": "4.17.21",
+    "potdb": "2.6.6",
     "uuid": "9.0.1"
   },
   "devDependencies": {
