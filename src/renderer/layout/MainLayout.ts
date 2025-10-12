@@ -12,7 +12,6 @@ import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId as menubarServiceId } from '../Service';
 import { CompareFolderData } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
-// import Runtime from './Runtime';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -47,7 +46,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     // console.log('render() is called ..');
 
     //
-    const platformClass = isWindows ? 'windows' : isLinux ? 'linux' : 'mac'; //Runtime.isWindows ? 'windows' : Runtime.isLinux ? 'linux' : 'mac';
+    const platformClass = isWindows ? 'windows' : isLinux ? 'linux' : 'mac';
     const classes = coalesce(['main', 'layout', platformClass]);
     this.container.classList.add(...classes);
 

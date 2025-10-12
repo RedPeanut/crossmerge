@@ -5,7 +5,7 @@ import os from 'os';
 
 class Runtime {
 
-  /* dir by app vs os */
+  /* dir by app, os */
 
   // by app
   public static appPath = app.getPath('appData');
@@ -14,10 +14,10 @@ class Runtime {
   public static sshKeysPath = path.resolve(this.homePath, '.ssh');
 
   // by os
-  public static tempDir = os.tmpdir();
+  // public static tempDir = os.tmpdir();
   public static homeDir = os.homedir();
-  public static dataDir = path.join(os.homedir(), '.crossterm');
-  public static configDir = path.join(os.homedir(), '.crossterm');
+  // public static dataDir = path.join(os.homedir(), '.crossterm');
+  // public static configDir = path.join(os.homedir(), '.crossterm');
 
   //
   public static platform = os.platform();
@@ -27,7 +27,7 @@ class Runtime {
   public static isLinux = this.platform === 'linux';
   public static isArm = this.arch.includes('arm');
 
-  public static defaultUserName = 'default_user'; // ??
+  public static defaultUserName = this.homeDir.split(path.sep)[this.homeDir.split(path.sep).length-1];
 
   // develop, product
   public static isDev = process.env.NODE_ENV === 'development';
@@ -35,7 +35,7 @@ class Runtime {
   public static minWindowWidth = 590;
   public static minWindowHeight = 400;
   public static defaultLang = 'en_us';
-  // public static packInfo = require(this.isDev ? '../../package.json' : '../../package.json')
+  // public static packageInfo = require(this.isDev ? '../../package.json' : './package.json')
 }
 
 export default Runtime;

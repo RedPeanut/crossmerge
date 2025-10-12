@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { $, append } from "../util/dom";
-import Runtime from "../util/Runtime";
 import { isMacintosh } from "../../common/util/platform";
 import { EventEmitter } from "events";
 
