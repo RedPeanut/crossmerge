@@ -1,5 +1,6 @@
 .mergely-editor .CodeMirror {
-  line-height: 18px;
+  line-height: 16px;
+  font-size: 12px;
   height: auto;
   width: 100%;
 }
@@ -112,7 +113,7 @@
 .mergely-editor .merge-button {
   color: black;
   border: 1px solid black; border-radius: 5px;
-  width: 14px; height: 14px; font-size: 14px;
+  width: 12px; height: 12px; font-size: 12px;
   background-color: white;
 }
 .mergely-editor .merge-button:hover { color: black; }
