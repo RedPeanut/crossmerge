@@ -72,10 +72,14 @@ export class Compares {
   removeChild(id: string): void {
     const v: FileView|FolderView = this.map.get(id);
     if(v instanceof FileView) {
-      listenerManager.dispose(v);
+      // listenerManager.dispose(v);
+      v.unbind_b();
+      v.unbind_i();
       v.dispose();
     } else if(v instanceof FolderView) {
-      listenerManager.dispose(v);
+      // listenerManager.dispose(v);
+      v.unbind_b();
+      v.unbind_i();
     }
 
     this.element.removeChild(this.map.get(id).element);

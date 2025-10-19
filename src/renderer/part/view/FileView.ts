@@ -11,6 +11,7 @@ import { StatusbarPartService } from "../StatusbarPart";
 import { Change } from "../../../lib/mergely/Types";
 import { broadcast } from "../../Broadcast";
 import { listenerManager } from "../../util/ListenerManager";
+import { Channels } from "../../../main/preload";
 
 export interface FileViewOptions {}
 
@@ -30,6 +31,9 @@ export class FileView implements CompareView {
 
   focusManager: ComplexFocusManager;
 
+  broadcastListeners: [ event: string, handler: () => void ][] = [];
+  ipcRemoveListeners: any[] = [];
+
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
     this.item = item;
@@ -45,10 +49,39 @@ export class FileView implements CompareView {
       this.recvReadData(arg);
     }); */
 
-    listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
-    listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
+    // listenerManager.register(this, broadcast, 'menu click', this.menuClickHandler.bind(this));
+    // listenerManager.register(this, window.ipc, 'menu click', this.menuClickHandler.bind(this));
+    this.bind_b('menu click', this.menuClickHandler.bind(this));
+    this.bind_i('menu click', this.menuClickHandler.bind(this));
 
     this.focusManager = new ComplexFocusManager();
+  }
+
+  bind_b(event: string, handler: () => void): void {
+    this.broadcastListeners.push([ event, handler ]);
+    broadcast.addListener(event, handler);
+  }
+
+  unbind_b(): void {
+    console.log('this.broadcastListeners.length =', this.broadcastListeners.length);
+    for(const [ event, handler ] of this.broadcastListeners) {
+      broadcast.removeListener(event, handler);
+      console.log(`'${event}' event listener remains in broadcast: ${broadcast.listenerCount(event)}`);
+    }
+  }
+
+  bind_i(event: string, handler: any): void {
+    const removeListener = window.ipc.on(event as Channels, handler);
+    this.ipcRemoveListeners.push(removeListener);
+  }
+
+  unbind_i(): void {
+    for(let i = 0; i < this.ipcRemoveListeners.length; i++) {
+      this.ipcRemoveListeners[i]();
+    }
+
+    const event = 'menu click';
+    console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
   }
 
   menuClickHandler(...args: any[]): void {
