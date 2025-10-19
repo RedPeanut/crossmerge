@@ -73,6 +73,7 @@ export class Compares {
     const v: FileView|FolderView = this.map.get(id);
     if(v instanceof FileView) {
       listenerManager.dispose(v);
+      v.dispose();
     } else if(v instanceof FolderView) {
       listenerManager.dispose(v);
     }
