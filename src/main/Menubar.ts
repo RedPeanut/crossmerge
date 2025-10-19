@@ -326,8 +326,24 @@ export class Menubar {
         {
           label: 'Current Change',
           submenu: [
-            { label: 'Push to Left', accelerator: keyBinding[pushToLeftMenuId][keyBindingIdx], enabled: false },
-            { label: 'Push to Right', accelerator: keyBinding[pushToRightMenuId][keyBindingIdx], enabled: false }
+            {
+              id: pushToLeftMenuId,
+              label: 'Push to Left',
+              accelerator: keyBinding[pushToLeftMenuId][keyBindingIdx],
+              // enabled: false,
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', pushToLeftMenuId);
+              }
+            },
+            {
+              id: pushToRightMenuId,
+              label: 'Push to Right',
+              accelerator: keyBinding[pushToRightMenuId][keyBindingIdx],
+              // enabled: false,
+              click(item, focusedWindow) {
+                mainWindow.send('menu click', pushToRightMenuId);
+              }
+            }
           ]
         },
         {

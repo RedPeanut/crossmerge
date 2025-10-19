@@ -1,5 +1,9 @@
 import { Input } from "../../component/Input";
-import { CompareFileData, CompareItem, editPrevChangeMenuId, editNextChangeMenuId, toggleWrapLinesMenuId } from "../../../common/Types";
+import { CompareFileData, CompareItem,
+  editPrevChangeMenuId, editNextChangeMenuId, // edit
+  pushToLeftMenuId, pushToRightMenuId, // merging
+  toggleWrapLinesMenuId, // view
+} from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
 import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
@@ -98,6 +102,12 @@ export class FileView implements CompareView {
           this.mergely.scrollToDiffByPos('prev');
         } else if(id === editNextChangeMenuId) {
           this.mergely.scrollToDiffByPos('next');
+        }
+      } else if(id.startsWith('merging')) {
+        if(id === pushToLeftMenuId) {
+          this.mergely.mergeChangeByPos('rhs', 'lhs');
+        } else if(id === pushToRightMenuId) {
+          this.mergely.mergeChangeByPos('lhs', 'rhs');
         }
       } else if(id.startsWith('view')) {
         if(id === toggleWrapLinesMenuId) {

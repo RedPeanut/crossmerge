@@ -229,7 +229,7 @@ export default class CodeMirrorDiffView {
     this.setChanges(this.changes);
   }
 
-  mergeCurrentChange(side): void {
+  mergeCurrentChange(side: Side): void {
     this.trace('api#mergeCurrentChange', side);
     if(!this.changes.length) return;
     if(side == 'lhs' && !this.lhs_cmsettings.readOnly) {
@@ -237,6 +237,30 @@ export default class CodeMirrorDiffView {
     }
     else if(side == 'rhs' && !this.rhs_cmsettings.readOnly) {
       this._merge_change(this.changes[this._current_diff], 'lhs', 'rhs');
+    }
+  }
+
+  mergeChangeByPos(from: Side, to: Side): void {
+    // this.trace('api#mergeChangeByPos', from, to);
+    if(!this.changes.length) return;
+
+    const focused = this.editor.rhs.hasFocus() ? 'rhs' : 'lhs';
+    const editor = focused === 'rhs' ? this.editor.rhs : this.editor.lhs;
+    const pos = editor.getCursor();
+
+    // let curr = -1, next = 0, prev = this.changes.length-1;
+    let do_merge = false;
+    for(let i = 0; i < this.changes.length; i++) {
+      const lf = this.changes[i][`${focused}-line-from`];
+      const lt = this.changes[i][`${focused}-line-to`];
+      if(lf <= pos.line && pos.line <= lt) {
+        this._current_diff = i; do_merge = true;
+        break;
+      }
+    }
+
+    if(do_merge && !this.lhs_cmsettings.readOnly) {
+      this._merge_change(this.changes[this._current_diff], from, to);
     }
   }
 

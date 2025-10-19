@@ -89,6 +89,7 @@ export default class Mergely {
   public get(side: Side): string { return this._diffView.get(side); }
   public lhs(text: string): void { return this._diffView.lhs(text); }
   public mergeCurrentChange(side: Side): void { return this._diffView.mergeCurrentChange(side); }
+  public mergeChangeByPos(from: Side, to: Side): void { return this._diffView.mergeChangeByPos(from, to); }
   public resize(): void { return this._diffView.resize(); }
   public rhs(text: string): void { return this._diffView.rhs(text); }
   public scrollTo(side: Side): void { return this._diffView.scrollTo(side); }
