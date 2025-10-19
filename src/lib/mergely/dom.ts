@@ -16,7 +16,8 @@ export function getColors(el: HTMLElement): Colors {
   const classes = ['mergely-editor', ...el.classList];
   const text = `
 <div style="display:none" class="${classes.join(' ')}">
-  <div class="mergely current start"></div>
+  <!-- <div class="mergely current start"></div> -->
+  <div class="mergely current lhs rhs"><div class="CodeMirror-linebackground"></div></div>
   <div class="mergely start end rhs a"><div class="CodeMirror-linebackground"></div></div>
   <div class="mergely start end lhs d"><div class="CodeMirror-linebackground"></div></div>
   <div class="mergely start end lhs c"><div class="CodeMirror-linebackground"></div></div>
@@ -28,7 +29,7 @@ export function getColors(el: HTMLElement): Colors {
 `;
   const node = htmlToElement(text);
   el.appendChild(node);
-  const currentStyle = window.getComputedStyle(node.children[0]);
+  const currentStyle = window.getComputedStyle(node.children[0].children[0]);
   const aStyle = window.getComputedStyle(node.children[1].children[0]);
   const dStyle = window.getComputedStyle(node.children[2].children[0]);
   const cStyle = window.getComputedStyle(node.children[3].children[0]);

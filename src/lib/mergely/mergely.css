@@ -182,7 +182,8 @@
 .mergely-editor .mergely.current.rhs .CodeMirror-linebackground,
 .mergely-editor .mergely.current.lhs .CodeMirror-gutter-background,
 .mergely-editor .mergely.current.rhs .CodeMirror-gutter-background {
-  border-color: black;
+  /* border-color: black; */
+  border-color: rgb(113 113 113);
 }
 
 .mergely-editor .mergely.no-start.end .CodeMirror-linebackground,
