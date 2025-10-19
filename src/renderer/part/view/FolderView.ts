@@ -204,8 +204,6 @@ export class FolderView implements CompareView {
   }
 
   bind_i(event: string, handler: () => void): void {
-    // this.ipcListeners.push([ event, handler ]);
-    // window.ipc.on(event as Channels, handler);
     const removeListener = window.ipc.on(event as Channels, handler);
     this.ipcRemoveListeners.push(removeListener);
   }
@@ -215,15 +213,8 @@ export class FolderView implements CompareView {
       this.ipcRemoveListeners[i]();
     }
 
-    /* console.log('this.ipcListeners.length =', this.ipcListeners.length);
-    for(const [ event, handler ] of this.ipcListeners) {
-      for(const listener of window.ipc.listeners(event)) {
-        console.log(listener === handler);
-      }
-
-      window.ipc.off(event, handler);
-      console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
-    } */
+    const event = 'menu click';
+    console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
   }
 
   menuClickHandler(...args: any[]): void {

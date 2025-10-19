@@ -143,8 +143,8 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       }
     };
 
-    listenerManager.register(this, broadcast, 'menu click', menuClickHandler.bind(this))
-    listenerManager.register(this, window.ipc, 'menu click', menuClickHandler.bind(this));
+    // listenerManager.register(this, broadcast, 'menu click', menuClickHandler.bind(this))
+    // listenerManager.register(this, window.ipc, 'menu click', menuClickHandler.bind(this));
   }
 
   create(): void {

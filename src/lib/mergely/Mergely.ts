@@ -77,7 +77,7 @@ export default class Mergely {
   _initOptions;
   _viewOptions;
   _diffView: CodeMirrorDiffView;
-  _listeners;
+  _listeners: [ event: string, handler: () => void ][];
   _addEventListener;
   _removeEventListener;
   _options;
@@ -236,7 +236,7 @@ export default class Mergely {
   mergelyUnregister() {
   }
 
-  on(event: string, handler: () => void) {
+  on(event: string, handler: () => void): void {
     this._listeners.push([ event, handler ]);
     this._addEventListener(event, handler);
   }

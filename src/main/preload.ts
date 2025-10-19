@@ -67,13 +67,15 @@ export type RenderEvents =
 export type Channels = MainEvents | RenderEvents;
 
 const electronHandler = {
-  send(channel: Channels, ...args: any[]) {
+  // renderer to main
+  send(channel: Channels, ...args: any[]): void {
     ipcRenderer.send(channel, args);
   },
-  invoke(channel: Channels, ...args: any[]) {
+  invoke(channel: Channels, ...args: any[]): Promise<any> {
     return ipcRenderer.invoke(channel, args);
   },
 
+  // main to renderer
   on: (channel: Channels, cb: (...args: any[]) => void): any => {
     const listener = (event, payload) => cb(event, payload);
     ipcRenderer.on(channel, listener);
@@ -86,7 +88,7 @@ const electronHandler = {
   off: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.off(channel, cb);
   }, */
-  once: (channel: string, cb: (...args: any[]) => void) => {
+  once: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.once(channel, cb);
   },
   listenerCount: (eventName: string): number => {
