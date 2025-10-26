@@ -93,13 +93,13 @@ keyBinding[toggleWrapLinesMenuId] = [ 'Alt+Z', 'Alt+Z' ];
 }; */
 
 export class Menubar {
-  browserWindow: BrowserWindow;
+  // browserWindow: BrowserWindow;
   preferences: BrowserWindow;
   // keyBinding;
   template: MenuItemConstructorOptions[];
 
   constructor(mainWindow: BrowserWindow) {
-    this.browserWindow = mainWindow;
+    // this.browserWindow = mainWindow;
     // this.keyBinding = isWindows ? keyBinding_win : keyBinding_mac;
   }
 
@@ -154,35 +154,6 @@ export class Menubar {
 
   getTemplate(): MenuItemConstructorOptions[] { return this.template; }
 
-  preferenceClickHandler(item, focusedWindow): void {
-    if(this.preferences && !this.preferences.isDestroyed()) {
-      this.preferences.show();
-    } else {
-      const preferences = this.preferences = new BrowserWindow({
-        parent: this.browserWindow, modal: false, show: false,
-        // titleBarStyle: 'hidden',
-        titleBarStyle: 'default',
-        title: 'Preferences',
-        // x, y, width, height,
-        width: 674+250, height: 676,
-        minWidth: 674, minHeight: 676,
-
-        webPreferences: {
-          // devTools: false,
-          preload: app.isPackaged
-            ? path.join(__dirname, 'preload.js')
-            : path.join(__dirname, '../../.erb/dll/preload.js'),
-        },
-      });
-      preferences.loadURL(resolveHtmlPath('preferences.html'));
-      // self.setupDevelopmentEnvironment(preferences);
-      preferences.once('ready-to-show', () => {
-        // preferences.webContents.openDevTools({activate: false, mode: 'right'});
-        preferences.show();
-      });
-    }
-  }
-
   addApplicationMenu(options: MenuItemConstructorOptions[]): void {
     // const self = this;
     options.push({
@@ -197,7 +168,7 @@ export class Menubar {
         {
           label: 'Preferences...',
           accelerator: 'Command+,',
-          click: this.preferenceClickHandler.bind(this),
+          click: mainWindow.preferenceClickHandler.bind(mainWindow),
         },
         /* { type: 'separator' },
         { label: 'Services', submenu: [] }, */
@@ -248,7 +219,7 @@ export class Menubar {
       fileSubmenu.push({
         label: 'Preferences...',
         accelerator: keyBinding[filePreferencesMenuId][keyBindingIdx],
-        click: this.preferenceClickHandler.bind(this),
+        click: mainWindow.preferenceClickHandler.bind(mainWindow),
       });
     }
 

@@ -36,6 +36,7 @@ class AppUpdater {
 
 class MainWindow {
   browserWindow: BrowserWindow | null = null;
+  preferences: BrowserWindow;
   isDebug: boolean = false;
   menubar: Menubar;
 
@@ -556,6 +557,35 @@ class MainWindow {
     // Remove this if your app does not use auto updates
     // eslint-disable-next-line
     new AppUpdater();
+  }
+
+  preferenceClickHandler(item, focusedWindow): void {
+    if(this.preferences && !this.preferences.isDestroyed()) {
+      this.preferences.show();
+    } else {
+      const preferences = this.preferences = new BrowserWindow({
+        parent: this.browserWindow, modal: false, show: false,
+        // titleBarStyle: 'hidden',
+        titleBarStyle: 'default',
+        title: 'Preferences',
+        // x, y, width, height,
+        width: 674+250, height: 676,
+        minWidth: 674, minHeight: 676,
+
+        webPreferences: {
+          // devTools: false,
+          preload: app.isPackaged
+            ? path.join(__dirname, 'preload.js')
+            : path.join(__dirname, '../../.erb/dll/preload.js'),
+        },
+      });
+      preferences.loadURL(resolveHtmlPath('preferences.html'));
+      // self.setupDevelopmentEnvironment(preferences);
+      preferences.once('ready-to-show', () => {
+        // preferences.webContents.openDevTools({activate: false, mode: 'right'});
+        preferences.show();
+      });
+    }
   }
 
   send(channel: Channels, ...args: any[]): void {
