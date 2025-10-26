@@ -16,6 +16,7 @@ import { Change } from "../../../lib/mergely/Types";
 import { broadcast } from "../../Broadcast";
 import { listenerManager } from "../../util/ListenerManager";
 import { Channels } from "../../../main/preload";
+import { Editor } from "../../../types/codemirror";
 
 export interface FileViewOptions {}
 
@@ -103,13 +104,13 @@ export class FileView implements CompareView {
         } else if(id === editNextChangeMenuId) {
           this.mergely.scrollToDiffByPos('next');
         }
-      } else if(id.startsWith('merging')) {
+      }/*  else if(id.startsWith('merging')) {
         if(id === pushToLeftMenuId) {
           this.mergely.mergeChangeByPos('rhs', 'lhs');
         } else if(id === pushToRightMenuId) {
           this.mergely.mergeChangeByPos('lhs', 'rhs');
         }
-      } else if(id.startsWith('view')) {
+      } */else if(id.startsWith('view')) {
         if(id === toggleWrapLinesMenuId) {
           // const toggled = renderer.wrapLine = !renderer.wrapLine;
           window.ipc.invoke('config get', 'wrap_lines').then((v) => {
@@ -274,7 +275,31 @@ export class FileView implements CompareView {
               }
             },
             cmsettings: {
-              scrollbarStyle: 'simple'
+              scrollbarStyle: 'simple',
+              keyMaps: [
+                {
+                  name: 'wrapLines',
+                  'Alt-Z': (instance: Editor) => {
+                    window.ipc.invoke('config get', 'wrap_lines').then((v) => {
+                      const toggled = !v;
+                      this.mergely.options({ wrap_lines: toggled });
+                      window.ipc.invoke('config update', { wrap_lines: toggled });
+                    });
+                  }
+                },
+                {
+                  name: 'pushToLeft',
+                  'Ctrl-Shift-Left': (instance: Editor) => {
+                    this.mergely.mergeChangeByPos('rhs', 'lhs');
+                  }
+                },
+                {
+                  name: 'pushToRight',
+                  'Ctrl-Shift-Right': (instance: Editor) => {
+                    this.mergely.mergeChangeByPos('lhs', 'rhs');
+                  }
+                },
+              ],
             },
             // wrap_lines: wrap_lines
             wrap_lines

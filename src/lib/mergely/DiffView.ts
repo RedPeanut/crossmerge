@@ -474,6 +474,14 @@ export default class CodeMirrorDiffView {
     this.editor.lhs = CodeMirror.fromTextArea(lhstx, this.lhs_cmsettings);
     this.editor.rhs = CodeMirror.fromTextArea(rhstx, this.rhs_cmsettings);
 
+    for(let i = 0; i < this.settings.cmsettings.keyMaps.length; i++) {
+      const item = this.settings.cmsettings.keyMaps[i];
+      this.editor.lhs.addKeyMap(CodeMirror.normalizeKeyMap(item));
+      this.editor.rhs.addKeyMap(CodeMirror.normalizeKeyMap(item));
+      // this.editor.lhs.setOption('extraKeys', CodeMirror.normalizeKeyMap(item));
+      // this.editor.rhs.setOption('extraKeys', CodeMirror.normalizeKeyMap(item));
+    }
+
     // if `lhs` and `rhs` are passed in, this sets the values in each editor,
     // but the changes are not picked up until the explicit resize below.
     if(this.settings.lhs) {

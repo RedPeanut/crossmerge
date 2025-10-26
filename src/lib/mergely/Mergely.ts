@@ -8,7 +8,7 @@ import Diff from './Diff';
 import * as dom from './dom';
 import { Change, Direction, Side } from './Types';
 import DiffView from './DiffView';
-import { EditorConfiguration, EditorFromTextArea } from '../../types/codemirror';
+import { EditorConfiguration, EditorFromTextArea, KeyMap } from '../../types/codemirror';
 
 const trace = console.log;
 
@@ -31,7 +31,8 @@ export interface MergelyOptions {
   cmsettings?: {
     styleSelectedText?: boolean,
     mode?: string,
-    scrollbarStyle?: keyof CodeMirror.ScrollbarModels
+    scrollbarStyle?: keyof CodeMirror.ScrollbarModels,
+    keyMaps?: KeyMap[],
   };
   lhs_cmsettings?: CodeMirror.EditorConfiguration;
   rhs_cmsettings?: CodeMirror.EditorConfiguration;
