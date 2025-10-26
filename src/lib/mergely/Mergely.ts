@@ -61,7 +61,7 @@ const defaultOptions: MergelyOptions = {
   license: 'lgpl',
   cmsettings: {
     styleSelectedText: true,
-    mode: null
+    mode: null,
   },
   lhs_cmsettings: {},
   rhs_cmsettings: {},

@@ -24,7 +24,7 @@ import { Menubar } from './Menubar';
 import { StringUtil } from '../common/util/StringUtil';
 import Runtime from './util/Runtime';
 import PotDb from 'potdb';
-import configs from './configs';
+import default_configs from './configs';
 
 class AppUpdater {
   constructor() {
@@ -176,7 +176,7 @@ class MainWindow {
       }
     }); */
 
-    function helper(obj, type: string, val: string) {
+    function helper(obj: BrowserWindow | NodeJS.Process, type: string, val: string) {
       if(obj[val]) {
         // console.log(typeof obj[val]);
         if(type == 'function')
@@ -427,13 +427,13 @@ class MainWindow {
 
     ipcMain.handle('config all', (event, args: any[]) => {
       const db = getDb();
-      return { ...configs, ...db.dict.cfg.all()};
+      return { ...default_configs, ...db.dict.cfg.all()};
     });
 
     ipcMain.handle('config get', (event, args: any[]) => {
       const db = getDb();
       const [ key ] = args;
-      return db.dict.cfg.get(key, configs[key]);
+      return db.dict.cfg.get(key, default_configs[key]);
     });
 
     ipcMain.handle('config set', async (event, args: any[]) => {
