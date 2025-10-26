@@ -1355,9 +1355,20 @@ export default class CodeMirrorDiffView {
     }
   }
 
-  clearHistory(side: string = 'both') {
-    this.editor.lhs.clearHistory();
-    this.editor.rhs.clearHistory();
+  getHistory(side: Side): any {
+    if(side === 'lhs')
+      return this.editor.lhs.getHistory();
+    else if(side === 'rhs')
+      return this.editor.rhs.getHistory();
+  }
+
+  clearHistory(side: Side = 'both'): void {
+    if(side === 'lhs') this.editor.lhs.clearHistory();
+    else if(side === 'rhs') this.editor.rhs.clearHistory();
+    else { // === 'both'
+      this.editor.lhs.clearHistory();
+      this.editor.rhs.clearHistory();
+    }
   }
 
   _queryElement(selector: string) {

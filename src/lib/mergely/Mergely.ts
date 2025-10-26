@@ -99,7 +99,8 @@ export default class Mergely {
   public search(side: Side): void { return this._diffView.search(side); }
   public unmarkup(): void { return this._diffView.unmarkup(); }
   public update(): void { return this._diffView.update(); }
-  public clearHistory(side: Side): void { return this._diffView.clearHistory(side); }
+  public getHistory(side: Side): any { return this._diffView.getHistory(side); }
+  public clearHistory(side: Side): void { this._diffView.clearHistory(side); }
   //*/
 
   constructor(selector: string | HTMLElement, options: MergelyOptions) {

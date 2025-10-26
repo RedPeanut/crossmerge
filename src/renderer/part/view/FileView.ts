@@ -1,5 +1,6 @@
 import { Input } from "../../component/Input";
 import { CompareFileData, CompareItem,
+  fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, // file
   editPrevChangeMenuId, editNextChangeMenuId, // edit
   pushToLeftMenuId, pushToRightMenuId, // merging
   toggleWrapLinesMenuId, // view
@@ -97,7 +98,68 @@ export class FileView implements CompareView {
       const id = args[1];
 
       if(id.startsWith('file')) {
+        if(id === fileSaveLeftMenuId) {
+          if(!this.input_lhs.getChanged()) return;
 
+          const path = this.input_lhs.getValue();
+          const contents = this.mergely.get('lhs');
+          window.ipc.invoke('save file', path, contents).then((result) => {
+            // clear modified mark
+            this.input_lhs.clearChanged();
+            this.mergely.clearHistory('lhs');
+
+            // const ohistorySize = this.mergely.getHistory('rhs');
+            const ohistorySize = this.mergely.cm('rhs').historySize();
+            console.log(ohistorySize);
+
+            const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+            if(ohistorySize.undo > 0)
+              bodyLayoutService.callTabFn(this.item.uid, 'setChanged');
+            else
+              bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
+          });
+        } else if(id === fileSaveRightMenuId) {
+          if(!this.input_rhs.getChanged()) return;
+
+          const path = this.input_rhs.getValue();
+          const contents = this.mergely.get('rhs');
+          window.ipc.invoke('save file', path, contents).then((result) => {
+            // clear modified mark
+            this.input_rhs.clearChanged();
+            this.mergely.clearHistory('rhs');
+
+            // const ohistorySize = this.mergely.getHistory('lhs');
+            const ohistorySize = this.mergely.cm('lhs').historySize();
+            console.log(ohistorySize);
+
+            const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+            if(ohistorySize.undo > 0)
+              bodyLayoutService.callTabFn(this.item.uid, 'setChanged');
+            else
+              bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
+          });
+        } else if(id === fileSaveAllMenuId) {
+          if(!this.input_lhs.getChanged() && !this.input_rhs.getChanged()) return;
+
+          const path_lhs = this.input_lhs.getValue();
+          const contents_lhs = this.mergely.get('lhs');
+          window.ipc.invoke('save file', path_lhs, contents_lhs).then((result) => {
+            // clear modified mark
+            this.input_lhs.clearChanged();
+            this.mergely.clearHistory('lhs');
+          });
+
+          const path_rhs = this.input_rhs.getValue();
+          const contents_rhs = this.mergely.get('rhs');
+          window.ipc.invoke('save file', path_rhs, contents_rhs).then((result) => {
+            // clear modified mark
+            this.input_rhs.clearChanged();
+            this.mergely.clearHistory('rhs');
+          });
+
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
+        }
       } else if(id.startsWith('edit')) {
         if(id === editPrevChangeMenuId) {
           this.mergely.scrollToDiffByPos('prev');

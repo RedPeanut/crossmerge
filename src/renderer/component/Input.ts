@@ -223,4 +223,10 @@ export class Input {
   clearChanged(): void {
     this.mark.style.display = 'none';
   }
+  getChanged(): boolean {
+    if(this.mark.style.display === 'flex')
+      return true;
+    else
+      return false;
+  }
 }

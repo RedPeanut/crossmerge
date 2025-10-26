@@ -208,10 +208,25 @@ export class Menubar {
     fileSubmenu.push({
       label: 'Save',
       submenu: [
-        { label: 'Save Left', accelerator: keyBinding[fileSaveLeftMenuId][keyBindingIdx], enabled: false },
-        { label: 'Save Right', accelerator: keyBinding[fileSaveRightMenuId][keyBindingIdx], enabled: false },
+        { label: 'Save Left', accelerator: keyBinding[fileSaveLeftMenuId][keyBindingIdx],
+          // enabled: false,
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', fileSaveLeftMenuId);
+          }
+        },
+        { label: 'Save Right', accelerator: keyBinding[fileSaveRightMenuId][keyBindingIdx],
+          // enabled: false,
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', fileSaveRightMenuId);
+          }
+        },
         { type: 'separator' as const },
-        { label: 'Save All', accelerator: keyBinding[fileSaveAllMenuId][keyBindingIdx], enabled: false }
+        { label: 'Save All', accelerator: keyBinding[fileSaveAllMenuId][keyBindingIdx],
+          // enabled: false,
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', fileSaveAllMenuId);
+          }
+        }
       ]
     });
 

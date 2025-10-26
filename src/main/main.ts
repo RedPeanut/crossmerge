@@ -448,6 +448,11 @@ class MainWindow {
       let _new = { ...db.dict.cfg.all(), ...data };
       await db.dict.cfg.update(_new);
     });
+
+    ipcMain.handle('save file', (event, args: any[]) => {
+      const [ path, contents ] = args;
+      fs.writeFileSync(path, contents);
+    });
   }
 
   createWindow = async () => {
