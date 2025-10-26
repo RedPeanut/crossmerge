@@ -4,6 +4,10 @@ import '@vscode/codicons/dist/codicon.css';
 import './preferences.css';
 import { $, domContentLoaded } from './util/dom';
 import { mainWindow } from './Types';
+import { app } from 'electron';
+import path from 'path';
+import PotDb from 'potdb';
+import { ConfigsType } from '../main/configs';
 
 interface Node {
   label: string;
@@ -17,13 +21,23 @@ export class Preferences {
   element: HTMLElement;
   tree: HTMLElement;
   contents: HTMLElement;
+  configs: ConfigsType;
+  changed: boolean = false;
+
+  okBtn: HTMLButtonElement;
+  cancelBtn: HTMLButtonElement;
+  applyBtn: HTMLButtonElement;
 
   constructor(container: HTMLElement) {
     this.container = container;
   }
 
   async open() {
+    const self = this;
     await Promise.all([domContentLoaded(mainWindow)]);
+    this.configs = await window.ipc.invoke('config all');
+    console.log('this.configs =', this.configs);
+
     console.log('preferences.ts is called ..');
     this.container.appendChild(this.create());
 
@@ -32,12 +46,37 @@ export class Preferences {
         label: 'Text comparisons',
         children: [
           {
+            label: 'Display',
+            render: function(container, data) {
+              let p = $('p');
+              const wrapChkbox = $('input') as HTMLInputElement;
+              wrapChkbox.setAttribute('type', 'checkbox');
+              wrapChkbox.checked = this.wrap_lines ? true : false;
+              // wrapChkbox.setAttribute('checked', this.wrap_lines);
+              // wrapChkbox.onchange((e) => { console.log(e); });
+              wrapChkbox.addEventListener('change', ((e: Event) => {
+                self.configs.wrap_lines = (e.target as HTMLInputElement).checked;
+                self.changed = true;
+                self.applyBtn.disabled = false;
+              }));
+              const wrapLabel = $('label') as HTMLLabelElement;
+              wrapLabel.innerHTML = 'Wrap long lines';
+              // wrapLabel.htmlFor = ''; //wrapChkbox;
+
+              p.appendChild(wrapChkbox);
+              p.appendChild(wrapLabel);
+              container.appendChild(p);
+            }
+          },
+          {
             label: 'Encoding',
             render: function(container, data) {
               let p = $('p');
               // const tryChkbox = $('checkbox');
-              const tryChkbox = $('input');
+              const tryChkbox = $('input') as HTMLInputElement;
               tryChkbox.setAttribute('type', 'checkbox');
+              tryChkbox.checked = true;
+              tryChkbox.disabled = true;
               const tryLabel = $('label') as HTMLLabelElement;
               tryLabel.innerHTML = 'Try to auto-detect character encoding from file content';
               // tryLabel.htmlFor = ''; //tryChkbox;
@@ -50,10 +89,26 @@ export class Preferences {
               const defaultLabel = $('label');
               defaultLabel.innerHTML = 'Default character encoding:';
               const defaultSelect = $('select');
-              let option = $('option') as HTMLOptionElement;
-              option.value = 'utf8_without_bom';
+              let option;
+              option = $('option') as HTMLOptionElement;
+              option.value = 'utf8_w/o_bom';
               option.innerText = 'Unicode (UTF-8 without BOM)';
               defaultSelect.appendChild(option);
+
+              option = $('option') as HTMLOptionElement;
+              option.value = 'korean_euc';
+              option.innerText = 'Korean (EUC)';
+              defaultSelect.appendChild(option);
+
+              defaultSelect.addEventListener('change', ((e: Event) => {
+                const target = e.target as HTMLSelectElement;
+                if(target.value != self.configs.charset) {
+                  self.configs.charset = target.value;
+                  self.changed = true;
+                  self.applyBtn.disabled = false;
+                }
+              }));
+
               p.appendChild(defaultLabel);
               p.appendChild(defaultSelect);
               container.appendChild(p);
@@ -70,6 +125,8 @@ export class Preferences {
           {
             label: 'Filters',
             render: function(container, data) {
+
+              return;
 
               let p = $('p'); //, group;
 
@@ -136,7 +193,7 @@ export class Preferences {
     ];
     this.addNodes(this.tree, tree, 0, '');
     this.callRenders(tree, 0, '');
-    (this.tree.getElementsByClassName('content')[4] as HTMLElement).click();
+    (this.tree.getElementsByClassName('content')[0] as HTMLElement).click();
   }
 
   callRender(data: Node, level: number, id: string): void {
@@ -248,15 +305,27 @@ export class Preferences {
     const bottom = $('.bottom');
 
     const left = $('.left');
-    const loadBtn = $('button'); loadBtn.innerHTML = 'Load...';
-    const saveBtn = $('button'); saveBtn.innerHTML = 'Save...';
+    const loadBtn: HTMLButtonElement = $('button'); loadBtn.innerHTML = 'Load...';
+    const saveBtn: HTMLButtonElement = $('button'); saveBtn.innerHTML = 'Save...';
     left.appendChild(loadBtn);
     left.appendChild(saveBtn);
 
     const right = $('.right');
-    const okBtn = $('button'); okBtn.innerHTML = 'Ok';
-    const cancelBtn = $('button'); cancelBtn.innerHTML = 'Cancel';
-    const applyBtn = $('button'); applyBtn.innerHTML = 'Apply';
+    const okBtn: HTMLButtonElement = this.okBtn = $('button'); okBtn.innerHTML = 'Ok';
+    const cancelBtn: HTMLButtonElement = this.cancelBtn = $('button'); cancelBtn.innerHTML = 'Cancel';
+    cancelBtn.addEventListener('click',
+      (e: Event) => {
+        // const target = e.target as HTMLButtonElement;
+        window.ipc.send('window fn', 'preferences', 'close');
+      }
+    );
+
+    const applyBtn: HTMLButtonElement = this.applyBtn = $('button'); applyBtn.innerHTML = 'Apply'; applyBtn.disabled = true;
+    applyBtn.addEventListener('click',
+      (e: Event) => {
+        // const target = e.target as HTMLButtonElement;
+      }
+    );
 
     right.appendChild(okBtn);
     right.appendChild(cancelBtn);

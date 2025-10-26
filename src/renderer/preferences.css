@@ -75,9 +75,11 @@ button {
 }
 button:last-child { margin-right: 0; }
 
-button.disabled { background: rgb(204,204,204); border-color: rgb(191,191,191); }
-button:focus { border-color: rgb(0,120,215); border-width: 2px; }
-button:hover { background: rgb(229,241,251); border-color: rgb(0,120,215); }
+button:disabled { background: rgb(204,204,204); border-color: rgb(191,191,191); }
+button:not(:disabled):focus { border-color: rgb(0,120,215); border-width: 2px; }
+button:not(:disabled):hover { background: rgb(229,241,251); border-color: rgb(0,120,215); }
+/* button:disabled:focus { border-color: rgb(173,173,173); border-width: 1px; }
+button:disabled:hover { background: rgb(204,204,204); border-color: rgb(191,191,191); } */
 
 
 .contents { position: relative; }
@@ -97,6 +99,8 @@ button:hover { background: rgb(229,241,251); border-color: rgb(0,120,215); }
   border-color: rgb(173,173,173);
   background-color: white;
 }
+
+#Text_comparisons-Display p:nth-of-type(1) label { display: inline-block; }
 
 #Text_comparisons-Encoding p {  }
 #Text_comparisons-Encoding p:nth-of-type(1) label { display: inline-block; }
