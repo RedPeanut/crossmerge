@@ -80,18 +80,19 @@ const electronHandler = {
 
   // main to renderer
   // send - on
+  /**
+   * off is not working directly, because parameters are copied when they are sent over the bridge
+   * ref) https://github.com/electron/electron/issues/45224
+   * https://www.electronjs.org/docs/latest/api/context-bridge#parameter--error--return-type-support
+   */
   on: (channel: Channels, cb: (...args: any[]) => void): any => {
     const listener = (event, payload) => cb(event, payload);
     ipcRenderer.on(channel, listener);
     return () => ipcRenderer.off(channel, listener);
   },
-  /**
-   * Maybe certainly right, off is not working directly, because parameters are copied when they are sent over the bridge
-   * https://github.com/electron/electron/issues/45224
-   * https://www.electronjs.org/docs/latest/api/context-bridge#parameter--error--return-type-support
   off: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.off(channel, cb);
-  }, */
+  },
   once: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.once(channel, cb);
   },

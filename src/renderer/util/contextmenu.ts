@@ -26,6 +26,7 @@ export function popup(items: MenuItem[], options?: PopupOptions, onHide?: () => 
     if(closedContextMenuId !== contextMenuId)
       return;
 
+    // TODO: check off is working properly
     window.ipc.off(onClickChannel, onClickChannelHandler);
     onHide?.();
   });
