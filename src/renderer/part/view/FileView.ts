@@ -262,7 +262,7 @@ export class FileView implements CompareView {
     }
   }
 
-  dispose(): void {
+  unbind(): void {
     if(this.mergely) {
       this.focusManager.unregister(this.mergely.cm('lhs'));
       this.focusManager.unregister(this.mergely.cm('rhs'));
@@ -274,7 +274,7 @@ export class FileView implements CompareView {
   }
 
   doCompare(): void {
-    this.dispose();
+    this.unbind();
 
     this.input_lhs.related.style.display = 'none';
     this.input_rhs.related.style.display = 'none';

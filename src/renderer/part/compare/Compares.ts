@@ -75,7 +75,7 @@ export class Compares {
       // listenerManager.dispose(v);
       v.unbind_b();
       v.unbind_i();
-      v.dispose();
+      v.unbind();
     } else if(v instanceof FolderView) {
       // listenerManager.dispose(v);
       v.unbind_b();
