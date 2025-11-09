@@ -623,7 +623,7 @@ export default class CodeMirrorDiffView {
       gutterClicked.call(this, 'rhs', n, ev);
     });
 
-    this.editor.lhs.focus();
+    // this.editor.lhs.focus();
   }
 
   /**

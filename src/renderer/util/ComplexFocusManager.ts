@@ -31,6 +31,7 @@ export class ComplexFocusManager {
               if(item.cb) item.cb('focusout');
             }
           } else if(item.what instanceof CodeMirror) {
+            item.what.getWrapperElement().classList.remove('focus');
             if(item.cb) item.cb('focusout');
           }
         }
@@ -44,7 +45,13 @@ export class ComplexFocusManager {
             (item.what as HTMLElement).classList.remove('focus');
             if(item.cb) item.cb('focusout');
           } else if(item.what instanceof CodeMirror) {
-            // if(item.cb) item.cb('focusout');
+            if(item.what === instance) {
+              item.what.getWrapperElement().classList.add('focus');
+              if(item.cb) item.cb('focus');
+            } else {
+              item.what.getWrapperElement().classList.remove('focus');
+              if(item.cb) item.cb('focusout');
+            }
           }
         }
       });

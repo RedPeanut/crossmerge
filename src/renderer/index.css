@@ -377,6 +377,13 @@ body { height: 100%; }
 .file-compare-view * {
   /* border: 1px solid black;  */
 }
+.file-compare-view *:focus {
+  outline: none;
+}
+.file-compare-view *.focus {
+  border: 1px solid rgb(86,157,229);
+}
+
 .file-compare-view { display: none; flex-direction: column; height: 100%;
   background-color: rgb(240,240,240);
   position: relative;
