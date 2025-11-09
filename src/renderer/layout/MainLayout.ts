@@ -80,13 +80,6 @@ export class MainLayout extends Layout implements MainLayoutService {
     (getService(menubarServiceId) as MenubarService).layout(dimension);
   }
 
-  bodyLayoutService: BodyLayoutService;
-
-  getServices(): void {
-    this.bodyLayoutService = getService(bodyLayoutServiceId);
-    this.bodyLayoutService.getServices();
-  }
-
   installIpc(): void {
     /* window.ipc.on('menu click', (...args: any[]) => {
       console.log('menu click event is called ..');
@@ -96,8 +89,7 @@ export class MainLayout extends Layout implements MainLayoutService {
 
   startup(): void {
     this.create();
-    this.getServices();
-    this.bodyLayoutService.inflate();
+    (getService(bodyLayoutServiceId) as BodyLayoutService).inflate();
     this.layout();
     this.installIpc();
 
