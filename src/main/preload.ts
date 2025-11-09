@@ -96,9 +96,9 @@ const electronHandler = {
   once: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.once(channel, cb);
   },
-  listenerCount: (eventName: string): number => {
+  /* listenerCount: (eventName: string): number => {
     return ipcRenderer.listenerCount(eventName);
-  }
+  } */
 };
 
 contextBridge.exposeInMainWorld('ipc', electronHandler);

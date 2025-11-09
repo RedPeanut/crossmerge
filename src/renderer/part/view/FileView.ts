@@ -87,7 +87,7 @@ export class FileView implements CompareView {
     }
 
     const event = 'menu click';
-    console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
+    // console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
   }
 
   menuClickHandler(...args: any[]): void {
@@ -361,7 +361,6 @@ export class FileView implements CompareView {
               },
             ],
           },
-          // wrap_lines: wrap_lines
           wrap_lines
         }
       );

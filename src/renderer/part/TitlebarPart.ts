@@ -56,7 +56,7 @@ export class TitlebarPart extends Part {
 
     const right: HTMLElement = $('.right');
     const minimizeBtn = $('a.codicon.codicon-chrome-minimize');
-    minimizeBtn.addEventListener('click', async () => {
+    minimizeBtn.addEventListener('click', () => {
       window.ipc.send('window fn', 'browserWindow', 'minimize');
     });
 
@@ -67,7 +67,7 @@ export class TitlebarPart extends Part {
     maxResBtn.addEventListener('click', handleMaxOrRes);
 
     const closeBtn = $('a.codicon.codicon-chrome-close.close');
-    closeBtn.addEventListener('click', async () => {
+    closeBtn.addEventListener('click', () => {
       window.ipc.send('window fn', 'browserWindow', 'close');
     });
 
