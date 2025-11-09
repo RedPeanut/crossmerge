@@ -43,9 +43,9 @@ export class TitlebarPart extends Part {
     const handleMaxOrRes = async (e) => {
       const isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
       if(isMaximized)
-        window.ipc.send('window fn', 'unmaximize');
+        window.ipc.send('window fn', 'browserWindow', 'unmaximize');
       else
-        window.ipc.send('window fn', 'maximize');
+        window.ipc.send('window fn', 'browserWindow', 'maximize');
     }
     middle.addEventListener('dblclick', handleMaxOrRes);
     menubar.appendChild(middle);
@@ -57,7 +57,7 @@ export class TitlebarPart extends Part {
     const right: HTMLElement = $('.right');
     const minimizeBtn = $('a.codicon.codicon-chrome-minimize');
     minimizeBtn.addEventListener('click', async () => {
-      window.ipc.send('window fn', 'minimize');
+      window.ipc.send('window fn', 'browserWindow', 'minimize');
     });
 
     // const maximizeBtn = $('a.codicon.codicon-chrome-maximize');
@@ -68,7 +68,7 @@ export class TitlebarPart extends Part {
 
     const closeBtn = $('a.codicon.codicon-chrome-close.close');
     closeBtn.addEventListener('click', async () => {
-      window.ipc.send('window fn', 'close');
+      window.ipc.send('window fn', 'browserWindow', 'close');
     });
 
     right.appendChild(minimizeBtn);

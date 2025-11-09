@@ -205,10 +205,11 @@ class MainWindow {
 
     ipcMain.on('window fn', (event, args: any[]) => {
       // const arg = args[0];
-      const [ fn ] = args;
-      // console.log(typeof this.browserWindow[arg]);
-      if(this.browserWindow[fn] && typeof this.browserWindow[fn] == 'function') {
-        this.browserWindow[fn]();
+      const [ who, fn ] = args;
+      // console.log(typeof this[who][fn]);
+
+      if(this[who] && this[who][fn] && typeof this[who][fn] == 'function') {
+        this[who][fn]();
       }
     });
 
