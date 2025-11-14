@@ -102,7 +102,12 @@ button:disabled:hover { background: rgb(204,204,204); border-color: rgb(191,191,
 
 #Text_comparisons-Display p:nth-of-type(1) label { display: inline-block; }
 
-#Text_comparisons-Encoding p {  }
+#Text_comparisons-Encoding p { /* font-size: 12px; */ }
+#Text_comparisons-Encoding p:nth-of-type(1) ul { position: relative; }
+#Text_comparisons-Encoding p:nth-of-type(1) ul li { margin-left: 18px; list-style: none; line-height: 20px; }
+#Text_comparisons-Encoding p:nth-of-type(1) ul li input { position: absolute; left: 0px; top: 3px; }
+#Text_comparisons-Encoding p:nth-of-type(1) ul li.desc { font-size: 12px; color: grey; }
+#Text_comparisons-Encoding p:nth-of-type(1) ul li.desc::before { content: '-'; margin-right: 5px; }
 #Text_comparisons-Encoding p:nth-of-type(1) label { display: inline-block; }
 #Text_comparisons-Encoding p:nth-of-type(2) select { width: 90%; };
 

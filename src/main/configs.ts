@@ -16,7 +16,8 @@
 const configs = {
   // text: display, encoding
   wrap_lines: false,
-  charset: 'utf8_w/o_bom',
+  try_to_auto_detect: true,
+  charset: 'utf8',
 
   // file
 

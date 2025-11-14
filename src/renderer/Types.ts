@@ -35,3 +35,9 @@ export interface FileDesc {
   name: string,
   type: string, // 'file' | 'folder'
 }
+
+export interface EncodingItem {
+  id?: string;
+  label: string;
+  description?: string;
+}

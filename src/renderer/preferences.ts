@@ -3,11 +3,12 @@ console.log('👋 This message is being logged by "renderer", included via webpa
 import '@vscode/codicons/dist/codicon.css';
 import './preferences.css';
 import { $, domContentLoaded } from './util/dom';
-import { mainWindow } from './Types';
+import { mainWindow, EncodingItem } from './Types';
 import { app } from 'electron';
 import path from 'path';
 import PotDb from 'potdb';
 import { ConfigsType } from '../main/configs';
+import { SUPPORTED_ENCODINGS } from './util/encoding';
 
 interface Node {
   label: string;
@@ -71,34 +72,81 @@ export class Preferences {
           {
             label: 'Encoding',
             render: function(container, data) {
-              let p = $('p');
+              /*
+              ul li { margin-left: 30px; list-style: none; line-height: 20px; }
+              ul li input { position: absolute; left: -18px; top: 3px; }
+
+              <p>
+                <ul>
+                  <li><input type="checkbox" id="" name=""/><label for="">Try to auto-detect character encoding from file content</label></li>
+                  <li>(Works only when folder compare)</li>
+                  <li>(Guessed from first met compared file)</li>
+                </ul>
+              </p>
+              */
+
+              let p: HTMLParagraphElement = $('p');
+              let ul: HTMLUListElement = $('ul');
+              let li: HTMLLIElement = $('li');
+
               // const tryChkbox = $('checkbox');
               const tryChkbox = $('input') as HTMLInputElement;
               tryChkbox.setAttribute('type', 'checkbox');
-              tryChkbox.checked = true;
+              tryChkbox.checked = self.configs.try_to_auto_detect;
               tryChkbox.disabled = true;
               const tryLabel = $('label') as HTMLLabelElement;
-              tryLabel.innerHTML = 'Try to auto-detect character encoding from file content';
+              tryLabel.innerHTML = '(TBD) Try to auto-detect character encoding from file content';
               // tryLabel.htmlFor = ''; //tryChkbox;
 
-              p.appendChild(tryChkbox);
-              p.appendChild(tryLabel);
+              li.appendChild(tryChkbox);
+              li.appendChild(tryLabel);
+              ul.appendChild(li);
+
+              li = $('li.desc');
+              li.innerHTML = 'works only when folder compare';
+              ul.appendChild(li);
+
+              li = $('li.desc');
+              li.innerHTML = 'guessed from first met compared file';
+              ul.appendChild(li);
+
+              p.appendChild(ul);
               container.appendChild(p);
 
               p = $('p');
               const defaultLabel = $('label');
               defaultLabel.innerHTML = 'Default character encoding:';
               const defaultSelect = $('select');
-              let option;
-              option = $('option') as HTMLOptionElement;
+
+              const list: EncodingItem[] = Object.keys(SUPPORTED_ENCODINGS)
+                .sort((k1, k2) => {
+                  return SUPPORTED_ENCODINGS[k1].order - SUPPORTED_ENCODINGS[k2].order;
+                })
+                .map((key, index) => {
+                  return { id: key, label: SUPPORTED_ENCODINGS[key].labelLong, description: key };
+                });
+              console.log('list =', list);
+
+              for(let i = 0; i < list.length; i++) {
+                let option: HTMLOptionElement;
+                option = $('option');
+                option.value = list[i].id;
+                option.innerText = list[i].label;
+                if(self.configs.charset === list[i].id)
+                  option.selected = true;
+                defaultSelect.appendChild(option);
+              }
+
+              /* let option: HTMLOptionElement;
+              option = $('option');
               option.value = 'utf8_w/o_bom';
               option.innerText = 'Unicode (UTF-8 without BOM)';
               defaultSelect.appendChild(option);
 
-              option = $('option') as HTMLOptionElement;
+              option = $('option');
               option.value = 'korean_euc';
               option.innerText = 'Korean (EUC)';
-              defaultSelect.appendChild(option);
+              defaultSelect.appendChild(option); */
 
               defaultSelect.addEventListener('change', ((e: Event) => {
                 const target = e.target as HTMLSelectElement;
@@ -193,7 +241,7 @@ export class Preferences {
     ];
     this.addNodes(this.tree, tree, 0, '');
     this.callRenders(tree, 0, '');
-    (this.tree.getElementsByClassName('content')[0] as HTMLElement).click();
+    (this.tree.getElementsByClassName('content')[2] as HTMLElement).click();
   }
 
   callRender(data: Node, level: number, id: string): void {
