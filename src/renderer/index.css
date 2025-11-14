@@ -632,3 +632,9 @@ body { height: 100%; }
 }
 
 .part.statusbar span {}
+.part.statusbar div {
+  /* height: 100%; */
+  /* margin: 0 3px; padding: 0 5px; */
+  line-height: 22px; padding: 0 5px;
+}
+.part.statusbar div:hover { background: rgba(0,0,0,0.12); cursor: pointer; }
