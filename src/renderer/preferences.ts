@@ -51,7 +51,7 @@ export class Preferences {
               let p = $('p');
               const wrapChkbox = $('input') as HTMLInputElement;
               wrapChkbox.setAttribute('type', 'checkbox');
-              wrapChkbox.checked = this.wrap_lines ? true : false;
+              wrapChkbox.checked = self.configs.wrap_lines ? true : false;
               // wrapChkbox.setAttribute('checked', this.wrap_lines);
               // wrapChkbox.onchange((e) => { console.log(e); });
               wrapChkbox.addEventListener('change', ((e: Event) => {
@@ -312,6 +312,15 @@ export class Preferences {
 
     const right = $('.right');
     const okBtn: HTMLButtonElement = this.okBtn = $('button'); okBtn.innerHTML = 'Ok';
+    okBtn.addEventListener('click',
+      async (e: Event)/* : Promise<void> */ => {
+        // const target = e.target as HTMLButtonElement;
+        console.log(this.configs);
+        await window.ipc.invoke('config update', this.configs);
+        window.ipc.send('window fn', 'preferences', 'close');
+      }
+    );
+
     const cancelBtn: HTMLButtonElement = this.cancelBtn = $('button'); cancelBtn.innerHTML = 'Cancel';
     cancelBtn.addEventListener('click',
       (e: Event) => {
@@ -324,6 +333,8 @@ export class Preferences {
     applyBtn.addEventListener('click',
       (e: Event) => {
         // const target = e.target as HTMLButtonElement;
+        console.log(this.configs);
+        window.ipc.invoke('config update', this.configs);
       }
     );
 

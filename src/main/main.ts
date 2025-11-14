@@ -24,7 +24,7 @@ import { Menubar } from './Menubar';
 import { StringUtil } from '../common/util/StringUtil';
 import Runtime from './util/Runtime';
 import PotDb from 'potdb';
-import default_configs from './configs';
+import default_configs, { ConfigsType } from './configs';
 
 class AppUpdater {
   constructor() {
@@ -426,9 +426,11 @@ class MainWindow {
       return new PotDb(dir);;
     }
 
-    ipcMain.handle('config all', (event, args: any[]) => {
+    ipcMain.handle('config all', async (event, args: any[]) => {
       const db = getDb();
-      return { ...default_configs, ...db.dict.cfg.all()};
+      const saved: ConfigsType = await db.dict.cfg.all();
+      console.log('saved =', saved);
+      return { ...default_configs, ...saved};
     });
 
     ipcMain.handle('config get', (event, args: any[]) => {
@@ -446,8 +448,12 @@ class MainWindow {
     ipcMain.handle('config update', async (event, args: any[]) => {
       const db = getDb();
       const [ data ] = args;
-      let _new = { ...db.dict.cfg.all(), ...data };
-      await db.dict.cfg.update(_new);
+      const old: ConfigsType = await db.dict.cfg.all();
+      console.log('old =', old);
+      const _new = { ...old, ...data };
+      console.log('_new =', _new);
+      const update = await db.dict.cfg.update(_new);
+      console.log('update =', update);
     });
 
     ipcMain.handle('save file', (event, args: any[]) => {
