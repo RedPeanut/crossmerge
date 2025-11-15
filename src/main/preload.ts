@@ -39,6 +39,7 @@ export type MainEvents =
   | 'copy file'
   | 'read folder'
   | 'save file'
+  | 'read file'
 
   // contextmenu
   | 'contextmenu'

@@ -291,6 +291,12 @@ class MainWindow {
       return reads;
     });
 
+    ipcMain.handle('read file', (event, args: any[]) => {
+      const [ path ] = args;
+      const buf: Buffer = StringUtil.isEmpty(path) ? Buffer.from('') : fs.readFileSync(path);
+      return buf;
+    });
+
     ipcMain.handle('menu get', (event, args: any[]) => {
       // return serialized menu n install handler
 

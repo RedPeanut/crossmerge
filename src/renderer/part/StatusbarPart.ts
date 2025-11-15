@@ -1,3 +1,4 @@
+import { AUTO_ENCODING_GUESS_MAX_BYTES, detectEncodingFromBuffer, guessEncodingByBuffer, SUPPORTED_ENCODINGS } from '../util/encoding';
 import { CompareItem } from '../../common/Types';
 import { MainLayoutService, STATUSBAR_HEIGHT } from '../layout/MainLayout';
 import { Part } from '../Part';
@@ -47,11 +48,43 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     charset.innerHTML = 'UTF-8';
     // charset.style.display = 'none';
     charset.addEventListener('click', async (e) => {
-      const list: EncodingItem[] = [
-        { label: 'blarblarblar', description: 'description1' },
-        { label: 'blarblarblar', description: 'description2' },
-        { label: 'blarblarblar', description: 'description3' },
-      ];
+
+      // const path = (document.querySelectorAll('.input input')[0] as HTMLInputElement).value;
+
+      const buffer: Buffer = await window.ipc.invoke('read file',
+        // '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt' // ascii
+        '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt' // euckr
+        // path
+      );
+
+      const limitedBuffer = buffer.slice(0, AUTO_ENCODING_GUESS_MAX_BYTES);
+      const configuredEncoding = await window.ipc.invoke('config get', 'charset');
+      const detectedEncodingResult = await detectEncodingFromBuffer({buffer: limitedBuffer, bytesRead: limitedBuffer.byteLength}, true);
+      // console.log(detectedEncoding);
+      const guessedEncoding = detectedEncodingResult.encoding;
+
+      const list: EncodingItem[] = Object.keys(SUPPORTED_ENCODINGS)
+        .sort((k1, k2) => {
+          if(k1 === configuredEncoding) {
+            return -1;
+          } else if(k2 === configuredEncoding) {
+            return 1;
+          }
+          return SUPPORTED_ENCODINGS[k1].order - SUPPORTED_ENCODINGS[k2].order;
+        })
+        .filter(k => {
+          if(k === guessedEncoding)
+            return false;
+          return true;
+        })
+        .map((key, index) => {
+          return { id: key, label: SUPPORTED_ENCODINGS[key].labelLong, description: key };
+        });
+
+      list.unshift({ id: guessedEncoding, label: SUPPORTED_ENCODINGS[guessedEncoding].labelLong, description: 'Guessed from content' });
+      // console.log(list);
+
+      // lists in statusbar-widget & show
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       mainLayoutService.showStatusbarWidget(list);
     });
