@@ -36,7 +36,7 @@ export class Menubar implements MenubarService {
     /* container.addEventListener('focusin', (e: KeyboardEvent) => {
       console.log('focusin is called ..');
     }); */
-    container.addEventListener('focusout', (e: KeyboardEvent) => {
+    container.addEventListener('focusout', (e: FocusEvent) => {
       // console.log('focusout is called ..');
       if(this.menuState === MenubarState.Hamburger) {
         this.hamburgerButton.classList.remove('on');

@@ -638,3 +638,11 @@ body { height: 100%; }
   line-height: 22px; padding: 0 5px;
 }
 .part.statusbar div:hover { background: rgba(0,0,0,0.12); cursor: pointer; }
+
+/* Widget */
+.statusbar-widget { position: absolute; bottom: 27px; left: 0px;
+  background: rgb(242,242,242);
+  border: 1px solid rgb(185,185,185);
+}
+.statusbar-widget ul { padding: 0 8px; }
+.statusbar-widget ul li { line-height: 22px; list-style: none; }

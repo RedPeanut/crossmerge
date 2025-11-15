@@ -12,6 +12,7 @@ import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId as menubarServiceId } from '../Service';
 import { CompareFolderData } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
+import { EncodingItem as EncodingItem } from '../Types';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -24,6 +25,7 @@ export const enum Parts {
 
 export interface MainLayoutService extends Service {
   layout(): void;
+  showStatusbarWidget(list: any[]): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -36,6 +38,7 @@ export class MainLayout extends Layout implements MainLayoutService {
   bodyLayout: BodyLayout;
   statusbarPart: StatusbarPart;
   splitView: SplitView<TitlebarPart | BodyLayout | StatusbarPart>;
+  statusbarWidget: HTMLElement;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -63,6 +66,18 @@ export class MainLayout extends Layout implements MainLayoutService {
     splitView.addView(titlebarPart);
     splitView.addView(bodyLayout);
     splitView.addView(statusbarPart);
+
+    const statusbarWidget = this.statusbarWidget = $('.statusbar-widget');
+    statusbarWidget.tabIndex = -1;
+    statusbarWidget.style.display = 'none';
+    statusbarWidget.addEventListener('focusout', (e: FocusEvent) => {
+      // console.log('focusout is called ..');
+      statusbarWidget.style.display = 'none';
+    });
+
+    const ul = $('ul');
+    statusbarWidget.appendChild(ul);
+    this.container.appendChild(statusbarWidget);
 
     this.parent.appendChild(this.container);
   }
@@ -114,5 +129,27 @@ export class MainLayout extends Layout implements MainLayoutService {
       { menu: 'actions:expand all folders', enable: false },
       { menu: 'actions:collapse all folders', enable: false },
     ]); */
+  }
+
+  showStatusbarWidget(list: EncodingItem[]): void {
+    const ul = this.statusbarWidget.querySelector('ul');
+    dom.clearContainer(ul);
+
+    let li: HTMLLIElement, label: HTMLSpanElement, desc: HTMLSpanElement;
+    for(let i = 0; i < list.length; i++) {
+      li = $('li');
+      label = $('span.name');
+      desc = $('span.desc');
+      label.innerHTML = list[i].label;
+      desc.innerHTML = list[i].description;
+      li.appendChild(label);
+      li.appendChild(desc);
+      li.addEventListener('click', (e) => {
+        // do reopen with encoding
+      });
+      ul.appendChild(li);
+    }
+    this.statusbarWidget.style.display = 'block';
+    this.statusbarWidget.focus();
   }
 }

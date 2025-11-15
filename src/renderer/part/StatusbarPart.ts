@@ -1,8 +1,9 @@
 import { CompareItem } from '../../common/Types';
-import { STATUSBAR_HEIGHT } from '../layout/MainLayout';
+import { MainLayoutService, STATUSBAR_HEIGHT } from '../layout/MainLayout';
 import { Part } from '../Part';
-import { setService, statusbarPartServiceId } from '../Service';
+import { getService, mainLayoutServiceId, setService, statusbarPartServiceId } from '../Service';
 import { $ } from '../util/dom';
+import { EncodingItem } from '../Types';
 
 export interface StatusbarPartService {
   update(item: CompareItem): void;
@@ -46,6 +47,13 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     charset.innerHTML = 'UTF-8';
     // charset.style.display = 'none';
     charset.addEventListener('click', async (e) => {
+      const list: EncodingItem[] = [
+        { label: 'blarblarblar', description: 'description1' },
+        { label: 'blarblarblar', description: 'description2' },
+        { label: 'blarblarblar', description: 'description3' },
+      ];
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.showStatusbarWidget(list);
     });
     container.appendChild(status);
     container.appendChild(position);
