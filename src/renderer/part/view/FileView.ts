@@ -372,6 +372,8 @@ export class FileView implements CompareView {
       this.focusManager.register(this.mergely.cm('lhs'));
       this.focusManager.register(this.mergely.cm('rhs'));
 
+      setTimeout(() => {this.mergely.cm('lhs').focus()});
+
     }).catch(error => {
       console.log(error);
     });

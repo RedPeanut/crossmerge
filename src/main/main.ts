@@ -441,7 +441,7 @@ class MainWindow {
     ipcMain.handle('config all', async (event, args: any[]) => {
       const db = getDb();
       const saved: ConfigsType = await db.dict.cfg.all();
-      console.log('saved =', saved);
+      // console.log('saved =', saved);
       return { ...default_configs, ...saved};
     });
 
@@ -461,11 +461,11 @@ class MainWindow {
       const db = getDb();
       const [ data ] = args;
       const old: ConfigsType = await db.dict.cfg.all();
-      console.log('old =', old);
+      // console.log('old =', old);
       const _new = { ...old, ...data };
-      console.log('_new =', _new);
+      // console.log('_new =', _new);
       const update = await db.dict.cfg.update(_new);
-      console.log('update =', update);
+      // console.log('update =', update);
     });
 
     ipcMain.handle('save file', (event, args: any[]) => {

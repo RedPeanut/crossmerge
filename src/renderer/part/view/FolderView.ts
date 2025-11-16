@@ -214,7 +214,7 @@ export class FolderView implements CompareView {
     }
 
     const event = 'menu click';
-    console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
+    // console.log(`'${event}' event listener remains in ipc: ${window.ipc.listenerCount(event)}`);
   }
 
   menuClickHandler(...args: any[]): void {

@@ -363,8 +363,8 @@ export class Preferences {
     okBtn.addEventListener('click',
       async (e: Event)/* : Promise<void> */ => {
         // const target = e.target as HTMLButtonElement;
-        console.log(this.configs);
-        await window.ipc.invoke('config update', this.configs);
+        // console.log(this.configs);
+        if(this.changed) await window.ipc.invoke('config update', this.configs);
         window.ipc.send('window fn', 'preferences', 'close');
       }
     );
