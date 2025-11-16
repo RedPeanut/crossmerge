@@ -65,6 +65,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
 
       const list: EncodingItem[] = Object.keys(SUPPORTED_ENCODINGS)
         .sort((k1, k2) => {
+          // position configured encoding to top
           if(k1 === configuredEncoding) {
             return -1;
           } else if(k2 === configuredEncoding) {
@@ -73,7 +74,8 @@ export class StatusbarPart extends Part implements StatusbarPartService {
           return SUPPORTED_ENCODINGS[k1].order - SUPPORTED_ENCODINGS[k2].order;
         })
         .filter(k => {
-          if(k === guessedEncoding)
+          // do not show guessed encoding that does not match the configured
+          if(k === guessedEncoding && guessedEncoding !== configuredEncoding)
             return false;
           return true;
         })
@@ -81,7 +83,11 @@ export class StatusbarPart extends Part implements StatusbarPartService {
           return { id: key, label: SUPPORTED_ENCODINGS[key].labelLong, description: key };
         });
 
-      list.unshift({ id: guessedEncoding, label: SUPPORTED_ENCODINGS[guessedEncoding].labelLong, description: 'Guessed from content' });
+      // insert guessed to top
+      if(guessedEncoding && configuredEncoding !== guessedEncoding) {
+        list.unshift({ id: guessedEncoding, label: SUPPORTED_ENCODINGS[guessedEncoding].labelLong, description: 'Guessed from content' });
+      }
+
       // console.log(list);
 
       // lists in statusbar-widget & show
@@ -105,6 +111,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
       this.position.style.display = 'none';
       this.encoding.style.display = 'none';
     }
+    (getService(mainLayoutServiceId) as MainLayoutService).position();
   }
 
   clear(): void {

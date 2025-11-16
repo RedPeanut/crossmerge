@@ -26,6 +26,7 @@ export const enum Parts {
 export interface MainLayoutService extends Service {
   layout(): void;
   showStatusbarWidget(list: any[]): void;
+  position(): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -74,6 +75,56 @@ export class MainLayout extends Layout implements MainLayoutService {
       // console.log('focusout is called ..');
       statusbarWidget.style.display = 'none';
     });
+    statusbarWidget.addEventListener('keydown', (e: KeyboardEvent) => {
+      // console.log('e.key =', e.key);
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const ul = statusbarWidget.children[0];
+        let currIndex = 0;
+        for(; currIndex < ul.children.length; currIndex++) {
+          if(ul.children[currIndex].classList.contains('on'))
+            break;
+        }
+
+        if(e.key === 'ArrowDown') {
+          let next: HTMLElement, nextIndex = -1;
+
+          if(currIndex === ul.children.length-1)
+            nextIndex = 0;
+          else
+            nextIndex = currIndex+1;
+
+          ul.children[currIndex].classList.remove('on');
+          next = ul.children[nextIndex] as HTMLElement;
+          next.classList.add('on');
+
+          if(currIndex === ul.children.length-1) {
+            ul.scrollTop = 0;
+          } else {
+            if(ul.scrollTop + ul.clientHeight < next.offsetTop + next.clientHeight)
+              ul.scrollTop = next.offsetTop + next.clientHeight - ul.clientHeight;
+          }
+        } else if(e.key === 'ArrowUp') {
+          let next: HTMLElement, nextIndex = -1;
+
+          if(currIndex === 0)
+            nextIndex = ul.children.length-1;
+          else
+            nextIndex = currIndex-1;
+
+          ul.children[currIndex].classList.remove('on');
+          next = ul.children[nextIndex] as HTMLElement;
+          next.classList.add('on');
+
+          if(currIndex === 0) {
+            ul.scrollTop = next.offsetTop + next.clientHeight - ul.clientHeight;
+          } else {
+            if(ul.scrollTop > next.offsetTop)
+              ul.scrollTop = next.offsetTop;
+          }
+        }
+        e.preventDefault();
+      }
+    });
 
     const ul = $('ul');
     statusbarWidget.appendChild(ul);
@@ -93,6 +144,15 @@ export class MainLayout extends Layout implements MainLayoutService {
       this.splitView.layout(dimension.height);
 
     (getService(menubarServiceId) as MenubarService).layout(dimension);
+
+    this.position();
+  }
+
+  position(): void {
+    // position status bar widget left in here
+    const encoding: HTMLElement = document.querySelector('.part.statusbar div:nth-of-type(3)');
+    // console.log(encoding.offsetLeft);
+    this.statusbarWidget.style.left = encoding.offsetLeft + 'px';
   }
 
   installIpc(): void {
@@ -149,6 +209,13 @@ export class MainLayout extends Layout implements MainLayoutService {
       });
       ul.appendChild(li);
     }
+
+    // add on to first item but guess
+    let firstIndex = 0;
+    if(list[firstIndex].description.toLowerCase().indexOf('guessed') > -1)
+      firstIndex = 1;
+    ul.children[firstIndex].classList.add('on');
+
     this.statusbarWidget.style.display = 'block';
     this.statusbarWidget.focus();
   }
