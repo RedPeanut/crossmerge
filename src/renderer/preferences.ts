@@ -132,7 +132,7 @@ export class Preferences {
                 option = $('option');
                 option.value = list[i].id;
                 option.innerText = list[i].label;
-                if(self.configs.charset === list[i].id)
+                if(self.configs.encoding === list[i].id)
                   option.selected = true;
                 defaultSelect.appendChild(option);
               }
@@ -150,8 +150,8 @@ export class Preferences {
 
               defaultSelect.addEventListener('change', ((e: Event) => {
                 const target = e.target as HTMLSelectElement;
-                if(target.value != self.configs.charset) {
-                  self.configs.charset = target.value;
+                if(target.value != self.configs.encoding) {
+                  self.configs.encoding = target.value;
                   self.changed = true;
                   self.applyBtn.disabled = false;
                 }

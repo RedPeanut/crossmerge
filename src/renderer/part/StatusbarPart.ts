@@ -17,7 +17,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
   uid: string;
   status: HTMLElement;
   position: HTMLElement;
-  charset: HTMLElement;
+  encoding: HTMLElement;
 
   constructor(parent: HTMLElement, id: string, role: string, classes: string[], options: object) {
     super(parent, id, role, classes, options);
@@ -34,7 +34,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     /*
     <div class='status'></div>
     <div class='position'></div>
-    <div class='charset'></div>
+    <div class='encoding'></div>
     */
 
     const status = this.status = $('div.status');
@@ -43,11 +43,11 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     position.title = 'Go to Line/Column';
     position.innerHTML = 'Ln NN, Col NN';
     // position.style.display = 'none';
-    const charset = this.charset = $('div.charset');
-    charset.title = 'Reopen with Encoding';
-    charset.innerHTML = 'UTF-8';
-    // charset.style.display = 'none';
-    charset.addEventListener('click', async (e) => {
+    const encoding = this.encoding = $('div.encoding');
+    encoding.title = 'Reopen with Encoding';
+    encoding.innerHTML = 'UTF-8';
+    // encoding.style.display = 'none';
+    encoding.addEventListener('click', async (e) => {
 
       // const path = (document.querySelectorAll('.input input')[0] as HTMLInputElement).value;
 
@@ -58,7 +58,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
       );
 
       const limitedBuffer = buffer.slice(0, AUTO_ENCODING_GUESS_MAX_BYTES);
-      const configuredEncoding = await window.ipc.invoke('config get', 'charset');
+      const configuredEncoding = await window.ipc.invoke('config get', 'encoding');
       const detectedEncodingResult = await detectEncodingFromBuffer({buffer: limitedBuffer, bytesRead: limitedBuffer.byteLength}, true);
       // console.log(detectedEncoding);
       const guessedEncoding = detectedEncodingResult.encoding;
@@ -90,7 +90,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     });
     container.appendChild(status);
     container.appendChild(position);
-    container.appendChild(charset);
+    container.appendChild(encoding);
     return container;
   }
 
@@ -99,11 +99,11 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     if(item.type === 'file') {
       this.status.innerHTML = `${item.status.removal} removalㆍ${item.status.insertion} insertionㆍ${item.status.change} change`;
       this.position.style.display = 'block';
-      this.charset.style.display = 'block';
+      this.encoding.style.display = 'block';
     } else if(item.type === 'folder') {
       this.status.innerHTML = `${item.status.removed} removedㆍ${item.status.inserted} insertedㆍ${item.status.changed} changedㆍ${item.status.unchanged} unchanged`;
       this.position.style.display = 'none';
-      this.charset.style.display = 'none';
+      this.encoding.style.display = 'none';
     }
   }
 

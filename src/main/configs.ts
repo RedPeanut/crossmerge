@@ -2,7 +2,7 @@
   // text: display, encoding
   wrap_lines?: boolean,
   // try_auto_detect?: boolean,
-  charset?: string,
+  encoding?: string,
 
   // file
 
@@ -17,7 +17,7 @@ const configs = {
   // text: display, encoding
   wrap_lines: false,
   try_to_auto_detect: true,
-  charset: 'utf8',
+  encoding: 'utf8',
 
   // file
 
