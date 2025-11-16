@@ -204,8 +204,10 @@ export class FileView implements CompareView {
 
     // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/left/moons.txt');
     // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/right/moons.txt');
-    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt');
-    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/baa.txt');
+    // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt');
+    // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/baa.txt');
+    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt');
+    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba.txt');
     // input_lhs.setValue(this.item.path_lhs);
     // input_rhs.setValue(this.item.path_rhs);
 
@@ -284,10 +286,12 @@ export class FileView implements CompareView {
     this.element.appendChild(mergely_el);
 
     const wrap_lines = await window.ipc.invoke('config get', 'wrap_lines');
+    const encoding = await window.ipc.invoke('config get', 'encoding');
 
     window.ipc.invoke('read file in fileview',
       this.input_lhs.getValue(),
-      this.input_rhs.getValue()
+      this.input_rhs.getValue(),
+      encoding
     ).then(result => {
       // console.log('result =', result);
       const mergely = this.mergely = new Mergely(

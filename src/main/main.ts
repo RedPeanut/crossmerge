@@ -25,6 +25,7 @@ import { StringUtil } from '../common/util/StringUtil';
 import Runtime from './util/Runtime';
 import PotDb from 'potdb';
 import default_configs, { ConfigsType } from './configs';
+import iconv from 'iconv-lite';
 
 class AppUpdater {
   constructor() {
@@ -271,12 +272,17 @@ class MainWindow {
     });
 
     ipcMain.handle('read file in fileview', async (event, args: any[]) => {
-      const [ path_lhs, path_rhs ] = args;
+      const [ path_lhs, path_rhs, encoding = 'utf8' ] = args;
       const buf_lhs: Buffer = StringUtil.isEmpty(path_lhs) ? Buffer.from('') : fs.readFileSync(path_lhs);
       const buf_rhs: Buffer = StringUtil.isEmpty(path_rhs) ? Buffer.from('') : fs.readFileSync(path_rhs);
-      const decoder = new StringDecoder('utf8');
-      const data_lhs = decoder.write(buf_lhs);
-      const data_rhs = decoder.write(buf_rhs);
+
+      const data_lhs = iconv.decode(buf_lhs, encoding);
+      const data_rhs = iconv.decode(buf_rhs, encoding);
+
+      // const decoder = new StringDecoder(encoding);
+      // const data_lhs = decoder.write(buf_lhs);
+      // const data_rhs = decoder.write(buf_rhs);
+
       return { data_lhs, data_rhs };
     });
 
