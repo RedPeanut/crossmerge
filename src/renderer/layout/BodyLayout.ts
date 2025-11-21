@@ -208,7 +208,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       // -> copy selected item to other folder
       console.log(this.groupView.compares.map);
       const v = this.groupView.compares.map.get(group[0].uid) as FolderView;
-      v.doCompare();
+      v.compare();
       setTimeout(() => {
         v.selectPopup.emit('ok');
         // setTimeout(() => {

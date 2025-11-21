@@ -246,7 +246,7 @@ export class FileView implements CompareView {
 
     if(e.keyCode == 13) {
       // launch comparison
-      this.doCompare();
+      this.compare();
       return;
     }
 
@@ -275,7 +275,7 @@ export class FileView implements CompareView {
     this.mergely_el = null;
   }
 
-  async doCompare(): Promise<void> {
+  async compare(): Promise<void> {
     this.unbind();
 
     this.input_lhs.related.style.display = 'none';

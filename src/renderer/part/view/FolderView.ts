@@ -741,7 +741,7 @@ export class FolderView implements CompareView {
       // if(e.keyCode == 13) {
       if(e.key === 'Enter') {
         // launch comparison
-        this.doCompare();
+        this.compare();
         this.lists.focus();
         return;
       }
@@ -837,7 +837,7 @@ export class FolderView implements CompareView {
     return el;
   }
 
-  doCompare(): void {
+  compare(): void {
 
     // reset
     this.partNodeList = { left: [], right: [], changes: [], selectbar: [] };

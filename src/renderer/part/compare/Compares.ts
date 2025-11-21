@@ -45,7 +45,7 @@ export class Compares {
         v.setClass({ active: true });
 
       if(item.type == 'file') {
-        v.doCompare();
+        v.compare();
       } else if(item.type == 'folder') {
         v.layout();
       }
