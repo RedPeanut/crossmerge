@@ -2,7 +2,7 @@ import { CompareFolderData, CompareItem, MenuItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
 } from "../../../common/Types";
-import { CompareView, FileDesc } from "../../Types";
+import { CompareOptions, CompareView, FileDesc } from "../../Types";
 import { $ } from "../../util/dom";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
@@ -838,7 +838,7 @@ export class FolderView implements CompareView {
     return el;
   }
 
-  compare(): void {
+  compare(options?: CompareOptions): void {
 
     // reset
     this.partNodeList = { left: [], right: [], changes: [], selectbar: [] };

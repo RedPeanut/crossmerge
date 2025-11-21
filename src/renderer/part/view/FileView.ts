@@ -6,7 +6,7 @@ import { CompareFileData, CompareItem,
   toggleWrapLinesMenuId, // view
 } from "../../../common/Types";
 import Mergely from "../../../lib/mergely/Mergely";
-import { CompareView } from "../../Types";
+import { CompareOptions, CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { ComplexFocusManager } from "../../util/ComplexFocusManager";
 import { BodyLayoutService } from "../../layout/BodyLayout";
@@ -276,7 +276,7 @@ export class FileView implements CompareView {
     this.mergely_el = null;
   }
 
-  async compare(): Promise<void> {
+  async compare(options?: CompareOptions): Promise<void> {
     this.unbind();
 
     this.input_lhs.related.style.display = 'none';

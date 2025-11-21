@@ -23,8 +23,12 @@ export function isSplitItem(o: any) {
   return 'mode' in o && 'list' in o && o.list.length > 0;
 }
 
+export interface CompareOptions {
+  encoding?: string;
+}
+
 export interface CompareView {
-  compare(): void;
+  compare(options?: CompareOptions): void;
   layout(): void;
   setClass(style: { active?: boolean; }): void;
   getClass(): DOMTokenList;
