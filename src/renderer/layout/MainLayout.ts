@@ -126,6 +126,21 @@ export class MainLayout extends Layout implements MainLayoutService {
           }
         }
         e.preventDefault();
+      } else if(e.key === 'Enter') {
+        // compare again with this encoding
+        const ul = statusbarWidget.children[0];
+        let currIndex = 0;
+        for(; currIndex < ul.children.length; currIndex++) {
+          if(ul.children[currIndex].classList.contains('on'))
+            break;
+        }
+
+        const desc = ul.children[currIndex].querySelector('span.desc');
+        if(this.current.status.encoding !== desc.innerHTML) {
+          this.current.status.encoding = desc.innerHTML;
+          (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
+        } else
+          this.statusbarWidget.style.display = 'none';
       }
     });
 
@@ -207,8 +222,15 @@ export class MainLayout extends Layout implements MainLayoutService {
       desc.innerHTML = list[i].description;
       li.appendChild(label);
       li.appendChild(desc);
-      li.addEventListener('click', (e) => {
-        // do reopen with encoding
+      li.addEventListener('click', (e: MouseEvent) => {
+        // do reopen with this encoding
+        console.log(e.currentTarget);
+        const desc = (e.currentTarget as HTMLElement).querySelector('span.desc');
+        if(this.current.status.encoding !== desc.innerHTML) {
+          this.current.status.encoding = desc.innerHTML;
+          (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
+        } else
+          this.statusbarWidget.style.display = 'none';
       });
       ul.appendChild(li);
     }

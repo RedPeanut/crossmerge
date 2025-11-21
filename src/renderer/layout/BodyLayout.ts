@@ -14,7 +14,7 @@ import { StringUtil } from "../../common/util/StringUtil";
 import { CopyPopup } from "../popup/CopyPopup";
 import { ProgressPopup } from "../popup/ProgressPopup";
 import { FolderView } from "../part/view/FolderView";
-import { FileDesc } from "../Types";
+import { CompareOptions, FileDesc } from "../Types";
 import { Dialog } from "../Dialog";
 import { listenerManager } from "../util/ListenerManager";
 import { broadcast } from "../Broadcast";
@@ -33,6 +33,7 @@ export interface BodyLayoutService extends Service {
   callTabFn(id: string, fn: string): void;
   active(id: string): void;
   remove(id: string): void;
+  reCompare(id: string, options: CompareOptions): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -240,5 +241,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
         this.groupView = null;
       }
     }
+  }
+
+  reCompare(id: string, options: CompareOptions): void {
+    this.groupView && this.groupView.reCompare(id, options);
   }
 }

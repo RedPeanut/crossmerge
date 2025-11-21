@@ -1,6 +1,6 @@
 import { Tabs } from "../tab/Tabs";
 import { $ } from "../../util/dom";
-import { Group } from "../../Types";
+import { CompareOptions, Group } from "../../Types";
 import { Compares } from "../compare/Compares";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
 import { getService, mainLayoutServiceId, statusbarPartServiceId } from "../../Service";
@@ -89,5 +89,12 @@ export class GroupView {
     }
 
     return this.group.length;
+  }
+
+  reCompare(id: string, options: CompareOptions): void {
+    const i = this.group.findIndex((v, i) => { return v.uid === id });
+    if(i > -1) {
+      this.compares.reCompare(id, options);
+    }
   }
 }

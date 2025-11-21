@@ -1,5 +1,5 @@
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
-import { Group } from "../../Types";
+import { CompareOptions, Group } from "../../Types";
 import { $ } from "../../util/dom";
 import { listenerManager } from "../../util/ListenerManager";
 import { FileView } from "../view/FileView";
@@ -87,5 +87,13 @@ export class Compares {
     // delete v; // The operand of a 'delete' operator must be a property reference.ts(2703)
     // delete this.map.get(id); // The operand of a 'delete' operator must be a property reference.ts(2703)
     this.map.delete(id);
+  }
+
+  reCompare(id: string, options: CompareOptions): void {
+    const v: FileView|FolderView = this.map.get(id);
+    if(v instanceof FileView) {
+      console.log('v.item =', v.item);
+      v.compare(options);
+    }
   }
 }
