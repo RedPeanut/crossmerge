@@ -189,7 +189,7 @@ export const SUPPORTED_ENCODINGS: {
     order: 1,
     alias: 'utf8bom'
   },
-    utf8bom: {
+  /* utf8bom: {
     labelLong: 'UTF-8 with BOM',
     labelShort: 'UTF-8 with BOM',
     encodeOnly: true,
@@ -380,13 +380,13 @@ export const SUPPORTED_ENCODINGS: {
     labelLong: 'Japanese (EUC-JP)',
     labelShort: 'EUC-JP',
     order: 39
-  },
+  }, */
   euckr: {
     labelLong: 'Korean (EUC-KR)',
     labelShort: 'EUC-KR',
     order: 40
   },
-  windows874: {
+  /* windows874: {
     labelLong: 'Thai (Windows 874)',
     labelShort: 'Windows 874',
     order: 41
@@ -420,5 +420,5 @@ export const SUPPORTED_ENCODINGS: {
     labelLong: 'Western European DOS (CP 850)',
     labelShort: 'CP 850',
     order: 47
-  }
+  } */
 }

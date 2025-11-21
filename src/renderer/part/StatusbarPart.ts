@@ -42,19 +42,19 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     const position = this.position = $('div.position');
     position.title = 'Go to Line/Column';
     position.innerHTML = 'Ln NN, Col NN';
-    // position.style.display = 'none';
+    position.style.display = 'none';
     const encoding = this.encoding = $('div.encoding');
     encoding.title = 'Reopen with Encoding';
     encoding.innerHTML = 'UTF-8';
-    // encoding.style.display = 'none';
+    encoding.style.display = 'none';
     encoding.addEventListener('click', async (e) => {
 
-      // const path = (document.querySelectorAll('.input input')[0] as HTMLInputElement).value;
+      const path = (document.querySelectorAll('.input input')[0] as HTMLInputElement).value;
 
       const buffer: Buffer = await window.ipc.invoke('read file',
         // '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt' // ascii
-        '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt' // euckr
-        // path
+        // '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt' // euckr
+        path
       );
 
       const limitedBuffer = buffer.slice(0, AUTO_ENCODING_GUESS_MAX_BYTES);
@@ -105,6 +105,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     if(item.type === 'file') {
       this.status.innerHTML = `${item.status.removal} removalㆍ${item.status.insertion} insertionㆍ${item.status.change} change`;
       this.position.style.display = 'block';
+      this.encoding.innerHTML = `${SUPPORTED_ENCODINGS[item.status.encoding].labelShort}`;
       this.encoding.style.display = 'block';
     } else if(item.type === 'folder') {
       this.status.innerHTML = `${item.status.removed} removedㆍ${item.status.inserted} insertedㆍ${item.status.changed} changedㆍ${item.status.unchanged} unchanged`;

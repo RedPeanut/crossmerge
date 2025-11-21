@@ -287,7 +287,14 @@ export class FileView implements CompareView {
     this.element.appendChild(mergely_el);
 
     const wrap_lines = await window.ipc.invoke('config get', 'wrap_lines');
-    const encoding = await window.ipc.invoke('config get', 'encoding');
+    const configuredEncoding = await window.ipc.invoke('config get', 'encoding');
+    let encoding;
+    if(options && options.encoding) {
+      encoding = options.encoding;
+    } else if(this.item.status && this.item.status.encoding)
+      encoding = this.item.status.encoding;
+    else
+      encoding = configuredEncoding;
 
     window.ipc.invoke('read file in fileview',
       this.input_lhs.getValue(),
@@ -317,7 +324,7 @@ export class FileView implements CompareView {
                 change++;
             }
 
-            this.item.status = { removal, insertion, change };
+            this.item.status = { removal, insertion, change, encoding };
             const mainLayouttService = getService(mainLayoutServiceId) as MainLayoutService;
             mainLayouttService.updateStatusbar(this.item);
           },
