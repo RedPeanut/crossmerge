@@ -3,8 +3,9 @@ import { $ } from "../../util/dom";
 import { Group } from "../../Types";
 import { Compares } from "../compare/Compares";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
-import { getService, statusbarPartServiceId } from "../../Service";
+import { getService, mainLayoutServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
+import { MainLayoutService } from "../../layout/MainLayout";
 
 export interface GroupViewOptions {}
 
@@ -60,11 +61,11 @@ export class GroupView {
 
   updateStatusbar(i: number): void {
     if(i > -1) {
-      const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       if(this.group[i].status) {
-        statusbarPartService.update(this.group[i]);
+        mainLayoutService.updateStatusbar(this.group[i]);
       } else {
-        statusbarPartService.clear();
+        mainLayoutService.clearStatusbar();
       }
     }
   }

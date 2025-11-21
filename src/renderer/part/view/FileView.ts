@@ -10,7 +10,7 @@ import { CompareView } from "../../Types";
 import { $ } from "../../util/dom";
 import { ComplexFocusManager } from "../../util/ComplexFocusManager";
 import { BodyLayoutService } from "../../layout/BodyLayout";
-import { getService, bodyLayoutServiceId, statusbarPartServiceId } from "../../Service";
+import { getService, bodyLayoutServiceId, statusbarPartServiceId, mainLayoutServiceId } from "../../Service";
 import { renderer } from "../..";
 import { StatusbarPartService } from "../StatusbarPart";
 import { Change } from "../../../lib/mergely/Types";
@@ -18,6 +18,7 @@ import { broadcast } from "../../Broadcast";
 import { listenerManager } from "../../util/ListenerManager";
 import { Channels } from "../../../main/preload";
 import { Editor } from "../../../types/codemirror";
+import { MainLayoutService } from "../../layout/MainLayout";
 
 export interface FileViewOptions {}
 
@@ -317,8 +318,8 @@ export class FileView implements CompareView {
             }
 
             this.item.status = { removal, insertion, change };
-            const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
-            statusbarPartService.update(this.item);
+            const mainLayouttService = getService(mainLayoutServiceId) as MainLayoutService;
+            mainLayouttService.updateStatusbar(this.item);
           },
           changed: (args: any[]) => {
             if(args && args.length > 0) {

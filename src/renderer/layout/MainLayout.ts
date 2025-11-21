@@ -3,14 +3,14 @@ import { isLinux, isWindows } from '../../common/util/platform';
 import { Layout } from '../Layout';
 import { TitlebarPart } from '../part/TitlebarPart';
 // import { BodyPart } from '../part/BodyPart';
-import { StatusbarPart } from '../part/StatusbarPart';
+import { StatusbarPart, StatusbarPartService } from '../part/StatusbarPart';
 import { BodyLayout, BodyLayoutService } from './BodyLayout';
 import { SplitView } from '../component/SplitView';
 import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
-import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId as menubarServiceId } from '../Service';
-import { CompareFolderData } from '../../common/Types';
+import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId as menubarServiceId, statusbarPartServiceId } from '../Service';
+import { CompareFolderData, CompareItem } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
 
@@ -27,6 +27,8 @@ export interface MainLayoutService extends Service {
   layout(): void;
   showStatusbarWidget(list: any[]): void;
   position(): void;
+  updateStatusbar(item: CompareItem): void;
+  clearStatusbar(): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -40,6 +42,7 @@ export class MainLayout extends Layout implements MainLayoutService {
   statusbarPart: StatusbarPart;
   splitView: SplitView<TitlebarPart | BodyLayout | StatusbarPart>;
   statusbarWidget: HTMLElement;
+  current: CompareItem = null;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -219,4 +222,16 @@ export class MainLayout extends Layout implements MainLayoutService {
     this.statusbarWidget.style.display = 'block';
     this.statusbarWidget.focus();
   }
+
+  updateStatusbar(item: CompareItem): void {
+    this.current = item; // { ...item };
+    console.log('this.current =', this.current);
+    (getService(statusbarPartServiceId) as StatusbarPartService).update(item);
+  }
+
+  clearStatusbar(): void {
+    this.current = null;
+    (getService(statusbarPartServiceId) as StatusbarPartService).clear();
+  }
+
 }

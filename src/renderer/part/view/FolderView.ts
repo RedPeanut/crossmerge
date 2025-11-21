@@ -12,7 +12,7 @@ import { renderer } from "../..";
 import { SelectPopup } from "../../popup/SelectPopup";
 import { recur_do, recur_expand, recur_select } from "../../util/utils";
 import { CopyPopup } from "../../popup/CopyPopup";
-import { bodyLayoutServiceId, getService, statusbarPartServiceId } from "../../Service";
+import { bodyLayoutServiceId, getService, mainLayoutServiceId, statusbarPartServiceId } from "../../Service";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { StringUtil } from "../../../common/util/StringUtil";
 // import { Dialog } from "../../Dialog";
@@ -22,6 +22,7 @@ import { listenerManager } from "../../util/ListenerManager";
 import { broadcast } from "../../Broadcast";
 import { SimpleFocusManager } from "../../util/SimpleFocusManager";
 import { Channels } from "../../../main/preload";
+import { MainLayoutService } from "../../layout/MainLayout";
 
 interface Node {
   parent: Node | null;
@@ -167,8 +168,8 @@ export class FolderView implements CompareView {
       const { removed, inserted, changed, unchanged } = arg;
       this.item.status = { removed, inserted, changed, unchanged };
 
-      const statusbarPartService = getService(statusbarPartServiceId) as StatusbarPartService;
-      statusbarPartService.update(this.item);
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.updateStatusbar(this.item);
     });
 
     window.ipc.on('compare folder data', (...args: any[]) => {
