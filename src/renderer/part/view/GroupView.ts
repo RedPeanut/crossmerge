@@ -3,9 +3,11 @@ import { $ } from "../../util/dom";
 import { CompareOptions, Group } from "../../Types";
 import { Compares } from "../compare/Compares";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
-import { getService, mainLayoutServiceId, statusbarPartServiceId } from "../../Service";
+import { getService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
 import { MainLayoutService } from "../../layout/MainLayout";
+import { defaultMenubarEnable } from "../../../globals";
+import { MenubarService } from "../Menubar";
 
 export interface GroupViewOptions {}
 
@@ -35,7 +37,8 @@ export class GroupView {
     this.tabs.addGroup(group);
     this.compares.addGroup(group);
     this.group.splice(0, 0, ...group);
-    this.updateStatusbar(0);
+    this.active(this.group[0].uid);
+    // this.updateStatusbar(0);
   }
 
   layout() {
@@ -56,6 +59,10 @@ export class GroupView {
     this.compares.active(id);
 
     const i = this.group.findIndex((v, i) => { return v.uid === id });
+
+    window.ipc.send('menu enable', defaultMenubarEnable[this.group[i].type]);
+    (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable[this.group[i].type]);
+
     this.updateStatusbar(i);
   }
 

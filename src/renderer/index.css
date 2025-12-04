@@ -229,6 +229,10 @@ body { height: 100%; }
   margin: 0 4px;
   padding: 0 8px;
 }
+.menubar .button ul li.disabled {
+  /* color: rgb(204 204 204); */
+  color: lightgray;
+}
 
 .menubar .button ul li a.separator {
   border-bottom: 1px solid;
@@ -238,8 +242,8 @@ body { height: 100%; }
   height: 0;
 }
 
-.menubar .button ul li:hover > a { background-color: rgb(80,162,255); border-radius: 5px; color: white; }
-.menubar .button ul li:hover > .menubox { display: block; }
+.menubar .button ul li:not(.disabled):hover > a { background-color: rgb(80,162,255); border-radius: 5px; color: white; }
+.menubar .button ul li:not(.disabled):hover > .menubox { display: block; }
 .menubar .button ul li a span {}
 
 .menubar .button ul li .padding { flex: 1; min-width: 20px; }

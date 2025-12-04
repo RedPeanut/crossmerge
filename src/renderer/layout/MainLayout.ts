@@ -9,10 +9,11 @@ import { SplitView } from '../component/SplitView';
 import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
-import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId as menubarServiceId, statusbarPartServiceId } from '../Service';
+import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from '../Service';
 import { CompareFolderData, CompareItem } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
+import { defaultMenubarEnable } from '../../globals';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -190,7 +191,7 @@ export class MainLayout extends Layout implements MainLayoutService {
       this.layout();
     };
 
-    let resizeTimeout;
+    let resizeTimeout: NodeJS.Timeout = null;
     let _handleResize = () => {
       if(resizeTimeout)
         clearTimeout(resizeTimeout);
@@ -202,11 +203,10 @@ export class MainLayout extends Layout implements MainLayoutService {
       _handleResize();
     });
 
-    /* window.ipc.send('menu enable', [
-      { menu: 'merging:current change:push to left', enable: false },
-      { menu: 'actions:expand all folders', enable: false },
-      { menu: 'actions:collapse all folders', enable: false },
-    ]); */
+    window.ipc.send('menu enable', defaultMenubarEnable['empty']);
+    setTimeout(() => {
+      (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable['empty']);
+    }, 0);
   }
 
   showStatusbarWidget(list: EncodingItem[]): void {
