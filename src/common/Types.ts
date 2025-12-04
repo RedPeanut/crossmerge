@@ -187,3 +187,7 @@ export const collapseAllFoldersMenuId = 'actions.collapseAllFolders';
 
 // view
 export const toggleWrapLinesMenuId = 'view.toggleWrapLines';
+
+// type State = 'empty' | typeof CompareItemType;
+export interface MenubarEnableElem { id: string, enable: boolean }
+export interface MenubarEnable { [id: string]: MenubarEnableElem[] }
