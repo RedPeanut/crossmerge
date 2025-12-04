@@ -21,7 +21,7 @@ export class Renderer {
     platform?: string // 'darwin', 'window', 'linux'
   } = {}
 
-  menu: SerializableMenuItem[];
+  // menu: SerializableMenuItem[];
 
   path: {
     sep?: string;
@@ -42,7 +42,7 @@ export class Renderer {
     this.window.isMaximized = await window.ipc.invoke('window get', 'function', 'isMaximized');
     this.window.isMinimized = await window.ipc.invoke('window get', 'function', 'isMinimized');
     this.process.platform = await window.ipc.invoke('process get', 'property', 'platform');
-    this.menu = await window.ipc.invoke('menu get');
+    // this.menu = await window.ipc.invoke('menu get');
     this.path.sep = this.process.platform === 'win32' ? '\\' : '/';
   }
 }

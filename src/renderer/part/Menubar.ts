@@ -134,7 +134,7 @@ export class Menubar implements MenubarService {
     container.appendChild(menubox);
   }
 
-  createHamburgerMenu(container: HTMLElement) {
+  async createHamburgerMenu(container: HTMLElement) {
     const button = this.hamburgerButton = $('.button.hamburger');
     button.addEventListener('click', (e) => {
       // console.log('e.target =', e.target);
@@ -145,9 +145,11 @@ export class Menubar implements MenubarService {
     button.appendChild(title);
     // container.appendChild(button);
 
+    const menu = await window.ipc.invoke('menu get');
+
     const menubox = $('ul.menubox');
-    for(let i = 0; i < renderer.menu.length; i++) {
-      const menuItem = renderer.menu[i];
+    for(let i = 0; i < menu.length; i++) {
+      const menuItem = menu[i];
       const li = $('li.item');
       if(menuItem.id) li.id = `h_${(menuItem.id as string).replace(/\./g, '_')}`;
 
@@ -182,10 +184,10 @@ export class Menubar implements MenubarService {
     container.appendChild(button);
   }
 
-  createNormalMenu(container: HTMLElement) {
-
-    for(let i = 0; i < renderer.menu.length; i++) {
-      const menuItem = renderer.menu[i];
+  async createNormalMenu(container: HTMLElement) {
+    const menu = await window.ipc.invoke('menu get');
+    for(let i = 0; i < menu.length; i++) {
+      const menuItem = menu[i];
       // console.log('['+index+']', menuItem);
       const button = $('.button');
       this.normalButtons.push(button);
