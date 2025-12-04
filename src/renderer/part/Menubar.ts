@@ -79,13 +79,20 @@ export class Menubar implements MenubarService {
     // this.parent.appendChild(this.container);
   }
 
-  createMenu_r(container: HTMLElement, menuItem: SerializableMenuItem, level: number): void {
+  createMenu_r(type: string, container: HTMLElement, menuItem: SerializableMenuItem, level: number): void {
     const menubox = $('ul.menubox');
     if(level > 0) menubox.classList.add('sub');
 
     for(let i = 0; i < menuItem.submenu.length; i++) {
       const submenuItem = menuItem.submenu[i];
       const li = $('li.item');
+      if(submenuItem.id) {
+        if(type === 'hamburger')
+          li.id = `h_${(submenuItem.id as string).replace(/\./g, '_')}`;
+        else // if(type === 'normal')
+          li.id = `n_${(submenuItem.id as string).replace(/\./g, '_')}`;
+      }
+
       if(submenuItem.type === 'separator') {
         const a = $('a');
         a.classList.add('separator');
@@ -119,7 +126,7 @@ export class Menubar implements MenubarService {
         if(submenuItem.submenu && submenuItem.submenu.length > 0) {
           const indicator = $('span.indicator.codicon.codicon-chevron-right');
           a.appendChild(indicator);
-          this.createMenu_r(li, submenuItem, level+1);
+          this.createMenu_r(type, li, submenuItem, level+1);
         }
       }
       menubox.appendChild(li);
@@ -142,6 +149,7 @@ export class Menubar implements MenubarService {
     for(let i = 0; i < renderer.menu.length; i++) {
       const menuItem = renderer.menu[i];
       const li = $('li.item');
+      if(menuItem.id) li.id = `h_${(menuItem.id as string).replace(/\./g, '_')}`;
 
       if(menuItem.type === 'separator') {
         const a = $('a');
@@ -165,7 +173,7 @@ export class Menubar implements MenubarService {
         if(menuItem.submenu && menuItem.submenu.length > 0) {
           const indicator = $('span.indicator.codicon.codicon-chevron-right');
           a.appendChild(indicator);
-          this.createMenu_r(li, menuItem, 1);
+          this.createMenu_r('hamburger', li, menuItem, 1);
         }
       }
       menubox.appendChild(li);
@@ -209,7 +217,7 @@ export class Menubar implements MenubarService {
       title.innerHTML = menuItem.label.replace(/&/g, '');
       button.appendChild(title);
 
-      this.createMenu_r(button, menuItem, 0);
+      this.createMenu_r('normal', button, menuItem, 0);
       container.appendChild(button);
     }
   }
