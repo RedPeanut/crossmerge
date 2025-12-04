@@ -5,7 +5,7 @@ import { menubarServiceId, Service, setService } from "../Service";
 import { $, Dimension } from "../util/dom";
 import * as dom from "../util/dom";
 
-enum MenubarState {
+enum MenubarType {
   Normal,
   Hamburger,
 }
@@ -23,7 +23,7 @@ export class Menubar implements MenubarService {
   // element: HTMLElement;
   normalButtons: HTMLElement[] = [];
   hamburgerButton: HTMLElement;
-  menuState: MenubarState;
+  menubarType: MenubarType;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -38,7 +38,7 @@ export class Menubar implements MenubarService {
     }); */
     container.addEventListener('focusout', (e: FocusEvent) => {
       // console.log('focusout is called ..');
-      if(this.menuState === MenubarState.Hamburger) {
+      if(this.menubarType === MenubarType.Hamburger) {
         this.hamburgerButton.classList.remove('on');
       } else {
         for(let i = 0; i < this.normalButtons.length; i++) {
@@ -61,7 +61,7 @@ export class Menubar implements MenubarService {
         this.normalButtons[i].classList.remove('on');
         this.normalButtons[i].style.display = 'none';
       }
-      this.menuState = MenubarState.Hamburger;
+      this.menubarType = MenubarType.Hamburger;
     } else {
       this.hamburgerButton.classList.remove('on');
       this.hamburgerButton.style.display = 'none';
@@ -69,12 +69,12 @@ export class Menubar implements MenubarService {
         // this.buttons[i].classList.remove('on')
         this.normalButtons[i].style.display = 'block';
       }
-      this.menuState = MenubarState.Normal;
+      this.menubarType = MenubarType.Normal;
     }
   }
 
   install(): void {
-    this.createHamburgurMenu(this.container);
+    this.createHamburgerMenu(this.container);
     this.createNormalMenu(this.container);
     // this.parent.appendChild(this.container);
   }
@@ -127,7 +127,7 @@ export class Menubar implements MenubarService {
     container.appendChild(menubox);
   }
 
-  createHamburgurMenu(container: HTMLElement) {
+  createHamburgerMenu(container: HTMLElement) {
     const button = this.hamburgerButton = $('.button.hamburger');
     button.addEventListener('click', (e) => {
       // console.log('e.target =', e.target);
