@@ -1,5 +1,5 @@
 import { renderer } from "..";
-import { SerializableMenuItem } from "../../common/Types";
+import { MenubarEnable, MenubarEnableElem, SerializableMenuItem } from "../../common/Types";
 import { broadcast } from "../Broadcast";
 import { menubarServiceId, Service, setService } from "../Service";
 import { $, Dimension } from "../util/dom";
@@ -12,6 +12,7 @@ enum MenubarType {
 
 export interface MenubarService extends Service {
   layout(dimension: Dimension): void;
+  enable(arg: MenubarEnableElem[]): void;
 }
 
 export interface MenubarOptions {}
@@ -93,6 +94,9 @@ export class Menubar implements MenubarService {
           li.id = `n_${(submenuItem.id as string).replace(/\./g, '_')}`;
       }
 
+      if(!submenuItem.enabled)
+        li.classList.add('disabled');
+
       if(submenuItem.type === 'separator') {
         const a = $('a');
         a.classList.add('separator');
@@ -103,6 +107,7 @@ export class Menubar implements MenubarService {
         // li.addEventListener('focusout', (e) => {});
 
         const a = $('a');
+
         if(submenuItem.enabled && submenuItem.clickable && submenuItem.id) {
           a.addEventListener('click', () => {
             broadcast.emit('menu click', null, submenuItem.id);
@@ -224,4 +229,32 @@ export class Menubar implements MenubarService {
     }
   }
 
+  enable(list: MenubarEnableElem[]): void {
+    for(let i = 0; i < list.length; i++) {
+      const item = list[i];
+      const quired = this.hamburgerButton.querySelector(`#h_${item.id.replace(/\./g, '_')}`);
+      if(quired) {
+        // console.log('find!!');
+        if(!item.enable)
+          quired.classList.add('disabled');
+        else
+          quired.classList.remove('disabled');
+      }
+    }
+
+    for(let i = 0; i < list.length; i++) {
+      const item = list[i];
+      for(let j = 0; j < this.normalButtons.length; j++) {
+        let quired = this.normalButtons[j].querySelector(`#n_${item.id.replace(/\./g, '_')}`);
+        if(quired) {
+          // console.log('find!!');
+          if(!item.enable)
+            quired.classList.add('disabled');
+          else
+            quired.classList.remove('disabled');
+          break;
+        }
+      }
+    }
+  }
 }
