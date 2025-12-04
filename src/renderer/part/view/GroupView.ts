@@ -92,6 +92,8 @@ export class GroupView {
       this.group.splice(i, 1);
       if(this.group.length > 0) {
         this.active(this.group[i-1 < 0 ? 0 : i-1].uid);
+      } else {
+        (getService(mainLayoutServiceId) as MainLayoutService).clearStatusbar();
       }
     }
 

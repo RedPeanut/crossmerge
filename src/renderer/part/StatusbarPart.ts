@@ -116,7 +116,11 @@ export class StatusbarPart extends Part implements StatusbarPartService {
   }
 
   clear(): void {
-    this.status.innerHTML = ``;
+    this.status.innerHTML = '';
+    this.position.innerHTML = '';
+    this.encoding.innerHTML = '';
+    this.position.style.display = 'none';
+    this.encoding.style.display = 'none';
   }
 
   /* layoutContainer(offset: number): void {
