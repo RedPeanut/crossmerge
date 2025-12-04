@@ -108,15 +108,43 @@ class MainWindow {
     });
 
     ipcMain.on('menu enable', (event, args: any[]) => {
-      console.log('[menu enable] args =', args);
-      const arg = args[0];
-      const applicationMenu = Menu.getApplicationMenu();
-      applicationMenu.items.find((el) => {});
+      // console.log('[menu enable] args =', args);
 
+      const [ menus ] = args;
+      // const applicationMenu = Menu.getApplicationMenu();
       // console.log('applicationMenu =', applicationMenu);
+
+      for(let i = 0; i < menus.length; i++) {
+        const find: MenuItem  = Menu.getApplicationMenu().getMenuItemById(menus[i].id);
+        if(find) {
+          find.enabled = menus[i].enable;
+        }
+      }
 
       /*
       applicationMenu = <ref *1> Menu {
+        (array) items: [
+          MenuItem {
+            label: 'Label',
+            submenu: [Menu],
+            type: 'submenu',
+            role: null,
+            accelerator: null,
+            icon: null,
+            sublabel: '',
+            toolTip: '',
+            enabled: true,
+            visible: true,
+            checked: false,
+            acceleratorWorksWhenHidden: true,
+            registerAccelerator: true,
+            commandId: 93,
+            userAccelerator: [Getter],
+            click: [Function (anonymous)],
+            menu: [Circular *1]
+          },
+          ...
+        ],
         (object) commandsMap: {
           'NN': MenuItem {
             label: 'Label',
@@ -139,28 +167,6 @@ class MainWindow {
           },
           ...
         }
-        (array) items: [
-          MenuItem {
-            label: 'Label',
-            submenu: [Menu],
-            type: 'submenu',
-            role: null,
-            accelerator: null,
-            icon: null,
-            sublabel: '',
-            toolTip: '',
-            enabled: true,
-            visible: true,
-            checked: false,
-            acceleratorWorksWhenHidden: true,
-            registerAccelerator: true,
-            commandId: 93,
-            userAccelerator: [Getter],
-            click: [Function (anonymous)],
-            menu: [Circular *1]
-          },
-          ...
-        ]
       }
       */
 
