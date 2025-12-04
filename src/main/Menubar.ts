@@ -208,20 +208,29 @@ export class Menubar {
     fileSubmenu.push({
       label: 'Save',
       submenu: [
-        { label: 'Save Left', accelerator: keyBinding[fileSaveLeftMenuId][keyBindingIdx],
+        {
+          id: fileSaveLeftMenuId,
+          label: 'Save Left',
+          accelerator: keyBinding[fileSaveLeftMenuId][keyBindingIdx],
           // enabled: false,
           click(item, focusedWindow) {
             mainWindow.send('menu click', fileSaveLeftMenuId);
           }
         },
-        { label: 'Save Right', accelerator: keyBinding[fileSaveRightMenuId][keyBindingIdx],
+        {
+          id: fileSaveRightMenuId,
+          label: 'Save Right',
+          accelerator: keyBinding[fileSaveRightMenuId][keyBindingIdx],
           // enabled: false,
           click(item, focusedWindow) {
             mainWindow.send('menu click', fileSaveRightMenuId);
           }
         },
         { type: 'separator' as const },
-        { label: 'Save All', accelerator: keyBinding[fileSaveAllMenuId][keyBindingIdx],
+        {
+          id: fileSaveAllMenuId,
+          label: 'Save All',
+          accelerator: keyBinding[fileSaveAllMenuId][keyBindingIdx],
           // enabled: false,
           click(item, focusedWindow) {
             mainWindow.send('menu click', fileSaveAllMenuId);
@@ -259,28 +268,30 @@ export class Menubar {
     options.push({
       label: '&Edit',
       submenu: [
-        { label: 'Undo', accelerator: keyBinding[editUndoMenuId][keyBindingIdx], role: 'undo' },
-        { label: 'Redo', accelerator: keyBinding[editRedoMenuId][keyBindingIdx], role: 'redo' },
+        { id: editUndoMenuId, label: 'Undo', accelerator: keyBinding[editUndoMenuId][keyBindingIdx], role: 'undo' },
+        { id: editRedoMenuId, label: 'Redo', accelerator: keyBinding[editRedoMenuId][keyBindingIdx], role: 'redo' },
         { type: 'separator' },
-        { label: 'Cut', accelerator: keyBinding[editCutMenuId][keyBindingIdx], role: 'cut' },
+        { id: editCutMenuId, label: 'Cut', accelerator: keyBinding[editCutMenuId][keyBindingIdx], role: 'cut' },
         {
+          id: editCopyMenuId,
           label: 'Copy', accelerator: keyBinding[editCopyMenuId][keyBindingIdx],
           role: 'copy',
           // click: () => { console.log('click event handler is called ..'); shell.beep(); },
         },
         {
+          id: editPasteMenuId,
           label: 'Paste', accelerator: keyBinding[editPasteMenuId][keyBindingIdx],
           role: 'paste',
           // click: () => {},
         },
-        { label: 'Select All', accelerator: keyBinding[editSelectAllMenuId][keyBindingIdx], role: 'selectAll' },
+        { id: editSelectAllMenuId, label: 'Select All', accelerator: keyBinding[editSelectAllMenuId][keyBindingIdx], role: 'selectAll' },
         { type: 'separator' },
-        { label: 'Previous Change', accelerator: keyBinding[editPrevChangeMenuId][keyBindingIdx],
+        { id: editPrevChangeMenuId, label: 'Previous Change', accelerator: keyBinding[editPrevChangeMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', editPrevChangeMenuId);
           }
         },
-        { label: 'Next Change', accelerator: keyBinding[editNextChangeMenuId][keyBindingIdx],
+        { id: editNextChangeMenuId, label: 'Next Change', accelerator: keyBinding[editNextChangeMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', editNextChangeMenuId);
           }
