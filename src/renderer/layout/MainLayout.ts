@@ -26,8 +26,8 @@ export const enum Parts {
 
 export interface MainLayoutService extends Service {
   layout(): void;
-  showStatusbarWidget(list: any[]): void;
-  position(): void;
+  showStatusbarWidget(list: EncodingItem[]): void;
+  positionStatusbarWidget(): void;
   updateStatusbar(item: CompareItem): void;
   clearStatusbar(): void;
 }
@@ -164,10 +164,10 @@ export class MainLayout extends Layout implements MainLayoutService {
 
     (getService(menubarServiceId) as MenubarService).layout(dimension);
 
-    this.position();
+    this.positionStatusbarWidget();
   }
 
-  position(): void {
+  positionStatusbarWidget(): void {
     // position status bar widget left in here
     const encoding: HTMLElement = document.querySelector('.part.statusbar div:nth-of-type(3)');
     // console.log(encoding.offsetLeft);

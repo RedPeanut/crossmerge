@@ -112,7 +112,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
       this.position.style.display = 'none';
       this.encoding.style.display = 'none';
     }
-    (getService(mainLayoutServiceId) as MainLayoutService).position();
+    (getService(mainLayoutServiceId) as MainLayoutService).positionStatusbarWidget();
   }
 
   clear(): void {
