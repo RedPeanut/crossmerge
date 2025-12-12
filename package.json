@@ -1,7 +1,7 @@
 {
   "name": "crossmerge",
   "productName": "crossmerge",
-  "version": "0.1.43",
+  "version": "0.1.58",
   "description": "Crossplatform Merge App",
   "main": "./.erb/dll/main.bundle.dev.js",
   "keywords": [
