@@ -311,6 +311,7 @@ export class FolderView implements CompareView {
         if(id === selectByStateMenuId) {
           // show select by state popup
           this.selectPopup.show();
+          return;
         }
 
         if(id === selectChangedMenuId) {
@@ -344,6 +345,7 @@ export class FolderView implements CompareView {
 
           this.throttle_renderChanges();
           this.renewFlatten();
+          return;
         }
 
         if(id === expandAllFoldersMenuId || id === collapseAllFoldersMenuId) {
