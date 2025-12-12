@@ -291,7 +291,19 @@ body { height: 100%; }
 
 /* 구분선 */
 .titlebar .iconbar .group:before {
-  content: "";
+  /* content: "";
+  position: absolute;
+  top: 5px; right:0;
+  height: calc(100% - 10px);
+  width: 0;
+  border-right: 1px solid;
+  color: rgb(172, 172, 172); */
+}
+
+/* .titlebar .iconbar .group:not([style*="display:none"]):last-child:before { border: none; } */
+
+.titlebar .iconbar .group .separator {
+  /* content: ""; */
   position: absolute;
   top: 5px; right:0;
   height: calc(100% - 10px);
@@ -300,9 +312,7 @@ body { height: 100%; }
   color: rgb(172, 172, 172);
 }
 
-.titlebar .iconbar .group:last-child:before { border: none; }
-
-.titlebar .iconbar .group .wrap {
+.titlebar .iconbar .group .centered {
   display: flex;
   justify-content: center;
   margin-top: 6px; height: 26px;
@@ -316,22 +326,35 @@ body { height: 100%; }
   font-size: 14px;
 }
 
-.titlebar .iconbar .group .codicon {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
+.titlebar .iconbar .group .wrap-btn {
   -webkit-app-region: no-drag;
-  margin: 0 6px;
-  padding: 3px;
+  /* margin: 0 6px;
+  padding: 3px; */
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+  margin: 0 3px;
 }
 
-.titlebar .iconbar .group .codicon:hover {
+.titlebar .iconbar .group .wrap-btn:hover {
   background-color: rgba(0,0,0,0.16);
   border-radius: 4px;
   cursor: pointer;
+}
+
+.titlebar .iconbar .group .wrap-btn .codicon-chevron-down {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.titlebar .iconbar .group .wrap-btn .codicon:not(.codicon-chevron-down) {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.titlebar .iconbar .group .wrap-btn .codicon.fliped {
+  rotate: 180deg;
 }
 
 /* Body */
