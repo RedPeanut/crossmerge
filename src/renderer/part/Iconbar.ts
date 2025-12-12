@@ -1,5 +1,13 @@
+import { renderer } from "..";
+import {
+  pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
+  selectChangedMenuId, selectByStateMenuId,
+} from "../../common/Types";
+import { keyBinding } from "../../common/globals";
+import { broadcast } from "../Broadcast";
 import { BodyLayoutService } from "../layout/BodyLayout";
-import { getService, bodyLayoutServiceId, Service } from "../Service";
+import { MainLayoutService } from "../layout/MainLayout";
+import { getService, bodyLayoutServiceId, mainLayoutServiceId, Service } from "../Service";
 import { $ } from "../util/dom";
 
 export interface IconbarService extends Service {}
@@ -90,6 +98,8 @@ export class Iconbar implements IconbarService {
     </div>
     */
 
+    const keyBindingIdx = renderer.process.platform === 'win32' ? 0 : 1;
+
     // FolderView
     group = $('.group.dropdown');
     centered = $('.centered');
@@ -97,7 +107,46 @@ export class Iconbar implements IconbarService {
     downBtnImg = $('a.codicon.codicon-chevron-down');
 
     wrapBtn = $('.wrap-btn');
-    wrapBtn.addEventListener('click', (e: MouseEvent) => {});
+    wrapBtn.addEventListener('click', (e: MouseEvent) => {
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.showContextMenu(e.currentTarget as HTMLElement, [
+        {
+          id: leftToRightFolderMenuId,
+          label: 'From Left to Right Folder...',
+          accelerator: keyBinding[leftToRightFolderMenuId][keyBindingIdx],
+          click() {
+            // mainWindow.send('menu click', leftToRightFolderMenuId);
+            broadcast.emit('menu click', null, leftToRightFolderMenuId);
+          }
+        },
+        {
+          id: rightToLeftFolderMenuId,
+          label: 'From Right to Left Folder...',
+          accelerator: keyBinding[rightToLeftFolderMenuId][keyBindingIdx],
+          click() {
+            // mainWindow.send('menu click', rightToLeftFolderMenuId);
+            broadcast.emit('menu click', null, rightToLeftFolderMenuId);
+          }
+        },
+        { type: 'separator' },
+        {
+          id: leftToOtherFolderMenuId,
+          label: 'From Left to Other Folder...',
+          click() {
+            // mainWindow.send('menu click', leftToOtherFolderMenuId);
+            broadcast.emit('menu click', null, leftToOtherFolderMenuId);
+          }
+        },
+        {
+          id: rightToOtherFolderMenuId,
+          label: 'From Right to Other Folder...',
+          click() {
+            // mainWindow.send('menu click', rightToOtherFolderMenuId);
+            broadcast.emit('menu click', null, rightToOtherFolderMenuId);
+          }
+        },
+      ]);
+    });
     wrapBtn.appendChild(btnImg);
     wrapBtn.appendChild(downBtnImg);
     centered.appendChild(wrapBtn);
@@ -117,7 +166,29 @@ export class Iconbar implements IconbarService {
     downBtnImg = $('a.codicon.codicon-chevron-down');
 
     wrapBtn = $('.wrap-btn');
-    wrapBtn.addEventListener('click', (e: MouseEvent) => {});
+    wrapBtn.addEventListener('click', (e: MouseEvent) => {
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.showContextMenu(e.currentTarget as HTMLElement, [
+        {
+          id: selectChangedMenuId,
+          label: 'Select Changed',
+          accelerator: keyBinding[selectChangedMenuId][keyBindingIdx],
+          // enabled: false,
+          click() {
+            broadcast.emit('menu click', null, selectChangedMenuId);
+          }
+        },
+        {
+          id: selectByStateMenuId,
+          label: 'Select by State...',
+          // accelerator: keyBinding[selectByStateMenuId][keyBindingIdx], // none
+          // enabled: false,
+          click() {
+            broadcast.emit('menu click', null, selectByStateMenuId);
+          }
+        },
+      ]);
+    });
     wrapBtn.appendChild(btnImg);
     wrapBtn.appendChild(downBtnImg);
     centered.appendChild(wrapBtn);
@@ -163,7 +234,32 @@ export class Iconbar implements IconbarService {
     downBtnImg = $('a.codicon.codicon-chevron-down');
 
     wrapBtn = $('.wrap-btn');
-    wrapBtn.addEventListener('click', (e: MouseEvent) => {});
+    wrapBtn.addEventListener('click', (e: MouseEvent) => {
+      // console.log('click is called ..');
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.showContextMenu(e.currentTarget as HTMLElement, [
+        {
+          id: pushToLeftMenuId,
+          label: 'Push to Left',
+          accelerator: keyBinding[pushToLeftMenuId][keyBindingIdx],
+          // enabled: false,
+          click() {
+            // mainWindow.send('menu click', pushToLeftMenuId);
+            broadcast.emit('menu click', null, pushToLeftMenuId);
+          }
+        },
+        {
+          id: pushToRightMenuId,
+          label: 'Push to Right',
+          accelerator: keyBinding[pushToRightMenuId][keyBindingIdx],
+          // enabled: false,
+          click() {
+            // mainWindow.send('menu click', pushToRightMenuId);
+            broadcast.emit('menu click', null, pushToRightMenuId);
+          }
+        }
+      ]);
+    });
     wrapBtn.appendChild(btnImg);
     wrapBtn.appendChild(downBtnImg);
     centered.appendChild(wrapBtn);

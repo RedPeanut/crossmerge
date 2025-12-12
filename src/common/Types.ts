@@ -81,12 +81,10 @@ export type CompareData = CompareFileData | CompareFolderData;
 
 /* Menu */
 export interface CommonMenuItem {
+  id?: number | string;
   label?: string;
-
   type?: 'normal' | 'separator' | 'submenu' | 'checkbox' | 'radio';
-
   accelerator?: string;
-
   enabled?: boolean;
   visible?: boolean;
   checked?: boolean;
@@ -94,7 +92,6 @@ export interface CommonMenuItem {
 }
 
 export interface SerializableMenuItem extends CommonMenuItem {
-  id?: number | string;
   submenu?: SerializableMenuItem[];
 }
 
