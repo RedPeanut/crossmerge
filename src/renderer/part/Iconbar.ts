@@ -7,19 +7,29 @@ import { keyBinding } from "../../common/globals";
 import { broadcast } from "../Broadcast";
 import { BodyLayoutService } from "../layout/BodyLayout";
 import { MainLayoutService } from "../layout/MainLayout";
-import { getService, bodyLayoutServiceId, mainLayoutServiceId, Service } from "../Service";
+import { getService, bodyLayoutServiceId, mainLayoutServiceId, Service, setService, iconbarServiceId } from "../Service";
 import { $ } from "../util/dom";
 
-export interface IconbarService extends Service {}
+export interface IconbarService extends Service {
+  enable(type: string): void;
+}
 
 export interface IconbarOptions {}
 
 export class Iconbar implements IconbarService {
 
   container: HTMLElement;
+  fileNew: HTMLElement;
+  fileStartOrStop: HTMLElement;
+  mergingCopy: HTMLElement;
+  actionsSelect: HTMLElement;
+  editPrevOrNext: HTMLElement;
+  mergingCurrent: HTMLElement;
+  groups: HTMLElement[] = [];
 
   constructor(container: HTMLElement) {
     this.container = container;
+    setService(iconbarServiceId, this);
   }
 
   install(): void {
@@ -28,7 +38,7 @@ export class Iconbar implements IconbarService {
     let label: HTMLElement, separator: HTMLElement;
 
     // Common
-    group = $('.group');
+    group = this.fileNew = $('.group');
     group.style.display = 'block';
 
     centered = $('.centered');
@@ -65,7 +75,7 @@ export class Iconbar implements IconbarService {
     this.container.appendChild(group);
 
     // FolderView & FileView
-    group = $('.group');
+    group = this.fileStartOrStop = $('.group');
     centered = $('.centered');
     btnImg = $('a.codicon.codicon-debug-restart');
     wrapBtn = $('.wrap-btn');
@@ -101,7 +111,7 @@ export class Iconbar implements IconbarService {
     const keyBindingIdx = renderer.process.platform === 'win32' ? 0 : 1;
 
     // FolderView
-    group = $('.group.dropdown');
+    group = this.mergingCopy = $('.group.dropdown');
     centered = $('.centered');
     btnImg = $('a.codicon.codicon-code');
     downBtnImg = $('a.codicon.codicon-chevron-down');
@@ -160,7 +170,7 @@ export class Iconbar implements IconbarService {
     group.appendChild(separator);
     this.container.appendChild(group);
 
-    group = $('.group.dropdown');
+    group = this.actionsSelect = $('.group.dropdown');
     centered = $('.centered');
     btnImg = $('a.codicon.codicon-list-selection');
     downBtnImg = $('a.codicon.codicon-chevron-down');
@@ -203,7 +213,7 @@ export class Iconbar implements IconbarService {
     this.container.appendChild(group);
 
     // FileView
-    group = $('.group');
+    group = this.editPrevOrNext = $('.group');
     centered = $('.centered');
     btnImg = $('a.codicon.codicon-download');
     wrapBtn = $('.wrap-btn');
@@ -228,7 +238,7 @@ export class Iconbar implements IconbarService {
 
     this.container.appendChild(group);
 
-    group = $('.group.dropdown');
+    group = this.mergingCurrent = $('.group.dropdown');
     centered = $('.centered');
     btnImg = $('a.codicon.codicon-code');
     downBtnImg = $('a.codicon.codicon-chevron-down');
@@ -272,5 +282,43 @@ export class Iconbar implements IconbarService {
     group.appendChild(separator);
 
     this.container.appendChild(group);
+
+    this.groups.push(this.fileNew);
+    this.groups.push(this.fileStartOrStop);
+    this.groups.push(this.mergingCopy);
+    this.groups.push(this.actionsSelect);
+    this.groups.push(this.editPrevOrNext);
+    this.groups.push(this.mergingCurrent);
+  }
+
+  enable(type: string): void {
+    if(type === 'empty') {
+      this.fileStartOrStop.style.display = 'none';
+      this.mergingCopy.style.display = 'none';
+      this.actionsSelect.style.display = 'none';
+      this.mergingCurrent.style.display = 'none';
+      this.editPrevOrNext.style.display = 'none';
+    } else if(type === 'folder') {
+      this.fileStartOrStop.style.display = 'block';
+      this.mergingCopy.style.display = 'block';
+      this.actionsSelect.style.display = 'block';
+      this.mergingCurrent.style.display = 'none';
+      this.editPrevOrNext.style.display = 'none';
+    } else if(type === 'file') {
+      this.fileStartOrStop.style.display = 'block';
+      this.mergingCopy.style.display = 'none';
+      this.actionsSelect.style.display = 'none';
+      this.mergingCurrent.style.display = 'block';
+      this.editPrevOrNext.style.display = 'block';
+    }
+
+    let i = 0, last = 0;
+    for(; i < this.groups.length; i++) {
+      if(this.groups[i].style.display === 'block') {
+        (this.groups[i].lastChild as HTMLElement).style.display = 'block';
+        last = i;
+      }
+    }
+    (this.groups[last].lastChild as HTMLElement).style.display = 'none';
   }
 }

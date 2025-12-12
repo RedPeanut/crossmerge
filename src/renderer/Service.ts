@@ -3,12 +3,14 @@ export interface Service { /* marker */ }
 export const mainLayoutServiceId = "mainLayoutService";
 export const bodyLayoutServiceId = "bodyLayoutService";
 export const menubarServiceId = "menubarServiceId";
+export const iconbarServiceId = "iconbarServiceId";
 export const statusbarPartServiceId = "statusbarPartService";
 export const blarBlarServiceId = "blarBlarService";
 
 type ServiceId = typeof mainLayoutServiceId // MainLayoutService
   | typeof bodyLayoutServiceId // BodyLayoutService
   | typeof menubarServiceId // MenubarService
+  | typeof iconbarServiceId // IconbarService
   | typeof statusbarPartServiceId // StatusbarPartService
   | typeof blarBlarServiceId // BlarBlarService
 ;
