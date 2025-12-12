@@ -6,7 +6,7 @@ import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "..
 import { getService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
 import { MainLayoutService } from "../../layout/MainLayout";
-import { defaultMenubarEnable } from "../../../globals";
+import { defaultMenubarEnable } from "../../globals";
 import { MenubarService } from "../Menubar";
 
 export interface GroupViewOptions {}

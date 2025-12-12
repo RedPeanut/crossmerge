@@ -18,7 +18,7 @@ import {
   selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
   toggleWrapLinesMenuId
 } from '../common/Types';
-import { keyBinding } from '../globals';
+import { keyBinding } from '../common/globals';
 
 // { id: [Win, Mac] }
 const keyBindingIdx = isWindows ? 0 : 1;

@@ -13,7 +13,7 @@ import { bodyLayoutServiceId, getService, Service, setService, mainLayoutService
 import { CompareFolderData, CompareItem } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
-import { defaultMenubarEnable } from '../../globals';
+import { defaultMenubarEnable } from '../globals';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
