@@ -18,79 +18,10 @@ import {
   selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
   toggleWrapLinesMenuId
 } from '../common/Types';
+import { keyBinding } from '../globals';
 
 // { id: [Win, Mac] }
 const keyBindingIdx = isWindows ? 0 : 1;
-const keyBinding: { [id: string]: string[] } = {};
-keyBinding[appPreferencesMenuId] = [ null, 'Cmd+,' ];
-keyBinding[appQuitMenuId] = [ null, 'Cmd+Q' ];
-keyBinding[fileSaveLeftMenuId] =  ['Ctrl+1', 'Cmd+1' ];
-keyBinding[fileSaveRightMenuId] =  ['Ctrl+2', 'Cmd+2' ];
-keyBinding[fileSaveAllMenuId] =  ['Ctrl+S', 'Cmd+Alt+S' ];
-keyBinding[filePreferencesMenuId] =  ['Ctrl+P', null ];
-keyBinding[fileCloseTabMenuId] =  ['Ctrl+W', 'Cmd+W' ];
-
-keyBinding[editUndoMenuId] = [ 'Ctrl+Z', 'Cmd+Z' ];
-keyBinding[editRedoMenuId] = [ 'Shift[+Ctrl+Z', 'Shift+Cmd+Z' ];
-keyBinding[editCutMenuId] = [ 'Ctrl+X', 'Cmd+X' ];
-keyBinding[editCopyMenuId] = [ 'Ctrl+C', 'Cmd+C' ];
-keyBinding[editPasteMenuId] = [ 'Ctrl+V', 'Cmd+V' ];
-keyBinding[editSelectAllMenuId] = [ 'Ctrl+A', 'Cmd+A' ];
-keyBinding[editPrevChangeMenuId] = [ 'Ctrl+PageUp', 'Ctrl+Alt+Up' ];
-keyBinding[editNextChangeMenuId] = [ 'Ctrl+PageDown', 'Ctrl+Alt+Down' ];
-
-keyBinding[pushToLeftMenuId] = [ 'Ctrl+W', 'Ctrl+Shift+Left' ];
-keyBinding[pushToRightMenuId] = [ 'Ctrl+Q', 'Ctrl+Shift+Right' ];
-keyBinding[leftToRightFolderMenuId] = [ 'Ctrl+W', 'Alt+W' ];
-keyBinding[rightToLeftFolderMenuId] = [ 'Ctrl+Q', 'Alt+Q' ];
-
-keyBinding[selectChangedMenuId] = [ 'Ctrl+S', 'Cmd+Ctrl+C' ];
-keyBinding[launchComparisonsMenuId] = [ 'Ctrl+M', 'Cmd+Shift+L' ];
-keyBinding[expandAllFoldersMenuId] = [ 'Ctrl+=', 'Cmd+Ctrl+=' ];
-keyBinding[collapseAllFoldersMenuId] = [ 'Ctrl+-', 'Cmd+Ctrl+-' ];
-
-keyBinding[toggleWrapLinesMenuId] = [ 'Alt+Z', 'Alt+Z' ];
-
-/* const keyBinding: { [id: string]: string } = isWindows ? {
-  // 'file.preferences': 'Ctrl+P',
-  'file.close': 'Ctrl+W',
-  'edit.undo': 'Ctrl+Z',
-  'edit.redo': 'Shift+Ctrl+Z',
-  'edit.cut': 'Ctrl+X',
-  'edit.copy': 'Ctrl+C',
-  'edit.paste': 'Ctrl+V',
-  'edit.selectAll': 'Ctrl+A',
-
-  'merging.pushToLeft': 'Ctrl+W',
-  'merging.pushToRight': 'Ctrl+Q',
-  'merging.leftToRightFoler': 'Ctrl+W',
-  'merging.rightToLeftFoler': 'Ctrl+Q',
-
-  'actions.selectChanged': 'Ctrl+S',
-  'actions.launchComparisons': 'Ctrl+M',
-  'actions.expandAllFolders': 'Ctrl+=',
-  'actions.collapseAllFolders': 'Ctrl+-',
-} : {
-  // 'app.preferences': 'Cmd+,',
-  // 'app.quit': 'Cmd+Q',
-  'file.close': 'Cmd+W',
-  'edit.undo': 'Cmd+Z',
-  'edit.redo': 'Shift+Cmd+Z',
-  'edit.cut': 'Cmd+X',
-  'edit.copy': 'Cmd+C',
-  'edit.paste': 'Cmd+V',
-  'edit.selectAll': 'Cmd+A',
-
-  'merging.pushToLeft': 'Ctrl+Shift+Left',
-  'merging.pushToRight': 'Ctrl+Shift+Right',
-  'merging.leftToRightFoler': 'Alt+W',
-  'merging.rightToLeftFoler': 'Alt+Q',
-
-  'actions.selectChanged': 'Cmd+Ctrl+C',
-  'actions.launchComparisons': 'Cmd+Shift+L',
-  'actions.expandAllFolders': 'Cmd+Ctrl+=',
-  'actions.collapseAllFolders': 'Cmd+Ctrl+-',
-}; */
 
 export class Menubar {
   // browserWindow: BrowserWindow;
