@@ -9,11 +9,12 @@ import { SplitView } from '../component/SplitView';
 import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
-import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from '../Service';
+import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId, iconbarServiceId } from '../Service';
 import { CompareFolderData, CompareItem, MenuItem } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
 import { defaultMenubarEnable } from '../globals';
+import { IconbarService } from '../part/Iconbar';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -242,6 +243,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     window.ipc.send('menu enable', defaultMenubarEnable['empty']);
     setTimeout(() => {
       (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable['empty']);
+      (getService(iconbarServiceId) as IconbarService).enable('empty');
     }, 0);
   }
 

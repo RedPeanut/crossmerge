@@ -3,11 +3,12 @@ import { $ } from "../../util/dom";
 import { CompareOptions, Group } from "../../Types";
 import { Compares } from "../compare/Compares";
 import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
-import { getService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
+import { getService, iconbarServiceId, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
 import { MainLayoutService } from "../../layout/MainLayout";
 import { defaultMenubarEnable } from "../../globals";
 import { MenubarService } from "../Menubar";
+import { IconbarService } from "../Iconbar";
 
 export interface GroupViewOptions {}
 
@@ -62,6 +63,7 @@ export class GroupView {
 
     window.ipc.send('menu enable', defaultMenubarEnable[this.group[i].type]);
     (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable[this.group[i].type]);
+    (getService(iconbarServiceId) as IconbarService).enable(this.group[i].type);
 
     this.updateStatusbar(i);
   }
