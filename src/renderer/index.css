@@ -683,3 +683,41 @@ body { height: 100%; }
   background-color: rgba(0,0,0,0.1);
 }
 .statusbar-widget ul li .desc { opacity: 0.7; margin-left: 5px; font-size: 11px; }
+
+/* ContextMenu */
+.context-menu {
+  position: absolute;
+  background: rgb(242,242,242);
+  border: 1px solid rgb(185,185,185);
+  border-radius: 5px;
+  line-height: 22px;
+  font-size: 14px;
+}
+
+.context-menu ul { padding: 4px 0; }
+.context-menu ul li {
+  list-style: none;
+  position: relative;
+  align-items: center;
+}
+.context-menu ul li a { display: flex;
+  margin: 0 4px;
+  padding: 0 8px;
+}
+.context-menu ul li.disabled {
+  /* color: rgb(204 204 204); */
+  color: lightgray;
+}
+
+.context-menu ul li a.separator {
+  border-bottom: 1px solid;
+  border-bottom-color: rgb(215,215,215);
+  margin: 5px;
+  padding: 0;
+  height: 0;
+}
+
+.context-menu ul li:not(.disabled):hover > a { background-color: rgb(80,162,255); border-radius: 5px; color: white; }
+.context-menu ul li:not(.disabled):hover > .menubox { display: block; }
+.context-menu ul li .padding { flex: 1; min-width: 20px; }
+.context-menu ul li .indicator { padding-top: 2px; }

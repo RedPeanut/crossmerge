@@ -10,7 +10,7 @@ import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from '../Service';
-import { CompareFolderData, CompareItem } from '../../common/Types';
+import { CompareFolderData, CompareItem, MenuItem } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
 import { defaultMenubarEnable } from '../globals';
@@ -30,6 +30,7 @@ export interface MainLayoutService extends Service {
   positionStatusbarWidget(): void;
   updateStatusbar(item: CompareItem): void;
   clearStatusbar(): void;
+  showContextMenu(target: HTMLElement, list: MenuItem[]): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -44,6 +45,7 @@ export class MainLayout extends Layout implements MainLayoutService {
   splitView: SplitView<TitlebarPart | BodyLayout | StatusbarPart>;
   statusbarWidget: HTMLElement;
   current: CompareItem = null;
+  contextMenu: HTMLElement;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -145,9 +147,43 @@ export class MainLayout extends Layout implements MainLayoutService {
       }
     });
 
-    const ul = $('ul');
-    statusbarWidget.appendChild(ul);
+    statusbarWidget.appendChild($('ul'));
     this.container.appendChild(statusbarWidget);
+
+    const contextMenu = this.contextMenu = $('.context-menu');
+    contextMenu.tabIndex = -1;
+    contextMenu.style.display = 'none';
+    contextMenu.addEventListener('focusout', (e: FocusEvent) => {
+      // console.log('focusout is called ..');
+      contextMenu.style.display = 'none';
+    });
+    contextMenu.addEventListener('keydown', (e: KeyboardEvent) => {
+      // console.log('e.key =', e.key);
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const ul = contextMenu.children[0];
+        let currIndex = 0;
+        for(; currIndex < ul.children.length; currIndex++) {
+          if(ul.children[currIndex].classList.contains('on'))
+            break;
+        }
+
+        if(e.key === 'ArrowDown') {
+        } else if(e.key === 'ArrowUp') {
+        }
+        e.preventDefault();
+      } else if(e.key === 'Enter') {
+        // compare again with this encoding
+        const ul = contextMenu.children[0];
+        let currIndex = 0;
+        for(; currIndex < ul.children.length; currIndex++) {
+          if(ul.children[currIndex].classList.contains('on'))
+            break;
+        }
+      }
+    });
+
+    contextMenu.appendChild($('ul.menubox'));
+    this.container.appendChild(contextMenu);
 
     this.parent.appendChild(this.container);
   }
@@ -256,4 +292,60 @@ export class MainLayout extends Layout implements MainLayoutService {
     (getService(statusbarPartServiceId) as StatusbarPartService).clear();
   }
 
+  showContextMenu(target: HTMLElement, list: MenuItem[]): void {
+    const rect = target.getBoundingClientRect();
+    this.contextMenu.style.left = rect.x + 'px';
+    this.contextMenu.style.top = rect.y + rect.height + 'px';
+
+    const ul = this.contextMenu.querySelector('ul');
+    dom.clearContainer(ul);
+
+    let li: HTMLLIElement, label: HTMLSpanElement, desc: HTMLSpanElement;
+    for(let i = 0; i < list.length; i++) {
+      const item = list[i];
+      li = $('li.item');
+
+      // if(!item.enabled)
+      //   li.classList.add('disabled');
+
+      if(item.type === 'separator') {
+        const a = $('a');
+        a.classList.add('separator');
+        li.appendChild(a);
+      } else {
+        const a = $('a');
+        li.appendChild(a);
+
+        const label = $('span.label');
+        label.innerHTML = item.label.replace(/&/g, '');
+        a.appendChild(label);
+
+        const padding = $('span.padding');
+        a.appendChild(padding);
+
+        if(item.accelerator) {
+          const keybiding = $('span.keybinding');
+          keybiding.innerHTML = item.accelerator;
+          a.appendChild(keybiding);
+        }
+
+        if(item.click) {
+          a.addEventListener('click', (ev: PointerEvent) => {
+            item.click(null);
+          });
+        }
+
+        if(item.submenu && item.submenu.length > 0) {
+          const indicator = $('span.indicator.codicon.codicon-chevron-right');
+          a.appendChild(indicator);
+          // this.createMenu_r(type, li, item, level+1);
+        }
+      }
+      ul.appendChild(li);
+    }
+
+    // ul.children[0].classList.add('on');
+    this.contextMenu.style.display = 'block';
+    this.contextMenu.focus();
+  }
 }
