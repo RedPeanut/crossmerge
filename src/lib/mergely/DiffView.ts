@@ -1337,12 +1337,12 @@ export default class CodeMirrorDiffView {
     ctx_lhs.fillRect(3, lfrom, 10, lto);
     ctx_rhs.fillRect(3, rfrom, 10, rto);
 
-    this._handleLhsMarginClick = function(ev) {
+    this._handleLhsMarginClick = function(ev: MouseEvent) {
       const y = ev.pageY - ex.lhs_xyoffset.top - (lto / 2);
       const sto = Math.max(0, (y / mcanvas_lhs.height) * ex.lhs_scroller.scrollHeight);
       ex.lhs_scroller.scrollTo({ top: sto });
     };
-    this._handleRhsMarginClick = function(ev) {
+    this._handleRhsMarginClick = function(ev: MouseEvent) {
       const y = ev.pageY - ex.rhs_xyoffset.top - (rto / 2);
       const sto = Math.max(0, (y / mcanvas_rhs.height) * ex.rhs_scroller.scrollHeight);
       ex.rhs_scroller.scrollTo({ top: sto });

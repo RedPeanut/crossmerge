@@ -139,9 +139,9 @@ export class MainLayout extends Layout implements MainLayoutService {
             break;
         }
 
-        const desc = ul.children[currIndex].querySelector('span.desc');
-        if(this.current.status.encoding !== desc.innerHTML) {
-          this.current.status.encoding = desc.innerHTML;
+        const id = (ul.children[currIndex] as HTMLElement).dataset.id;
+        if(this.current.status.encoding !== id) {
+          this.current.status.encoding = id;
           (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
         } else
           this.statusbarWidget.style.display = 'none';
@@ -254,6 +254,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     let li: HTMLLIElement, label: HTMLSpanElement, desc: HTMLSpanElement;
     for(let i = 0; i < list.length; i++) {
       li = $('li');
+      li.dataset.id = list[i].id;
       label = $('span.name');
       desc = $('span.desc');
       label.innerHTML = list[i].label;
@@ -262,10 +263,9 @@ export class MainLayout extends Layout implements MainLayoutService {
       li.appendChild(desc);
       li.addEventListener('click', (e: MouseEvent) => {
         // do reopen with this encoding
-        console.log(e.currentTarget);
-        const desc = (e.currentTarget as HTMLElement).querySelector('span.desc');
-        if(this.current.status.encoding !== desc.innerHTML) {
-          this.current.status.encoding = desc.innerHTML;
+        const id = (e.currentTarget as HTMLElement).dataset.id;
+        if(this.current.status.encoding !== id) {
+          this.current.status.encoding = id;
           (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
         } else
           this.statusbarWidget.style.display = 'none';

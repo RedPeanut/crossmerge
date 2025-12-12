@@ -49,7 +49,7 @@ export class StatusbarPart extends Part implements StatusbarPartService {
     encoding.style.display = 'none';
     encoding.addEventListener('click', async (e) => {
 
-      const path = (document.querySelectorAll('.input input')[0] as HTMLInputElement).value;
+      const path = (document.querySelectorAll('.compares .active .input input')[0] as HTMLInputElement).value;
 
       const buffer: Buffer = await window.ipc.invoke('read file',
         // '/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt' // ascii
