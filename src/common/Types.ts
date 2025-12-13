@@ -22,6 +22,10 @@ export interface Status {
   crlf?: string;
 }
 
+export interface CompareItemOptions {
+  delayed?: boolean;
+}
+
 // description of compare state
 export interface CompareItem {
   type: CompareItemType;

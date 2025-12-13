@@ -1,4 +1,4 @@
-import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
+import { CompareData, CompareFolderData, CompareItem, CompareItemOptions, CompareItemType } from "../../../common/Types";
 import { CompareOptions, Group } from "../../Types";
 import { $ } from "../../util/dom";
 import { listenerManager } from "../../util/ListenerManager";
@@ -50,6 +50,37 @@ export class Compares {
         v.layout();
       }
     }
+  }
+
+  addItem(item: CompareItem, options: CompareItemOptions): FileView|FolderView {
+
+    this.map.forEach((item) => {
+      item.setClass({ active: false });
+    });
+
+    const el = this.element;
+
+    let v: FileView|FolderView;
+    if(item.type == 'folder') {
+      v = new FolderView(el, item);
+      el.appendChild(v.create());
+    } else if(item.type == 'file') {
+      v = new FileView(el, item);
+      el.appendChild(v.create());
+    } else throw new Error('do not enter here');
+    this.map.set(item.uid, v);
+
+    v.setClass({ active: true });
+
+    if(item.type == 'file') {
+      if(options && !!options.delayed) {
+         ;
+      } else
+        v.compare();
+    } else if(item.type == 'folder') {
+      v.layout();
+    }
+    return v;
   }
 
   layout(): void {

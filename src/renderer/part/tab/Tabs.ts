@@ -36,6 +36,17 @@ export class Tabs {
     }
   }
 
+  addItem(item: CompareItem): Tab {
+    this.tabs.map((tab) => { tab.setClass({ active: false }); });
+
+    const el = this.element;
+    const tab: Tab = new Tab(el, item);
+    el.insertBefore(tab.create(), el.firstChild);
+    this.tabs.splice(0, 0, tab);
+    tab.setClass({ active: true });
+    return tab;
+  }
+
   layout(): void {}
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {

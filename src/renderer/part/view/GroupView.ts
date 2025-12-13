@@ -2,13 +2,15 @@ import { Tabs } from "../tab/Tabs";
 import { $ } from "../../util/dom";
 import { CompareOptions, Group } from "../../Types";
 import { Compares } from "../compare/Compares";
-import { CompareData, CompareFolderData, CompareItem, CompareItemType } from "../../../common/Types";
+import { CompareData, CompareFolderData, CompareItem, CompareItemOptions, CompareItemType } from "../../../common/Types";
 import { getService, iconbarServiceId, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
 import { MainLayoutService } from "../../layout/MainLayout";
 import { defaultMenubarEnable } from "../../globals";
 import { MenubarService } from "../Menubar";
 import { IconbarService } from "../Iconbar";
+import { FileView } from "./FileView";
+import { FolderView } from "./FolderView";
 
 export interface GroupViewOptions {}
 
@@ -40,6 +42,15 @@ export class GroupView {
     this.group.splice(0, 0, ...group);
     this.active(this.group[0].uid);
     // this.updateStatusbar(0);
+  }
+
+  addItem(item: CompareItem, options?: CompareItemOptions): FileView|FolderView {
+    this.tabs.addItem(item);
+    const v = this.compares.addItem(item, options);
+    this.group.splice(0, 0, item);
+    this.active(item.uid);
+    // this.updateStatusbar(0);
+    return v;
   }
 
   layout() {

@@ -7,6 +7,7 @@ import { MainLayoutService } from "./MainLayout";
 import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
+  CompareItemOptions,
 } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +19,7 @@ import { CompareOptions, FileDesc } from "../Types";
 import { Dialog } from "../Dialog";
 import { listenerManager } from "../util/ListenerManager";
 import { broadcast } from "../Broadcast";
+import { FileView } from "../part/view/FileView";
 
 export interface BodyOptions {
   sizeType?: SplitViewItemSizeType;
@@ -27,8 +29,8 @@ export interface BodyLayoutService extends Service {
   getServices(): void;
   inflate(): void;
   layout(offset: number, size: number): void;
-  addFileCompareView(path_lhs?: string, path_rhs?: string): void;
-  addFolderCompareView(): void;
+  addFileCompareView(path_lhs?: string, path_rhs?: string, option?: CompareItemOptions): FileView;
+  addFolderCompareView(): FolderView;
   updateTabLabel(id: string, lhs: string, rhs: string): void;
   callTabFn(id: string, fn: string): void;
   active(id: string): void;
@@ -161,7 +163,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   getServices(): void {}
 
-  addFileCompareView(path_lhs: string, path_rhs: string): void {
+  addFileCompareView(path_lhs: string, path_rhs: string, options?: CompareItemOptions): FileView {
     // console.log('launchFileCompareView ..');
 
     /* const div = document.createElement('div');
@@ -175,7 +177,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       // _debug: true,
     }); */
 
-    const group: CompareItem[] = [
+    /* const group: CompareItem[] = [
       { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) }, // blank folder compare
     ];
 
@@ -185,11 +187,25 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       const groupView = this.groupView = new GroupView(this.container, {});
       this.container.appendChild(groupView.create());
       groupView.addGroup(group);
+    } */
+
+    const item: CompareItem =
+      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) } // blank folder compare
+    ;
+
+    let v: FileView;
+    if(this.groupView) {
+      v = this.groupView.addItem(item, options) as FileView;
+    } else {
+      const groupView = this.groupView = new GroupView(this.container, {});
+      this.container.appendChild(groupView.create());
+      v = groupView.addItem(item, options) as FileView;
     }
+    return v;
   }
 
-  addFolderCompareView(): void {
-    const group: CompareItem[] = [
+  addFolderCompareView(): FolderView {
+    /* const group: CompareItem[] = [
       { type: 'folder', uid: uuidv4() }, // blank folder compare
     ];
 
@@ -203,20 +219,23 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
       // occur layout event for explicitly set canvas w,h
       const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       mainLayoutService.layout();
+    } */
 
-      /* // TEST: do compare automatically
-      // -> select inserted, changed
-      // -> copy selected item to other folder
-      console.log(this.groupView.compares.map);
-      const v = this.groupView.compares.map.get(group[0].uid) as FolderView;
-      v.compare();
-      setTimeout(() => {
-        v.selectPopup.emit('ok');
-        // setTimeout(() => {
-        //   window.ipc.send('menu click', { cmd: 'merging:right to other folder' });
-        // }, 10);
-      }, 100); */
+    const item: CompareItem = { type: 'folder', uid: uuidv4() }; // blank folder compare
+
+    let v: FolderView;
+    if(this.groupView) {
+      v = this.groupView.addItem(item) as FolderView;
+    } else {
+      const groupView = this.groupView = new GroupView(this.container, {});
+      this.container.appendChild(groupView.create());
+      v = groupView.addItem(item) as FolderView;
+
+      // occur layout event for explicitly set canvas w,h
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.layout();
     }
+    return v;
   }
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {
