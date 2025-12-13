@@ -9,20 +9,16 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import fs from 'fs';
 import { app, BrowserWindow, shell, screen, ipcMain, Menu, MenuItem, IpcMainEvent, MenuItemConstructorOptions, dialog, OpenDialogOptions } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
 import { _readdirSyncWithStat, resolveHtmlPath } from './utils';
-
 import { CompareItem, DirentExt, ResultMap, SerializableMenuItem } from '../common/Types';
 import { CompareFolder } from './compare/CompareFolder';
 import { Channels } from './preload';
-import fs from 'fs';
-import { StringDecoder } from 'string_decoder';
 import { Menubar } from './Menubar';
 import { StringUtil } from '../common/util/StringUtil';
-import Runtime from './util/Runtime';
 import PotDb from 'potdb';
 import default_configs, { ConfigsType } from './configs';
 import iconv from 'iconv-lite';

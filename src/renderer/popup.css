@@ -84,7 +84,7 @@
 .popup .list-view td label { margin-left: 5px; }
 
 
-/* Select by State */
+/* Select By State */
 .sbs {}
 .sbs .middle { display: flex; margin-top: 8px; }
 /* .sbs .middle .left-area { flex: 1; }
@@ -104,7 +104,7 @@
 .sbs .bottom input:nth-of-type(2) { margin-left: 16px; }
 .sbs .bottom label { margin-left: 5px; }
 
-/* Copy files */
+/* Copy Files */
 .cf {
   display: flex;
   flex-direction: column; /* default: row(가로) */
@@ -135,7 +135,7 @@
 
 .cf .button-area { text-align: right; margin-top: 8px; }
 
-/* Files and folders progress */
+/* Files And Folders Progress */
 .fnfp {}
 .fnfp .top { display: flex;
   /* flex-direction: row; */

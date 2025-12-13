@@ -1150,9 +1150,9 @@ export default class CodeMirrorDiffView {
     lhs_xyoffset: { top: number, left: number },
     rhs_xyoffset: { top: number, left: number }
   } {
-    const lhsScroll = this.editor.lhs.getScrollerElement();
-    const rhsScroll = this.editor.rhs.getScrollerElement();
-    const visible_page_height = lhsScroll.offsetHeight; // fudged
+    const lhs_scroller = this.editor.lhs.getScrollerElement();
+    const rhs_scroller = this.editor.rhs.getScrollerElement();
+    const visible_page_height = lhs_scroller.offsetHeight; // fudged
     const dcanvas = document.getElementById(`${this.id}-lhs-rhs-canvas`) as HTMLCanvasElement;
     if(dcanvas == undefined) {
       throw new Error(`Failed to find: ${this.id}-lhs-rhs-canvas`);
@@ -1161,9 +1161,9 @@ export default class CodeMirrorDiffView {
     const rhs_margin = document.getElementById(`${this.id}-rhs-margin`) as HTMLCanvasElement;
 
     return {
-      visible_page_height: visible_page_height,
-      lhs_scroller: lhsScroll,
-      rhs_scroller: rhsScroll,
+      visible_page_height,
+      lhs_scroller,
+      rhs_scroller,
       lhs_lines: this.editor.lhs.lineCount(),
       rhs_lines: this.editor.rhs.lineCount(),
       dcanvas,

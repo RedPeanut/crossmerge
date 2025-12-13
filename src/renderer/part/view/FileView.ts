@@ -170,13 +170,13 @@ export class FileView extends EventEmitter implements CompareView {
         } else if(id === editNextChangeMenuId) {
           this.mergely.scrollToDiffByPos('next');
         }
-      }/*  else if(id.startsWith('merging')) {
+      } else if(id.startsWith('merging')) {
         if(id === pushToLeftMenuId) {
           this.mergely.mergeChangeByPos('rhs', 'lhs');
         } else if(id === pushToRightMenuId) {
           this.mergely.mergeChangeByPos('lhs', 'rhs');
         }
-      } */else if(id.startsWith('view')) {
+      } else if(id.startsWith('view')) {
         if(id === toggleWrapLinesMenuId) {
           // const toggled = renderer.wrapLine = !renderer.wrapLine;
           window.ipc.invoke('config get', 'wrap_lines').then((v) => {
@@ -313,11 +313,11 @@ export class FileView extends EventEmitter implements CompareView {
         this.mergely_el,
         {
           ...{},
+          // _debug: true,
           lhs: result.data_lhs,
           rhs: result.data_rhs,
           bgcolor: 'white',
           vpcolor: 'rgb(167 167 167 / 50%)',
-          // _debug: true,
           changes: (changes: Change[]) => {
             // console.log('changes =', changes);
             let removal = 0, insertion = 0, change = 0;

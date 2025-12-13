@@ -285,7 +285,7 @@ export class MainLayout extends Layout implements MainLayoutService {
 
   updateStatusbar(item: CompareItem): void {
     this.current = item; // { ...item };
-    console.log('this.current =', this.current);
+    // console.log('this.current =', this.current);
     (getService(statusbarPartServiceId) as StatusbarPartService).update(item);
   }
 

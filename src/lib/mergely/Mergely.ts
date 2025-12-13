@@ -2,7 +2,7 @@
 // const { default: DiffWorker } = require('./diff.worker.js');
 // const diff = require('./diff');
 // const dom = require('./dom.js');
-import CodeMirrorDiffView from './DiffView';
+import CodeMirrorDiffView, { CodeMirrorDiffViewOptions } from './DiffView';
 import DiffWorker from './DiffWorker';
 import Diff from './Diff';
 import * as dom from './dom';
@@ -75,13 +75,13 @@ const defaultOptions: MergelyOptions = {
 export default class Mergely {
 
   el: HTMLElement;
-  _initOptions;
-  _viewOptions;
+  _initOptions: MergelyOptions;
+  _options: MergelyOptions;
+  _viewOptions: CodeMirrorDiffViewOptions;
   _diffView: CodeMirrorDiffView;
   _listeners: [ event: string, handler: () => void ][];
   _addEventListener;
   _removeEventListener;
-  _options;
   _diffWorker: DiffWorker;
   _changes: Change[];
 
