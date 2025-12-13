@@ -15,7 +15,7 @@ export function popup(items: MenuItem[], options?: PopupOptions, onHide?: () => 
     // console.log('context =', context);
 
     const item = processedItems[itemId];
-    item.click?.(context);
+    item.click?.([event, itemId, context]);
   };
   window.ipc.once(onClickChannel, onClickChannelHandler);
 

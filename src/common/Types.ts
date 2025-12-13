@@ -96,7 +96,7 @@ export interface SerializableMenuItem extends CommonMenuItem {
 }
 
 export interface MenuItem extends CommonMenuItem {
-  click?: (event: MenuEvent) => void;
+  click?: (args: any[]) => void;
   submenu?: MenuItem[];
 }
 
