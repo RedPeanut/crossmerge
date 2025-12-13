@@ -1,6 +1,7 @@
 import { CompareFolderData, CompareItem, MenuItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
-  selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId
+  selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
+  launchComparisonsMenuId
 } from "../../../common/Types";
 import { CompareOptions, CompareView, FileDesc } from "../../Types";
 import { $ } from "../../util/dom";
@@ -23,6 +24,8 @@ import { broadcast } from "../../Broadcast";
 import { SimpleFocusManager } from "../../util/SimpleFocusManager";
 import { Channels } from "../../../main/preload";
 import { MainLayoutService } from "../../layout/MainLayout";
+import { SequentialTaskQueue } from "../../util/SequentialTaskQueue";
+import { FileView } from "./FileView";
 
 interface Node {
   parent: Node | null;
@@ -386,10 +389,62 @@ export class FolderView implements CompareView {
 
           this.throttle_renderChanges();
           this.renewFlatten();
+          return;
+        }
+
+        if(id === launchComparisonsMenuId) {
+          this.launchComparisonsForSelectedRow();
+          return;
         }
       }
     }
   };
+
+  launchComparisonsForSelectedRow() {
+    // console.log('click event is received ..');
+    // console.log('...args =', ...args);
+    // console.log('this.selected =', this.selected);
+
+    const queue = new SequentialTaskQueue();
+
+    for(let i = 0; i < this.selected.length; i++) {
+      let path_lhs = '', path_rhs = '';
+      let lnode: HTMLElement, rnode: HTMLElement;
+
+      lnode = document.querySelector(`.compares .active #node_left_${this.selected[i]}`)
+      rnode = document.querySelector(`.compares .active #node_right_${this.selected[i]}`)
+
+      recur_do(lnode, (_node) => { path_lhs = _node.dataset.name + renderer.path.sep + path_lhs });
+      recur_do(rnode, (_node) => { path_rhs = _node.dataset.name + renderer.path.sep + path_rhs });
+
+      path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
+      path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
+
+      path_lhs = path_lhs.substring(0, path_lhs.lastIndexOf(renderer.path.sep));
+      path_rhs = path_rhs.substring(0, path_rhs.lastIndexOf(renderer.path.sep));
+
+      // function return function's execution result
+      const taskFn = (function() {
+        const _path_lhs = path_lhs;
+        const _path_rhs = path_rhs;
+
+        const _taskFn = (emitNext: () => void) => {
+          console.log('_taskFn is called ..');
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          const v: FileView = bodyLayoutService.addFileCompareView(_path_lhs, _path_rhs, { delayed: true });
+          v.on('onOnceUpdated', () => {
+            console.log('onOnceUpdated is called ..');
+            emitNext();
+          });
+          v.compare();
+        };
+        return _taskFn;
+      })();
+
+      queue.addTask(taskFn);
+    }
+    queue._processNext();
+  }
 
   renewFlatten(): void {
     this.flatten = [];
@@ -1024,8 +1079,7 @@ export class FolderView implements CompareView {
         e.stopPropagation();
       }
 
-      const content = $(".content");
-      content.oncontextmenu = (e) => {
+      node.addEventListener('contextmenu', (e: PointerEvent) => {
         // console.log('e =', e);
         // console.log('node =', node);
 
@@ -1033,26 +1087,13 @@ export class FolderView implements CompareView {
         items.push({
           accelerator: 'Cmd+Shift+L',
           label: 'Launch Comparisons for Selected Rows', //localize(key, msg),
-          click: () => {
-            // console.log('click event is received ..');
-
-            let path_lhs = '', path_rhs = '';
-
-            recur_do(node, (_node) => { path_lhs = _node.dataset.name + renderer.path.sep + path_lhs });
-            recur_do(node, (_node) => { path_rhs = _node.dataset.name + renderer.path.sep + path_rhs });
-
-            path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
-            path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
-
-            path_lhs = path_lhs.substring(0, path_lhs.lastIndexOf(renderer.path.sep));
-            path_rhs = path_rhs.substring(0, path_rhs.lastIndexOf(renderer.path.sep));
-
-            const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-            bodyLayoutService.addFileCompareView(path_lhs, path_rhs);
-          }
+          click: this.launchComparisonsForSelectedRow.bind(this)
         });
         popup(items);
-      };
+      });
+
+      const content = $(".content");
+      content.addEventListener('dblclick', this.launchComparisonsForSelectedRow.bind(this));
 
       if(hasChildren) {
         if(isCollapsed) node.classList.add('collapsed');

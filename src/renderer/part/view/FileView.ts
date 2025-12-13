@@ -19,10 +19,11 @@ import { listenerManager } from "../../util/ListenerManager";
 import { Channels } from "../../../main/preload";
 import { Editor } from "../../../types/codemirror";
 import { MainLayoutService } from "../../layout/MainLayout";
+import EventEmitter from "events";
 
 export interface FileViewOptions {}
 
-export class FileView implements CompareView {
+export class FileView extends EventEmitter implements CompareView {
 
   parent: HTMLElement;
   element: HTMLElement;
@@ -42,6 +43,8 @@ export class FileView implements CompareView {
   ipcRemoveListeners: any[] = [];
 
   constructor(parent: HTMLElement, item: CompareItem) {
+    super();
+
     this.parent = parent;
     this.item = item;
 
@@ -207,10 +210,10 @@ export class FileView implements CompareView {
     // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/one single diff file/right/moons.txt');
     // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba/baa.txt');
     // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba/baa.txt');
-    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt');
-    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba.txt');
-    // input_lhs.setValue(this.item.path_lhs);
-    // input_rhs.setValue(this.item.path_rhs);
+    // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left/b/ba.txt');
+    // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right/b/ba.txt');
+    input_lhs.setValue(this.item.path_lhs);
+    input_rhs.setValue(this.item.path_rhs);
 
     input_lhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
     input_rhs.addEventListener('keypress', this.inputKeyPressHandler.bind(this));
@@ -284,6 +287,9 @@ export class FileView implements CompareView {
 
     const mergely_el = this.mergely_el = $('.mergely');
     mergely_el.id = `_${renderer.idx++}`;
+    mergely_el.addEventListener('updated', () => {
+      this.emit('onOnceUpdated');
+    }, { once: true });
     this.element.appendChild(mergely_el);
 
     const wrap_lines = await window.ipc.invoke('config get', 'wrap_lines');
