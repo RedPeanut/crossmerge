@@ -73,9 +73,9 @@ export class HistoryPopup extends Popup {
       left.value = (this.table.querySelector('tr.on td:nth-of-type(1)') as HTMLElement).textContent;
       right.value = (this.table.querySelector('tr.on td:nth-of-type(2)') as HTMLElement).textContent;
 
-      // // close popup & re-compare
-      // this.close();
-      // (getService(mainLayoutServiceId) as MainLayoutService).reCompare();
+      // close popup & re-compare
+      this.close();
+      (getService(mainLayoutServiceId) as MainLayoutService).reCompare();
     });
 
     const cancelBtn = this.cancelBtn = $('button');

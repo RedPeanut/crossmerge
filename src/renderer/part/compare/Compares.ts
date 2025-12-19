@@ -122,9 +122,10 @@ export class Compares {
 
   reCompare(id: string, options: CompareOptions): void {
     const v: FileView|FolderView = this.map.get(id);
-    if(v instanceof FileView) {
+    /* if(v instanceof FileView) {
       console.log('v.item =', v.item);
       v.compare(options);
-    }
+    } */
+    v && v.compare(options);
   }
 }

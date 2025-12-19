@@ -32,6 +32,7 @@ export interface MainLayoutService extends Service {
   positionStatusbarWidget(): void;
   showContextMenu(target: HTMLElement, list: MenuItem[]): void;
   showHistoryPopup(): void;
+  reCompare(): void;
   setCurrent(item: CompareItem): void;
 }
 
@@ -350,5 +351,9 @@ export class MainLayout extends Layout implements MainLayoutService {
 
   setCurrent(item: CompareItem): void {
     this.current = item;
+  }
+
+  reCompare(): void {
+    (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
   }
 }
