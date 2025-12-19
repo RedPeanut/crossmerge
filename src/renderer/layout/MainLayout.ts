@@ -15,6 +15,7 @@ import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
 import { defaultMenubarEnable } from '../globals';
 import { IconbarService } from '../part/Iconbar';
+import { HistoryPopup } from '../popup/HistoryPopup';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -32,6 +33,7 @@ export interface MainLayoutService extends Service {
   updateStatusbar(item: CompareItem): void;
   clearStatusbar(): void;
   showContextMenu(target: HTMLElement, list: MenuItem[]): void;
+  showHistoryPopup(): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -349,5 +351,9 @@ export class MainLayout extends Layout implements MainLayoutService {
     // ul.children[0].classList.add('on');
     this.contextMenu.style.display = 'block';
     this.contextMenu.focus();
+  }
+
+  showHistoryPopup(): void {
+    this.historyPopup.open(null);
   }
 }

@@ -1,7 +1,9 @@
 import { EventEmitter } from "events";
 import { $ } from "./util/dom";
 
-export interface PopupOptions {}
+export interface PopupOptions {
+  classList?: string[];
+}
 
 export abstract class Popup extends EventEmitter {
   container: HTMLElement;
@@ -14,10 +16,14 @@ export abstract class Popup extends EventEmitter {
   dragOffsetX = 0;
   dragOffsetY = 0;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, options?: PopupOptions) {
     super();
     const container = this.container = $('.popup-container');
     container.style.display = 'none';
+    if(options) {
+      options.classList && container.classList.add(...options.classList);
+    }
+
     const popup = this.popup = $('.popup');
     const titlebar = this.titlebar = $('.titlebar');
     titlebar.addEventListener('mousedown', this.onDragStart.bind(this));
