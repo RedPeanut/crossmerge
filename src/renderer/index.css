@@ -398,7 +398,6 @@ body { height: 100%; }
   height: calc(100% - 26px);
 }
 
-
 /* file compare view */
 .file-compare-view.active { display: flex; }
 .file-compare-view * {

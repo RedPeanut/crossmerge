@@ -73,9 +73,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
   }
 
   groupView: GroupView;
-  copyPopup: CopyPopup;
-  progressPopup: ProgressPopup;
-  dialog: Dialog;
+  // copyPopup: CopyPopup;
+  // progressPopup: ProgressPopup;
+  // dialog: Dialog;
 
   constructor(parent: HTMLElement, options: BodyOptions) {
     super(parent);
@@ -154,9 +154,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     this.container.classList.add(...['body', 'layout']);
     // const splitView = this.splitView = new SplitView(this.container, { orientation: Orientation.HORIZONTAL });
     this.parent && this.parent.appendChild(this.container);
-    const copyPopup = this.copyPopup = new CopyPopup(this.container);
-    const progressPopup = this.progressPopup = new ProgressPopup(this.container);
-    const dialog = this.dialog = new Dialog(this.container);
+    // const copyPopup = this.copyPopup = new CopyPopup(this.container);
+    // const progressPopup = this.progressPopup = new ProgressPopup(this.container);
+    // const dialog = this.dialog = new Dialog(this.container);
   }
 
   inflate(): void {}
