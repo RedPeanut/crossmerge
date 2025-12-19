@@ -36,7 +36,7 @@ export interface CodeMirrorDiffViewOptions extends MergelyOptions {
 export default class CodeMirrorDiffView {
 
   el: HTMLElement;
-  settings: CodeMirrorDiffViewOptions;
+  settings: CodeMirrorDiffViewOptions = {};
   lhs_cmsettings: CodeMirror.EditorConfiguration;
   rhs_cmsettings: CodeMirror.EditorConfiguration;
   _vdoc: VDoc;
@@ -1380,11 +1380,13 @@ export default class CodeMirrorDiffView {
     return this[cacheName];
   }
 
-  trace(...args: any[]) {
+  trace = this.settings._debug ? console.log : () => {};
+
+  /* trace(...args: any[]) {
     if(this.settings._debug) {
       console.log(...args);
     }
-  }
+  } */
 }
 
 

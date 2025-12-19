@@ -9,15 +9,18 @@ import EventEmitter from "events";
 export class SequentialTaskQueue extends EventEmitter {
   tasks: {taskFn: Function, taskNm: string}[] = [];
   isProcessing: boolean = false;
+  debug: boolean = false;
+  log = this.debug ? console.log : () => {};
 
   constructor() {
     super();
+
     this.tasks = [];
     this.isProcessing = false;
 
     // 'task_completed' 이벤트가 발생하면 _processNext를 호출하도록 리스너 설정
     this.on('task_completed', this._processNext);
-    console.log('[Queue] 순차적 작업 큐 초기화 완료');
+    this.log('[Queue] 순차적 작업 큐 초기화 완료');
   }
 
   /**
@@ -27,7 +30,7 @@ export class SequentialTaskQueue extends EventEmitter {
    */
   addTask(taskFn: Function, taskNm: string = 'Unnamed Task') {
     this.tasks.push({ taskFn, taskNm });
-    console.log(`[Queue] 작업 추가: ${taskNm}. 큐 크기: ${this.tasks.length}`);
+    this.log(`[Queue] 작업 추가: ${taskNm}. 큐 크기: ${this.tasks.length}`);
 
     /* // 현재 처리 중인 작업이 없다면 즉시 시작합니다.
     if(!this.isProcessing) {
@@ -41,7 +44,7 @@ export class SequentialTaskQueue extends EventEmitter {
   _processNext = () => {
     if(this.tasks.length === 0) {
       this.isProcessing = false;
-      console.log('[Queue] 큐 비어있음. 대기 모드');
+      this.log('[Queue] 큐 비어있음. 대기 모드');
       return;
     }
 
@@ -49,11 +52,11 @@ export class SequentialTaskQueue extends EventEmitter {
     const currentTask = this.tasks.shift();
     const { taskFn, taskNm } = currentTask;
 
-    console.log(`  [Worker] 작업 처리 시작: ${taskNm}`);
+    this.log(`  [Worker] 작업 처리 시작: ${taskNm}`);
 
     // 다음 작업을 트리거할 헬퍼 함수
     const emitNext = () => {
-      console.log(`  [Worker] 작업 완료: ${taskNm}`);
+      this.log(`  [Worker] 작업 완료: ${taskNm}`);
       this.emit('task_completed');
     };
 

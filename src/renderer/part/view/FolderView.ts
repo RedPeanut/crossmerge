@@ -423,17 +423,17 @@ export class FolderView implements CompareView {
       path_lhs = path_lhs.substring(0, path_lhs.lastIndexOf(renderer.path.sep));
       path_rhs = path_rhs.substring(0, path_rhs.lastIndexOf(renderer.path.sep));
 
-      // function return function's execution result
+      // function return function's execution result for value capture
       const taskFn = (function() {
         const _path_lhs = path_lhs;
         const _path_rhs = path_rhs;
 
         const _taskFn = (emitNext: () => void) => {
-          console.log('_taskFn is called ..');
+          // console.log('_taskFn is called ..');
           const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
           const v: FileView = bodyLayoutService.addFileCompareView(_path_lhs, _path_rhs, { delayed: true });
           v.on('onOnceUpdated', () => {
-            console.log('onOnceUpdated is called ..');
+            // console.log('onOnceUpdated is called ..');
             emitNext();
           });
           v.compare();
