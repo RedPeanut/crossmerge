@@ -780,8 +780,8 @@ export class FolderView implements CompareView {
     const input_rhs = this.input_rhs = new Input(input_column_rhs, this.focusManager, { mode: 'folder' });
     input_rhs.setPlaceholder('Right folder');
 
-    input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left');
-    input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right');
+    // input_lhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/left');
+    // input_rhs.setValue('/Users/kimjk/workspace/electron/fixture/mixed case/right');
 
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/left';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge/test/fixture/simple insert/right';
@@ -792,12 +792,33 @@ export class FolderView implements CompareView {
     // input_lhs.value = '/Users/kimjk/workspace/electron/crossmerge-compare';
     // input_rhs.value = '/Users/kimjk/workspace/electron/crossmerge';
 
-    function keyPressHandler(e: KeyboardEvent) {
+    async function keyPressHandler(e: KeyboardEvent) {
       // console.log('keypress event is called ..');
       // console.log('e.keyCode =', e.keyCode);
 
       // if(e.keyCode == 13) {
       if(e.key === 'Enter') {
+
+        const input_lhs_value = this.input_lhs.getValue();
+        const input_rhs_value = this.input_rhs.getValue();
+
+        const saved = await window.ipc.invoke('config get', 'history');
+        console.log(saved);
+        const updated = { ...saved };
+        // const parsed = JSON.parse(saved);
+
+        // push to top
+        // { id?: string, left: string, right: string }
+        for(let i = 0; i < updated.folder.length; i++) {
+          if(updated.folder[i].left === input_lhs_value && updated.folder[i].right === input_rhs_value) {
+            updated.folder.splice(i, 1);
+            break;
+          }
+        }
+        updated.folder.splice(0, 0, { left: input_lhs_value, right: input_rhs_value });
+        console.log(updated.folder);
+        await window.ipc.invoke('config set', 'history', updated);
+
         // launch comparison
         this.compare();
         this.lists.focus();
