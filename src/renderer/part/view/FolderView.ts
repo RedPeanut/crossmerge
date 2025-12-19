@@ -171,8 +171,7 @@ export class FolderView implements CompareView {
       const { removed, inserted, changed, unchanged } = arg;
       this.item.status = { removed, inserted, changed, unchanged };
 
-      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
-      mainLayoutService.updateStatusbar(this.item);
+      (getService(statusbarPartServiceId) as StatusbarPartService).update(this.item);
     });
 
     window.ipc.on('compare folder data', (...args: any[]) => {

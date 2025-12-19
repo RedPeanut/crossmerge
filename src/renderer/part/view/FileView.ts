@@ -331,8 +331,7 @@ export class FileView extends EventEmitter implements CompareView {
             }
 
             this.item.status = { removal, insertion, change, encoding };
-            const mainLayouttService = getService(mainLayoutServiceId) as MainLayoutService;
-            mainLayouttService.updateStatusbar(this.item);
+            (getService(statusbarPartServiceId) as StatusbarPartService).update(this.item);
           },
           changed: (args: any[]) => {
             if(args && args.length > 0) {

@@ -76,16 +76,13 @@ export class GroupView {
     (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable[this.group[i].type]);
     (getService(iconbarServiceId) as IconbarService).enable(this.group[i].type);
 
-    this.updateStatusbar(i);
-  }
-
-  updateStatusbar(i: number): void {
+    // this.updateStatusbar(i);
+    (getService(mainLayoutServiceId) as MainLayoutService).setCurrent(this.group[i]);
     if(i > -1) {
-      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
       if(this.group[i].status) {
-        mainLayoutService.updateStatusbar(this.group[i]);
+        (getService(statusbarPartServiceId) as StatusbarPartService).update(this.group[i]);
       } else {
-        mainLayoutService.clearStatusbar();
+        (getService(statusbarPartServiceId) as StatusbarPartService).clear();
       }
     }
   }
@@ -106,7 +103,7 @@ export class GroupView {
       if(this.group.length > 0) {
         this.active(this.group[i-1 < 0 ? 0 : i-1].uid);
       } else {
-        (getService(mainLayoutServiceId) as MainLayoutService).clearStatusbar();
+        (getService(statusbarPartServiceId) as StatusbarPartService).clear();
       }
     }
 

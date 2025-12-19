@@ -30,10 +30,9 @@ export interface MainLayoutService extends Service {
   layout(): void;
   showStatusbarWidget(list: EncodingItem[]): void;
   positionStatusbarWidget(): void;
-  updateStatusbar(item: CompareItem): void;
-  clearStatusbar(): void;
   showContextMenu(target: HTMLElement, list: MenuItem[]): void;
   showHistoryPopup(): void;
+  setCurrent(item: CompareItem): void;
 }
 
 export class MainLayout extends Layout implements MainLayoutService {
@@ -288,17 +287,6 @@ export class MainLayout extends Layout implements MainLayoutService {
     this.statusbarWidget.focus();
   }
 
-  updateStatusbar(item: CompareItem): void {
-    this.current = item; // { ...item };
-    // console.log('this.current =', this.current);
-    (getService(statusbarPartServiceId) as StatusbarPartService).update(item);
-  }
-
-  clearStatusbar(): void {
-    this.current = null;
-    (getService(statusbarPartServiceId) as StatusbarPartService).clear();
-  }
-
   showContextMenu(target: HTMLElement, list: MenuItem[]): void {
     const rect = target.getBoundingClientRect();
     this.contextMenu.style.left = rect.x + 'px';
@@ -358,5 +346,9 @@ export class MainLayout extends Layout implements MainLayoutService {
 
   showHistoryPopup(): void {
     this.historyPopup.open(null);
+  }
+
+  setCurrent(item: CompareItem): void {
+    this.current = item;
   }
 }
