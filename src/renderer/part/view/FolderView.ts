@@ -1100,10 +1100,8 @@ export class FolderView implements CompareView {
         e.stopPropagation();
       }
 
-      node.addEventListener('contextmenu', (e: PointerEvent) => {
-        // console.log('e =', e);
-        // console.log('node =', node);
-
+      const content = $(".content");
+      content.addEventListener('contextmenu', (e: PointerEvent) => {
         const items: MenuItem[] = [];
         items.push({
           accelerator: 'Cmd+Shift+L',
@@ -1112,8 +1110,6 @@ export class FolderView implements CompareView {
         });
         popup(items);
       });
-
-      const content = $(".content");
       content.addEventListener('dblclick', this.launchComparisonsForSelectedRow.bind(this));
 
       if(hasChildren) {
