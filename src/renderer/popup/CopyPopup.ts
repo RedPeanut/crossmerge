@@ -139,6 +139,8 @@ export class CopyPopup extends Popup {
     copyBtn.addEventListener('click', () => {
       // this.emit('do copy');
       // this.close();
+
+      this.progressPopup.open(this.srcPathInput.value, this.dstPathInput.value, this.files);
     });
     const cancelBtn = $('button');
     cancelBtn.innerHTML = 'Cancel';

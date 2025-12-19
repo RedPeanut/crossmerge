@@ -183,12 +183,16 @@ export class ProgressPopup extends Popup {
           if(this.index < this.files.length-1) {
             this.index++;
             this.next();
+          } else {
+            this.emit('finished');
           }
         } else if(this.noToAll) {
           this.addRow('warning', 'The existing file was not replaced', relPathName);
           if(this.index < this.files.length-1) {
             this.index++;
             this.next();
+          } else {
+            this.emit('finished');
           }
         } else {
           this.dialog.open(
@@ -209,6 +213,8 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
+                  } else {
+                    this.emit('finished');
                   }
                 }
               },
@@ -220,6 +226,8 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
+                  } else {
+                    this.emit('finished');
                   }
                 }
               },
@@ -230,6 +238,8 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
+                  } else {
+                    this.emit('finished');
                   }
                 }
               },
@@ -259,6 +269,8 @@ ${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtim
     if(this.index < this.files.length-1) {
       this.index++;
       this.next();
+    } else {
+      this.emit('finished');
     }
   }
 
