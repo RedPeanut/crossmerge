@@ -600,21 +600,37 @@ body { height: 100%; }
 
 
 /* Input */
-.input { position: relative; display: flex; }
-.input input {
-  /* width: calc(100% - 16px - 2px); */ /* - padding - border */
+.input { position: relative; 
+  display: flex; 
+  align-items: center;
+}
+.input .input-wrap {
+  position: relative;
   flex: 1;
+}
+
+.input /* .input-wrap : focus boder css order issue (somewhat tricky fix) */ input {
+  width: calc(100% - 43px - 2px); /* - padding - border */
   height: 23px;
   border: 1px solid rgb(122,122,122);
-  /* padding: 3px; */
-  padding: 2px 8px;
+  padding: 2px 35px 2px 8px;
 }
+
+.input .input-wrap .btn-wrap {
+  position: absolute;
+  top: 6px; right: 3px;
+}
+
+.input .input-wrap .btn-wrap a:hover {
+  background: rgba(0,0,0,0.12); cursor: pointer;
+}
+
 .input .mark {
   display: none;
   width: 12px;
-  align-items: center;
+  color: red; font-size: 12px;
 }
-.input .mark span { color: red; font-size: 12px; }
+
 .input .related {
   display: none;
   position: absolute;

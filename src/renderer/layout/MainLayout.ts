@@ -49,6 +49,7 @@ export class MainLayout extends Layout implements MainLayoutService {
   statusbarWidget: HTMLElement;
   current: CompareItem = null;
   contextMenu: HTMLElement;
+  historyPopup: HistoryPopup;
 
   constructor(parent: HTMLElement) {
     super(parent);
@@ -187,6 +188,8 @@ export class MainLayout extends Layout implements MainLayoutService {
 
     contextMenu.appendChild($('ul.menubox'));
     this.container.appendChild(contextMenu);
+
+    this.historyPopup = new HistoryPopup(this.container, { classList: [ 'global' ] });
 
     this.parent.appendChild(this.container);
   }

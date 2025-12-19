@@ -14,6 +14,9 @@
 } */
 
 const configs = {
+
+  history: { file: [], folder: [] },
+
   // text: display, encoding
   wrap_lines: false,
   try_to_auto_detect: true,

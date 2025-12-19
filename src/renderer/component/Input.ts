@@ -6,6 +6,8 @@ import { DebouncedFunc } from "lodash";
 import _ from "lodash";
 import { SimpleFocusManager } from "../util/SimpleFocusManager";
 import { ComplexFocusManager } from "../util/ComplexFocusManager";
+import { getService, mainLayoutServiceId } from "../Service";
+import { MainLayoutService } from "../layout/MainLayout";
 
 export interface InputOptions {
   mode: 'file' | 'folder';
@@ -25,6 +27,8 @@ export class Input {
     this.options = options;
 
     const el = this.element = $('.input');
+    const input_wrap = $('.input-wrap');
+
     const input = this.input = $('input');
     focusManager.register(input, (...args: any[]) => {
       // console.log(typeof args);
@@ -34,9 +38,25 @@ export class Input {
       }
     });
 
-    const mark = this.mark = $('.mark');
-    const span = $('span.codicon.codicon-circle-filled');
-    mark.appendChild(span);
+    const btn_wrap = $('.btn-wrap');
+
+    const browse = $('a.browse.codicon.codicon-ellipsis');
+    const history = $('a.history.codicon.codicon-triangle-down');
+    history.addEventListener('click', (e: PointerEvent) => {
+      const mainLayoutService = getService(mainLayoutServiceId) as MainLayoutService;
+      mainLayoutService.showHistoryPopup();
+    });
+
+    btn_wrap.appendChild(browse);
+    btn_wrap.appendChild(history);
+
+    input_wrap.appendChild(input);
+    input_wrap.appendChild(btn_wrap);
+    
+    el.appendChild(input_wrap);
+
+    const mark = $('span.mark.codicon.codicon-circle-filled');
+    el.appendChild(mark);
 
     const related = this.related = $('ul.related.scrollable');
     related.tabIndex = -1;
@@ -195,8 +215,6 @@ export class Input {
       console.log('mousedown is called ..');
     }); */
 
-    el.appendChild(input);
-    el.appendChild(mark);
     el.appendChild(related);
     parent.appendChild(el);
   }
