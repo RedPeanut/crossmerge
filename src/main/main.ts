@@ -273,6 +273,27 @@ class MainWindow {
       });
     });
 
+    ipcMain.handle('fs lstat', (event, args: any[]) => {
+      const [ _path ] = args;
+      const lstat = fs.lstatSync(_path);
+
+      const isFile = lstat.isFile();
+      const isDirectory = lstat.isDirectory();
+      const isSymbolicLink = lstat.isSymbolicLink();
+      const mtime = lstat.mtime;
+      const size = lstat.size;
+
+      return {
+        path: _path.substring(0, _path.lastIndexOf(path.sep)),
+        name: _path.substring(_path.lastIndexOf(path.sep)+1),
+        isFile,
+        isDirectory,
+        isSymbolicLink,
+        mtime,
+        size
+      }
+    });
+
     ipcMain.handle('read file in fileview', async (event, args: any[]) => {
       const [ path_lhs, path_rhs, encoding = 'utf8' ] = args;
       const buf_lhs: Buffer = StringUtil.isEmpty(path_lhs) ? Buffer.from('') : fs.readFileSync(path_lhs);

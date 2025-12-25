@@ -399,7 +399,7 @@ export class FolderView implements CompareView {
     }
   };
 
-  launchComparisonsForSelectedRow() {
+  async launchComparisonsForSelectedRow() {
     // console.log('click event is received ..');
     // console.log('...args =', ...args);
     // console.log('this.selected =', this.selected);
@@ -421,6 +421,12 @@ export class FolderView implements CompareView {
 
       if(path_lhs.endsWith('/')) path_lhs = path_lhs.substring(0, path_lhs.length-1);
       if(path_rhs.endsWith('/')) path_rhs = path_rhs.substring(0, path_rhs.length-1);
+
+      const lstat_lhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_lhs);
+      const lstat_rhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_rhs);
+
+      path_lhs = lstat_lhs.isDirectory ? '' : path_lhs;
+      path_rhs = lstat_rhs.isDirectory ? '' : path_rhs;
 
       // fn return fn's execution result for value capture
       const taskFn = (function() {

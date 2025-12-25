@@ -32,6 +32,9 @@ export type MainEvents =
   | 'config set'
   | 'config update'
 
+  // fs
+  | 'fs lstat'
+
   // action (descriptive form)
   // | 'handle title dblclick'
   | 'read file in fileview'
