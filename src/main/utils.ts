@@ -17,7 +17,7 @@ export function resolveHtmlPath(htmlFileName: string) {
 
 export async function _readdirSyncWithStat(path: string): Promise<DirentExt[]> {
   const result: DirentExt[] = [];
-  const reads: Dirent[] = await fs.readdirSync(path, { withFileTypes: true });
+  const reads: Dirent[] = fs.readdirSync(path, { withFileTypes: true });
   for(let i = 0; i < reads.length; i++) {
     const read: Dirent = reads[i];
     const _path = read.path ? read.path : (read.isDirectory() ? (path + '/' + read.name) : path);

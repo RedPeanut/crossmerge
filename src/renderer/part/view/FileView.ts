@@ -73,10 +73,10 @@ export class FileView extends EventEmitter implements CompareView {
   }
 
   unbind_b(): void {
-    console.log('this.broadcastListeners.length =', this.broadcastListeners.length);
+    // console.log('this.broadcastListeners.length =', this.broadcastListeners.length);
     for(const [ event, handler ] of this.broadcastListeners) {
       broadcast.removeListener(event, handler);
-      console.log(`'${event}' event listener remains in broadcast: ${broadcast.listenerCount(event)}`);
+      // console.log(`'${event}' event listener remains in broadcast: ${broadcast.listenerCount(event)}`);
     }
   }
 

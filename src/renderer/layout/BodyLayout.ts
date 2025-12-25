@@ -181,7 +181,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     }); */
 
     /* const group: CompareItem[] = [
-      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) }, // blank folder compare
+      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) },
     ];
 
     if(this.groupView) {
@@ -193,7 +193,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     } */
 
     const item: CompareItem =
-      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) } // blank folder compare
+      { type: 'file', uid: uuidv4(), path_lhs: StringUtil.fixNull(path_lhs), path_rhs: StringUtil.fixNull(path_rhs) }
     ;
 
     let v: FileView;

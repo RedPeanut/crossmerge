@@ -52,10 +52,10 @@ export class Input {
 
     input_wrap.appendChild(input);
     input_wrap.appendChild(btn_wrap);
-    
+
     el.appendChild(input_wrap);
 
-    const mark = $('span.mark.codicon.codicon-circle-filled');
+    const mark = this.mark = $('span.mark.codicon.codicon-circle-filled');
     el.appendChild(mark);
 
     const related = this.related = $('ul.related.scrollable');

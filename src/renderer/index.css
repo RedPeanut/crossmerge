@@ -599,8 +599,8 @@ body { height: 100%; }
 
 
 /* Input */
-.input { position: relative; 
-  display: flex; 
+.input { position: relative;
+  display: flex;
   align-items: center;
 }
 .input .input-wrap {

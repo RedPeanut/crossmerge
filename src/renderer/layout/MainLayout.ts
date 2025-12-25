@@ -197,8 +197,7 @@ export class MainLayout extends Layout implements MainLayoutService {
       if(args && args.length > 1) {
         const id = args[1];
         if(id.startsWith('window')) {
-          console.log('menu click windows is called ..');
-
+          // console.log('menu click windows is called ..');
           if(this.current) {
             const direction: string = id === windowSelectPrevTab ? 'prev' : 'next';
             (getService(bodyLayoutServiceId) as BodyLayoutService).changeTab(this.current.uid, direction);
