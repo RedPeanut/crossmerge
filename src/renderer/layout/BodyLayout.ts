@@ -35,6 +35,7 @@ export interface BodyLayoutService extends Service {
   callTabFn(id: string, fn: string): void;
   active(id: string): void;
   remove(id: string): void;
+  removeOthers(id: string, direction?: string): void;
   reCompare(id: string, options: CompareOptions): void;
 }
 
@@ -260,6 +261,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
         this.groupView = null;
       }
     }
+  }
+
+  removeOthers(id: string, direction?: string): void {
+    this.groupView && this.groupView.removeOthers(id, direction);
   }
 
   reCompare(id: string, options: CompareOptions): void {

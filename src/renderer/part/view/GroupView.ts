@@ -110,6 +110,36 @@ export class GroupView {
     return this.group.length;
   }
 
+  removeOthers(id: string, direction?: string): number {
+    if(direction === 'right' || direction === 'left') {
+      const i = this.group.findIndex((v, i) => { return v.uid === id });
+      if(direction === 'right' ) {
+        for(let _i = this.group.length-1; _i > i; _i--) {
+          this.tabs.removeChild(_i);
+          this.compares.removeChild(this.group[_i].uid);
+          this.group.splice(_i, 1);
+        }
+      } else if(direction === 'left' ) {
+        for(let _i = i-1; _i > -1; _i--) {
+          this.tabs.removeChild(_i);
+          this.compares.removeChild(this.group[_i].uid);
+          this.group.splice(_i, 1);
+        }
+      }
+      // this.active(this.group[i].uid);
+    } else {
+      for(let i = this.group.length-1; i > -1; i--) {
+        if(this.group[i].uid !== id) {
+          this.tabs.removeChild(i);
+          this.compares.removeChild(this.group[i].uid);
+          this.group.splice(i, 1);
+        }
+      }
+      this.active(this.group[0].uid);
+    }
+    return this.group.length;
+  }
+
   reCompare(id: string, options: CompareOptions): void {
     const i = this.group.findIndex((v, i) => { return v.uid === id });
     if(i > -1) {
