@@ -419,10 +419,10 @@ export class FolderView implements CompareView {
       path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
       path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
 
-      path_lhs = path_lhs.substring(0, path_lhs.lastIndexOf(renderer.path.sep));
-      path_rhs = path_rhs.substring(0, path_rhs.lastIndexOf(renderer.path.sep));
+      if(path_lhs.endsWith('/')) path_lhs = path_lhs.substring(0, path_lhs.length-1);
+      if(path_rhs.endsWith('/')) path_rhs = path_rhs.substring(0, path_rhs.length-1);
 
-      // function return function's execution result for value capture
+      // fn return fn's execution result for value capture
       const taskFn = (function() {
         const _path_lhs = path_lhs;
         const _path_rhs = path_rhs;
