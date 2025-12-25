@@ -1,9 +1,10 @@
 import { renderer } from "../..";
-import { CompareItem } from "../../../common/Types";
+import { CompareItem, MenuItem } from "../../../common/Types";
 import { StringUtil } from "../../../common/util/StringUtil";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { getService, bodyLayoutServiceId } from "../../Service";
 import { Group } from "../../Types";
+import { popup } from "../../util/contextmenu";
 import { $ } from "../../util/dom";
 
 export interface TabOptions {}
@@ -26,6 +27,42 @@ export class Tab {
     el.addEventListener('click', (e: MouseEvent) => {
       const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
       bodyLayoutService.active(this.item.uid);
+    });
+    el.addEventListener('contextmenu', (e: PointerEvent) => {
+      const items: MenuItem[] = [];
+      items.push({
+        // accelerator: '',
+        label: 'Close This Tab',
+        click: () => {
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          bodyLayoutService.remove(this.item.uid);
+        }
+      });
+      items.push({
+        // accelerator: '',
+        label: 'Close All Other Tabs',
+        click: () => {
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          bodyLayoutService.removeOthers(this.item.uid);
+        }
+      });
+      items.push({
+        // accelerator: '',
+        label: 'Close Tabs to The Right',
+        click: () => {
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          bodyLayoutService.removeOthers(this.item.uid, 'right');
+        }
+      });
+      items.push({
+        // accelerator: '',
+        label: 'Close Tabs to The Left',
+        click: () => {
+          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+          bodyLayoutService.removeOthers(this.item.uid, 'left');
+        }
+      });
+      popup(items);
     });
 
     const typeIcon = $(`a.codicon.codicon-${this.item.type}`);
