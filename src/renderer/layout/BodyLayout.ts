@@ -8,6 +8,7 @@ import { GroupView } from "../part/view/GroupView";
 import { CompareFolderData, CompareItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   CompareItemOptions,
+  windowSelectPrevTab, windowSelectNextTab,
 } from "../../common/Types";
 
 import { v4 as uuidv4 } from 'uuid';
@@ -37,6 +38,7 @@ export interface BodyLayoutService extends Service {
   remove(id: string): void;
   removeOthers(id: string, direction?: string): void;
   reCompare(id: string, options: CompareOptions): void;
+  changeTab(id: string, direction: string): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -269,5 +271,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   reCompare(id: string, options: CompareOptions): void {
     this.groupView && this.groupView.reCompare(id, options);
+  }
+
+  changeTab(id: string, direction: string): void {
+    this.groupView && this.groupView.changeTab(id, direction);
   }
 }

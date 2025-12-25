@@ -10,7 +10,9 @@ import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId, iconbarServiceId } from '../Service';
-import { CompareFolderData, CompareItem, MenuItem } from '../../common/Types';
+import { CompareFolderData, CompareItem, MenuItem,
+  windowSelectPrevTab, windowSelectNextTab
+} from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
 import { defaultMenubarEnable } from '../globals';
@@ -190,6 +192,20 @@ export class MainLayout extends Layout implements MainLayoutService {
     this.container.appendChild(contextMenu);
 
     this.historyPopup = new HistoryPopup(this.container, { classList: [ 'global' ] });
+
+    window.ipc.on('menu click', (...args: any[]) => {
+      if(args && args.length > 1) {
+        const id = args[1];
+        if(id.startsWith('window')) {
+          console.log('menu click windows is called ..');
+
+          if(this.current) {
+            const direction: string = id === windowSelectPrevTab ? 'prev' : 'next';
+            (getService(bodyLayoutServiceId) as BodyLayoutService).changeTab(this.current.uid, direction);
+          }
+        }
+      }
+    });
 
     this.parent.appendChild(this.container);
   }

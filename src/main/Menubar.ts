@@ -16,7 +16,8 @@ import {
   editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId, editPrevChangeMenuId, editNextChangeMenuId,
   pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
-  toggleWrapLinesMenuId
+  toggleWrapLinesMenuId,
+  windowSelectPrevTab, windowSelectNextTab,
 } from '../common/Types';
 import { keyBinding } from '../common/globals';
 
@@ -374,7 +375,24 @@ export class Menubar {
   addWindowMenu(options: MenuItemConstructorOptions[]): void {
     options.push({
       label: 'Window',
-      submenu: [],
+      submenu: [
+        {
+          id: windowSelectPrevTab,
+          label: 'Select Previous Tab',
+          accelerator: keyBinding[windowSelectPrevTab][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', windowSelectPrevTab);
+          }
+        },
+        {
+          id: windowSelectNextTab,
+          label: 'Select Next Tab',
+          accelerator: keyBinding[windowSelectNextTab][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', windowSelectNextTab);
+          }
+        },
+      ],
     });
   }
 

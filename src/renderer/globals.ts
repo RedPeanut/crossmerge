@@ -29,6 +29,9 @@ import {
   collapseAllFoldersMenuId,
 
   toggleWrapLinesMenuId,
+
+  windowSelectPrevTab,
+  windowSelectNextTab,
 } from "../common/Types";
 
 export const defaultMenubarEnable: MenubarEnable = {
@@ -61,6 +64,9 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: collapseAllFoldersMenuId, enable: false },
 
     { id: toggleWrapLinesMenuId, enable: false },
+
+    { id: windowSelectPrevTab, enable: false },
+    { id: windowSelectNextTab, enable: false },
   ],
   'folder': [
     { id: fileSaveLeftMenuId, enable: false },

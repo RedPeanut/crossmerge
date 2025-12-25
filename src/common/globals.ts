@@ -31,6 +31,9 @@ import {
   collapseAllFoldersMenuId,
 
   toggleWrapLinesMenuId,
+
+  windowSelectPrevTab,
+  windowSelectNextTab,
 } from "./Types";
 
 // { id: [Win, Mac] }
@@ -63,3 +66,6 @@ keyBinding[expandAllFoldersMenuId] = [ 'Ctrl+=', 'Cmd+Ctrl+=' ];
 keyBinding[collapseAllFoldersMenuId] = [ 'Ctrl+-', 'Cmd+Ctrl+-' ];
 
 keyBinding[toggleWrapLinesMenuId] = [ 'Alt+Z', 'Alt+Z' ];
+
+keyBinding[windowSelectPrevTab] = [ 'Ctrl+Shift+Tab', 'Ctrl+Shift+Tab' ];
+keyBinding[windowSelectNextTab] = [ 'Ctrl+Tab', 'Ctrl+Tab' ];

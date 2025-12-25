@@ -189,6 +189,10 @@ export const collapseAllFoldersMenuId = 'actions.collapseAllFolders';
 // view
 export const toggleWrapLinesMenuId = 'view.toggleWrapLines';
 
+// window
+export const windowSelectPrevTab = 'window.selectPrevTab';
+export const windowSelectNextTab = 'window.selectNextTab';
+
 // type State = 'empty' | typeof CompareItemType;
 export interface MenubarEnableElem { id: string, enable: boolean }
 export interface MenubarEnable { [id: string]: MenubarEnableElem[] }

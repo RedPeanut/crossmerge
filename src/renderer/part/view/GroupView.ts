@@ -2,7 +2,10 @@ import { Tabs } from "../tab/Tabs";
 import { $ } from "../../util/dom";
 import { CompareOptions, Group } from "../../Types";
 import { Compares } from "../compare/Compares";
-import { CompareData, CompareFolderData, CompareItem, CompareItemOptions, CompareItemType } from "../../../common/Types";
+import { CompareData, CompareFolderData, CompareItem, CompareItemOptions, CompareItemType,
+  windowSelectPrevTab, windowSelectNextTab,
+  MenubarEnableElem
+} from "../../../common/Types";
 import { getService, iconbarServiceId, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId } from "../../Service";
 import { StatusbarPartService } from "../StatusbarPart";
 import { MainLayoutService } from "../../layout/MainLayout";
@@ -76,6 +79,11 @@ export class GroupView {
     (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable[this.group[i].type]);
     (getService(iconbarServiceId) as IconbarService).enable(this.group[i].type);
 
+    const enable: boolean = this.group.length > 1;
+    const enables: MenubarEnableElem[] = [{ id: windowSelectPrevTab, enable }, { id: windowSelectNextTab, enable }];
+    window.ipc.send('menu enable', enables);
+    (getService(menubarServiceId) as MenubarService).enable(enables);
+
     // this.updateStatusbar(i);
     (getService(mainLayoutServiceId) as MainLayoutService).setCurrent(this.group[i]);
     if(i > -1) {
@@ -145,5 +153,20 @@ export class GroupView {
     if(i > -1) {
       this.compares.reCompare(id, options);
     }
+  }
+
+  changeTab(id: string, direction: string) {
+    if(this.group.length < 2) return;
+
+    let i = this.group.findIndex((v, i) => { return v.uid === id });
+
+    if(direction === 'prev') {
+      i -= 1;
+      if(i < 0) return;
+    } else {
+      i += 1;
+      if(i > this.group.length-1) return;
+    }
+    this.active(this.group[i].uid);
   }
 }
