@@ -62,20 +62,8 @@ export class HistoryPopup extends Popup {
     okBtn.classList.add('disabled');
     okBtn.addEventListener('click', (e: PointerEvent) => {
       const el = e.currentTarget as HTMLElement;
-      // if(el.classList.contains('disabled')) return;
-
-      // change input value with item value in current folder-view
-      const inputs = document.querySelectorAll('.compares .active .input input');
-      // console.log(typeof inputs);
-      const left = inputs[0] as HTMLInputElement;
-      const right = inputs[1] as HTMLInputElement;
-
-      left.value = (this.table.querySelector('tr.on td:nth-of-type(1)') as HTMLElement).textContent;
-      right.value = (this.table.querySelector('tr.on td:nth-of-type(2)') as HTMLElement).textContent;
-
-      // close popup & re-compare
-      this.close();
-      (getService(mainLayoutServiceId) as MainLayoutService).reCompare();
+      if(el.classList.contains('disabled')) return;
+      this.close_n_reCompare();
     });
 
     const cancelBtn = this.cancelBtn = $('button');
@@ -111,6 +99,9 @@ export class HistoryPopup extends Popup {
         (e.currentTarget as HTMLElement).classList.add('on');
         this.okBtn.classList.remove('disabled');
       });
+      tr.addEventListener('dblclick', (e: PointerEvent) => {
+        this.close_n_reCompare();
+      });
       td = $('td'); td.textContent = history.folder[i].left; tr.appendChild(td);
       td = $('td'); td.textContent = history.folder[i].right; tr.appendChild(td);
       this.tbody.appendChild(tr);
@@ -119,4 +110,18 @@ export class HistoryPopup extends Popup {
     this.show();
   }
 
+  close_n_reCompare() {
+    // change input value with item value in current folder-view
+    const inputs = document.querySelectorAll('.compares .active .input input');
+    // console.log(typeof inputs);
+    const left = inputs[0] as HTMLInputElement;
+    const right = inputs[1] as HTMLInputElement;
+
+    left.value = (this.table.querySelector('tr.on td:nth-of-type(1)') as HTMLElement).textContent;
+    right.value = (this.table.querySelector('tr.on td:nth-of-type(2)') as HTMLElement).textContent;
+
+    // close popup & re-compare
+    this.close();
+    (getService(mainLayoutServiceId) as MainLayoutService).reCompare();
+  }
 }
