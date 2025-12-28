@@ -18,6 +18,7 @@ import { EncodingItem as EncodingItem } from '../Types';
 import { defaultMenubarEnable } from '../globals';
 import { IconbarService } from '../part/Iconbar';
 import { HistoryPopup } from '../popup/HistoryPopup';
+import { broadcast } from '../Broadcast';
 
 export const TITLEBAR_HEIGHT = 83;
 export const STATUSBAR_HEIGHT = 22;
@@ -193,7 +194,7 @@ export class MainLayout extends Layout implements MainLayoutService {
 
     this.historyPopup = new HistoryPopup(this.container, { classList: [ 'global' ] });
 
-    window.ipc.on('menu click', (...args: any[]) => {
+    const menuClickHandler = function(...args: any[]) {
       if(args && args.length > 1) {
         const id = args[1];
         if(id.startsWith('window')) {
@@ -204,8 +205,10 @@ export class MainLayout extends Layout implements MainLayoutService {
           }
         }
       }
-    });
+    };
 
+    window.ipc.on('menu click', menuClickHandler.bind(this));
+    broadcast.addListener('menu click', menuClickHandler.bind(this));
     this.parent.appendChild(this.container);
   }
 
