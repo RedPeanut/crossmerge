@@ -881,7 +881,7 @@ export class FolderView implements CompareView {
     list_scrollable.appendChild(list_changes);
     list_scrollable.appendChild(list_column_rhs);
 
-    // TODO: customized scrollbar in list
+    // customized scrollbar in list
     list_scrollable.addEventListener('scroll', (e: Event) => {
       this.throttle_scrolling(e);
     });
