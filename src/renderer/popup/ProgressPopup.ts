@@ -200,11 +200,13 @@ export class ProgressPopup extends Popup {
             'Confirm replace',
             `A file being copied already exists.<br/><br/>
 Would like to replace the existing file<br/><br/>
-${from}<br/>
-${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtime}<br/><br/>
-with this file?<br/><br/>
 ${to}<br/>
-${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtime}<br/>`,
+${resultMap.resultData.dst.size} bytes modified: ${resultMap.resultData.dst.mtime}<br/>
+<br/>
+with this file?<br/><br/>
+${from}<br/>
+${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtime}<br/>
+`,
             [
               {
                 label: 'Yes',
