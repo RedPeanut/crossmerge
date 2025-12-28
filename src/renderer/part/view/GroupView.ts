@@ -39,14 +39,6 @@ export class GroupView {
     return el;
   }
 
-  addGroup(group: Group) {
-    this.tabs.addGroup(group);
-    this.compares.addGroup(group);
-    this.group.splice(0, 0, ...group);
-    this.active(this.group[0].uid);
-    // this.updateStatusbar(0);
-  }
-
   addItem(item: CompareItem, options?: CompareItemOptions): FileView|FolderView {
     this.tabs.addItem(item);
     const v = this.compares.addItem(item, options);
