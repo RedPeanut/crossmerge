@@ -56,10 +56,13 @@ export class Tabs {
         clientLeft, clientTop, clientWidth, clientHeight,
       } = el;
 
+      // console.log(`scrollWidth: ${scrollWidth}, clientWidth: ${clientWidth} `);
+
       let _scrollLeft;
-      if(scrollLeft + deltaX > scrollLeft)
-        _scrollLeft = scrollLeft;
-      else if(scrollLeft + deltaX < 0)
+      if(scrollLeft + deltaX + clientWidth > scrollWidth) {
+        // set to max scroll left
+        _scrollLeft = scrollWidth - clientWidth;
+      } else if(scrollLeft + deltaX < 0)
         _scrollLeft = 0;
       else
         _scrollLeft = scrollLeft + deltaX;
@@ -95,10 +98,12 @@ export class Tabs {
     scrollLeft, scrollTop, scrollWidth, scrollHeight,
     clientLeft, clientTop, clientWidth, clientHeight,
   }): void {
-    if(scrollWidth <= clientWidth) return;
+    // console.log('scrollLeft =', scrollLeft);
+    // if(scrollWidth <= clientWidth) return;
     // if(scrollLeft+clientWidth > scrollWidth) return;
     this.scrollable.scrollLeft = scrollLeft;
     this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
+    // console.log('this.slider.style.left =', this.slider.style.left);
   }
 
   scrolling(e: Event): void {
