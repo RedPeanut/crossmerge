@@ -1,3 +1,4 @@
+import { renderer } from "../..";
 import { CompareItem } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
@@ -22,19 +23,53 @@ export class Tabs {
 
   tabs: Tab[] = [];
 
-  throttle_scrolling: DebouncedFunc<(...args: any[]) => any>;
+  // throttle_scrolling: DebouncedFunc<(...args: any[]) => any>;
 
   constructor(parent: HTMLElement) {
     this.parent = parent;
-    this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
+    // this.throttle_scrolling = _.throttle(this.scrolling.bind(this), 50);
   }
 
   create(): HTMLElement {
     const el = this.element = $('.tabs');
     const scrollable = this.scrollable = $('.scrollable');
-    scrollable.addEventListener('scroll', (e: Event) => {
+
+    /* scrollable.addEventListener('scroll', (e: Event) => {
       this.throttle_scrolling(e);
+    }); */
+
+    // delegate scroll to mouse wheel event for window support (throttling is better?)
+    scrollable.addEventListener('wheel', (e: WheelEvent) => {
+      // console.log('wheel event is called .., e =', e);
+
+      let deltaX: number, deltaY: number;
+      if(renderer.process.platform === 'win32') {
+        deltaX = e.deltaY;
+      } else {
+        deltaX = e.deltaX;
+      }
+
+      // consume all event n write
+      const el = e.currentTarget as HTMLElement;
+      const {
+        scrollLeft, scrollTop, scrollWidth, scrollHeight,
+        clientLeft, clientTop, clientWidth, clientHeight,
+      } = el;
+
+      let _scrollLeft;
+      if(scrollLeft + deltaX > scrollLeft)
+        _scrollLeft = scrollLeft;
+      else if(scrollLeft + deltaX < 0)
+        _scrollLeft = 0;
+      else
+        _scrollLeft = scrollLeft + deltaX;
+
+      this.writeScrollPosition({
+        scrollLeft: _scrollLeft, scrollTop, scrollWidth, scrollHeight,
+        clientLeft, clientTop, clientWidth, clientHeight
+      });
     });
+
     scrollable.addEventListener('mouseover', (e: MouseEvent) => {});
     scrollable.addEventListener('mouseleave', (e: MouseEvent) => {});
 
@@ -54,6 +89,16 @@ export class Tabs {
     el.appendChild(scrollbar_h);
     el.appendChild(arrow_right);
     return el;
+  }
+
+  writeScrollPosition({
+    scrollLeft, scrollTop, scrollWidth, scrollHeight,
+    clientLeft, clientTop, clientWidth, clientHeight,
+  }): void {
+    if(scrollWidth <= clientWidth) return;
+    // if(scrollLeft+clientWidth > scrollWidth) return;
+    this.scrollable.scrollLeft = scrollLeft;
+    this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
   }
 
   scrolling(e: Event): void {
