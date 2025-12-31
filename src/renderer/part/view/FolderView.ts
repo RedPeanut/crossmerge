@@ -419,8 +419,8 @@ export class FolderView implements CompareView {
       path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
       path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
 
-      if(path_lhs.endsWith('/')) path_lhs = path_lhs.substring(0, path_lhs.length-1);
-      if(path_rhs.endsWith('/')) path_rhs = path_rhs.substring(0, path_rhs.length-1);
+      if(path_lhs.endsWith(renderer.path.sep)) path_lhs = path_lhs.substring(0, path_lhs.length-1);
+      if(path_rhs.endsWith(renderer.path.sep)) path_rhs = path_rhs.substring(0, path_rhs.length-1);
 
       const lstat_lhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_lhs);
       const lstat_rhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_rhs);
