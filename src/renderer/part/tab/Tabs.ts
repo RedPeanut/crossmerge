@@ -67,10 +67,9 @@ export class Tabs {
       else
         _scrollLeft = scrollLeft + deltaX;
 
-      this.writeScrollPosition({
-        scrollLeft: _scrollLeft, scrollTop, scrollWidth, scrollHeight,
-        clientLeft, clientTop, clientWidth, clientHeight
-      });
+      this.scrollable.scrollLeft = _scrollLeft;
+      // this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
+      this.slider.style.left = Math.ceil(_scrollLeft * clientWidth / scrollWidth) + 'px';
     });
 
     scrollable.addEventListener('mouseover', (e: MouseEvent) => {});
@@ -92,19 +91,6 @@ export class Tabs {
     el.appendChild(scrollbar_h);
     el.appendChild(arrow_right);
     return el;
-  }
-
-  writeScrollPosition({
-    scrollLeft, scrollTop, scrollWidth, scrollHeight,
-    clientLeft, clientTop, clientWidth, clientHeight,
-  }): void {
-    // console.log('scrollLeft =', scrollLeft);
-    // if(scrollWidth <= clientWidth) return;
-    // if(scrollLeft+clientWidth > scrollWidth) return;
-    this.scrollable.scrollLeft = scrollLeft;
-    // this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
-    this.slider.style.left = Math.ceil(scrollLeft * clientWidth / scrollWidth) + 'px';
-    // console.log('this.slider.style.left =', this.slider.style.left);
   }
 
   scrolling(e: Event): void {
