@@ -68,9 +68,10 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
     console.log('dimension =', dimension);
     this.splitView.layout(dimension.width); // Orientation.HORIZONTAL
   } */
+
   layout(offset: number, size: number): void {
-    let dimension = dom.getClientArea(this.container);
     // console.log(`offset = ${offset}, size = ${size}`);
+    const dimension = dom.getClientArea(this.container);
     // console.log('dimension =', dimension);
     if(this.groupView) this.groupView.layout();
   }
