@@ -255,7 +255,7 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   remove(id: string): void {
     if(this.groupView) {
-      const length = this.groupView.removeGroup(id);
+      const length = this.groupView.removeItem(id);
 
       if(length === 0) {
         this.container.removeChild(this.groupView.element);

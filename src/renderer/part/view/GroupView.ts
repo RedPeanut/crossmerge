@@ -93,7 +93,7 @@ export class GroupView {
    * @param id
    * @returns remains number of group for {@link GroupView} handling in {@link BodyLayout}
    */
-  removeGroup(id: string): number {
+  removeItem(id: string): number {
 
     const i = this.group.findIndex((v, i) => { return v.uid === id });
     if(i > -1) {
