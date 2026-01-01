@@ -110,15 +110,7 @@ export class Tabs {
     this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
   }
 
-  addItem(item: CompareItem): Tab {
-    this.tabs.map((tab) => { tab.setClass({ active: false }); });
-
-    const scrollable = this.scrollable;
-    const tab: Tab = new Tab(scrollable, item);
-    scrollable.insertBefore(tab.create(), scrollable.firstChild);
-    this.tabs.splice(0, 0, tab);
-    tab.setClass({ active: true });
-
+  setScrollVisibilyty() {
     const {
       clientLeft, clientTop, clientWidth, clientHeight,
       scrollLeft, scrollTop, scrollWidth, scrollHeight,
@@ -144,8 +136,23 @@ export class Tabs {
         console.log((clientWidth / scrollWidth * 100).toFixed(2) + '%');
         this.slider.style.width = (clientWidth / scrollWidth * 100).toFixed(2) + '%';
       }, 10);
+    } else {
+      this.arrow_left.style.display = 'none';
+      this.arrow_right.style.display = 'none';
+      this.scrollbar_h.classList.remove('visible');
+      this.scrollbar_h.classList.add('invisible');
     }
+  }
 
+  addItem(item: CompareItem): Tab {
+    this.tabs.map((tab) => { tab.setClass({ active: false }); });
+
+    const scrollable = this.scrollable;
+    const tab: Tab = new Tab(scrollable, item);
+    scrollable.insertBefore(tab.create(), scrollable.firstChild);
+    this.tabs.splice(0, 0, tab);
+    tab.setClass({ active: true });
+    this.setScrollVisibilyty();
     return tab;
   }
 
@@ -180,19 +187,6 @@ export class Tabs {
     this.scrollable.removeChild(this.tabs[idx].element);
     this.tabs.splice(idx, 1);
     // delete this.tabs[idx];
-
-    const {
-      scrollLeft, scrollTop, scrollWidth, scrollHeight,
-      clientLeft, clientTop, clientWidth, clientHeight,
-      offsetLeft, offsetTop, offsetWidth, offsetHeight
-    } = this.scrollable;
-    if(scrollWidth <= clientWidth) {
-      this.arrow_left.style.display = 'none';
-      this.arrow_right.style.display = 'none';
-      this.scrollbar_h.classList.remove('visible');
-      this.scrollbar_h.classList.add('invisible');
-    } else {
-      this.slider.style.width = (clientWidth / scrollWidth * 100).toFixed(2) + '%';
-    }
+    this.setScrollVisibilyty();
   }
 }
