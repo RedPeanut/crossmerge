@@ -2,6 +2,7 @@ import { renderer } from "../..";
 import { CompareItem } from "../../../common/Types";
 import { Group } from "../../Types";
 import { $ } from "../../util/dom";
+import * as dom from "../../util/dom";
 import { Tab } from "./Tab";
 import { DebouncedFunc } from "lodash";
 import _ from "lodash";
@@ -240,7 +241,12 @@ export class Tabs {
     return tab;
   }
 
-  layout(): void {}
+  layout(): void {
+    // console.log('layout() is called ..');
+    // const dimension = dom.getClientArea(this.element);
+    // console.log('dimension =', dimension);
+    this.setScrollVisibilyty();
+  }
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {
     for(let i = 0; i < this.tabs.length; i++) {
