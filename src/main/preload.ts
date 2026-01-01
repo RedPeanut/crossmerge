@@ -106,5 +106,6 @@ const electronHandler = {
 };
 
 contextBridge.exposeInMainWorld('ipc', electronHandler);
+ipcRenderer.setMaxListeners(0);
 
 export type ElectronHandler = typeof electronHandler;
