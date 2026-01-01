@@ -102,7 +102,8 @@ export class Tabs {
     // if(scrollWidth <= clientWidth) return;
     // if(scrollLeft+clientWidth > scrollWidth) return;
     this.scrollable.scrollLeft = scrollLeft;
-    this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
+    // this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
+    this.slider.style.left = Math.ceil(scrollLeft * clientWidth / scrollWidth) + 'px';
     // console.log('this.slider.style.left =', this.slider.style.left);
   }
 
