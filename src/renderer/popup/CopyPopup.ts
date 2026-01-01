@@ -153,6 +153,7 @@ export class CopyPopup extends Popup {
     this.contentArea.appendChild(buttonArea);
 
     this.progressPopup = new ProgressPopup(this.container);
+    this.progressPopup.on('finished', () => { this.close(); });
     // this.dialog = new Dialog(this.container);
   }
 

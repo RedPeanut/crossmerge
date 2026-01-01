@@ -78,7 +78,8 @@ export class ProgressPopup extends Popup {
     const closeBtn = $('button');
     closeBtn.innerHTML = 'Close';
     closeBtn.addEventListener('click', () => {
-      this.close();
+      // this.close();
+      this.emit('finished');
     });
     right.appendChild(cancelBtn);
     right.appendChild(closeBtn);
@@ -184,7 +185,7 @@ export class ProgressPopup extends Popup {
             this.index++;
             this.next();
           } else {
-            this.emit('finished');
+            // this.emit('finished');
           }
         } else if(this.noToAll) {
           this.addRow('warning', 'The existing file was not replaced', relPathName);
@@ -192,7 +193,7 @@ export class ProgressPopup extends Popup {
             this.index++;
             this.next();
           } else {
-            this.emit('finished');
+            // this.emit('finished');
           }
         } else {
           this.dialog.open(
@@ -216,7 +217,7 @@ ${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtim
                     this.index++;
                     this.next();
                   } else {
-                    this.emit('finished');
+                    // this.emit('finished');
                   }
                 }
               },
@@ -229,7 +230,7 @@ ${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtim
                     this.index++;
                     this.next();
                   } else {
-                    this.emit('finished');
+                    // this.emit('finished');
                   }
                 }
               },
@@ -241,7 +242,7 @@ ${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtim
                     this.index++;
                     this.next();
                   } else {
-                    this.emit('finished');
+                    // this.emit('finished');
                   }
                 }
               },
@@ -253,6 +254,8 @@ ${resultMap.resultData.src.size} bytes modified: ${resultMap.resultData.src.mtim
                   if(this.index < this.files.length-1) {
                     this.index++;
                     this.next();
+                  } else {
+                    // this.emit('finished');
                   }
                 }
               },
