@@ -17,6 +17,9 @@ export class Tabs {
   slider: HTMLElement;
   arrow_left: HTMLElement;
   arrow_right: HTMLElement;
+  arrow_scrollInterval: NodeJS.Timeout;
+  arrow_pressTimer: NodeJS.Timeout;
+  arrow_isLongPress: boolean = false;
 
   // clientWidth: number;
   // scrollWidth: number;
@@ -58,10 +61,9 @@ export class Tabs {
 
       // console.log(`scrollWidth: ${scrollWidth}, clientWidth: ${clientWidth} `);
 
-      let _scrollLeft;
+      let _scrollLeft, MAX_SCROLL_LEFT = scrollWidth - clientWidth;
       if(scrollLeft + deltaX + clientWidth > scrollWidth) {
-        // set to max scroll left
-        _scrollLeft = scrollWidth - clientWidth;
+        _scrollLeft = MAX_SCROLL_LEFT;
       } else if(scrollLeft + deltaX < 0)
         _scrollLeft = 0;
       else
@@ -70,13 +72,77 @@ export class Tabs {
       this.scrollable.scrollLeft = _scrollLeft;
       // this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
       this.slider.style.left = Math.ceil(_scrollLeft * clientWidth / scrollWidth) + 'px';
+
+      if(_scrollLeft === 0) {
+        this.arrow_left.classList.add('disabled');
+        this.arrow_right.classList.remove('disabled');
+      } else if(_scrollLeft === MAX_SCROLL_LEFT) {
+        this.arrow_left.classList.remove('disabled');
+        this.arrow_right.classList.add('disabled');
+      } else {
+        this.arrow_left.classList.remove('disabled');
+        this.arrow_right.classList.remove('disabled');
+      }
     });
 
     scrollable.addEventListener('mouseover', (e: MouseEvent) => {});
     scrollable.addEventListener('mouseleave', (e: MouseEvent) => {});
 
     const arrow_left = this.arrow_left = $('.arrow.left.codicon.codicon-triangle-left');
+    arrow_left.addEventListener('mousedown', (e: MouseEvent) => {
+      // console.log('mousedown is called ..');
+      this.arrow_isLongPress = false;
+
+      this.arrow_pressTimer = setTimeout(() => {
+        this.arrow_isLongPress = true;
+        this.startScrolling('left');
+      }, 200);
+    });
+    arrow_left.addEventListener('mouseup', (e: MouseEvent) => {
+      // console.log('mouseup is called ..');
+      clearTimeout(this.arrow_pressTimer);
+
+      if(!this.arrow_isLongPress) {
+        this.handleSingleClick('left');
+      } else {
+        this.stopScrolling();
+      }
+    });
+    arrow_left.addEventListener('mouseleave', (e: MouseEvent) => {
+      // console.log('mouseleave is called ..');
+      clearTimeout(this.arrow_pressTimer);
+      if(this.arrow_isLongPress) {
+        this.stopScrolling();
+      }
+    });
+
     const arrow_right = this.arrow_right = $('.arrow.right.codicon.codicon-triangle-right');
+    arrow_right.addEventListener('mousedown', (e: MouseEvent) => {
+      // console.log('mousedown is called ..');
+      this.arrow_isLongPress = false;
+
+      this.arrow_pressTimer = setTimeout(() => {
+        this.arrow_isLongPress = true;
+        this.startScrolling('right');
+      }, 200);
+    });
+    arrow_right.addEventListener('mouseup', (e: MouseEvent) => {
+      // console.log('mouseup is called ..');
+      clearTimeout(this.arrow_pressTimer);
+
+      if(!this.arrow_isLongPress) {
+        this.handleSingleClick('right');
+      } else {
+        this.stopScrolling();
+      }
+    });
+    arrow_right.addEventListener('mouseleave', (e: MouseEvent) => {
+      // console.log('mouseleave is called ..');
+      clearTimeout(this.arrow_pressTimer);
+      if(this.arrow_isLongPress) {
+        this.stopScrolling();
+      }
+    });
 
     const scrollbar_h = this.scrollbar_h = $('.scrollbar.horizontal.invisible');
     const slider = this.slider = $('.slider');
@@ -91,6 +157,24 @@ export class Tabs {
     el.appendChild(scrollbar_h);
     el.appendChild(arrow_right);
     return el;
+  }
+
+  handleSingleClick(direction: string) {
+    const wheelEvent = new WheelEvent('wheel', { deltaX: direction === 'left' ? -50 : 50 });
+    this.scrollable.dispatchEvent(wheelEvent);
+  }
+
+  startScrolling(direction: string) {
+    this.stopScrolling();
+
+    this.arrow_scrollInterval = setInterval(() => {
+      const wheelEvent = new WheelEvent('wheel', { deltaX: direction === 'left' ? -10 : 10 });
+      this.scrollable.dispatchEvent(wheelEvent);
+    }, 10);
+  }
+
+  stopScrolling() {
+    clearInterval(this.arrow_scrollInterval);
   }
 
   scrolling(e: Event): void {

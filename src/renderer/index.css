@@ -404,6 +404,7 @@ body { height: 100%; }
   border-style: solid;
   border-color: rgb(176,176,176);
 }
+.tabs .arrow.disabled { color: #999; }
 .tabs .arrow.left { border-width: 0 1px 1px 0; }
 .tabs .arrow.right { border-width: 0 0 1px 1px; }
 
