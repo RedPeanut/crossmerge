@@ -180,9 +180,9 @@ export class Tab {
     const uid = e.dataTransfer.getData('text/plain');
     console.log('uid =', uid);
 
-    // move tab
     this.updateDropFeedback(e, false);
 
+    // move tab
     console.log('this.tabs.toString() =', this.tabs.toString());
     let from = this.tabs.findIndex((v: Tab, i: number) => v.item.uid === uid);
     let to = this.tabs.findIndex((v: Tab, i: number) => v.item.uid === this.item.uid);
