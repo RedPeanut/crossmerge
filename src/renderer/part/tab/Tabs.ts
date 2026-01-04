@@ -281,6 +281,30 @@ export class Tabs {
     this.setScrollVisibilyty();
   }
 
+  moveTab(from: number, to: number) {
+    if(from < to) {
+      // insertBefore(newNode, referenceNode): insert new node before reference
+      // insertBefore(from, to+1)
+      this.scrollable.insertBefore(this.scrollable.children[from], this.scrollable.children[to+1]);
+      // this.scrollable.children[to].after(this.scrollable.children[from]);
+      // console.log('[before] this.tabs.toString() =', this.tabs.toString());
+      this.tabs.splice(to+1, 0, this.tabs[from]);
+      this.tabs.splice(from, 1);
+      // console.log('[after] this.tabs.toString() =', this.tabs.toString());
+      this.active(this.tabs[to].item.uid);
+    } else if(from > to) {
+      // insertBefore(from, to)
+      this.scrollable.insertBefore(this.scrollable.children[from], this.scrollable.children[to]);
+      // console.log('[before] this.tabs.toString() =', this.tabs.toString());
+      const deleted = this.tabs.splice(from, 1);
+      this.tabs.splice(to, 0, ...deleted);
+      // console.log('[after] this.tabs.toString() =', this.tabs.toString());
+      this.active(this.tabs[to].item.uid);
+    } else {
+      // nothing to if equal
+    }
+  }
+
   toString(): string {
 
     let tabsStr = '';

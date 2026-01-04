@@ -161,4 +161,8 @@ export class GroupView {
     }
     this.active(this.group[i].uid);
   }
+
+  moveTab(from: number, to: number) {
+    this.tabs.moveTab(from, to);
+  }
 }

@@ -192,7 +192,7 @@ export class Tab {
 
     if(to > -1) {
       const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-      // bodyLayoutService.moveTab(from, to);
+      bodyLayoutService.moveTab(from, to);
     }
   }
 
