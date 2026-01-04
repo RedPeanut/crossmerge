@@ -417,6 +417,7 @@ body { height: 100%; }
   display: flex;
   align-items: center;
   padding: 0 8px;
+  position: relative;
 }
 .tabs .tab .label { margin-left: 5px; white-space: nowrap; }
 .tabs .tab:hover { cursor: pointer; }
@@ -428,6 +429,21 @@ body { height: 100%; }
 
 .tabs .tab.active { background-color: rgb(240,240,240); border-bottom-width: 0; }
 .tabs .tab:last-child { /* border-right-width: 1px; */ }
+
+.tabs .tab.drop-target-left::after,
+.tabs .tab.drop-target-right::before {
+  content: '';
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width: 1px;
+	background-color: rgb(88,157,229);
+}
+
+.tabs .tab.drop-target-right::before { left: 0; }
+.tabs .tab.drop-target-left::after {
+  right: -1px; /* -1 to connect with drop-target-right */
+}
 
 .compares {
   /* height: 100%; */

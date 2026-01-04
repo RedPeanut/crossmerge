@@ -233,7 +233,8 @@ export class Tabs {
     this.tabs.map((tab) => { tab.setClass({ active: false }); });
 
     const scrollable = this.scrollable;
-    const tab: Tab = new Tab(scrollable, item);
+    const tab: Tab = new Tab(scrollable, item, this.tabs);
+
     scrollable.insertBefore(tab.create(), scrollable.firstChild);
     this.tabs.splice(0, 0, tab);
     tab.setClass({ active: true });
@@ -278,5 +279,20 @@ export class Tabs {
     this.tabs.splice(idx, 1);
     // delete this.tabs[idx];
     this.setScrollVisibilyty();
+  }
+
+  toString(): string {
+
+    let tabsStr = '';
+    for(let i = 0; i < this.tabs.length; i++) {
+      tabsStr += `\n, [${i}] ${this.tabs[i].toString()}`
+    }
+    tabsStr = tabsStr.replace('\n, ', '');
+
+    return `Tabs [
+      tabs = [
+        ${tabsStr}
+      ]
+    ]`;
   }
 }
