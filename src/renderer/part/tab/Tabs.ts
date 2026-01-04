@@ -268,9 +268,35 @@ export class Tabs {
   }
 
   active(id: string) {
+    let findIndex = -1;
     for(let i = 0; i < this.tabs.length; i++) {
-      if(this.tabs[i].item.uid === id) this.tabs[i].setClass({ active: true });
-      else this.tabs[i].setClass({ active: false });
+      if(this.tabs[i].item.uid === id) {
+        this.tabs[i].setClass({ active: true });
+        findIndex = i;
+      } else this.tabs[i].setClass({ active: false });
+    }
+
+    // HERE: adjust scroll pos when change tab if necessary
+    const {
+      clientLeft, clientTop, clientWidth, clientHeight,
+      scrollLeft, scrollTop, scrollWidth, scrollHeight,
+    } = this.scrollable;
+
+    if(scrollWidth > clientWidth) {
+      const {
+        offsetLeft, offsetTop, offsetWidth, offsetHeight
+      } = this.tabs[findIndex].element;
+      console.log(`offsetLeft = ${offsetLeft}, offsetWidth = ${offsetWidth}`);
+
+      // touch right
+      if(offsetLeft + offsetWidth > clientWidth) {
+        this.scrollable.scrollLeft = offsetLeft;
+      }
+      // touch left
+      else if(offsetLeft < this.scrollable.scrollLeft) {
+        this.scrollable.scrollLeft = offsetLeft;
+      }
+      this.slider.style.left = Math.ceil(this.scrollable.scrollLeft * clientWidth / scrollWidth) + 'px';
     }
   }
 
