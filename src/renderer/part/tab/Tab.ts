@@ -15,7 +15,7 @@ export class Tab {
   element: HTMLElement;
   item: CompareItem;
   label: HTMLElement;
-  mark: HTMLElement;
+  changed_mark: HTMLElement;
 
   constructor(parent: HTMLElement, item: CompareItem) {
     this.parent = parent;
@@ -78,10 +78,10 @@ export class Tab {
     label.innerHTML = `No ${this.item.type} x 2`;
     el.appendChild(label);
 
-    const mark = this.mark = $('.mark');
+    const changed_mark = this.changed_mark = $('.changed-mark');
     const span = $('span.codicon.codicon-circle-filled');
-    mark.appendChild(span);
-    el.appendChild(mark);
+    changed_mark.appendChild(span);
+    el.appendChild(changed_mark);
     return el;
   }
 
@@ -115,9 +115,10 @@ export class Tab {
   }
 
   setChanged(): void {
-    this.mark.style.display = 'flex';
+    this.changed_mark.style.display = 'flex';
   }
+
   clearChanged(): void {
-    this.mark.style.display = 'none';
+    this.changed_mark.style.display = 'none';
   }
 }
