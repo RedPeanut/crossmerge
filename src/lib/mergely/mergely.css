@@ -1,6 +1,6 @@
 .mergely-editor .CodeMirror {
   line-height: 16px;
-  font-size: 12px;
+  font-size: 11px;
   height: auto;
   width: 100%;
 }
@@ -78,7 +78,7 @@
 /* ------------------------------------------------------- */
 
 .mergely-editor .CodeMirror-code {
-  color: #717171;
+  /* color: #717171; */
 }
 .mergely-editor .CodeMirror {
   border: 1px solid #ccc;
@@ -148,11 +148,11 @@
 }
 /* ind is an inline delete */
 .mergely-editor .mergely.ch.ind.lhs {
-  text-decoration: line-through;
+  /* text-decoration: line-through; */
   color: #ff0000;
 }
 .mergely-editor .mergely.ch.d.lhs {
-  text-decoration: line-through;
+  /* text-decoration: line-through; */
   color: #ff0000;
 }
 
