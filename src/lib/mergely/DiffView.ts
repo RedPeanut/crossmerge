@@ -12,6 +12,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/scroll/simplescrollbars.js';
 import 'codemirror/addon/scroll/simplescrollbars.css';
+import 'lib/codemirror/cm-show-invisible.js';
 
 import * as dom from './dom';
 import VDoc from './VDoc';

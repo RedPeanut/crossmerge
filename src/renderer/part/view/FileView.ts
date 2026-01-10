@@ -352,6 +352,8 @@ export class FileView extends EventEmitter implements CompareView {
             }
           },
           cmsettings: {
+            showWhitespace: true,
+            showEOL: false,
             scrollbarStyle: 'simple',
             keyMaps: [
               {

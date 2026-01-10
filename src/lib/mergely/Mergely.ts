@@ -29,6 +29,8 @@ export interface MergelyOptions {
   vpcolor?: string;
   license?: string;
   cmsettings?: {
+    showWhitespace?: boolean,
+    showEOL?: boolean,
     styleSelectedText?: boolean,
     mode?: string,
     scrollbarStyle?: keyof CodeMirror.ScrollbarModels,
@@ -60,6 +62,8 @@ const defaultOptions: MergelyOptions = {
   vpcolor: 'rgba(0, 0, 200, 0.5)',
   license: 'lgpl',
   cmsettings: {
+    showWhitespace: false,
+    showEOL: false,
     styleSelectedText: true,
     mode: null,
   },
