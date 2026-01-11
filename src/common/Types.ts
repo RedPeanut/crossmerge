@@ -158,6 +158,7 @@ export const fileSaveLeftMenuId = 'file.saveLeft';
 export const fileSaveRightMenuId = 'file.saveRight';
 export const fileSaveAllMenuId = 'file.saveAll';
 export const filePreferencesMenuId = 'file.preferences';
+export const fileStartOrRecompareMenuId = 'file.startOrRecompare';
 // export const fileCloseMenuId = 'file.close';
 export const fileCloseTabMenuId = 'file.closeTab';
 

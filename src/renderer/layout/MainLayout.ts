@@ -11,8 +11,8 @@ import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId, iconbarServiceId } from '../Service';
 import { CompareFolderData, CompareItem, MenuItem,
-  fileCloseTabMenuId,
-  windowSelectPrevTab, windowSelectNextTab
+  fileStartOrRecompareMenuId, fileCloseTabMenuId,
+  windowSelectPrevTab, windowSelectNextTab,
 } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
 import { EncodingItem as EncodingItem } from '../Types';
@@ -200,7 +200,10 @@ export class MainLayout extends Layout implements MainLayoutService {
         const id = args[1];
 
         if(id.startsWith('file')) {
-          if(id === fileCloseTabMenuId) {
+          if(id === fileStartOrRecompareMenuId) {
+            (getService(bodyLayoutServiceId) as BodyLayoutService).reCompare(this.current.uid, null);
+          }
+          else if(id === fileCloseTabMenuId) {
             const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
             bodyLayoutService.remove(this.current.uid);
           }

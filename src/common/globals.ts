@@ -6,6 +6,7 @@ import {
   fileSaveLeftMenuId,
   fileSaveRightMenuId,
   fileSaveAllMenuId,
+  fileStartOrRecompareMenuId,
   fileCloseTabMenuId,
 
   editCopyMenuId,
@@ -44,6 +45,7 @@ keyBinding[fileSaveLeftMenuId] =  ['Ctrl+1', 'Cmd+1' ];
 keyBinding[fileSaveRightMenuId] =  ['Ctrl+2', 'Cmd+2' ];
 keyBinding[fileSaveAllMenuId] =  ['Ctrl+S', 'Cmd+Alt+S' ];
 keyBinding[filePreferencesMenuId] =  ['Ctrl+P', null ];
+keyBinding[fileStartOrRecompareMenuId] =  ['Ctrl+R', 'Cmd+R' ];
 keyBinding[fileCloseTabMenuId] =  ['Ctrl+W', 'Cmd+W' ];
 
 keyBinding[editUndoMenuId] = [ 'Ctrl+Z', 'Cmd+Z' ];

@@ -4,6 +4,7 @@ import {
   fileSaveLeftMenuId,
   fileSaveRightMenuId,
   fileSaveAllMenuId,
+  fileStartOrRecompareMenuId,
   fileCloseTabMenuId,
 
   editCopyMenuId,
@@ -39,6 +40,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: fileSaveLeftMenuId, enable: false },
     { id: fileSaveRightMenuId, enable: false },
     { id: fileSaveAllMenuId, enable: false },
+    { id: fileStartOrRecompareMenuId, enable: false },
     { id: fileCloseTabMenuId, enable: false },
 
     { id: editUndoMenuId, enable: false },
@@ -72,6 +74,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: fileSaveLeftMenuId, enable: false },
     { id: fileSaveRightMenuId, enable: false },
     { id: fileSaveAllMenuId, enable: false },
+    { id: fileStartOrRecompareMenuId, enable: true },
     { id: fileCloseTabMenuId, enable: true },
 
     { id: editUndoMenuId, enable: true },
@@ -102,6 +105,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: fileSaveLeftMenuId, enable: true },
     { id: fileSaveRightMenuId, enable: true },
     { id: fileSaveAllMenuId, enable: true },
+    { id: fileStartOrRecompareMenuId, enable: true },
     { id: fileCloseTabMenuId, enable: true },
 
     { id: editUndoMenuId, enable: true },

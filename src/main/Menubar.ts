@@ -12,7 +12,7 @@ import { resolveHtmlPath } from './utils';
 import { mainWindow } from './main';
 import {
   appPreferencesMenuId, appQuitMenuId,
-  fileSaveMenuId, fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, /* fileCloseMenuId,  */fileCloseTabMenuId, filePreferencesMenuId,
+  fileSaveMenuId, fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, /* fileCloseMenuId,  */fileCloseTabMenuId, filePreferencesMenuId, fileStartOrRecompareMenuId,
   editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId, editPrevChangeMenuId, editNextChangeMenuId,
   pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
@@ -180,6 +180,16 @@ export class Menubar {
         click: mainWindow.preferenceClickHandler.bind(mainWindow),
       });
     }
+
+    fileSubmenu.push({ type: 'separator' as const });
+    fileSubmenu.push({
+      id: fileStartOrRecompareMenuId,
+      label: 'Start or Recompare',
+      accelerator: keyBinding[fileStartOrRecompareMenuId][keyBindingIdx],
+      click(item, focusedWindow) {
+        mainWindow.send('menu click', fileStartOrRecompareMenuId);
+      }
+    });
 
     fileSubmenu.push({ type: 'separator' as const });
     fileSubmenu.push({
