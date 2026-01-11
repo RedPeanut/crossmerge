@@ -231,16 +231,6 @@ export class FolderView implements CompareView {
       // merging
       if(id.startsWith('merging')) {
 
-        if(id === leftToRightFolderMenuId) {
-          // this.progressPopup.show();
-          return;
-        }
-
-        if(id === rightToLeftFolderMenuId) {
-          // this.dialog.show();
-          return;
-        }
-
         let srcPath = '', dstPath = '';
 
         if(id === leftToRightFolderMenuId) {
