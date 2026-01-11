@@ -154,10 +154,10 @@ export class GroupView {
 
     if(direction === 'prev') {
       i -= 1;
-      if(i < 0) return;
+      if(i < 0) i = this.group.length-1;
     } else {
       i += 1;
-      if(i > this.group.length-1) return;
+      if(i > this.group.length-1) i = 0;
     }
     this.active(this.group[i].uid);
   }
