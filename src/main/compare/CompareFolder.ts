@@ -5,6 +5,7 @@ import { mainWindow } from "../main";
 import { Myers } from "../../lib/robertelder/Myers";
 import Diff from "../../lib/mergely/Diff";
 import DiffParser from "../../lib/mergely/DiffParser";
+import path from "path";
 
 export interface CompareFolderElem {
   side: string;
@@ -146,8 +147,8 @@ export class CompareFolder {
   }
 
   async countCompare(path_lhs: string, path_rhs: string): Promise<number> {
-    const cont_lhs: Buffer = await fs.readFileSync(path_lhs);
-    const cont_rhs: Buffer = await fs.readFileSync(path_rhs);
+    const cont_lhs: Buffer = fs.readFileSync(path_lhs);
+    const cont_rhs: Buffer = fs.readFileSync(path_rhs);
     // console.log('typeof(cont_lhs) =', typeof(cont_lhs));
     // console.log('cont_lhs =', cont_lhs);
     // const ret = new Myers().getShortestEditScript(cont_lhs.toString(), cont_rhs.toString());
@@ -309,8 +310,8 @@ export class CompareFolder {
 
     for(let i = 0; i < folders_filtered.length; i++) {
       const elem: CompareFolderElem = folders_filtered[i];
-      const _path_lhs = path_lhs + '/' + elem.name;
-      const _path_rhs = path_rhs + '/' + elem.name;
+      const _path_lhs = path_lhs + path.sep + elem.name;
+      const _path_rhs = path_rhs + path.sep + elem.name;
       let length;
       if(elem.side.indexOf('left') > -1 && elem.side.indexOf('right') > -1) {
         length = await this.findHaveChildren(_path_lhs, _path_rhs, depth+1);
@@ -331,8 +332,8 @@ export class CompareFolder {
           parent, data: elem, state: 'unchanged', length: length_array[i]
         });
 
-        const _path_lhs = path_lhs + '/' + elem.name;
-        const _path_rhs = path_rhs + '/' + elem.name;
+        const _path_lhs = path_lhs + path.sep + elem.name;
+        const _path_rhs = path_rhs + path.sep + elem.name;
         await this._readdir(_path_lhs, _path_rhs, depth+1, elem);
       } else if(elem.side.indexOf('left') > -1) {
         mainWindow.send('compare folder data', {

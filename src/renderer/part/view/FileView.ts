@@ -248,7 +248,8 @@ export class FileView extends EventEmitter implements CompareView {
     // console.log('keypress event is called ..');
     // console.log('e.keyCode =', e.keyCode);
 
-    if(e.keyCode == 13) {
+    // if(e.keyCode == 13) {
+    if(e.key === 'Enter') {
       // launch comparison
       this.compare();
       return;
