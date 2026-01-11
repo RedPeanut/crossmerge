@@ -15,7 +15,7 @@ import {
   fileSaveMenuId, fileSaveLeftMenuId, fileSaveRightMenuId, fileSaveAllMenuId, /* fileCloseMenuId,  */fileCloseTabMenuId, filePreferencesMenuId, fileStartOrRecompareMenuId,
   editUndoMenuId, editRedoMenuId, editCutMenuId, editCopyMenuId, editPasteMenuId, editSelectAllMenuId, editPrevChangeMenuId, editNextChangeMenuId,
   pushToLeftMenuId, pushToRightMenuId, leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
-  selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
+  selectChangedMenuId, selectByStateMenuId, launchComparisonsMenuId, retestSelectedMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
   toggleWrapLinesMenuId,
   windowSelectPrevTab, windowSelectNextTab,
 } from '../common/Types';
@@ -360,6 +360,14 @@ export class Menubar {
           accelerator: keyBinding[launchComparisonsMenuId][keyBindingIdx],
           click(item, focusedWindow) {
             mainWindow.send('menu click', launchComparisonsMenuId);
+          }
+        },
+        {
+          id: retestSelectedMenuId,
+          label: 'Retest Selected Rows',
+          accelerator: keyBinding[retestSelectedMenuId][keyBindingIdx],
+          click(item, focusedWindow) {
+            mainWindow.send('menu click', retestSelectedMenuId);
           }
         },
         { type: 'separator' },

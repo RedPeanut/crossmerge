@@ -43,6 +43,7 @@ export type MainEvents =
   | 'read folder'
   | 'save file'
   | 'read file'
+  | 'compare file'
 
   // contextmenu
   | 'contextmenu'

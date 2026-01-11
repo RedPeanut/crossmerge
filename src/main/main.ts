@@ -22,6 +22,8 @@ import { StringUtil } from '../common/util/StringUtil';
 import PotDb from 'potdb';
 import default_configs, { ConfigsType } from './configs';
 import iconv from 'iconv-lite';
+import Diff from '../lib/mergely/Diff';
+import DiffParser from '../lib/mergely/DiffParser';
 
 class AppUpdater {
   constructor() {
@@ -101,6 +103,16 @@ class MainWindow {
         const ret = await new CompareFolder(arg.uid).run(arg);
         // console.log('ret =', ret);
       }
+    });
+
+    ipcMain.handle('compare file', (event, args: any[]) => {
+      // console.log('[new] args =', args);
+      const [ path_lhs, path_rhs ] = args;
+      const cont_lhs: Buffer = fs.readFileSync(path_lhs);
+      const cont_rhs: Buffer = fs.readFileSync(path_rhs);
+      const diff = new Diff(cont_lhs.toString(), cont_rhs.toString(), { split: 'lines' });
+      const changes = new DiffParser().parse(diff.normal_form());
+      return changes.length;
     });
 
     ipcMain.on('menu enable', (event, args: any[]) => {

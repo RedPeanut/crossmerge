@@ -28,6 +28,7 @@ import {
   selectChangedMenuId,
   selectByStateMenuId,
   launchComparisonsMenuId,
+  retestSelectedMenuId,
   expandAllFoldersMenuId,
   collapseAllFoldersMenuId,
 
@@ -64,6 +65,7 @@ keyBinding[rightToLeftFolderMenuId] = [ 'Ctrl+Q', 'Alt+Q' ];
 
 keyBinding[selectChangedMenuId] = [ 'Ctrl+S', 'Cmd+Ctrl+C' ];
 keyBinding[launchComparisonsMenuId] = [ 'Ctrl+M', 'Cmd+Shift+L' ];
+keyBinding[retestSelectedMenuId] = [ 'Ctrl+Shift+R', 'Cmd+Shift+R' ];
 keyBinding[expandAllFoldersMenuId] = [ 'Ctrl+=', 'Cmd+Ctrl+=' ];
 keyBinding[collapseAllFoldersMenuId] = [ 'Ctrl+-', 'Cmd+Ctrl+-' ];
 

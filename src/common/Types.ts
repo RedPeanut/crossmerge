@@ -184,6 +184,7 @@ export const rightToOtherFolderMenuId = 'merging.rightToOtherFolder';
 export const selectChangedMenuId = 'actions.selectChanged';
 export const selectByStateMenuId = 'actions.selectByState';
 export const launchComparisonsMenuId = 'actions.launchComparisons';
+export const retestSelectedMenuId = 'actions.retestSelected';
 export const expandAllFoldersMenuId = 'actions.expandAllFolders';
 export const collapseAllFoldersMenuId = 'actions.collapseAllFolders';
 

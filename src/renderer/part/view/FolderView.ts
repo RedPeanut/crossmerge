@@ -1,7 +1,7 @@
 import { CompareFolderData, CompareItem, MenuItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
-  launchComparisonsMenuId
+  launchComparisonsMenuId, retestSelectedMenuId
 } from "../../../common/Types";
 import { CompareOptions, CompareView, FileDesc } from "../../Types";
 import { $ } from "../../util/dom";
@@ -385,9 +385,52 @@ export class FolderView implements CompareView {
           this.launchComparisonsForSelectedRow();
           return;
         }
+
+        if(id === retestSelectedMenuId) {
+          this.retestSelectedRows();
+          return;
+        }
       }
     }
   };
+
+  async retestSelectedRows() {
+    // this.selected
+    for(let i = 0; i < this.selected.length; i++) {
+      let path_lhs = '', path_rhs = '';
+      let lnode: HTMLElement, rnode: HTMLElement;
+
+      lnode = document.querySelector(`.compares .active #node_left_${this.selected[i]}`)
+      rnode = document.querySelector(`.compares .active #node_right_${this.selected[i]}`)
+
+      recur_do(lnode, (_node) => { path_lhs = _node.dataset.name + renderer.path.sep + path_lhs });
+      recur_do(rnode, (_node) => { path_rhs = _node.dataset.name + renderer.path.sep + path_rhs });
+
+      path_lhs = this.input_lhs.getValue() + renderer.path.sep + path_lhs;
+      path_rhs = this.input_rhs.getValue() + renderer.path.sep + path_rhs;
+
+      if(path_lhs.endsWith(renderer.path.sep)) path_lhs = path_lhs.substring(0, path_lhs.length-1);
+      if(path_rhs.endsWith(renderer.path.sep)) path_rhs = path_rhs.substring(0, path_rhs.length-1);
+
+      const lstat_lhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_lhs);
+      const lstat_rhs/* : fs.Stats */ = await window.ipc.invoke('fs lstat', path_rhs);
+
+      if(lstat_lhs.isDirectory || lstat_rhs.isDirectory) continue;
+
+      const changes: number = await window.ipc.invoke('compare file', path_lhs, path_rhs);
+      const snode: HTMLElement = document.querySelector(`.compares .active #node_selectbar_${this.selected[i]}`);
+      if(changes > 0) {
+        snode.classList.add('changed');
+        // TODO: if not exists in change then push
+      } else {
+        snode.classList.remove('changed');
+        // TODO: if exists in change then remove
+      }
+
+      const cnode_content: HTMLElement = document.querySelector(`.compares .active #node_changes_${this.selected[i]} .content`);
+      cnode_content.innerHTML = changes+'';
+    }
+  }
 
   async launchComparisonsForSelectedRow() {
     // console.log('click event is received ..');

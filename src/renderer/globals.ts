@@ -26,6 +26,7 @@ import {
   selectChangedMenuId,
   selectByStateMenuId,
   launchComparisonsMenuId,
+  retestSelectedMenuId,
   expandAllFoldersMenuId,
   collapseAllFoldersMenuId,
 
@@ -62,6 +63,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: selectChangedMenuId, enable: false },
     { id: selectByStateMenuId, enable: false },
     { id: launchComparisonsMenuId, enable: false },
+    { id: retestSelectedMenuId, enable: false },
     { id: expandAllFoldersMenuId, enable: false },
     { id: collapseAllFoldersMenuId, enable: false },
 
@@ -96,6 +98,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: selectChangedMenuId, enable: true },
     { id: selectByStateMenuId, enable: true },
     { id: launchComparisonsMenuId, enable: true },
+    { id: retestSelectedMenuId, enable: true },
     { id: expandAllFoldersMenuId, enable: true },
     { id: collapseAllFoldersMenuId, enable: true },
 
@@ -127,6 +130,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: selectChangedMenuId, enable: false },
     { id: selectByStateMenuId, enable: false },
     { id: launchComparisonsMenuId, enable: false },
+    { id: retestSelectedMenuId, enable: false },
     { id: expandAllFoldersMenuId, enable: false },
     { id: collapseAllFoldersMenuId, enable: false },
 
