@@ -72,7 +72,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: fileSaveLeftMenuId, enable: false },
     { id: fileSaveRightMenuId, enable: false },
     { id: fileSaveAllMenuId, enable: false },
-    { id: fileCloseTabMenuId, enable: false },
+    { id: fileCloseTabMenuId, enable: true },
 
     { id: editUndoMenuId, enable: true },
     { id: editRedoMenuId, enable: true },
@@ -102,7 +102,7 @@ export const defaultMenubarEnable: MenubarEnable = {
     { id: fileSaveLeftMenuId, enable: true },
     { id: fileSaveRightMenuId, enable: true },
     { id: fileSaveAllMenuId, enable: true },
-    { id: fileCloseTabMenuId, enable: false },
+    { id: fileCloseTabMenuId, enable: true },
 
     { id: editUndoMenuId, enable: true },
     { id: editRedoMenuId, enable: true },

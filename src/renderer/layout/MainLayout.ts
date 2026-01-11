@@ -11,6 +11,7 @@ import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId, iconbarServiceId } from '../Service';
 import { CompareFolderData, CompareItem, MenuItem,
+  fileCloseTabMenuId,
   windowSelectPrevTab, windowSelectNextTab
 } from '../../common/Types';
 import { MenubarService } from '../part/Menubar';
@@ -197,7 +198,14 @@ export class MainLayout extends Layout implements MainLayoutService {
     const menuClickHandler = function(...args: any[]) {
       if(args && args.length > 1) {
         const id = args[1];
-        if(id.startsWith('window')) {
+
+        if(id.startsWith('file')) {
+          if(id === fileCloseTabMenuId) {
+            const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
+            bodyLayoutService.remove(this.current.uid);
+          }
+        }
+        else if(id.startsWith('window')) {
           // console.log('menu click windows is called ..');
           if(this.current) {
             const direction: string = id === windowSelectPrevTab ? 'prev' : 'next';

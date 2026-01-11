@@ -183,10 +183,11 @@ export class Menubar {
       fileSubmenu.push({ type: 'separator' as const });
 
     fileSubmenu.push({
+      id: fileCloseTabMenuId,
       label: 'Close &Tab',
       accelerator: keyBinding[fileCloseTabMenuId][keyBindingIdx],
       click: () => {
-        // this.browserWindow.close();
+        mainWindow.send('menu click', fileCloseTabMenuId);
       },
     });
 
