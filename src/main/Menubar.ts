@@ -172,16 +172,16 @@ export class Menubar {
     });
 
     if(isWindows) {
+      fileSubmenu.push({ type: 'separator' as const });
       fileSubmenu.push({
+        id: filePreferencesMenuId,
         label: 'Preferences...',
         accelerator: keyBinding[filePreferencesMenuId][keyBindingIdx],
         click: mainWindow.preferenceClickHandler.bind(mainWindow),
       });
     }
 
-    if(fileSubmenu.length > 0)
-      fileSubmenu.push({ type: 'separator' as const });
-
+    fileSubmenu.push({ type: 'separator' as const });
     fileSubmenu.push({
       id: fileCloseTabMenuId,
       label: 'Close &Tab',
