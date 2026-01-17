@@ -13,6 +13,12 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/scroll/simplescrollbars.js';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'lib/codemirror/cm-show-invisible.js';
+import 'lib/codemirror/codemirror.css';
+import 'codemirror/addon/search/search.js';
+import 'codemirror/addon/search/searchcursor.js';
+import 'codemirror/addon/search/jump-to-line.js';
+import 'codemirror/addon/dialog/dialog.js';
+import 'codemirror/addon/dialog/dialog.css';
 
 import * as dom from './dom';
 import VDoc from './VDoc';
