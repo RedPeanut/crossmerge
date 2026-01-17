@@ -289,6 +289,7 @@ export class FileView extends EventEmitter implements CompareView {
     const mergely_el = this.mergely_el = $('.mergely');
     mergely_el.id = `_${renderer.idx++}`;
     mergely_el.addEventListener('updated', () => {
+      this.mergely.scrollToDiffByPos('next');
       this.emit('onOnceUpdated');
     }, { once: true });
     this.element.appendChild(mergely_el);
