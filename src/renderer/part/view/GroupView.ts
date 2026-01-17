@@ -104,6 +104,9 @@ export class GroupView {
         this.active(this.group[i-1 < 0 ? 0 : i-1].uid);
       } else {
         (getService(statusbarPartServiceId) as StatusbarPartService).clear();
+        window.ipc.send('menu enable', defaultMenubarEnable['empty']);
+        (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable['empty']);
+        (getService(iconbarServiceId) as IconbarService).enable('empty');
       }
     }
 
