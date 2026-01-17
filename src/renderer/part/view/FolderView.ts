@@ -419,12 +419,36 @@ export class FolderView implements CompareView {
 
       const changes: number = await window.ipc.invoke('compare file', path_lhs, path_rhs);
       const snode: HTMLElement = document.querySelector(`.compares .active #node_selectbar_${this.selected[i]}`);
+
       if(changes > 0) {
         snode.classList.add('changed');
-        // TODO: if not exists in change then push
+
+        // if not exists in change then push to target
+        // console.log('this.changes =', this.changes);
+        const findIndex = this.changes.findIndex((v) => v.index === this.selected[i]);
+        if(findIndex < 0) {
+          let targetIndex = this.changes.findIndex((v) => v.index > this.selected[i]);
+          const line = this.getLineIndex(this.partNodeList.left, 0, this.selected[i]);
+
+          if(targetIndex < 0) {
+            this.changes.push({ op: 'c', index: this.selected[i], line});
+          } else {
+            this.changes.splice(targetIndex, 0, { op: 'c', index: this.selected[i], line});
+          }
+          // console.log('this.changes =', this.changes);
+          this.modifyChanges();
+        }
       } else {
         snode.classList.remove('changed');
-        // TODO: if exists in change then remove
+
+        // if exists in change then remove
+        console.log('this.changes =', this.changes);
+        const findIndex = this.changes.findIndex((v) => v.index === this.selected[i]);
+        if(findIndex > -1) {
+          this.changes.splice(findIndex, 1);
+          console.log('this.changes =', this.changes);
+          this.modifyChanges();
+        }
       }
 
       const cnode_content: HTMLElement = document.querySelector(`.compares .active #node_changes_${this.selected[i]} .content`);
@@ -510,6 +534,29 @@ export class FolderView implements CompareView {
       // console.log('this.flatten =', this.flatten);
   }
 
+  getLineIndex(nodes: Node[], line: number, index: number): number {
+    for(let i = 0; i < nodes.length; i++, line++) {
+      const node = nodes[i];
+      if(node.index >= index) return line;
+
+      if(node.type && node.type == 'folder') {
+        if(node.elem.classList.contains('collapsed')) {
+          if(node.min <= index && index <= node.max)
+            return -1;
+        } else {
+          if(node.min <= index && index <= node.max) {
+            return this.getLineIndex(node.children, ++line, index);
+          } else {
+            if(node.children) line += node.children.length;
+          }
+        }
+      }
+    }
+
+    // console.log('line =', line);
+    return line;
+  }
+
   modifyChanges(): void {
 
     const changes: Change[] = this.changes;
@@ -517,35 +564,8 @@ export class FolderView implements CompareView {
       const change = changes[i];
       const index = change.index;
 
-      function getLineIndex(nodes: Node[], line: number): number {
-        for(let i = 0; i < nodes.length; i++, line++) {
-          const node = nodes[i];
-          if(node.index >= index) return line;
-
-          if(node.type && node.type == 'folder') {
-            if(node.elem.classList.contains('collapsed')) {
-              if(node.min <= index && index <= node.max)
-                return -1;
-              // line++;
-            } else {
-              if(node.min <= index && index <= node.max) {
-                return getLineIndex.bind(this)(node.children, ++line);
-              } else {
-                if(node.children) line += node.children.length;
-                // line++;
-              }
-            }
-          } else {
-            // line++;
-          }
-        }
-
-        // console.log('line =', line);
-        return line;
-      }
-
       // console.log('this.partNodeList.left =', this.partNodeList.left);
-      const line = getLineIndex.bind(this)(this.partNodeList.left, 0);
+      const line = this.getLineIndex(this.partNodeList.left, 0, index);
       change.line = line;
     }
 
@@ -554,36 +574,8 @@ export class FolderView implements CompareView {
   }
 
   pushChange(op: string, index: number): void {
-
-    function getLineIndex(nodes: Node[], line: number): number {
-      for(let i = 0; i < nodes.length; i++, line++) {
-        const node = nodes[i];
-        if(node.index >= index) return line;
-
-        if(node.type && node.type == 'folder') {
-          if(node.elem.classList.contains('collapsed')) {
-            if(node.min <= index && index <= node.max)
-                return -1;
-            // line++;
-          } else {
-            if(node.min <= index && index <= node.max) {
-              return getLineIndex.bind(this)(node.children, ++line);
-            } else {
-              if(node.children) line += node.children.length;
-              // line++;
-            }
-          }
-        } else {
-          // line++;
-        }
-      }
-
-      // console.log('line =', line);
-      return line;
-    }
-
     // console.log('this.partNodeList.left =', this.partNodeList.left);
-    const line = getLineIndex.bind(this)(this.partNodeList.left, 0);
+    const line = this.getLineIndex(this.partNodeList.left, 0, index);
     this.changes.push({ op, index, line });
     // console.log('this.changes =', this.changes);
     this.throttle_renderChanges();
