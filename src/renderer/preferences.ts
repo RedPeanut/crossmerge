@@ -49,7 +49,50 @@ export class Preferences {
           {
             label: 'Display',
             render: function(container, data) {
-              let p = $('p');
+              let p, line
+
+              p = $('p');
+
+              line = $('div.line');
+              const showEOLChkbox = $('input') as HTMLInputElement;
+              showEOLChkbox.setAttribute('type', 'checkbox');
+              showEOLChkbox.checked = self.configs.showEOL ? true : false;
+              showEOLChkbox.addEventListener('change', ((e: Event) => {
+                self.configs.showEOL = (e.target as HTMLInputElement).checked;
+                self.changed = true;
+                self.applyBtn.disabled = false;
+              }));
+
+              const shoeEOLLabel = $('label') as HTMLLabelElement;
+              shoeEOLLabel.innerHTML = 'Show EOL characters';
+
+              line.append(showEOLChkbox);
+              line.append(shoeEOLLabel);
+              p.appendChild(line);
+
+              line = $('div.line');
+              const showWhitespaceChkbox = $('input') as HTMLInputElement;
+              showWhitespaceChkbox.setAttribute('type', 'checkbox');
+              showWhitespaceChkbox.checked = self.configs.showWhitespace ? true : false;
+              showWhitespaceChkbox.addEventListener('change', ((e: Event) => {
+                self.configs.showWhitespace = (e.target as HTMLInputElement).checked;
+                self.changed = true;
+                self.applyBtn.disabled = false;
+              }));
+
+              const showWhitespaceLabel = $('label') as HTMLLabelElement;
+              showWhitespaceLabel.innerHTML = 'Show whitespace characters';
+              // wrapLabel.htmlFor = ''; //wrapChkbox;
+
+              line.appendChild(showWhitespaceChkbox);
+              line.appendChild(showWhitespaceLabel);
+              p.appendChild(line);
+
+              container.appendChild(p);
+
+              p = $('p');
+
+              line = $('div.line');
               const wrapChkbox = $('input') as HTMLInputElement;
               wrapChkbox.setAttribute('type', 'checkbox');
               wrapChkbox.checked = self.configs.wrap_lines ? true : false;
@@ -64,8 +107,10 @@ export class Preferences {
               wrapLabel.innerHTML = 'Wrap long lines';
               // wrapLabel.htmlFor = ''; //wrapChkbox;
 
-              p.appendChild(wrapChkbox);
-              p.appendChild(wrapLabel);
+              line.appendChild(wrapChkbox);
+              line.appendChild(wrapLabel);
+              p.appendChild(line);
+
               container.appendChild(p);
             }
           },
@@ -241,7 +286,7 @@ export class Preferences {
     ];
     this.addNodes(this.tree, tree, 0, '');
     this.callRenders(tree, 0, '');
-    (this.tree.getElementsByClassName('content')[2] as HTMLElement).click();
+    (this.tree.getElementsByClassName('content')[0] as HTMLElement).click();
   }
 
   callRender(data: Node, level: number, id: string): void {

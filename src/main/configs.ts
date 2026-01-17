@@ -18,6 +18,8 @@ const configs = {
   history: { file: [], folder: [] },
 
   // text: display, encoding
+  showEOL: false,
+  showWhitespace: true,
   wrap_lines: false,
   try_to_auto_detect: true,
   encoding: 'utf8',
