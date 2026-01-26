@@ -77,7 +77,7 @@ export class TitlebarPart extends Part {
     right.appendChild(closeBtn);
     menubar.appendChild(right);
 
-    if(renderer.process.platform === 'darwin') {
+    if(false) { // renderer.process.platform === 'darwin') {
       left.style.display = 'none';
       right.style.display = 'none';
       const title = $('.title');

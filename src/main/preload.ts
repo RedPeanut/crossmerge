@@ -5,9 +5,6 @@ import { contextBridge, ipcRenderer, IpcRendererEvent, IpcRenderer } from 'elect
 
 // render to main
 export type MainEvents =
-  // compare
-  'new'
-
   // menu
   | 'menu enable'
   | 'menu get'
@@ -44,6 +41,7 @@ export type MainEvents =
   | 'save file'
   | 'read file'
   | 'compare file'
+  | 'compare folder'
   | 'get package json'
 
   // contextmenu
