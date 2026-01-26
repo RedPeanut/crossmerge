@@ -40,6 +40,7 @@ export interface BodyLayoutService extends Service {
   reCompare(id: string, options: CompareOptions): void;
   changeTab(id: string, direction: string): void;
   moveTab(from: number, to: number): void;
+  saveAll(): void;
 }
 
 export class BodyLayout extends Layout implements BodyLayoutService, SplitViewItemView {
@@ -281,5 +282,9 @@ export class BodyLayout extends Layout implements BodyLayoutService, SplitViewIt
 
   moveTab(from: number, to: number): void {
     this.groupView && this.groupView.moveTab(from, to);
+  }
+
+  saveAll(): void {
+    this.groupView && this.groupView.saveAll();
   }
 }

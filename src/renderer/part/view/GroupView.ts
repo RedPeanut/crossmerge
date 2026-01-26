@@ -168,4 +168,11 @@ export class GroupView {
   moveTab(from: number, to: number) {
     this.tabs.moveTab(from, to);
   }
+
+  saveAll() {
+    for(let i = 0; i < this.group.length; i++) {
+      if(this.group[i].type === 'file')
+        this.compares.saveAll(this.group[i].uid);
+    }
+  }
 }

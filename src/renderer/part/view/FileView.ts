@@ -142,27 +142,6 @@ export class FileView extends EventEmitter implements CompareView {
             else
               bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
           });
-        } else if(id === fileSaveAllMenuId) {
-          if(!this.input_lhs.getChanged() && !this.input_rhs.getChanged()) return;
-
-          const path_lhs = this.input_lhs.getValue();
-          const contents_lhs = this.mergely.get('lhs');
-          window.ipc.invoke('save file', path_lhs, contents_lhs).then((result) => {
-            // clear modified mark
-            this.input_lhs.clearChanged();
-            this.mergely.clearHistory('lhs');
-          });
-
-          const path_rhs = this.input_rhs.getValue();
-          const contents_rhs = this.mergely.get('rhs');
-          window.ipc.invoke('save file', path_rhs, contents_rhs).then((result) => {
-            // clear modified mark
-            this.input_rhs.clearChanged();
-            this.mergely.clearHistory('rhs');
-          });
-
-          const bodyLayoutService = getService(bodyLayoutServiceId) as BodyLayoutService;
-          bodyLayoutService.callTabFn(this.item.uid, 'clearChanged');
         }
       } else if(id.startsWith('edit')) {
         if(id === editPrevChangeMenuId) {

@@ -128,4 +128,9 @@ export class Compares {
     } */
     v && v.compare(options);
   }
+
+  saveAll(id: string): void {
+    const v: FileView = this.map.get(id) as FileView;
+    v && v.saveAll();
+  }
 }
