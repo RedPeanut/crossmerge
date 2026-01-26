@@ -219,8 +219,6 @@ export class Preferences {
             label: 'Filters',
             render: function(container, data) {
 
-              return;
-
               let p = $('p'); //, group;
 
               const activeLabel = $('label');

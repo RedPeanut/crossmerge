@@ -280,7 +280,8 @@ export class MainLayout extends Layout implements MainLayoutService {
     });
 
     window.ipc.send('menu enable', defaultMenubarEnable['empty']);
-    setTimeout(() => {
+
+    setTimeout(() => { // after initialized service, somewhat tricky
       (getService(menubarServiceId) as MenubarService).enable(defaultMenubarEnable['empty']);
       (getService(iconbarServiceId) as IconbarService).enable('empty');
     }, 0);

@@ -34,8 +34,8 @@ export class TitlebarPart extends Part {
     const menubar = $('.menubar');
     if(renderer.process.platform === 'darwin')
       menubar.style.paddingLeft = '80px';
-    const left: HTMLElement = $('.left');
 
+    const left: HTMLElement = $('.left');
     const _menubar = new Menubar(left);
     _menubar.install();
     menubar.appendChild(left);
@@ -77,7 +77,7 @@ export class TitlebarPart extends Part {
     right.appendChild(closeBtn);
     menubar.appendChild(right);
 
-    if(false) { // renderer.process.platform === 'darwin') {
+    if(renderer.process.platform === 'darwin') {
       left.style.display = 'none';
       right.style.display = 'none';
       const title = $('.title');

@@ -10,13 +10,6 @@ export type MainEvents =
   | 'menu get'
 
   // window
-  /* | 'window move'
-  | 'window resize'
-  | 'window open context menu'
-  | 'window command' */
-  // | 'window maximize'
-  // | 'window minimize'
-  // | 'window close'
   | 'window get'
   | 'window fn'
 
@@ -65,7 +58,7 @@ export type RenderEvents =
   | 'window state changed'
 
   // contextmenu
-  | 'contextmenu on ${contextMenuId}'
+  // | 'contextmenu on ${contextMenuId}'
   | 'contextmenu close'
 ;
 
