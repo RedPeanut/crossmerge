@@ -80,6 +80,45 @@ export class Menubar implements MenubarService {
     // this.parent.appendChild(this.container);
   }
 
+  symbolizeShrtcut(name: string): string {
+    if(renderer.process.platform !== 'darwin')
+      return name;
+
+    name = name.replace('Left', '◀');
+    name = name.replace('Right', '▶');
+    name = name.replace('Up', '▲');
+    name = name.replace('Down', '▼');
+    name = name.replace('Ctrl', '⌃');
+    name = name.replace('Alt', '⌥');
+    name = name.replace('Shift', '⇧');
+    name = name.replace('Cmd', '⌘');
+    // name = name.replace('Fn', '');
+    name = name.replace('Tab', '⇥');
+    name = name.replace('Delete', '⌫');
+    name = name.replace('Escape', '⎋');
+    name = name.replace(/\+/g, '')
+    return name;
+  }
+
+  normalizeShortcut(name: string): string {
+    let parts = name.split(/\+(?!$)/);
+    name = parts[parts.length - 1];
+    let alt, ctrl, shift, cmd;
+    for(let i = 0; i < parts.length - 1; i++) {
+      let mod = parts[i];
+      if (/^(cmd|meta|m)$/i.test(mod)) cmd = true;
+      else if (/^a(lt)?$/i.test(mod)) alt = true;
+      else if (/^(c|ctrl|control)$/i.test(mod)) ctrl = true;
+      else if (/^s(hift)?$/i.test(mod)) shift = true;
+      else throw new Error("Unrecognized modifier name: " + mod);
+    }
+    if(cmd) name = "Cmd+" + name;
+    if(shift) name = "Shift+" + name;
+    if(alt) name = "Alt+" + name;
+    if(ctrl) name = "Ctrl+" + name;
+    return name
+  }
+
   createMenu_r(type: string, container: HTMLElement, menuItem: SerializableMenuItem, level: number): void {
     const menubox = $('ul.menubox');
     if(level > 0) menubox.classList.add('sub');
@@ -124,7 +163,7 @@ export class Menubar implements MenubarService {
 
         if(submenuItem.accelerator) {
           const keybiding = $('span.keybinding');
-          keybiding.innerHTML = submenuItem.accelerator;
+          keybiding.innerHTML = this.symbolizeShrtcut(this.normalizeShortcut(submenuItem.accelerator));
           a.appendChild(keybiding);
         }
 
