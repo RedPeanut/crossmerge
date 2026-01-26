@@ -44,6 +44,7 @@ export type MainEvents =
   | 'save file'
   | 'read file'
   | 'compare file'
+  | 'get package json'
 
   // contextmenu
   | 'contextmenu'

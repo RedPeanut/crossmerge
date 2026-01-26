@@ -507,6 +507,20 @@ class MainWindow {
       const [ path, contents ] = args;
       fs.writeFileSync(path, contents);
     });
+
+    ipcMain.handle('get package json', (event, args: any[]) => {
+      const [] = args;
+      const packageJsonPath = path.join(app.getAppPath(), 'package.json');
+      try {
+        const data = fs.readFileSync(packageJsonPath, 'utf8');
+        const packageJson = JSON.parse(data);
+        console.log(packageJson.version);
+        return packageJson;
+      } catch(err) {
+        console.error("파일을 읽는 중 오류가 발생했습니다:", err);
+      }
+      return null;
+    });
   }
 
   createWindow = async () => {

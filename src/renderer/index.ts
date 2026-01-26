@@ -27,6 +27,13 @@ export class Renderer {
     sep?: string;
   } = {};
 
+  package_json: {
+    name: string,
+    version: string,
+    author: { name: string, email: string },
+    license: string
+  };
+
   idx: number = 0;
   // wrapLine: boolean = false; // temp
 
@@ -44,6 +51,7 @@ export class Renderer {
     this.process.platform = await window.ipc.invoke('process get', 'property', 'platform');
     // this.menu = await window.ipc.invoke('menu get');
     this.path.sep = this.process.platform === 'win32' ? '\\' : '/';
+    this.package_json = await window.ipc.invoke('get package json');
   }
 }
 

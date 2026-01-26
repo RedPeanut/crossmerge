@@ -76,6 +76,15 @@ export class TitlebarPart extends Part {
     right.appendChild(maxResBtn);
     right.appendChild(closeBtn);
     menubar.appendChild(right);
+
+    if(renderer.process.platform === 'darwin') {
+      left.style.display = 'none';
+      right.style.display = 'none';
+      const title = $('.title');
+      title.innerHTML = renderer.package_json.name;
+      middle.appendChild(title);
+    }
+
     container.appendChild(menubar);
 
     const iconbar = $('.iconbar');
