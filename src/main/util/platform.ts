@@ -6,6 +6,9 @@ export interface ProcessEnvironment {
   [key: string]: string | undefined;
 }
 
+/**
+ * see vscode's comment in vs/base/common/platform.ts
+ */
 export interface NodeProcess {
   platform: string;
   arch: string;
@@ -20,7 +23,7 @@ export interface NodeProcess {
 }
 
 declare const process: NodeProcess;
-const $globalThis: any = globalThis;
+
 let nodeProcess: NodeProcess | undefined = undefined;
 if(typeof process !== 'undefined' && typeof process?.versions?.node === 'string') {
   // Native environment (non-sandboxed)
@@ -39,23 +42,6 @@ if(typeof nodeProcess === 'object') {
   _isWindows = (nodeProcess.platform === 'win32');
   _isMacintosh = (nodeProcess.platform === 'darwin');
   _isLinux = (nodeProcess.platform === 'linux');
-}
-
-export const enum Platform {
-  Web,
-  Mac,
-  Linux,
-  Windows
-}
-export type PlatformName = 'Web' | 'Windows' | 'Mac' | 'Linux';
-
-let _platform: Platform = Platform.Web;
-if(_isMacintosh) {
-  _platform = Platform.Mac;
-} else if(_isWindows) {
-  _platform = Platform.Windows;
-} else if(_isLinux) {
-  _platform = Platform.Linux;
 }
 
 export const isWindows = _isWindows;

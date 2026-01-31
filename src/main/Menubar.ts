@@ -6,7 +6,7 @@ import {
   BrowserWindow,
   MenuItemConstructorOptions,
 } from 'electron';
-import { isMacintosh, isWindows } from '../common/util/platform';
+import { isMacintosh, isWindows } from './util/platform';
 import path from 'path';
 import { resolveHtmlPath } from './utils';
 import { mainWindow } from './main';
