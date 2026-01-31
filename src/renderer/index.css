@@ -270,12 +270,13 @@ body { height: 100%; }
 }
 
 .titlebar .menubar .right .codicon {
-  width: 21px;
-  height: 21px;
+  width: 31px;
+  height: 31px;
   font-size: 21px;
   -webkit-app-region: no-drag;
-  padding: 0 8px;
+  /* padding: 0 8px; */
   margin-right: 1px;
+  line-height: 31px;
 }
 
 .titlebar .menubar .right .codicon:hover {
