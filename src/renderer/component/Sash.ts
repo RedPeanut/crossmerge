@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { $, append } from "../util/dom";
-import { isMacintosh } from "../../common/util/platform";
+import { isMacintosh } from "../../main/util/platform";
 import { EventEmitter } from "events";
 
 export const enum Orientation {

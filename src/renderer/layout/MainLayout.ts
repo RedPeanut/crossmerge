@@ -1,5 +1,5 @@
 import { coalesce } from '../util/arrays';
-import { isLinux, isWindows } from '../../common/util/platform';
+import { isLinux, isWindows } from '../../main/util/platform';
 import { Layout } from '../Layout';
 import { TitlebarPart } from '../part/TitlebarPart';
 // import { BodyPart } from '../part/BodyPart';
