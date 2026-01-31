@@ -45,7 +45,8 @@ class MainWindow {
       sourceMapSupport.install();
     }
 
-    this.isDebug = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+    this.isDebug =
+      process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
     if(this.isDebug) {
       require('electron-debug')();
@@ -93,6 +94,10 @@ class MainWindow {
 
   installIpc = () => {
     const self = this;
+
+    ipcMain.handle('scan folder', (event, args: any[]) => {
+
+    });
 
     ipcMain.on('compare folder', async (event, args: any[]) => {
       // console.log('[new] args =', args);
