@@ -1,6 +1,4 @@
 import { $, append } from "../util/dom";
-import { ListItem } from "./ListItem";
-import { Tree } from "./Tree";
 
 export type ListItemType = 'local' | 'remote' | 'group' | 'folder';
 export interface ListItemElem {
@@ -95,11 +93,109 @@ export class List {
           selectedIds: ids || ['0']
         };
       }, // onSelect: (ids: string[]) => void
-      (data: ListItemElem) => { 
+      (data: ListItemElem) => {
         const listItem = new ListItem(null);
         return listItem.render(data);
       }, // nodeRender: (data: ListItemElem) => HTMLElement | null
     );
     append(this.container, this.element);
+  }
+}
+
+export class ListItem {
+  container: HTMLElement;
+  element: HTMLElement;
+
+  constructor(container: HTMLElement) {
+    this.container = container;
+  }
+
+  render(data: ListItemElem): HTMLElement {
+    this.element = $('.list-item');
+
+    const title = $('.title');
+    const span = $('span.icon');
+    const itemIcon = $(`a.codicon codicon-${data.type}`);
+    append(span, itemIcon);
+    // console.log(span.outerHTML);
+    // append(title, span);
+    title.innerHTML = span.outerHTML + data.title;
+    append(this.element, title);
+
+    // append(this.container, this.element);
+    return this.element;
+  }
+}
+
+export class Tree {
+  container: HTMLElement;
+
+  element: HTMLElement;
+  tree: ListItemElem[];
+
+  constructor(container: HTMLElement) {
+    this.container = container;
+  }
+
+  render(tree: ListItemElem[],
+    selectedIds: string,
+    onChange: Function,
+    onSelect: Function,
+    nodeRender: (data: ListItemElem) => HTMLElement | null,
+  ): void {
+    this.tree = tree;
+
+    this.element = $('.tree');
+    this.tree.map((e) => {
+      const node = new Node(this.element);
+      node.render(e, 0, nodeRender);
+    });
+    append(this.container, this.element);
+  }
+}
+
+export class Node {
+  container: HTMLElement;
+
+  element: HTMLElement;
+  node: HTMLElement;
+
+  constructor(container: HTMLElement) {
+    this.container = container;
+  }
+
+  render(
+    data: ListItemElem,
+    level: number = 0,
+    nodeRender: (data: ListItemElem) => HTMLElement | null,
+  ): void {
+    const hasChildren = Array.isArray(data.children) && data.children.length > 0;
+
+    const element = this.element = $('.wrapper');
+    const node = this.node = $('.node');
+
+    const content = $('.content');
+    const header = $('.ln-header');
+    if(hasChildren) {
+      const arrow = $('.arrow' + data.isCollapsed ? '.collapsed' : '');
+      arrow.innerHTML = '>';
+      header.append(arrow);
+    }
+    content.append(header);
+
+    const body = $('.ln-body');
+    const listItem = nodeRender ? nodeRender(data) : data.title || `node#${data.id}`;
+    body.append(listItem);
+    content.append(body);
+
+    if(hasChildren) {
+      data.children.map((e) => {
+        const _node = new Node(body);
+        _node.render(e, level+1, nodeRender);
+      });
+    }
+    append(node, content);
+    append(element, node);
+    append(this.container, element);
   }
 }
