@@ -988,7 +988,7 @@ export class FolderView implements CompareView {
     const input_rhs_value = this.input_rhs.getValue();
 
     const saved = await window.ipc.invoke('config get', 'history');
-    console.log(saved);
+    // console.log(saved);
     const updated = { ...saved };
     // const parsed = JSON.parse(saved);
 
@@ -1000,7 +1000,7 @@ export class FolderView implements CompareView {
       }
     }
     updated.folder.splice(0, 0, { left: input_lhs_value, right: input_rhs_value });
-    console.log(updated.folder);
+    // console.log(updated.folder);
     await window.ipc.invoke('config set', 'history', updated);
   }
 
