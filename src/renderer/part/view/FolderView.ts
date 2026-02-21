@@ -428,7 +428,7 @@ export class FolderView implements CompareView {
         const findIndex = this.changes.findIndex((v) => v.index === this.selected[i]);
         if(findIndex < 0) {
           let targetIndex = this.changes.findIndex((v) => v.index > this.selected[i]);
-          const line = this.getLineIndex(this.partNodeList.left, 0, this.selected[i]);
+          const line = this.getViewLineNoByIndex_fix(this.partNodeList.left, 0, this.selected[i]);
 
           if(targetIndex < 0) {
             this.changes.push({ op: 'c', index: this.selected[i], line});
@@ -534,7 +534,7 @@ export class FolderView implements CompareView {
       // console.log('this.flatten =', this.flatten);
   }
 
-  getLineIndex(nodes: Node[], line: number, index: number): number {
+  /* getLineIndex(nodes: Node[], line: number, index: number): number {
     for(let i = 0; i < nodes.length; i++, line++) {
       const node = nodes[i];
       if(node.index >= index) return line;
@@ -555,27 +555,82 @@ export class FolderView implements CompareView {
 
     // console.log('line =', line);
     return line;
+  } */
+
+  /**
+   *
+   */
+  getViewLineNo_r(nodes: Node[], line: number): number {
+    for(let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if(node.type == 'folder') {
+        if(node.elem.classList.contains('collapsed')) {
+          line++;
+        } else {
+          line += this.getViewLineNo_r(node.children, 1);
+        }
+      } else { // if(node.type == 'file')
+        line++;
+      }
+    }
+    return line;
+  }
+
+  /**
+   * get view line no of target index, return -1 if the node is in collapsed
+   */
+  getViewLineNoByIndex_fix(nodes: Node[], line: number, index: number): number {
+    for(let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+
+      if(node.type == 'folder') {
+        if(node.elem.classList.contains('collapsed')) {
+          if(node.index == index)
+            return ++line;
+          else if(node.min <= index && index <= node.max)
+            return -1;
+          else
+            line++;
+        } else {
+          if(node.index == index) {
+            return ++line;
+          } else if(node.min <= index && index <= node.max) {
+            return this.getViewLineNoByIndex_fix(node.children, ++line, index);
+          } else {
+            line += this.getViewLineNo_r(node.children, 1);
+          }
+        }
+      } else { // if(node.type == 'file')
+        if(node.index == index)
+          return ++line;
+        else
+          line++;
+      }
+    }
+
+    // console.log('line =', line);
+    return line;
   }
 
   modifyChanges(): void {
-
+    // console.log('...this.changes =', ...this.changes);
     const changes: Change[] = this.changes;
     for(let i = 0; i < changes.length; i++) {
       const change = changes[i];
       const index = change.index;
 
       // console.log('this.partNodeList.left =', this.partNodeList.left);
-      const line = this.getLineIndex(this.partNodeList.left, 0, index);
+      const line = this.getViewLineNoByIndex_fix(this.partNodeList.left, 0, index);
       change.line = line;
     }
 
-    // console.log('this.changes =', this.changes);
+    // console.log('...this.changes =', ...this.changes);
     this.throttle_renderChanges();
   }
 
   pushChange(op: string, index: number): void {
     // console.log('this.partNodeList.left =', this.partNodeList.left);
-    const line = this.getLineIndex(this.partNodeList.left, 0, index);
+    const line = this.getViewLineNoByIndex_fix(this.partNodeList.left, 0, index);
     this.changes.push({ op, index, line });
     // console.log('this.changes =', this.changes);
     this.throttle_renderChanges();
@@ -613,8 +668,10 @@ export class FolderView implements CompareView {
 
     let ratio, y, h;
 
-    const totalLine = this.index; // number
-    ratio = scrollHeight / totalLine;
+    // this.index is number
+    const totalViewLine = this.getViewLineNoByIndex_fix(this.partNodeList.left, 0, this.index-1);
+    console.log('totalViewLine =', totalViewLine);
+    ratio = scrollHeight / totalViewLine;
 
     // render changes
     // console.log('this.changes.length =', this.changes.length);
