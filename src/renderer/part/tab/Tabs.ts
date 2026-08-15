@@ -195,7 +195,7 @@ export class Tabs {
     this.slider.style.left = (scrollLeft * clientWidth / scrollWidth).toFixed(2) + 'px';
   }
 
-  setScrollVisibilyty() {
+  setScrollVisibility() {
     const {
       clientLeft, clientTop, clientWidth, clientHeight,
       scrollLeft, scrollTop, scrollWidth, scrollHeight,
@@ -238,7 +238,7 @@ export class Tabs {
     scrollable.insertBefore(tab.create(), scrollable.firstChild);
     this.tabs.splice(0, 0, tab);
     tab.setClass({ active: true });
-    this.setScrollVisibilyty();
+    this.setScrollVisibility();
     return tab;
   }
 
@@ -246,7 +246,7 @@ export class Tabs {
     // console.log('layout() is called ..');
     // const dimension = dom.getClientArea(this.element);
     // console.log('dimension =', dimension);
-    this.setScrollVisibilyty();
+    this.setScrollVisibility();
   }
 
   updateTabLabel(id: string, lhs: string, rhs: string): void {
@@ -304,7 +304,7 @@ export class Tabs {
     this.scrollable.removeChild(this.tabs[idx].element);
     this.tabs.splice(idx, 1);
     // delete this.tabs[idx];
-    this.setScrollVisibilyty();
+    this.setScrollVisibility();
   }
 
   moveTab(from: number, to: number) {

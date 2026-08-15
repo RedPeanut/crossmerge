@@ -50,7 +50,7 @@ keyBinding[fileStartOrRecompareMenuId] =  ['Ctrl+R', 'Cmd+R' ];
 keyBinding[fileCloseTabMenuId] =  ['Ctrl+W', 'Cmd+W' ];
 
 keyBinding[editUndoMenuId] = [ 'Ctrl+Z', 'Cmd+Z' ];
-keyBinding[editRedoMenuId] = [ 'Shift[+Ctrl+Z', 'Shift+Cmd+Z' ];
+keyBinding[editRedoMenuId] = [ 'Shift+Ctrl+Z', 'Shift+Cmd+Z' ];
 keyBinding[editCutMenuId] = [ 'Ctrl+X', 'Cmd+X' ];
 keyBinding[editCopyMenuId] = [ 'Ctrl+C', 'Cmd+C' ];
 keyBinding[editPasteMenuId] = [ 'Ctrl+V', 'Cmd+V' ];
