@@ -83,15 +83,17 @@ const electronHandler = {
    * https://www.electronjs.org/docs/latest/api/context-bridge#parameter--error--return-type-support
    */
   on: (channel: Channels, cb: (...args: any[]) => void): any => {
-    const listener = (event, payload) => cb(event, payload);
+    const listener = (event: IpcRendererEvent, ...args: unknown[]) => cb(event, ...args);
     ipcRenderer.on(channel, listener);
+    return () => ipcRenderer.off(channel, listener);
+  },
+  once: (channel: string, cb: (...args: any[]) => void): any => {
+    const listener = (event: IpcRendererEvent, ...args: unknown[]) => cb(event, ...args);
+    ipcRenderer.once(channel, listener);
     return () => ipcRenderer.off(channel, listener);
   },
   off: (channel: string, cb: (...args: any[]) => void): void => {
     ipcRenderer.off(channel, cb);
-  },
-  once: (channel: string, cb: (...args: any[]) => void): void => {
-    ipcRenderer.once(channel, cb);
   },
   /* listenerCount: (eventName: string): number => {
     return ipcRenderer.listenerCount(eventName);

@@ -17,17 +17,18 @@ export function popup(items: ContextMenuItem[], options?: PopupOptions, onHide?:
     const item = processedItems[itemId];
     item.click?.([event, itemId, context]);
   };
-  window.ipc.once(onClickChannel, onClickChannelHandler);
+  const disposeClick = window.ipc.once(onClickChannel, onClickChannelHandler);
 
-  window.ipc.once('contextmenu close', (event: unknown, closedContextMenuId: number) => {
+  const disposeClose = window.ipc.once('contextmenu close', (event: unknown, closedContextMenuId: number) => {
     console.log('once contextmenu close is called ..');
     // console.log('closedContextMenuId =', closedContextMenuId);
 
     if(closedContextMenuId !== contextMenuId)
       return;
 
-    // TODO: check off is working properly
-    window.ipc.off(onClickChannel, onClickChannelHandler);
+    // window.ipc.off(onClickChannel, onClickChannelHandler);
+    disposeClose();
+    disposeClick();
     onHide?.();
   });
 
