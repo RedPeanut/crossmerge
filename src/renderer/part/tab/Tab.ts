@@ -1,5 +1,5 @@
 import { renderer } from "../..";
-import { CompareItem, MenuItem } from "../../../common/Types";
+import { CompareItem, ContextMenuItem } from "../../../common/Types";
 import { StringUtil } from "../../../common/util/StringUtil";
 import { BodyLayoutService } from "../../layout/BodyLayout";
 import { getService, bodyLayoutServiceId } from "../../Service";
@@ -34,7 +34,7 @@ export class Tab {
     this.registerTabListeners();
 
     el.addEventListener('contextmenu', (e: PointerEvent) => {
-      const items: MenuItem[] = [];
+      const items: ContextMenuItem[] = [];
       items.push({
         // accelerator: '',
         label: 'Close This Tab',

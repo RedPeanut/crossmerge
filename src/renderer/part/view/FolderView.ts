@@ -1,4 +1,4 @@
-import { CompareFolderData, CompareItem, MenuItem,
+import { CompareFolderData, CompareItem, ContextMenuItem,
   leftToRightFolderMenuId, rightToLeftFolderMenuId, leftToOtherFolderMenuId, rightToOtherFolderMenuId,
   selectChangedMenuId, selectByStateMenuId, expandAllFoldersMenuId, collapseAllFoldersMenuId,
   launchComparisonsMenuId, retestSelectedMenuId
@@ -1192,7 +1192,7 @@ export class FolderView implements CompareView {
 
       const content = $(".content");
       content.addEventListener('contextmenu', (e: PointerEvent) => {
-        const items: MenuItem[] = [];
+        const items: ContextMenuItem[] = [];
         items.push({
           accelerator: 'Cmd+Shift+L',
           label: 'Launch Comparisons for Selected Rows', //localize(key, msg),

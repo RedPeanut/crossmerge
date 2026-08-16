@@ -10,7 +10,7 @@ import { $ } from '../util/dom';
 import * as dom from '../util/dom';
 import { Orientation } from '../component/Sash';
 import { bodyLayoutServiceId, getService, Service, setService, mainLayoutServiceId, menubarServiceId, statusbarPartServiceId, iconbarServiceId } from '../Service';
-import { CompareFolderData, CompareItem, MenuItem,
+import { CompareFolderData, CompareItem, ContextMenuItem,
   fileSaveAllMenuId, fileStartOrRecompareMenuId, fileCloseTabMenuId,
   windowSelectPrevTab, windowSelectNextTab,
 } from '../../common/Types';
@@ -34,7 +34,7 @@ export interface MainLayoutService extends Service {
   layout(): void;
   showStatusbarWidget(list: EncodingItem[]): void;
   positionStatusbarWidget(): void;
-  showContextMenu(target: HTMLElement, list: MenuItem[]): void;
+  showContextMenu(target: HTMLElement, list: ContextMenuItem[]): void;
   showHistoryPopup(): void;
   reCompare(): void;
   setCurrent(item: CompareItem): void;
@@ -323,7 +323,7 @@ export class MainLayout extends Layout implements MainLayoutService {
     this.statusbarWidget.focus();
   }
 
-  showContextMenu(target: HTMLElement, list: MenuItem[]): void {
+  showContextMenu(target: HTMLElement, list: ContextMenuItem[]): void {
     const rect = target.getBoundingClientRect();
     this.contextMenu.style.left = rect.x + 'px';
     this.contextMenu.style.top = rect.y + rect.height + 'px';

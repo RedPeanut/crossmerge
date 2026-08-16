@@ -1,15 +1,15 @@
 // import { MenuEvent, MenuItem, PopupOptions, SerializableMenuItem } from "../Types";
-import { MenuEvent, MenuItem, PopupOptions, SerializableMenuItem } from "../../common/Types";
+import { ContextMenuEvent, ContextMenuItem, PopupOptions, SerializableMenuItem } from "../../common/Types";
 
 let contextMenuIdPool = 0;
 
 ///*
-export function popup(items: MenuItem[], options?: PopupOptions, onHide?: () => void): void {
-  const processedItems: MenuItem[] = [];
+export function popup(items: ContextMenuItem[], options?: PopupOptions, onHide?: () => void): void {
+  const processedItems: ContextMenuItem[] = [];
 
   const contextMenuId = contextMenuIdPool++;
   const onClickChannel = `contextmenu on ${contextMenuId}`;
-  const onClickChannelHandler = (event: unknown, itemId: number, context: MenuEvent) => {
+  const onClickChannelHandler = (event: unknown, itemId: number, context: ContextMenuEvent) => {
     console.log('once channelHandler is called ..');
     // console.log('itemId =', itemId);
     // console.log('context =', context);
@@ -36,7 +36,7 @@ export function popup(items: MenuItem[], options?: PopupOptions, onHide?: () => 
 }
 //*/
 
-function createItem(item: MenuItem, processedItems: MenuItem[]): SerializableMenuItem {
+function createItem(item: ContextMenuItem, processedItems: ContextMenuItem[]): SerializableMenuItem {
   const serializableItem: SerializableMenuItem = {
     id: processedItems.length,
     label: item.label,

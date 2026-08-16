@@ -99,12 +99,12 @@ export interface SerializableMenuItem extends CommonMenuItem {
   submenu?: SerializableMenuItem[];
 }
 
-export interface MenuItem extends CommonMenuItem {
+export interface ContextMenuItem extends CommonMenuItem {
   click?: (args: any[]) => void;
-  submenu?: MenuItem[];
+  submenu?: ContextMenuItem[];
 }
 
-export interface MenuEvent {
+export interface ContextMenuEvent {
   shiftKey?: boolean;
   ctrlKey?: boolean;
   altKey?: boolean;
